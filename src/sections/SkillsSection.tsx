@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { skillCategories } from '../data/portfolio'
 import { SpotlightCard } from '../components/reactbits/SpotlightCard'
-import { DecryptedText } from '../components/reactbits/DecryptedText'
 import { Code, Cpu, Sparkles, Wrench } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -57,7 +56,7 @@ export const SkillsSection: React.FC = () => {
             <span>CAPABILITIES // TECH_STACK</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[#111317] dark:text-[#F4F7FB]">
-            <DecryptedText text="TECHNICAL SKILLS" speed={30} maxIterations={10} />
+            TECHNICAL SKILLS
           </h2>
         </div>
         <p className="font-mono text-xs text-gray-500 dark:text-gray-400 max-w-xs">

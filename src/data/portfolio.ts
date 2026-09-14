@@ -9,6 +9,7 @@ export interface PersonalInfo {
   roleSummary: string
   monogram: string
   status: string
+  educationSummary?: string
 }
 
 export interface ExperienceItem {
@@ -76,7 +77,8 @@ export const personalInfo: PersonalInfo = {
   bio: "Dynamic IT professional with hands-on experience at Airports Authority of India, specializing in system maintenance and network security compliance. Proficient in data structures and algorithms, with strong problem-solving skills focused on improving IT processes and delivering innovative solutions in fast-paced environments.",
   roleSummary: "Specializing in System Maintenance, Network Security Compliance, Data Structures, and Generative AI Solutions.",
   monogram: "DJ",
-  status: "OPEN FOR OPPORTUNITIES"
+  status: "OPEN FOR OPPORTUNITIES",
+  educationSummary: "B.Tech CSE (Expected 2027)"
 }
 
 export const experiences: ExperienceItem[] = [

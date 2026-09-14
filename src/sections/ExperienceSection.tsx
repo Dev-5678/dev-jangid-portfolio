@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { experiences } from '../data/portfolio'
 import { SpotlightCard } from '../components/reactbits/SpotlightCard'
-import { DecryptedText } from '../components/reactbits/DecryptedText'
 import { Calendar, MapPin, Briefcase } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -48,10 +47,10 @@ export const ExperienceSection: React.FC = () => {
             <span>TIMELINE // WORK_HISTORY</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[#111317] dark:text-[#F4F7FB]">
-            <DecryptedText text="PRACTICAL EXPERIENCE" speed={30} maxIterations={10} />
+            PRACTICAL EXPERIENCE
           </h2>
         </div>
-        <p className="font-mono text-xs text-gray-500 dark:text-gray-400 max-w-xs">
+        <p className="font-mono text-xs text-[#374151] dark:text-gray-400 max-w-xs font-semibold">
           Documented internships and specialized technology training programs.
         </p>
       </div>
@@ -77,15 +76,15 @@ export const ExperienceSection: React.FC = () => {
                     {exp.type}
                   </span>
                   {exp.location && (
-                    <span className="flex items-center gap-1 text-gray-600 dark:text-gray-400">
+                    <span className="flex items-center gap-1 text-[#374151] dark:text-gray-400 font-bold">
                       <MapPin className="w-3.5 h-3.5 text-[#FF5500]" />
                       {exp.location}
                     </span>
                   )}
                 </div>
 
-                <div className="flex items-center gap-1 font-bold text-[#FF5500] dark:text-[#CCFF00] bg-gray-100 dark:bg-[#1E293B] px-2.5 py-1 border border-gray-300 dark:border-gray-700">
-                  <Calendar className="w-3.5 h-3.5" />
+                <div className="flex items-center gap-1 font-bold text-[#111317] dark:text-[#CCFF00] bg-gray-100 dark:bg-[#1E293B] px-2.5 py-1 border border-gray-400 dark:border-gray-700">
+                  <Calendar className="w-3.5 h-3.5 text-[#FF5500] dark:text-[#CCFF00]" />
                   <span>{exp.dates}</span>
                 </div>
               </div>
@@ -95,7 +94,7 @@ export const ExperienceSection: React.FC = () => {
                 <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-[#111317] dark:text-[#F4F7FB]">
                   {exp.role}
                 </h3>
-                <div className="text-base sm:text-lg font-bold text-gray-700 dark:text-gray-300 flex items-center gap-2 mt-1">
+                <div className="text-base sm:text-lg font-bold text-[#1F2937] dark:text-gray-300 flex items-center gap-2 mt-1">
                   <Briefcase className="w-4 h-4 text-[#00E5FF]" />
                   <span>{exp.organization}</span>
                 </div>
@@ -104,7 +103,7 @@ export const ExperienceSection: React.FC = () => {
               {/* Responsibilities List */}
               <ul className="space-y-3 my-5" aria-label="Key Responsibilities">
                 {exp.responsibilities.map((resp, rIdx) => (
-                  <li key={rIdx} className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                  <li key={rIdx} className="flex items-start gap-3 text-sm text-[#1F2937] dark:text-gray-300 leading-relaxed font-medium">
                     <span className="mt-1 flex-shrink-0 w-4 h-4 bg-[#CCFF00] text-[#111317] flex items-center justify-center font-mono text-[10px] font-black border border-[#111317]">
                       ✓
                     </span>
@@ -114,15 +113,15 @@ export const ExperienceSection: React.FC = () => {
               </ul>
 
               {/* Skills Applied Tags */}
-              <div className="pt-4 border-t-2 border-dashed border-gray-200 dark:border-gray-800">
+              <div className="pt-4 border-t-2 border-dashed border-gray-300 dark:border-gray-800">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-[10px] font-mono font-bold text-gray-400 uppercase mr-1">
+                  <span className="text-[10px] font-mono font-bold text-[#374151] dark:text-gray-400 uppercase mr-1">
                     APPLIED:
                   </span>
                   {exp.skillsApplied.map((skill, sIdx) => (
                     <span
                       key={sIdx}
-                      className="px-2 py-0.5 bg-gray-100 dark:bg-[#1A202C] text-[#111317] dark:text-[#F4F7FB] font-mono text-xs border border-[#111317] dark:border-[#334155]"
+                      className="px-2 py-0.5 bg-gray-100 dark:bg-[#1A202C] text-[#111317] dark:text-[#F4F7FB] font-mono text-xs font-bold border border-[#111317] dark:border-[#334155]"
                     >
                       {skill}
                     </span>

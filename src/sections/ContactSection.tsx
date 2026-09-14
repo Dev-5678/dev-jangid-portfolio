@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { personalInfo } from '../data/portfolio'
 import { SpotlightCard } from '../components/reactbits/SpotlightCard'
-import { DecryptedText } from '../components/reactbits/DecryptedText'
 import { Magnet } from '../components/reactbits/Magnet'
 import { Mail, Phone, MapPin, Send, CheckCircle2, AlertTriangle, Loader2, Terminal } from 'lucide-react'
 import gsap from 'gsap'
@@ -172,7 +171,7 @@ export const ContactSection: React.FC = () => {
             <span>TRANSMISSION // CONTACT</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[#111317] dark:text-[#F4F7FB]">
-            <DecryptedText text="GET IN TOUCH" speed={30} maxIterations={10} />
+            GET IN TOUCH
           </h2>
         </div>
         <p className="font-mono text-xs text-gray-500 dark:text-gray-400 max-w-xs">

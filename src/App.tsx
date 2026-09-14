@@ -11,7 +11,7 @@ import { EducationSection } from './sections/EducationSection'
 import { ContactSection } from './sections/ContactSection'
 import { Footer } from './components/Footer'
 import { ClickSpark } from './components/reactbits/ClickSpark'
-import { InteractiveParticlesBg } from './components/reactbits/InteractiveParticlesBg'
+import { MicroSlatsBg } from './components/reactbits/MicroSlatsBg'
 import { Dock } from './components/reactbits/Dock'
 
 export function App() {
@@ -39,8 +39,8 @@ export function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FAF8F5] dark:bg-[#0A0D12] text-[#111317] dark:text-[#F4F7FB] selection:bg-[#CCFF00] selection:text-[#111317] relative">
-      {/* React Bits Ambient Background: Interactive Constellation Particles */}
-      <InteractiveParticlesBg />
+      {/* React Bits Ambient Background: Micro Slats (Rolling Sea in Perspective) */}
+      <MicroSlatsBg theme={theme} />
 
       {/* React Bits Click Effects: Neon Spark Particle Bursts */}
       <ClickSpark sparkColor={['#CCFF00', '#00E5FF', '#FF5500', '#FFFFFF']} sparkCount={14} sparkSize={3} />
