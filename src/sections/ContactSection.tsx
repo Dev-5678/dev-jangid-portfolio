@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { personalInfo } from '../data/portfolio'
+import { SpotlightCard } from '../components/reactbits/SpotlightCard'
+import { DecryptedText } from '../components/reactbits/DecryptedText'
+import { Magnet } from '../components/reactbits/Magnet'
 import { Mail, Phone, MapPin, Send, CheckCircle2, AlertTriangle, Loader2, Terminal } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -169,7 +172,7 @@ export const ContactSection: React.FC = () => {
             <span>TRANSMISSION // CONTACT</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[#111317] dark:text-[#F4F7FB]">
-            GET IN TOUCH
+            <DecryptedText text="GET IN TOUCH" speed={30} maxIterations={10} />
           </h2>
         </div>
         <p className="font-mono text-xs text-gray-500 dark:text-gray-400 max-w-xs">
@@ -180,7 +183,10 @@ export const ContactSection: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Contact Info Cards (5 cols) */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="contact-card brutal-card p-6 bg-white dark:bg-[#131720] border-3 border-[#111317] dark:border-[#334155] shadow-[5px_5px_0px_#111317] dark:shadow-[5px_5px_0px_#1E293B]">
+          <SpotlightCard
+            spotlightColor="rgba(0, 229, 255, 0.15)"
+            className="contact-card p-6 bg-white dark:bg-[#131720] border-3 border-[#111317] dark:border-[#334155] shadow-[5px_5px_0px_#111317] dark:shadow-[5px_5px_0px_#1E293B]"
+          >
             <h3 className="font-mono text-xs font-bold text-[#FF5500] dark:text-[#CCFF00] uppercase tracking-wider mb-4 pb-2 border-b border-gray-200 dark:border-gray-800">
               DIRECT_CHANNELS
             </h3>
@@ -223,7 +229,7 @@ export const ContactSection: React.FC = () => {
                 <span>{personalInfo.location}</span>
               </div>
             </div>
-          </div>
+          </SpotlightCard>
 
           {/* Formspree Status Callout */}
           <div className="contact-card p-5 bg-[#FAF8F5] dark:bg-[#1A202C] border-2 border-[#111317] dark:border-[#334155] font-mono text-xs">
@@ -237,9 +243,12 @@ export const ContactSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Contact Form (7 cols) */}
+        {/* Contact Form (7 cols) with Spotlight Card */}
         <div className="lg:col-span-7">
-          <div className="contact-card brutal-card p-6 sm:p-8 bg-white dark:bg-[#131720] border-3 border-[#111317] dark:border-[#334155] shadow-[6px_6px_0px_#111317] dark:shadow-[6px_6px_0px_#CCFF00]">
+          <SpotlightCard
+            spotlightColor="rgba(204, 255, 0, 0.12)"
+            className="contact-card p-6 sm:p-8 bg-white dark:bg-[#131720] border-3 border-[#111317] dark:border-[#334155] shadow-[6px_6px_0px_#111317] dark:shadow-[6px_6px_0px_#CCFF00]"
+          >
             <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-[#111317] dark:text-[#F4F7FB] mb-2">
               Send a Transmission
             </h3>
@@ -391,26 +400,30 @@ export const ContactSection: React.FC = () => {
                 )}
               </div>
 
-              {/* Submit CTA */}
-              <button
-                type="submit"
-                disabled={status === 'submitting'}
-                className="brutal-btn w-full py-4 bg-[#CCFF00] hover:bg-[#b8e600] disabled:bg-gray-300 dark:disabled:bg-gray-800 disabled:cursor-not-allowed text-[#111317] font-mono font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 border-3 border-[#111317] shadow-[4px_4px_0px_#111317] dark:shadow-[4px_4px_0px_#CCFF00]"
-              >
-                {status === 'submitting' ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    <span>Transmitting Payload...</span>
-                  </>
-                ) : (
-                  <>
-                    <Send className="w-4 h-4 stroke-[2.5]" />
-                    <span>Dispatch Transmission</span>
-                  </>
-                )}
-              </button>
+              {/* Submit CTA with Magnet */}
+              <div className="w-full">
+                <Magnet padding={20} magnetStrength={0.2} className="w-full">
+                  <button
+                    type="submit"
+                    disabled={status === 'submitting'}
+                    className="brutal-btn w-full py-4 bg-[#CCFF00] hover:bg-[#b8e600] disabled:bg-gray-300 dark:disabled:bg-gray-800 disabled:cursor-not-allowed text-[#111317] font-mono font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 border-3 border-[#111317] shadow-[4px_4px_0px_#111317] dark:shadow-[4px_4px_0px_#CCFF00]"
+                  >
+                    {status === 'submitting' ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>Transmitting Payload...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4 stroke-[2.5]" />
+                        <span>Dispatch Transmission</span>
+                      </>
+                    )}
+                  </button>
+                </Magnet>
+              </div>
             </form>
-          </div>
+          </SpotlightCard>
         </div>
       </div>
     </section>

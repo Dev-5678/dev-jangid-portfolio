@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { skillCategories } from '../data/portfolio'
+import { SpotlightCard } from '../components/reactbits/SpotlightCard'
+import { DecryptedText } from '../components/reactbits/DecryptedText'
 import { Code, Cpu, Sparkles, Wrench } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -7,6 +9,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 
 const ICONS = [Code, Cpu, Sparkles, Wrench]
+const SPOTLIGHTS = [
+  'rgba(0, 229, 255, 0.15)',
+  'rgba(204, 255, 0, 0.15)',
+  'rgba(255, 85, 0, 0.15)',
+  'rgba(0, 229, 255, 0.15)'
+]
 
 export const SkillsSection: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null)
@@ -49,7 +57,7 @@ export const SkillsSection: React.FC = () => {
             <span>CAPABILITIES // TECH_STACK</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[#111317] dark:text-[#F4F7FB]">
-            TECHNICAL SKILLS
+            <DecryptedText text="TECHNICAL SKILLS" speed={30} maxIterations={10} />
           </h2>
         </div>
         <p className="font-mono text-xs text-gray-500 dark:text-gray-400 max-w-xs">
@@ -64,10 +72,11 @@ export const SkillsSection: React.FC = () => {
           const isSelected = activeCategory === idx
 
           return (
-            <div
+            <SpotlightCard
               key={cat.title}
+              spotlightColor={SPOTLIGHTS[idx % SPOTLIGHTS.length]}
               onClick={() => setActiveCategory(isSelected ? null : idx)}
-              className={`skill-block brutal-card p-6 sm:p-8 bg-white dark:bg-[#131720] border-3 border-[#111317] dark:border-[#334155] shadow-[5px_5px_0px_#111317] dark:shadow-[5px_5px_0px_#1E293B] cursor-pointer transition-all ${
+              className={`skill-block p-6 sm:p-8 bg-white dark:bg-[#131720] border-3 border-[#111317] dark:border-[#334155] shadow-[5px_5px_0px_#111317] dark:shadow-[5px_5px_0px_#1E293B] cursor-pointer transition-all ${
                 isSelected ? 'ring-3 ring-[#CCFF00] translate-x-1' : 'hover:border-[#CCFF00]'
               }`}
             >
@@ -105,7 +114,7 @@ export const SkillsSection: React.FC = () => {
                   </div>
                 ))}
               </div>
-            </div>
+            </SpotlightCard>
           )
         })}
       </div>

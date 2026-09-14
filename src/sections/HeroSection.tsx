@@ -1,6 +1,10 @@
 import React, { useEffect, useRef } from 'react'
 import { personalInfo } from '../data/portfolio'
 import { MorphingGraphic } from '../components/MorphingGraphic'
+import { DecryptedText } from '../components/reactbits/DecryptedText'
+import { ShinyText } from '../components/reactbits/ShinyText'
+import { Magnet } from '../components/reactbits/Magnet'
+import { TiltedCard } from '../components/reactbits/TiltedCard'
 import { ArrowDown, Mail, MapPin } from 'lucide-react'
 import gsap from 'gsap'
 
@@ -60,7 +64,7 @@ export const HeroSection: React.FC = () => {
             className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#FAF8F5] dark:bg-[#131720] border-2 border-[#111317] dark:border-[#334155] shadow-[3px_3px_0px_#111317] dark:shadow-[3px_3px_0px_#CCFF00] font-mono text-xs font-bold text-[#111317] dark:text-[#F4F7FB] mb-6"
           >
             <span className="w-2.5 h-2.5 rounded-full bg-[#CCFF00] border border-[#111317] animate-pulse" />
-            <span className="text-[#FF5500] dark:text-[#CCFF00] font-black uppercase">SYS://ACTIVE</span>
+            <ShinyText text="SYS://ACTIVE" speed={3} className="text-[#FF5500] dark:text-[#CCFF00] font-black uppercase" />
             <span className="text-gray-400 dark:text-gray-500">|</span>
             <span className="flex items-center gap-1">
               <MapPin className="w-3 h-3 text-[#FF5500]" />
@@ -68,20 +72,22 @@ export const HeroSection: React.FC = () => {
             </span>
           </div>
 
-          {/* Main Oversized Typography */}
+          {/* Main Oversized Typography with Decrypted Text effect */}
           <h1
             ref={titleRef}
             className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight leading-[0.95] uppercase text-[#111317] dark:text-[#F4F7FB]"
           >
-            <span className="hero-anim-text block">DEV</span>
+            <span className="hero-anim-text block">
+              <DecryptedText text="DEV" speed={35} maxIterations={8} />
+            </span>
             <span className="hero-anim-text block text-transparent bg-clip-text bg-gradient-to-r from-[#111317] via-[#334155] to-[#111317] dark:from-[#F4F7FB] dark:via-[#CCFF00] dark:to-[#F4F7FB]">
-              JANGID
+              <DecryptedText text="JANGID" speed={40} maxIterations={12} />
             </span>
           </h1>
 
           {/* Subtitle / Professional Title */}
           <div className="mt-4 px-3 py-1 bg-[#CCFF00] text-[#111317] font-mono font-black text-sm sm:text-lg uppercase tracking-wider border-2 border-[#111317] shadow-[2px_2px_0px_#111317]">
-            {personalInfo.title}
+            <DecryptedText text={personalInfo.title} speed={25} maxIterations={10} />
           </div>
 
           {/* Resume-derived concise summary */}
@@ -105,33 +111,37 @@ export const HeroSection: React.FC = () => {
             </span>
           </div>
 
-          {/* Action CTAs */}
+          {/* Action CTAs with Magnet micro-interactions */}
           <div ref={ctaRef} className="mt-8 flex flex-wrap items-center gap-4">
-            <a
-              href="#experience"
-              className="brutal-btn px-6 py-3.5 bg-[#CCFF00] hover:bg-[#b8e600] text-[#111317] font-mono font-bold text-sm uppercase tracking-wider flex items-center gap-2"
-            >
-              <span>Explore My Work</span>
-              <ArrowDown className="w-4 h-4 stroke-[3]" />
-            </a>
+            <Magnet padding={30} magnetStrength={0.3}>
+              <a
+                href="#experience"
+                className="brutal-btn px-6 py-3.5 bg-[#CCFF00] hover:bg-[#b8e600] text-[#111317] font-mono font-bold text-sm uppercase tracking-wider flex items-center gap-2"
+              >
+                <span>Explore My Work</span>
+                <ArrowDown className="w-4 h-4 stroke-[3]" />
+              </a>
+            </Magnet>
 
-            <a
-              href="#contact"
-              className="brutal-btn px-6 py-3.5 bg-white dark:bg-[#141820] text-[#111317] dark:text-[#F4F7FB] font-mono font-bold text-sm uppercase tracking-wider flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-[#1E293B]"
-            >
-              <Mail className="w-4 h-4 stroke-[2.5] text-[#FF5500] dark:text-[#CCFF00]" />
-              <span>Get In Touch</span>
-            </a>
+            <Magnet padding={30} magnetStrength={0.3}>
+              <a
+                href="#contact"
+                className="brutal-btn px-6 py-3.5 bg-white dark:bg-[#141820] text-[#111317] dark:text-[#F4F7FB] font-mono font-bold text-sm uppercase tracking-wider flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-[#1E293B]"
+              >
+                <Mail className="w-4 h-4 stroke-[2.5] text-[#FF5500] dark:text-[#CCFF00]" />
+                <span>Get In Touch</span>
+              </a>
+            </Magnet>
           </div>
         </div>
 
-        {/* Right Column: Interactive Neo-Brutalist Morphing Card (5 cols) */}
+        {/* Right Column: 3D Interactive Tilted Card with Morphing Graphic (5 cols) */}
         <div className="lg:col-span-5 flex flex-col items-center justify-center">
-          <div className="w-full max-w-md brutal-card p-6 bg-white dark:bg-[#131720] border-3 border-[#111317] dark:border-[#334155] relative shadow-[6px_6px_0px_#111317] dark:shadow-[6px_6px_0px_#CCFF00]">
+          <TiltedCard maxTilt={10} className="w-full max-w-md p-6 bg-white dark:bg-[#131720] border-3 border-[#111317] dark:border-[#334155] relative shadow-[6px_6px_0px_#111317] dark:shadow-[6px_6px_0px_#CCFF00]">
             {/* Header bar */}
             <div className="flex items-center justify-between pb-3 mb-4 border-b-2 border-[#111317] dark:border-[#334155] font-mono text-xs">
               <span className="font-bold uppercase text-gray-500 dark:text-gray-400">TELEMETRY_ENGINE</span>
-              <span className="px-2 py-0.5 bg-[#00E5FF] text-[#111317] font-bold text-[10px]">LIVE_DATA</span>
+              <ShinyText text="LIVE_DATA" speed={2.5} className="px-2 py-0.5 bg-[#00E5FF] text-[#111317] font-bold text-[10px]" />
             </div>
 
             {/* Morphing Graphic SVG Component */}
@@ -148,7 +158,7 @@ export const HeroSection: React.FC = () => {
                 <div className="font-bold text-[#111317] dark:text-[#F4F7FB]">Graduating 2027</div>
               </div>
             </div>
-          </div>
+          </TiltedCard>
         </div>
       </div>
 

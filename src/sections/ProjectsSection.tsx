@@ -1,10 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { experienceHighlights, standaloneProjects } from '../data/portfolio'
+import { SpotlightCard } from '../components/reactbits/SpotlightCard'
+import { DecryptedText } from '../components/reactbits/DecryptedText'
 import { FolderGit2 } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
+
+const HIGHLIGHT_SPOTLIGHTS = [
+  'rgba(204, 255, 0, 0.15)',
+  'rgba(0, 229, 255, 0.15)',
+  'rgba(255, 85, 0, 0.15)'
+]
 
 export const ProjectsSection: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null)
@@ -47,7 +55,7 @@ export const ProjectsSection: React.FC = () => {
             <span>ENGINEERING // HIGHLIGHTS_AND_PROJECTS</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[#111317] dark:text-[#F4F7FB]">
-            WORK HIGHLIGHTS
+            <DecryptedText text="WORK HIGHLIGHTS" speed={30} maxIterations={10} />
           </h2>
         </div>
 
@@ -90,9 +98,10 @@ export const ProjectsSection: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             {experienceHighlights.map((item, idx) => (
-              <div
+              <SpotlightCard
                 key={item.id}
-                className="proj-card brutal-card brutal-card-hover p-6 sm:p-7 bg-white dark:bg-[#131720] border-3 border-[#111317] dark:border-[#334155] shadow-[5px_5px_0px_#111317] dark:shadow-[5px_5px_0px_#1E293B] flex flex-col justify-between"
+                spotlightColor={HIGHLIGHT_SPOTLIGHTS[idx % HIGHLIGHT_SPOTLIGHTS.length]}
+                className="proj-card brutal-card-hover p-6 sm:p-7 bg-white dark:bg-[#131720] border-3 border-[#111317] dark:border-[#334155] shadow-[5px_5px_0px_#111317] dark:shadow-[5px_5px_0px_#1E293B] flex flex-col justify-between"
               >
                 <div>
                   {/* Category Pill */}
@@ -133,7 +142,7 @@ export const ProjectsSection: React.FC = () => {
                     ))}
                   </div>
                 </div>
-              </div>
+              </SpotlightCard>
             ))}
           </div>
         </div>
@@ -141,7 +150,10 @@ export const ProjectsSection: React.FC = () => {
 
       {/* Mode 2: Standalone Projects (with honest, elegant empty state) */}
       {viewMode === 'standalone' && (
-        <div className="proj-card brutal-card p-8 sm:p-12 bg-white dark:bg-[#131720] border-3 border-[#111317] dark:border-[#334155] shadow-[6px_6px_0px_#111317] dark:shadow-[6px_6px_0px_#1E293B] text-center max-w-2xl mx-auto">
+        <SpotlightCard
+          spotlightColor="rgba(204, 255, 0, 0.15)"
+          className="proj-card p-8 sm:p-12 bg-white dark:bg-[#131720] border-3 border-[#111317] dark:border-[#334155] shadow-[6px_6px_0px_#111317] dark:shadow-[6px_6px_0px_#1E293B] text-center max-w-2xl mx-auto"
+        >
           <div className="w-16 h-16 mx-auto mb-6 bg-[#FAF8F5] dark:bg-[#1A202C] border-3 border-[#111317] dark:border-[#CCFF00] shadow-[3px_3px_0px_#111317] flex items-center justify-center text-[#111317] dark:text-[#CCFF00]">
             <FolderGit2 className="w-8 h-8 stroke-[2]" />
           </div>
@@ -175,7 +187,7 @@ export const ProjectsSection: React.FC = () => {
               Return to Domain Highlights
             </button>
           </div>
-        </div>
+        </SpotlightCard>
       )}
     </section>
   )
