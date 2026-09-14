@@ -1,0 +1,66 @@
+import { useState } from 'react'
+import { useTheme } from './hooks/useTheme'
+import { Navbar } from './components/Navbar'
+import { PortalEntry } from './components/PortalEntry'
+import { HeroSection } from './sections/HeroSection'
+import { AboutSection } from './sections/AboutSection'
+import { ExperienceSection } from './sections/ExperienceSection'
+import { SkillsSection } from './sections/SkillsSection'
+import { ProjectsSection } from './sections/ProjectsSection'
+import { EducationSection } from './sections/EducationSection'
+import { ContactSection } from './sections/ContactSection'
+import { Footer } from './components/Footer'
+
+export function App() {
+  const { theme, toggleTheme } = useTheme()
+  const [isPortalOpen, setIsPortalOpen] = useState(() => {
+    if (typeof window === 'undefined') return false
+    // Don't show portal if URL has hash anchor (e.g. direct link to #experience)
+    if (window.location.hash) return false
+    // Check if user visited in this session
+    return sessionStorage.getItem('hasVisitedPortal') !== 'true'
+  })
+
+  const handlePortalEnter = () => {
+    setIsPortalOpen(false)
+    try {
+      sessionStorage.setItem('hasVisitedPortal', 'true')
+    } catch {
+      // ignore in restricted environments
+    }
+  }
+
+  const handleOpenPortal = () => {
+    setIsPortalOpen(true)
+  }
+
+  return (
+    <div className="min-h-screen flex flex-col bg-[#FAF8F5] dark:bg-[#0A0D12] text-[#111317] dark:text-[#F4F7FB] selection:bg-[#CCFF00] selection:text-[#111317]">
+      {/* Interactive Portal Entry Overlay (Lakshay-13 inspired) */}
+      <PortalEntry isOpen={isPortalOpen} onEnter={handlePortalEnter} />
+
+      {/* Navigation Header */}
+      <Navbar
+        theme={theme}
+        onToggleTheme={toggleTheme}
+        onOpenPortal={handleOpenPortal}
+      />
+
+      {/* Main Content Sections */}
+      <main className="flex-1 w-full" id="main-content">
+        <HeroSection />
+        <AboutSection />
+        <ExperienceSection />
+        <SkillsSection />
+        <ProjectsSection />
+        <EducationSection />
+        <ContactSection />
+      </main>
+
+      {/* Footer */}
+      <Footer />
+    </div>
+  )
+}
+
+export default App
