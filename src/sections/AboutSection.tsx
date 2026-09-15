@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react'
 import { personalInfo } from '../data/portfolio'
-import { SpotlightCard } from '../components/reactbits/SpotlightCard'
 import { Code2, Database, Network, Sparkles, MapPin, Terminal } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -11,30 +10,22 @@ const STRENGTHS = [
   {
     icon: Network,
     title: "IT Systems & Network Security",
-    desc: "Hands-on experience monitoring enterprise networks, diagnosing server tickets, and evaluating network security compliance at Airports Authority of India.",
-    color: "#00E5FF",
-    spotlight: "rgba(0, 229, 255, 0.15)"
+    desc: "Hands-on experience monitoring enterprise networks, diagnosing server tickets, and evaluating network security compliance at Airports Authority of India."
   },
   {
     icon: Sparkles,
     title: "Generative AI & Multimodal RAG",
-    desc: "Practical workflow implementation with Gemini APIs, Vertex AI, Streamlit, and retrieval-augmented generation for intelligent data processing.",
-    color: "#CCFF00",
-    spotlight: "rgba(204, 255, 0, 0.15)"
+    desc: "Practical workflow implementation with Gemini APIs, Vertex AI, Streamlit, and retrieval-augmented generation for intelligent data processing."
   },
   {
     icon: Code2,
     title: "Software Fundamentals & Algorithms",
-    desc: "Strong foundation in Data Structures and Algorithms (DSA), Object-Oriented Programming (OOP), C, C++, and Java for robust computational logic.",
-    color: "#FF5500",
-    spotlight: "rgba(255, 85, 0, 0.15)"
+    desc: "Strong foundation in Data Structures and Algorithms (DSA), Object-Oriented Programming (OOP), C, C++, and Java for robust computational logic."
   },
   {
     icon: Database,
     title: "Database Administration & SQL",
-    desc: "Managing relational schemas, writing structured SQL queries, and assisting with database updates and documentation in production settings.",
-    color: "#00E5FF",
-    spotlight: "rgba(0, 229, 255, 0.15)"
+    desc: "Managing relational schemas, writing structured SQL queries, and assisting with database updates and documentation in production settings."
   }
 ]
 
@@ -52,10 +43,10 @@ export const AboutSection: React.FC = () => {
           start: 'top 80%',
           toggleActions: 'play none none none'
         },
-        y: 40,
+        y: 30,
         opacity: 0,
         duration: 0.6,
-        stagger: 0.15,
+        stagger: 0.12,
         ease: 'power2.out'
       })
     }, sectionRef)
@@ -68,83 +59,103 @@ export const AboutSection: React.FC = () => {
       ref={sectionRef}
       id="about"
       aria-label="About Dev Jangid"
-      className="py-16 sm:py-24 px-4 sm:px-6 max-w-6xl mx-auto border-t-3 border-[#111317] dark:border-[#334155]"
+      className="relative py-16 sm:py-24 md:py-36 overflow-hidden"
+      style={{ fontFamily: 'var(--font-poppins), sans-serif' }}
     >
-      {/* Section Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
-        <div>
-          <div className="inline-flex items-center gap-2 font-mono text-xs font-black tracking-widest text-[#FF5500] dark:text-[#CCFF00] uppercase mb-2">
-            <span>[01]</span>
-            <span>SYSTEM_SPECIFICATION // PROFILE</span>
+      {/* Top Hairline Separator */}
+      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#2a2a2e] to-transparent" aria-hidden="true" />
+
+      {/* Ambient Ember Glow Pool */}
+      <div
+        className="absolute top-1/4 right-0 w-[500px] h-[300px] rounded-full opacity-10 pointer-events-none blur-[140px]"
+        style={{ backgroundColor: 'var(--ember)' }}
+        aria-hidden="true"
+      />
+
+      <div className="section-container relative z-10 px-4 sm:px-6 md:px-8 max-w-6xl mx-auto">
+        {/* Section Header */}
+        <div className="mb-10 sm:mb-16">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="w-8 h-[2px] bg-ember inline-block rounded-full" />
+            <span className="text-ember text-xs font-bold tracking-[0.25em] uppercase">Overview</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[#111317] dark:text-[#F4F7FB]">
-            ABOUT DEV JANGID
+          <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1.1] tracking-tight">
+            About Dev Jangid
           </h2>
-        </div>
-        <div className="font-mono text-xs text-[#111317] dark:text-gray-400 flex items-center gap-1.5 font-bold">
-          <MapPin className="w-4 h-4 text-[#FF5500]" />
-          <span>{personalInfo.location}</span>
-        </div>
-      </div>
-
-      {/* Main Editorial Bio Spotlight Card */}
-      <SpotlightCard
-        spotlightColor="rgba(204, 255, 0, 0.14)"
-        className="about-card p-6 sm:p-10 bg-white dark:bg-[#131720] border-3 border-[#111317] dark:border-[#334155] shadow-[6px_6px_0px_#111317] dark:shadow-[6px_6px_0px_#1E293B] mb-12 text-[#111317] dark:text-[#F4F7FB]"
-      >
-        <div className="flex items-center gap-2 mb-6 font-mono text-xs font-bold text-[#FF5500] dark:text-[#CCFF00]">
-          <Terminal className="w-4 h-4" />
-          <span>EXECUTIVE_STATEMENT.TXT</span>
-        </div>
-
-        <blockquote className="text-lg sm:text-2xl font-bold leading-relaxed text-[#111317] dark:text-[#F4F7FB] border-l-4 border-[#CCFF00] pl-4 sm:pl-6 my-4 italic">
-          "{personalInfo.bio}"
-        </blockquote>
-
-        <div className="mt-8 pt-6 border-t-2 border-dashed border-gray-300 dark:border-gray-700 grid grid-cols-1 sm:grid-cols-3 gap-4 font-mono text-xs">
-          <div className="p-3 bg-[#FAF8F5] dark:bg-[#1A202C] border-2 border-[#111317] dark:border-[#334155] shadow-[2px_2px_0px_#111317] dark:shadow-[2px_2px_0px_#334155]">
-            <span className="text-gray-600 dark:text-gray-400 block text-[10px] font-bold">CURRENT ACADEMICS</span>
-            <strong className="text-[#111317] dark:text-[#F4F7FB]">{personalInfo.educationSummary || "B.Tech CSE (Expected 2027)"}</strong>
-          </div>
-          <div className="p-3 bg-[#FAF8F5] dark:bg-[#1A202C] border-2 border-[#111317] dark:border-[#334155] shadow-[2px_2px_0px_#111317] dark:shadow-[2px_2px_0px_#334155]">
-            <span className="text-gray-600 dark:text-gray-400 block text-[10px] font-bold">CORE EMPHASIS</span>
-            <strong className="text-[#111317] dark:text-[#F4F7FB]">Network Security &amp; GenAI</strong>
-          </div>
-          <div className="p-3 bg-[#FAF8F5] dark:bg-[#1A202C] border-2 border-[#111317] dark:border-[#334155] shadow-[2px_2px_0px_#111317] dark:shadow-[2px_2px_0px_#334155]">
-            <span className="text-gray-600 dark:text-gray-400 block text-[10px] font-bold">OPERATIONAL STATUS</span>
-            <strong className="text-[#111317] dark:text-[#CCFF00] font-black">{personalInfo.status}</strong>
+          <div className="mt-3 sm:mt-4 flex flex-wrap items-center gap-2 sm:gap-3 text-sm sm:text-base text-ash font-normal">
+            <span className="flex items-center gap-1.5 text-white font-medium">
+              <MapPin className="w-4 h-4 text-ember shrink-0" />
+              {personalInfo.location}
+            </span>
+            <span className="text-white/20">•</span>
+            <span className="text-ember font-medium">{personalInfo.educationSummary || 'B.Tech CSE (Expected 2027)'}</span>
           </div>
         </div>
-      </SpotlightCard>
 
-      {/* Technical Competencies Grid with Spotlight Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {STRENGTHS.map((item, idx) => {
-          const IconComponent = item.icon
-          return (
-            <SpotlightCard
-              key={idx}
-              spotlightColor={item.spotlight}
-              className="about-card brutal-card-hover p-6 bg-white dark:bg-[#131720] border-3 border-[#111317] dark:border-[#334155] shadow-[4px_4px_0px_#111317] dark:shadow-[4px_4px_0px_#1E293B]"
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <div
-                  className="w-10 h-10 flex items-center justify-center border-2 border-[#111317] dark:border-[#334155] shadow-[2px_2px_0px_#111317]"
-                  style={{ backgroundColor: item.color }}
-                >
-                  <IconComponent className="w-5 h-5 text-[#111317]" />
+        {/* Executive Statement Glass Card */}
+        <div className="about-card glass-card p-6 sm:p-10 mb-8 sm:mb-12 relative overflow-hidden group">
+          {/* Subtle ember radial accent in background */}
+          <div className="absolute top-0 right-0 w-80 h-80 bg-ember/5 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-ember/10 border border-ember/25 text-ember text-xs font-mono font-medium">
+              <Terminal className="w-3.5 h-3.5" />
+              <span>Executive Statement</span>
+            </div>
+            <div className="flex items-center gap-2 text-xs font-mono text-ash">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-white/80">Status:</span>
+              <span className="text-emerald-400 font-medium">{personalInfo.status}</span>
+            </div>
+          </div>
+
+          <blockquote className="text-base sm:text-xl md:text-2xl font-medium leading-relaxed text-cloud border-l-2 border-ember pl-5 sm:pl-7 my-6 italic">
+            "{personalInfo.bio}"
+          </blockquote>
+
+          <div className="mt-8 pt-6 border-t border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="p-4 rounded-xl bg-white/[0.03] border border-white/10">
+              <span className="text-ash block text-[11px] font-semibold tracking-wider uppercase mb-1">Current Degree</span>
+              <strong className="text-white text-sm font-semibold">{personalInfo.educationSummary || "B.Tech CSE (Expected 2027)"}</strong>
+            </div>
+            <div className="p-4 rounded-xl bg-white/[0.03] border border-white/10">
+              <span className="text-ash block text-[11px] font-semibold tracking-wider uppercase mb-1">Core Focus</span>
+              <strong className="text-white text-sm font-semibold">Network Security &amp; GenAI</strong>
+            </div>
+            <div className="p-4 rounded-xl bg-white/[0.03] border border-white/10">
+              <span className="text-ash block text-[11px] font-semibold tracking-wider uppercase mb-1">Location</span>
+              <strong className="text-white text-sm font-semibold">{personalInfo.location}</strong>
+            </div>
+          </div>
+        </div>
+
+        {/* Technical Competencies Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+          {STRENGTHS.map((item, idx) => {
+            const IconComponent = item.icon
+            return (
+              <div
+                key={idx}
+                className="about-card glass-card p-6 sm:p-7 group hover:border-white/20 transition-all duration-300 relative overflow-hidden"
+              >
+                <div className="flex items-center gap-3.5 mb-3.5">
+                  <div className="w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-ember group-hover:scale-105 group-hover:bg-ember/10 group-hover:border-ember/30 transition-all duration-300 shrink-0">
+                    <IconComponent className="w-5 h-5" />
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight group-hover:text-cloud transition-colors">
+                    {item.title}
+                  </h3>
                 </div>
-                <h3 className="font-sans font-black text-lg uppercase tracking-tight text-[#111317] dark:text-[#F4F7FB]">
-                  {item.title}
-                </h3>
+                <p className="text-sm sm:text-base text-ash leading-relaxed font-normal">
+                  {item.desc}
+                </p>
               </div>
-              <p className="text-sm text-[#374151] dark:text-gray-300 leading-relaxed font-sans font-medium">
-                {item.desc}
-              </p>
-            </SpotlightCard>
-          )
-        })}
+            )
+          })}
+        </div>
       </div>
     </section>
   )
 }
+
+export default AboutSection

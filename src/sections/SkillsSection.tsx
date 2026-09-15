@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { skillCategories } from '../data/portfolio'
-import { SpotlightCard } from '../components/reactbits/SpotlightCard'
 import { Code, Cpu, Sparkles, Wrench } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -8,16 +7,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 
 const ICONS = [Code, Cpu, Sparkles, Wrench]
-const SPOTLIGHTS = [
-  'rgba(0, 229, 255, 0.15)',
-  'rgba(204, 255, 0, 0.15)',
-  'rgba(255, 85, 0, 0.15)',
-  'rgba(0, 229, 255, 0.15)'
-]
 
 export const SkillsSection: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null)
-  const [activeCategory, setActiveCategory] = useState<number | null>(null)
 
   useEffect(() => {
     const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -33,7 +25,7 @@ export const SkillsSection: React.FC = () => {
         y: 30,
         opacity: 0,
         duration: 0.5,
-        stagger: 0.15,
+        stagger: 0.12,
         ease: 'power2.out'
       })
     }, sectionRef)
@@ -46,77 +38,85 @@ export const SkillsSection: React.FC = () => {
       ref={sectionRef}
       id="skills"
       aria-label="Technical Skills"
-      className="py-16 sm:py-24 px-4 sm:px-6 max-w-6xl mx-auto border-t-3 border-[#111317] dark:border-[#334155]"
+      className="relative py-16 sm:py-24 md:py-36 overflow-hidden"
+      style={{ fontFamily: 'var(--font-poppins), sans-serif' }}
     >
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
-        <div>
-          <div className="inline-flex items-center gap-2 font-mono text-xs font-black tracking-widest text-[#FF5500] dark:text-[#CCFF00] uppercase mb-2">
-            <span>[03]</span>
-            <span>CAPABILITIES // TECH_STACK</span>
+      {/* Top Hairline Separator */}
+      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#2a2a2e] to-transparent" aria-hidden="true" />
+
+      {/* Ambient Ember Glow Pool */}
+      <div
+        className="absolute top-1/3 left-0 w-[500px] h-[300px] rounded-full opacity-10 pointer-events-none blur-[140px]"
+        style={{ backgroundColor: 'var(--ember)' }}
+        aria-hidden="true"
+      />
+
+      <div className="section-container relative z-10 px-4 sm:px-6 md:px-8 max-w-6xl mx-auto">
+        {/* Header */}
+        <div className="mb-10 sm:mb-16">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="w-8 h-[2px] bg-ember inline-block rounded-full" />
+            <span className="text-ember text-xs font-bold tracking-[0.25em] uppercase">Capabilities</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[#111317] dark:text-[#F4F7FB]">
-            TECHNICAL SKILLS
+          <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1.1] tracking-tight">
+            Technical Skills
           </h2>
+          <p className="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg text-ash max-w-xl leading-relaxed font-normal">
+            Categorized technical proficiencies across systems, security, programming, and generative intelligence.
+          </p>
         </div>
-        <p className="font-mono text-xs text-gray-500 dark:text-gray-400 max-w-xs">
-          Categorized technical competencies without fabricated rankings or arbitrary percentages.
-        </p>
-      </div>
 
-      {/* Grid of Categories */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-        {skillCategories.map((cat, idx) => {
-          const IconComp = ICONS[idx % ICONS.length]
-          const isSelected = activeCategory === idx
+        {/* Grid of Categories */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+          {skillCategories.map((cat, idx) => {
+            const IconComp = ICONS[idx % ICONS.length]
 
-          return (
-            <SpotlightCard
-              key={cat.title}
-              spotlightColor={SPOTLIGHTS[idx % SPOTLIGHTS.length]}
-              onClick={() => setActiveCategory(isSelected ? null : idx)}
-              className={`skill-block p-6 sm:p-8 bg-white dark:bg-[#131720] border-3 border-[#111317] dark:border-[#334155] shadow-[5px_5px_0px_#111317] dark:shadow-[5px_5px_0px_#1E293B] cursor-pointer transition-all ${
-                isSelected ? 'ring-3 ring-[#CCFF00] translate-x-1' : 'hover:border-[#CCFF00]'
-              }`}
-            >
-              {/* Category Header */}
-              <div className="flex items-center justify-between gap-3 pb-4 mb-4 border-b-2 border-[#111317] dark:border-[#334155]">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-[#FAF8F5] dark:bg-[#1E293B] border-2 border-[#111317] dark:border-[#334155] flex items-center justify-center text-[#111317] dark:text-[#CCFF00]">
-                    <IconComp className="w-5 h-5 stroke-[2.5]" />
+            return (
+              <div
+                key={cat.title}
+                className="skill-block glass-card p-6 sm:p-8 hover:border-white/20 transition-all duration-300 relative overflow-hidden group flex flex-col justify-between"
+              >
+                <div>
+                  {/* Category Header */}
+                  <div className="flex items-center justify-between gap-3 pb-4 mb-4 border-b border-white/10">
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-ember group-hover:scale-105 group-hover:bg-ember/10 group-hover:border-ember/30 transition-all duration-300 shrink-0">
+                        <IconComp className="w-5 h-5" />
+                      </div>
+                      <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight group-hover:text-cloud transition-colors">
+                        {cat.title}
+                      </h3>
+                    </div>
+                    <span className="px-3 py-1 rounded-full bg-ember/10 border border-ember/25 text-ember text-xs font-mono font-medium shrink-0">
+                      {cat.badge}
+                    </span>
                   </div>
-                  <div>
-                    <h3 className="font-sans font-black text-xl uppercase tracking-tight text-[#111317] dark:text-[#F4F7FB]">
-                      {cat.title}
-                    </h3>
-                  </div>
+
+                  {/* Description */}
+                  <p className="text-xs sm:text-sm text-ash leading-relaxed mb-6 font-normal">
+                    {cat.description}
+                  </p>
                 </div>
-                <span className="font-mono text-[10px] font-bold px-2 py-0.5 bg-[#111317] text-[#CCFF00] border border-[#111317]">
-                  {cat.badge}
-                </span>
-              </div>
 
-              {/* Description */}
-              <p className="text-xs text-gray-600 dark:text-gray-400 mb-6 font-sans">
-                {cat.description}
-              </p>
-
-              {/* Skills Badges */}
-              <div className="flex flex-wrap gap-2.5">
-                {cat.skills.map((skill) => (
-                  <div
-                    key={skill}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FAF8F5] dark:bg-[#1A202C] text-[#111317] dark:text-[#F4F7FB] font-mono text-xs font-bold border-2 border-[#111317] dark:border-[#334155] shadow-[2px_2px_0px_#111317] dark:shadow-[2px_2px_0px_#334155] hover:bg-[#CCFF00] hover:text-[#111317] dark:hover:bg-[#CCFF00] dark:hover:text-[#111317] transition-colors"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#CCFF00] border border-[#111317]" />
-                    <span>{skill}</span>
-                  </div>
-                ))}
+                {/* Skills Badges */}
+                <div className="flex flex-wrap gap-2.5 pt-2">
+                  {cat.skills.map((skill) => (
+                    <span
+                      key={skill}
+                      className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-white text-xs sm:text-sm font-medium hover:bg-white/10 hover:border-ember/40 transition-all cursor-default"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-ember" />
+                      <span>{skill}</span>
+                    </span>
+                  ))}
+                </div>
               </div>
-            </SpotlightCard>
-          )
-        })}
+            )
+          })}
+        </div>
       </div>
     </section>
   )
 }
+
+export default SkillsSection

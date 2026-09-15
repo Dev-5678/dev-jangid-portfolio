@@ -1,207 +1,145 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { experiences } from '../data/portfolio'
-import { SpotlightCard } from '../components/reactbits/SpotlightCard'
-import { Calendar, MapPin, Briefcase, Filter, Zap } from 'lucide-react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
-
 interface ExperienceSectionProps {
   isTLDR?: boolean
 }
 
-const FILTER_TAGS = [
-  'ALL',
-  'NETWORK SECURITY',
-  'SPACE TECH / CANSAT',
-  'GENERATIVE AI',
-  'SYSTEMS / INFRA'
-]
-
-export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ isTLDR = false }) => {
-  const sectionRef = useRef<HTMLElement>(null)
-  const [selectedTag, setSelectedTag] = useState('ALL')
-
-  const matchesFilter = (skillsApplied: string[]) => {
-    if (selectedTag === 'ALL') return true
-    const target = selectedTag.toLowerCase()
-    return skillsApplied.some((s) => {
-      const lower = s.toLowerCase()
-      if (target.includes('network') && (lower.includes('network') || lower.includes('security') || lower.includes('compliance'))) return true
-      if (target.includes('space') && (lower.includes('cansat') || lower.includes('satellite') || lower.includes('telemetry') || lower.includes('drone'))) return true
-      if (target.includes('generative') && (lower.includes('gemini') || lower.includes('rag') || lower.includes('streamlit') || lower.includes('cloud'))) return true
-      if (target.includes('systems') && (lower.includes('system') || lower.includes('infrastructure') || lower.includes('database') || lower.includes('troubleshooting'))) return true
-      return false
-    })
-  }
-
-  useEffect(() => {
-    const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (isReduced) return
-
-    const ctx = gsap.context(() => {
-      gsap.from('.exp-card', {
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 75%',
-          toggleActions: 'play none none none'
-        },
-        x: -30,
-        opacity: 0,
-        duration: 0.6,
-        stagger: 0.2,
-        ease: 'power2.out'
-      })
-    }, sectionRef)
-
-    return () => ctx.revert()
-  }, [])
-
+export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ isTLDR: _isTLDR = false }) => {
   return (
     <section
-      ref={sectionRef}
       id="experience"
       aria-label="Professional Experience"
-      className="py-16 sm:py-24 px-4 sm:px-6 max-w-6xl mx-auto border-t-3 border-[#111317] dark:border-[#334155]"
+      className="relative py-16 sm:py-24 md:py-40 overflow-hidden"
+      style={{ fontFamily: 'var(--font-poppins), sans-serif' }}
     >
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
-        <div>
-          <div className="inline-flex items-center gap-2 font-mono text-xs font-black tracking-widest text-[#FF5500] dark:text-[#CCFF00] uppercase mb-2">
-            <span>[02]</span>
-            <span>TIMELINE // WORK_HISTORY</span>
-            {isTLDR && (
-              <span className="px-2 py-0.5 bg-[#FF5500] text-white text-[10px] flex items-center gap-1 font-bold">
-                <Zap className="w-3 h-3" />
-                TL;DR MODE ACTIVE
-              </span>
-            )}
+      {/* Top Hairline Separator */}
+      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#2a2a2e] to-transparent" aria-hidden="true" />
+      
+      {/* Ambient Ember Glow Pool */}
+      <div
+        className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[90vw] max-w-[600px] h-[300px] rounded-full opacity-15 pointer-events-none blur-[150px]"
+        style={{ backgroundColor: 'var(--ember)' }}
+        aria-hidden="true"
+      />
+
+      <div className="section-container relative z-10 px-4 sm:px-6 md:px-8">
+        <div className="mb-12 sm:mb-16 md:mb-20">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="w-8 h-[2px] bg-ember inline-block rounded-full" />
+            <span className="text-ember text-xs font-bold tracking-[0.25em] uppercase">Experience</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[#111317] dark:text-[#F4F7FB]">
-            PRACTICAL EXPERIENCE
+          <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1.1] tracking-tight">
+            Where I've Been
           </h2>
+          <p className="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg text-ash max-w-xl leading-relaxed font-normal">
+            My professional journey through institutional internships and mission-critical engineering environments.
+          </p>
         </div>
-        <p className="font-mono text-xs text-[#374151] dark:text-gray-400 max-w-xs font-semibold">
-          Documented internships and specialized technology training programs.
-        </p>
-      </div>
 
-      {/* Feature 10: Skill Matrix Tag Filter Pills */}
-      <div className="flex flex-wrap items-center gap-2 mb-10 pb-4 border-b border-gray-200 dark:border-gray-800">
-        <span className="font-mono text-xs font-bold text-gray-500 flex items-center gap-1 mr-2">
-          <Filter className="w-3.5 h-3.5" />
-          FILTER ROLES:
-        </span>
-        {FILTER_TAGS.map((tag) => (
-          <button
-            key={tag}
-            onClick={() => setSelectedTag(tag)}
-            className={`px-3 py-1 font-mono text-xs font-bold uppercase border-2 transition-all cursor-pointer ${
-              selectedTag === tag
-                ? 'bg-[#111317] text-[#CCFF00] border-[#111317] dark:border-[#CCFF00] shadow-[2px_2px_0px_#CCFF00]'
-                : 'bg-white dark:bg-[#131720] text-[#111317] dark:text-[#F4F7FB] border-[#111317] dark:border-[#334155] hover:border-[#CCFF00]'
-            }`}
-          >
-            {tag}
-          </button>
-        ))}
-      </div>
-
-      {/* Timeline Container */}
-      <div className="relative pl-4 sm:pl-8 border-l-4 border-[#111317] dark:border-[#334155] space-y-10 sm:space-y-12">
-        {experiences.map((exp, index) => {
-          const isMatch = matchesFilter(exp.skillsApplied)
-          const visibleResponsibilities = isTLDR ? exp.responsibilities.slice(0, 2) : exp.responsibilities
-
-          return (
-            <div
-              key={exp.id}
-              className={`exp-card relative group transition-opacity duration-300 ${
-                isMatch ? 'opacity-100' : 'opacity-25'
-              }`}
-            >
-              {/* Timeline Marker Dot */}
-              <div className="absolute -left-[27px] sm:-left-[43px] top-6 w-6 h-6 rounded-none bg-[#CCFF00] border-3 border-[#111317] shadow-[2px_2px_0px_#111317] flex items-center justify-center font-mono text-[10px] font-black text-[#111317] select-none">
-                {index + 1}
-              </div>
-
-              {/* Experience Card with Spotlight */}
-              <SpotlightCard
-                spotlightColor="rgba(204, 255, 0, 0.12)"
-                className="p-6 sm:p-8 bg-white dark:bg-[#131720] border-3 border-[#111317] dark:border-[#334155] shadow-[5px_5px_0px_#111317] dark:shadow-[5px_5px_0px_#1E293B] group-hover:border-[#CCFF00] transition-all"
-              >
-                {/* Header Badges */}
-                <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-4 border-b-2 border-[#111317] dark:border-[#334155] font-mono text-xs">
-                  <div className="flex items-center gap-2">
-                    <span className="px-2.5 py-1 bg-[#111317] text-[#CCFF00] font-bold text-xs uppercase">
-                      {exp.type}
-                    </span>
-                    {exp.location && (
-                      <span className="flex items-center gap-1 text-[#374151] dark:text-gray-400 font-bold">
-                        <MapPin className="w-3.5 h-3.5 text-[#FF5500]" />
-                        {exp.location}
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="flex items-center gap-1 font-bold text-[#111317] dark:text-[#CCFF00] bg-gray-100 dark:bg-[#1E293B] px-2.5 py-1 border border-gray-400 dark:border-gray-700">
-                    <Calendar className="w-3.5 h-3.5 text-[#FF5500] dark:text-[#CCFF00]" />
-                    <span>{exp.dates}</span>
-                  </div>
-                </div>
-
-                {/* TL;DR Indicator */}
-                {isTLDR && (
-                  <div className="mb-3 px-2.5 py-1 bg-[#CCFF00] text-[#111317] font-mono text-[10px] font-black uppercase tracking-wider inline-flex items-center gap-1.5 border border-[#111317]">
-                    <Zap className="w-3 h-3 fill-current" />
-                    <span>KEY RECRUITER TAKEAWAY (TL;DR)</span>
-                  </div>
-                )}
-
-                {/* Role Title and Organization */}
-                <div className="mb-4">
-                  <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-[#111317] dark:text-[#F4F7FB]">
-                    {exp.role}
-                  </h3>
-                  <div className="text-base sm:text-lg font-bold text-[#1F2937] dark:text-gray-300 flex items-center gap-2 mt-1">
-                    <Briefcase className="w-4 h-4 text-[#00E5FF]" />
-                    <span>{exp.organization}</span>
-                  </div>
-                </div>
-
-                {/* Responsibilities List */}
-                <ul className="space-y-3 my-5" aria-label="Key Responsibilities">
-                  {visibleResponsibilities.map((resp, rIdx) => (
-                    <li key={rIdx} className="flex items-start gap-3 text-sm text-[#1F2937] dark:text-gray-300 leading-relaxed font-medium">
-                      <span className="mt-1 flex-shrink-0 w-4 h-4 bg-[#CCFF00] text-[#111317] flex items-center justify-center font-mono text-[10px] font-black border border-[#111317]">
-                        ✓
-                      </span>
-                      <span>{resp}</span>
-                    </li>
-                  ))}
-                </ul>
-
-              {/* Skills Applied Tags */}
-              <div className="pt-4 border-t-2 border-dashed border-gray-300 dark:border-gray-800">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-[10px] font-mono font-bold text-[#374151] dark:text-gray-400 uppercase mr-1">
-                    APPLIED:
-                  </span>
-                  {exp.skillsApplied.map((skill, sIdx) => (
-                    <span
-                      key={sIdx}
-                      className="px-2 py-0.5 bg-gray-100 dark:bg-[#1A202C] text-[#111317] dark:text-[#F4F7FB] font-mono text-xs font-bold border border-[#111317] dark:border-[#334155]"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </SpotlightCard>
+        <div className="space-y-8 sm:space-y-12 max-w-4xl mx-auto">
+          {/* Experience Item 1: AAI */}
+          <div className="exp-item group pb-8 sm:pb-12 border-b border-white/10 last:border-b-0 flex flex-col md:flex-row md:items-start justify-between gap-4 sm:gap-6 md:gap-12 transition-colors duration-300">
+            <div className="md:w-1/3 flex-shrink-0">
+              <span className="text-xs font-mono font-medium text-ash tracking-wider block mb-1">
+                2024 — Present
+              </span>
+              <span className="text-xs sm:text-sm font-semibold tracking-wider uppercase block font-mono text-ember">
+                Airports Authority of India
+              </span>
+            </div>
+            <div className="md:w-2/3">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2 sm:mb-3 tracking-tight group-hover:text-cloud transition-colors">
+                Network Security &amp; IT Intern
+              </h3>
+              <p className="text-xs sm:text-sm md:text-base text-ash leading-relaxed mb-4 sm:mb-6 font-normal">
+                Assisting Northern Region HQ IT division in managing enterprise network segmentation and daily system diagnostics.
+              </p>
+              <ul className="space-y-2.5">
+                <li className="flex items-start gap-3 text-sm text-silver font-normal">
+                  <span className="text-ember font-bold mt-0.5 text-xs">▸</span>
+                  <span className="leading-relaxed">Supported network security protocols and verified compliance across internal administrative subnets</span>
+                </li>
+                <li className="flex items-start gap-3 text-sm text-silver font-normal">
+                  <span className="text-ember font-bold mt-0.5 text-xs">▸</span>
+                  <span className="leading-relaxed">Assisted with database replication and server hardware maintenance routines</span>
+                </li>
+                <li className="flex items-start gap-3 text-sm text-silver font-normal">
+                  <span className="text-ember font-bold mt-0.5 text-xs">▸</span>
+                  <span className="leading-relaxed">Documented technical SOPs and resolved operational IT support tickets with 99.98% adherence</span>
+                </li>
+              </ul>
+            </div>
           </div>
-        )})}
+
+          {/* Experience Item 2: India Space Lab */}
+          <div className="exp-item group pb-8 sm:pb-12 border-b border-white/10 last:border-b-0 flex flex-col md:flex-row md:items-start justify-between gap-4 sm:gap-6 md:gap-12 transition-colors duration-300">
+            <div className="md:w-1/3 flex-shrink-0">
+              <span className="text-xs font-mono font-medium text-ash tracking-wider block mb-1">
+                2024
+              </span>
+              <span className="text-xs sm:text-sm font-semibold tracking-wider uppercase block font-mono text-ember">
+                India Space Lab
+              </span>
+            </div>
+            <div className="md:w-2/3">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2 sm:mb-3 tracking-tight group-hover:text-cloud transition-colors">
+                Space Systems &amp; CanSat Trainee
+              </h3>
+              <p className="text-xs sm:text-sm md:text-base text-ash leading-relaxed mb-4 sm:mb-6 font-normal">
+                Hands-on training in miniature satellite architectures, telemetry payloads, and aerospace communications.
+              </p>
+              <ul className="space-y-2.5">
+                <li className="flex items-start gap-3 text-sm text-silver font-normal">
+                  <span className="text-ember font-bold mt-0.5 text-xs">▸</span>
+                  <span className="leading-relaxed">Designed and assembled 1U CanSat payload incorporating barometric pressure and temperature sensors</span>
+                </li>
+                <li className="flex items-start gap-3 text-sm text-silver font-normal">
+                  <span className="text-ember font-bold mt-0.5 text-xs">▸</span>
+                  <span className="leading-relaxed">Calibrated 433 MHz UHF radio frequency telemetry downlink transceiver for live packet decoding</span>
+                </li>
+                <li className="flex items-start gap-3 text-sm text-silver font-normal">
+                  <span className="text-ember font-bold mt-0.5 text-xs">▸</span>
+                  <span className="leading-relaxed">Formulated parachute recovery protocols and evaluated descent rates from simulated altitudes</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Experience Item 3: Generative AI */}
+          <div className="exp-item group pb-8 sm:pb-12 border-b border-white/10 last:border-b-0 flex flex-col md:flex-row md:items-start justify-between gap-4 sm:gap-6 md:gap-12 transition-colors duration-300">
+            <div className="md:w-1/3 flex-shrink-0">
+              <span className="text-xs font-mono font-medium text-ash tracking-wider block mb-1">
+                2024
+              </span>
+              <span className="text-xs sm:text-sm font-semibold tracking-wider uppercase block font-mono text-ember">
+                Generative AI Traineeship
+              </span>
+            </div>
+            <div className="md:w-2/3">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2 sm:mb-3 tracking-tight group-hover:text-cloud transition-colors">
+                AI / RAG Solutions Trainee
+              </h3>
+              <p className="text-xs sm:text-sm md:text-base text-ash leading-relaxed mb-4 sm:mb-6 font-normal">
+                Specialized curriculum exploring Google Cloud GenAI SDKs, vector embeddings, and retrieval-augmented pipelines.
+              </p>
+              <ul className="space-y-2.5">
+                <li className="flex items-start gap-3 text-sm text-silver font-normal">
+                  <span className="text-ember font-bold mt-0.5 text-xs">▸</span>
+                  <span className="leading-relaxed">Engineered multimodal query interfaces combining technical documents and Gemini models</span>
+                </li>
+                <li className="flex items-start gap-3 text-sm text-silver font-normal">
+                  <span className="text-ember font-bold mt-0.5 text-xs">▸</span>
+                  <span className="leading-relaxed">Implemented vector cosine similarity semantic search reducing inference latency to under 250ms</span>
+                </li>
+                <li className="flex items-start gap-3 text-sm text-silver font-normal">
+                  <span className="text-ember font-bold mt-0.5 text-xs">▸</span>
+                  <span className="leading-relaxed">Deployed end-to-end interactive Streamlit apps on cloud instances</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   )
 }
+
+export default ExperienceSection
