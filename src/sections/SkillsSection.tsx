@@ -1,41 +1,12 @@
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import { skillCategories } from '../data/portfolio'
 import { Code, Cpu, Sparkles, Wrench } from 'lucide-react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
 
 const ICONS = [Code, Cpu, Sparkles, Wrench]
 
 export const SkillsSection: React.FC = () => {
-  const sectionRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (isReduced) return
-
-    const ctx = gsap.context(() => {
-      gsap.from('.skill-block', {
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 80%',
-          toggleActions: 'play none none none'
-        },
-        y: 30,
-        opacity: 0,
-        duration: 0.5,
-        stagger: 0.12,
-        ease: 'power2.out'
-      })
-    }, sectionRef)
-
-    return () => ctx.revert()
-  }, [])
-
   return (
     <section
-      ref={sectionRef}
       id="skills"
       aria-label="Technical Skills"
       className="relative py-16 sm:py-24 md:py-36 overflow-hidden"
