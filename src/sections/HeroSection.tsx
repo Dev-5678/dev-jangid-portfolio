@@ -4,10 +4,16 @@ import { CrystalizedBall } from '../components/reactbits/CrystalizedBall'
 import { TextPressure } from '../components/reactbits/TextPressure'
 import { ShinyText } from '../components/reactbits/ShinyText'
 import { Magnet } from '../components/reactbits/Magnet'
-import { ArrowDown, Mail, MapPin } from 'lucide-react'
+import { ArrowDown, Mail, MapPin, FileText, Clock, Activity } from 'lucide-react'
+import { useLiveTelemetry } from '../hooks/useLiveTelemetry'
 import gsap from 'gsap'
 
-export const HeroSection: React.FC = () => {
+interface HeroSectionProps {
+  onOpenResume?: () => void
+}
+
+export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume }) => {
+  const { istTime, latency } = useLiveTelemetry()
   const heroRef = useRef<HTMLElement>(null)
   const titleWrapRef = useRef<HTMLDivElement>(null)
   const badgeRef = useRef<HTMLDivElement>(null)
@@ -51,10 +57,10 @@ export const HeroSection: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
         {/* Left Column: Typography & CTAs (7 cols) */}
         <div className="lg:col-span-7 flex flex-col items-start z-10">
-          {/* Status Badge */}
+          {/* Status Badge with Live IST Telemetry */}
           <div
             ref={badgeRef}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white dark:bg-[#131720] border-3 border-[#111317] dark:border-[#334155] shadow-[3px_3px_0px_#111317] dark:shadow-[3px_3px_0px_#CCFF00] font-mono text-xs font-black text-[#111317] dark:text-[#F4F7FB] mb-6"
+            className="inline-flex flex-wrap items-center gap-2 px-3.5 py-1.5 bg-white dark:bg-[#131720] border-3 border-[#111317] dark:border-[#334155] shadow-[3px_3px_0px_#111317] dark:shadow-[3px_3px_0px_#CCFF00] font-mono text-xs font-black text-[#111317] dark:text-[#F4F7FB] mb-6"
           >
             <span className="w-2.5 h-2.5 rounded-full bg-[#CCFF00] border-2 border-[#111317] animate-pulse" />
             <ShinyText text="SYS://ACTIVE" speed={3} className="text-[#FF5500] dark:text-[#CCFF00] font-black uppercase tracking-wider" />
@@ -63,6 +69,19 @@ export const HeroSection: React.FC = () => {
               <MapPin className="w-3.5 h-3.5 text-[#FF5500]" />
               {personalInfo.location}
             </span>
+            {istTime && (
+              <>
+                <span className="text-gray-400 dark:text-gray-500 font-bold hidden sm:inline">|</span>
+                <span className="hidden sm:inline-flex items-center gap-1 text-gray-700 dark:text-gray-300">
+                  <Clock className="w-3 h-3 text-[#00E5FF]" />
+                  <span>{istTime}</span>
+                </span>
+                <span className="hidden md:inline-flex items-center gap-1 text-[10px] text-gray-500">
+                  <Activity className="w-3 h-3 text-[#CCFF00]" />
+                  <span>{latency}ms</span>
+                </span>
+              </>
+            )}
           </div>
 
           {/* Main Name Typography powered by React Bits TextPressure */}
@@ -133,6 +152,19 @@ export const HeroSection: React.FC = () => {
                 <span>Get In Touch</span>
               </a>
             </Magnet>
+
+            {onOpenResume && (
+              <Magnet padding={30} magnetStrength={0.3}>
+                <button
+                  onClick={onOpenResume}
+                  className="brutal-btn px-5 py-3.5 bg-white dark:bg-[#1E293B] text-[#111317] dark:text-[#CCFF00] font-mono font-bold text-sm uppercase tracking-wider flex items-center gap-2 hover:bg-[#CCFF00] hover:text-[#111317] dark:hover:bg-[#CCFF00] dark:hover:text-[#111317]"
+                  title="Inspect and Print Verified Resume"
+                >
+                  <FileText className="w-4 h-4 stroke-[2.5] text-[#FF5500]" />
+                  <span>Resume [PDF]</span>
+                </button>
+              </Magnet>
+            )}
           </div>
         </div>
 

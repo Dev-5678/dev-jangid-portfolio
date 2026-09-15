@@ -1,15 +1,21 @@
 import React, { useState } from 'react'
 import { personalInfo, navItems } from '../data/portfolio'
-import { Sun, Moon, Menu, X, Orbit } from 'lucide-react'
+import { Sun, Moon, Menu, X, Terminal, FileText } from 'lucide-react'
 import { SlingButton } from './reactbits/SlingButton'
 
 interface NavbarProps {
   theme: 'light' | 'dark'
   onToggleTheme: () => void
-  onOpenPortal: () => void
+  onOpenConsole?: () => void
+  onOpenResume?: () => void
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme, onOpenPortal }) => {
+export const Navbar: React.FC<NavbarProps> = ({
+  theme,
+  onToggleTheme,
+  onOpenConsole,
+  onOpenResume
+}) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const toggleMobileMenu = () => {
@@ -60,16 +66,31 @@ export const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme, onOpenPort
 
         {/* Action Controls: Theme Toggle & Portal Trigger & Mobile Menu */}
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* Re-open Portal Button */}
-          <button
-            onClick={onOpenPortal}
-            className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-mono font-bold bg-white dark:bg-[#141820] text-[#111317] dark:text-[#F4F7FB] border-2 border-[#111317] dark:border-[#334155] shadow-[2px_2px_0px_#111317] dark:shadow-[2px_2px_0px_#CCFF00] hover:translate-x-0.5 hover:translate-y-0.5 transition-all"
-            title="Open Interactive Telemetry Portal"
-            aria-label="Open Interactive Telemetry Portal"
-          >
-            <Orbit className="w-3.5 h-3.5 text-[#00E5FF] animate-spin" style={{ animationDuration: '8s' }} />
-            <span>PORTAL</span>
-          </button>
+          {/* CLI Dev Console Button */}
+          {onOpenConsole && (
+            <button
+              onClick={onOpenConsole}
+              className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-mono font-bold bg-[#111317] dark:bg-[#1E293B] text-[#CCFF00] border-2 border-[#111317] dark:border-[#CCFF00] shadow-[2px_2px_0px_#111317] dark:shadow-[2px_2px_0px_#CCFF00] hover:translate-x-0.5 hover:translate-y-0.5 transition-all cursor-pointer"
+              title="Open Interactive Terminal (~)"
+              aria-label="Open Interactive Terminal"
+            >
+              <Terminal className="w-3.5 h-3.5" />
+              <span>CLI [~]</span>
+            </button>
+          )}
+
+          {/* Verified Resume Modal Button */}
+          {onOpenResume && (
+            <button
+              onClick={onOpenResume}
+              className="hidden lg:inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-mono font-bold bg-white dark:bg-[#141820] text-[#111317] dark:text-[#F4F7FB] border-2 border-[#111317] dark:border-[#334155] shadow-[2px_2px_0px_#111317] dark:shadow-[2px_2px_0px_#334155] hover:bg-[#CCFF00] hover:text-[#111317] transition-all cursor-pointer"
+              title="Inspect Verified Resume PDF"
+              aria-label="Inspect Verified Resume PDF"
+            >
+              <FileText className="w-3.5 h-3.5 text-[#FF5500]" />
+              <span>RESUME</span>
+            </button>
+          )}
 
           {/* Sling Button Theme Switch (React Bits Slingshot Micro-interaction) */}
           <div className="flex items-center" title="Slingshot pull-back or click to toggle theme">
@@ -127,16 +148,31 @@ export const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme, onOpenPort
               </a>
             ))}
 
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false)
-                onOpenPortal()
-              }}
-              className="mt-2 flex items-center justify-center gap-2 p-3 bg-[#CCFF00] text-[#111317] font-mono text-xs font-black uppercase tracking-wider border-2 border-[#111317] shadow-[3px_3px_0px_#111317]"
-            >
-              <Orbit className="w-4 h-4 text-[#111317]" />
-              Launch Telemetry Portal
-            </button>
+            {onOpenResume && (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false)
+                  onOpenResume()
+                }}
+                className="mt-2 flex items-center justify-center gap-2 p-3 bg-white dark:bg-[#1E293B] text-[#111317] dark:text-[#CCFF00] font-mono text-xs font-black uppercase tracking-wider border-2 border-[#111317] dark:border-[#334155] shadow-[3px_3px_0px_#111317]"
+              >
+                <FileText className="w-4 h-4 text-[#FF5500]" />
+                Inspect Verified Resume [PDF]
+              </button>
+            )}
+
+            {onOpenConsole && (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false)
+                  onOpenConsole()
+                }}
+                className="flex items-center justify-center gap-2 p-3 bg-[#111317] text-[#CCFF00] font-mono text-xs font-black uppercase tracking-wider border-2 border-[#111317] shadow-[3px_3px_0px_#111317]"
+              >
+                <Terminal className="w-4 h-4" />
+                Launch CLI Terminal [~]
+              </button>
+            )}
           </nav>
         </div>
       )}

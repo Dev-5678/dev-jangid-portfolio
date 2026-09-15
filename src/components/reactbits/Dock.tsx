@@ -8,13 +8,17 @@ import {
   Mail,
   Sun,
   Moon,
-  Orbit
+  Orbit,
+  Terminal,
+  FileText
 } from 'lucide-react'
 
 interface DockProps {
   theme: 'light' | 'dark'
   onToggleTheme: () => void
   onOpenPortal: () => void
+  onOpenConsole?: () => void
+  onOpenResume?: () => void
 }
 
 interface DockItem {
@@ -26,7 +30,13 @@ interface DockItem {
   accentColor?: string
 }
 
-export const Dock: React.FC<DockProps> = ({ theme, onToggleTheme, onOpenPortal }) => {
+export const Dock: React.FC<DockProps> = ({
+  theme,
+  onToggleTheme,
+  onOpenPortal,
+  onOpenConsole,
+  onOpenResume
+}) => {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null)
 
   const items: DockItem[] = [
@@ -36,6 +46,8 @@ export const Dock: React.FC<DockProps> = ({ theme, onToggleTheme, onOpenPortal }
     { id: 'projects', label: 'Highlights', icon: Layers, href: '#projects', accentColor: '#CCFF00' },
     { id: 'education', label: 'Education', icon: GraduationCap, href: '#education', accentColor: '#00E5FF' },
     { id: 'contact', label: 'Contact', icon: Mail, href: '#contact', accentColor: '#FF5500' },
+    ...(onOpenResume ? [{ id: 'resume', label: 'Resume [PDF]', icon: FileText, action: onOpenResume, accentColor: '#00E5FF' }] : []),
+    ...(onOpenConsole ? [{ id: 'console', label: 'CLI Terminal [~]', icon: Terminal, action: onOpenConsole, accentColor: '#CCFF00' }] : []),
     { id: 'portal', label: 'Telemetry Portal', icon: Orbit, action: onOpenPortal, accentColor: '#CCFF00' },
     {
       id: 'theme',
