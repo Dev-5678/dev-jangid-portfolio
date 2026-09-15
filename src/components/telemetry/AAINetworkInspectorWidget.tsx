@@ -57,8 +57,22 @@ const NODES: NodeItem[] = [
 
 export const AAINetworkInspectorWidget: React.FC = () => {
   const [selectedNodeId, setSelectedNodeId] = useState<string>('sec-gateway')
+  const [isAuditing, setIsAuditing] = useState(false)
+  const [auditStep, setAuditStep] = useState<string | null>(null)
   const activeNode = NODES.find((n) => n.id === selectedNodeId) || NODES[0]
   const ActiveIcon = activeNode.icon
+
+  const handleRunAudit = () => {
+    setIsAuditing(true)
+    setAuditStep('CHECKING FIREWALL LOGS...')
+    setTimeout(() => setAuditStep('VERIFYING SQL DATA INTEGRITY...'), 700)
+    setTimeout(() => setAuditStep('AUDITING ANS ACCESS LISTS...'), 1400)
+    setTimeout(() => {
+      setAuditStep('AUDIT COMPLETED: 100% COMPLIANT')
+      setIsAuditing(false)
+      setTimeout(() => setAuditStep(null), 3000)
+    }, 2100)
+  }
 
   return (
     <div className="w-full bg-[#111317] text-[#F4F7FB] border-3 border-[#111317] dark:border-[#334155] shadow-[6px_6px_0px_#111317] dark:shadow-[6px_6px_0px_#CCFF00] p-5 sm:p-6 font-mono text-xs select-none">
@@ -78,9 +92,18 @@ export const AAINetworkInspectorWidget: React.FC = () => {
           </div>
         </div>
 
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#1A202C] border border-gray-700 text-[#00E5FF] font-bold text-[10px]">
-          <span className="w-2 h-2 rounded-full bg-[#00E5FF] animate-pulse" />
-          <span>INSPECTION_MODE: INTERACTIVE</span>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleRunAudit}
+            disabled={isAuditing}
+            className="px-3 py-1 bg-[#CCFF00] text-[#111317] font-bold text-[10px] uppercase border border-[#111317] hover:bg-[#b8e600] disabled:opacity-50 transition-colors"
+          >
+            {isAuditing ? 'AUDITING...' : 'RUN AUDIT TRACE'}
+          </button>
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#1A202C] border border-gray-700 text-[#00E5FF] font-bold text-[10px]">
+            <span className={`w-2 h-2 rounded-full ${isAuditing ? 'bg-[#FF5500] animate-ping' : 'bg-[#CCFF00]'}`} />
+            <span>{auditStep || 'STATUS: NOMINAL'}</span>
+          </div>
         </div>
       </div>
 
