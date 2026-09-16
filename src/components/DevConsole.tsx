@@ -73,17 +73,17 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
         newEntries.push({
           type: 'output',
           text: (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 my-1 text-gray-300 text-[11px]">
-              <div><strong className="text-[#CCFF00]">whoami</strong> — Summary &amp; credentials</div>
-              <div><strong className="text-[#CCFF00]">skills</strong> — Technical stack &amp; languages</div>
-              <div><strong className="text-[#CCFF00]">exp</strong> — Internships (AAI, ISL, GenAI)</div>
-              <div><strong className="text-[#CCFF00]">cansat</strong> — Query simulated ISL telemetry</div>
-              <div><strong className="text-[#CCFF00]">aai</strong> — Northern Region IT audit status</div>
-              <div><strong className="text-[#CCFF00]">contact</strong> — Direct telephone &amp; email</div>
-              <div><strong className="text-[#CCFF00]">theme</strong> — Toggle dark/light theme</div>
-              <div><strong className="text-[#CCFF00]">sudo hire</strong> — Fast-track recruiter dispatch</div>
-              <div><strong className="text-[#CCFF00]">clear</strong> — Reset console screen</div>
-              <div><strong className="text-[#CCFF00]">exit</strong> — Close developer console</div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 my-1 text-silver text-[11px]">
+              <div><strong className="text-ember font-semibold">whoami</strong> — Summary &amp; credentials</div>
+              <div><strong className="text-ember font-semibold">skills</strong> — Technical stack &amp; languages</div>
+              <div><strong className="text-ember font-semibold">exp</strong> — Internships (AAI, ISL, GenAI)</div>
+              <div><strong className="text-ember font-semibold">cansat</strong> — Query simulated ISL telemetry</div>
+              <div><strong className="text-ember font-semibold">aai</strong> — Northern Region IT audit status</div>
+              <div><strong className="text-ember font-semibold">contact</strong> — Direct telephone &amp; email</div>
+              <div><strong className="text-ember font-semibold">theme</strong> — Toggle dark/light theme</div>
+              <div><strong className="text-ember font-semibold">sudo hire</strong> — Fast-track recruiter dispatch</div>
+              <div><strong className="text-ember font-semibold">clear</strong> — Reset console screen</div>
+              <div><strong className="text-ember font-semibold">exit</strong> — Close developer console</div>
             </div>
           )
         })
@@ -93,12 +93,12 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
         newEntries.push({
           type: 'output',
           text: (
-            <div className="space-y-1 text-gray-300 text-[11px] p-2 bg-[#1A202C] border-l-2 border-[#CCFF00]">
+            <div className="space-y-1.5 text-silver text-[11px] p-3 rounded-xl bg-white/5 border-l-2 border-ember">
               <p><strong className="text-white">NAME:</strong> {personalInfo.name}</p>
               <p><strong className="text-white">ROLE:</strong> {personalInfo.title}</p>
               <p><strong className="text-white">LOCATION:</strong> {personalInfo.location}</p>
               <p><strong className="text-white">EDUCATION:</strong> {personalInfo.educationSummary}</p>
-              <p><strong className="text-[#CCFF00]">STATUS:</strong> {personalInfo.status}</p>
+              <p><strong className="text-emerald-400">STATUS:</strong> {personalInfo.status}</p>
             </div>
           )
         })
@@ -111,8 +111,8 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
             <div className="space-y-2 text-[11px] my-1">
               {skillCategories.map((c) => (
                 <div key={c.title}>
-                  <span className="text-[#00E5FF] font-bold block">[{c.badge}] {c.title}:</span>
-                  <span className="text-gray-300">{c.skills.join(' • ')}</span>
+                  <span className="text-ember font-bold block">[{c.badge}] {c.title}:</span>
+                  <span className="text-silver">{c.skills.join(' • ')}</span>
                 </div>
               ))}
             </div>
@@ -126,10 +126,10 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
           text: (
             <div className="space-y-2 text-[11px] my-1">
               {experiences.map((e) => (
-                <div key={e.id} className="p-2 bg-[#1A202C] border-l-2 border-[#FF5500]">
-                  <strong className="text-[#CCFF00] block">{e.role} @ {e.organization}</strong>
-                  <span className="text-gray-400 block text-[10px]">{e.dates} {e.location && `• ${e.location}`}</span>
-                  <p className="text-gray-300 text-[10px] mt-1">{e.responsibilities[0]}</p>
+                <div key={e.id} className="p-2.5 bg-white/5 border-l-2 border-ember rounded-r-lg">
+                  <strong className="text-white block font-semibold">{e.role} @ {e.organization}</strong>
+                  <span className="text-ash block text-[10px] font-mono">{e.dates} {e.location && `• ${e.location}`}</span>
+                  <p className="text-silver text-[10px] mt-1">{e.responsibilities[0]}</p>
                 </div>
               ))}
             </div>
@@ -141,11 +141,11 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
         newEntries.push({
           type: 'output',
           text: (
-            <div className="p-2 bg-[#0F172A] border border-[#00E5FF] text-[10px] text-[#00E5FF] font-mono space-y-0.5">
-              <p>&gt; CANSAT TELEMETRY PACKET [UHF 433.92 MHz]</p>
+            <div className="p-3 bg-white/5 border border-ember/30 rounded-xl text-[10px] text-silver font-mono space-y-1">
+              <p className="text-ember font-bold">&gt; CANSAT TELEMETRY PACKET [UHF 433.92 MHz]</p>
               <p>&gt; ALT: 482.4m | BARO: 962.1 hPa | TEMP: 24.2°C</p>
               <p>&gt; ATTITUDE: PITCH +2.1° | ROLL -0.4° | YAW 182.0°</p>
-              <p className="text-[#CCFF00]">&gt; STATUS: TELEMETRY SYNC LOCK [OK]</p>
+              <p className="text-emerald-400 font-semibold">&gt; STATUS: TELEMETRY SYNC LOCK [OK]</p>
             </div>
           )
         })
@@ -155,8 +155,8 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
         newEntries.push({
           type: 'output',
           text: (
-            <div className="p-2 bg-[#1E293B] border border-[#CCFF00] text-[10px] text-gray-200 font-mono space-y-0.5">
-              <p className="text-[#CCFF00] font-bold">&gt; AAI NORTHERN REGION HQ // AUDIT CHECKLIST</p>
+            <div className="p-3 bg-white/5 border border-white/10 rounded-xl text-[10px] text-silver font-mono space-y-1">
+              <p className="text-ember font-bold">&gt; AAI NORTHERN REGION HQ // AUDIT CHECKLIST</p>
               <p>&gt; [✓] Systems Maintenance: Operational Monitoring Active</p>
               <p>&gt; [✓] Database Management: Integrity Verification Complete</p>
               <p>&gt; [✓] Network Security: Security Compliance Evaluated</p>
@@ -170,9 +170,9 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
         newEntries.push({
           type: 'output',
           text: (
-            <div className="text-[11px] space-y-1 text-gray-300">
-              <p>Email: <a href={`mailto:${personalInfo.email}`} className="text-[#00E5FF] underline">{personalInfo.email}</a></p>
-              <p>Phone: <a href={`tel:${personalInfo.phone}`} className="text-[#CCFF00] underline">{personalInfo.displayPhone}</a></p>
+            <div className="text-[11px] space-y-1 text-silver">
+              <p>Email: <a href={`mailto:${personalInfo.email}`} className="text-ember hover:underline font-mono">{personalInfo.email}</a></p>
+              <p>Phone: <a href={`tel:${personalInfo.phone}`} className="text-ember hover:underline font-mono">{personalInfo.displayPhone}</a></p>
               <p>Location: {personalInfo.location}</p>
             </div>
           )
@@ -191,9 +191,9 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
         newEntries.push({
           type: 'success',
           text: (
-            <div className="p-3 bg-[#CCFF00] text-[#111317] font-black text-xs space-y-1 border-2 border-[#111317]">
-              <p className="text-sm">🎉 ACCESS GRANTED! PRIORITY TRANSMISSION ROUTE OPENED.</p>
-              <p className="font-mono text-[10px]">Dev Jangid is ready to discuss Software Engineering &amp; IT infrastructure internships/full-time roles.</p>
+            <div className="p-4 rounded-xl bg-ember/15 text-white font-medium text-xs space-y-1.5 border border-ember/40 shadow-[0_0_25px_rgba(160,42,34,0.3)]">
+              <p className="text-sm font-bold text-ember-bright">PRIORITY TRANSMISSION ROUTE OPENED</p>
+              <p className="font-mono text-[11px] text-silver">Dev Jangid is ready to discuss Software Engineering, Systems Architecture &amp; Full Stack roles.</p>
             </div>
           )
         })
@@ -259,24 +259,25 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
       role="dialog"
       aria-label="Developer Console CLI"
       aria-modal="true"
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-2 sm:p-6 bg-black/75 backdrop-blur-md"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-2 sm:p-6 bg-black/80 backdrop-blur-md"
     >
       <div
-        className={`w-full bg-[#0A0D12] text-[#F4F7FB] border-3 border-[#CCFF00] shadow-[8px_8px_0px_#111317] dark:shadow-[8px_8px_0px_#CCFF00] flex flex-col font-mono text-xs overflow-hidden transition-all duration-200 ${
-          isMaximized ? 'h-[94vh] max-w-6xl' : 'h-[500px] max-w-3xl'
+        className={`w-full bg-[#0a0a0d]/95 dark:bg-[#0a0a0d]/95 text-[#e8e8ea] border border-white/15 dark:border-white/15 shadow-[0_30px_80px_rgba(0,0,0,0.85),0_0_40px_rgba(160,42,34,0.2)] rounded-2xl flex flex-col font-mono text-xs overflow-hidden backdrop-blur-2xl transition-all duration-200 ${
+          isMaximized ? 'h-[94vh] max-w-6xl' : 'h-[520px] max-w-3xl'
         }`}
       >
         {/* Terminal Titlebar */}
-        <div className="flex items-center justify-between px-4 py-2.5 bg-[#141820] border-b-2 border-gray-800">
-          <div className="flex items-center gap-2 text-xs font-bold text-[#CCFF00]">
-            <TerminalIcon className="w-4 h-4 text-[#CCFF00]" />
+        <div className="flex items-center justify-between px-5 py-3.5 bg-black/40 border-b border-white/10">
+          <div className="flex items-center gap-2.5 text-xs font-bold text-white tracking-wider">
+            <span className="w-2 h-2 rounded-full bg-ember inline-block shadow-[0_0_8px_#a02a22] animate-pulse" />
+            <TerminalIcon className="w-4 h-4 text-ember" />
             <span>DEV_CLI // TERMINAL SESSION</span>
           </div>
 
           <div className="flex items-center gap-2">
             <button
               onClick={() => setIsMaximized(!isMaximized)}
-              className="p-1 hover:bg-gray-800 text-gray-400 hover:text-white transition-colors"
+              className="w-7 h-7 rounded-lg hover:bg-white/10 text-ash hover:text-white flex items-center justify-center transition-colors"
               title={isMaximized ? "Restore" : "Maximize"}
               aria-label={isMaximized ? "Restore window" : "Maximize window"}
             >
@@ -284,7 +285,7 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
             </button>
             <button
               onClick={onClose}
-              className="p-1 hover:bg-red-500 hover:text-white text-gray-400 transition-colors"
+              className="w-7 h-7 rounded-lg hover:bg-ember hover:text-white text-ash flex items-center justify-center transition-colors"
               title="Close Terminal (Esc)"
               aria-label="Close Terminal"
             >
@@ -294,18 +295,18 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
         </div>
 
         {/* Scrollable Terminal Screen */}
-        <div className="flex-1 p-4 overflow-y-auto space-y-2 text-xs select-text">
+        <div className="flex-1 p-5 overflow-y-auto space-y-2 text-xs select-text">
           {lines.map((line, idx) => (
             <div
               key={idx}
               className={
                 line.type === 'input'
-                  ? 'text-[#00E5FF] font-bold'
+                  ? 'text-ember-bright font-bold'
                   : line.type === 'error'
-                  ? 'text-red-400'
+                  ? 'text-red-400 font-medium'
                   : line.type === 'success'
-                  ? 'text-[#CCFF00]'
-                  : 'text-gray-300'
+                  ? 'text-emerald-400 font-medium'
+                  : 'text-silver'
               }
             >
               {line.text}
@@ -315,8 +316,8 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
         </div>
 
         {/* Prompt Input Line */}
-        <div className="flex items-center gap-2 p-3 bg-[#111317] border-t-2 border-gray-800">
-          <span className="text-[#CCFF00] font-bold flex-shrink-0">dev@jangid:~$</span>
+        <div className="flex items-center gap-2 px-4 py-3 bg-black/40 border-t border-white/10">
+          <span className="text-ember font-bold flex-shrink-0">dev@jangid:~$</span>
           <input
             ref={inputRef}
             type="text"
@@ -324,7 +325,7 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
             onChange={(e) => setInputVal(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Type 'help', 'skills', 'cansat'..."
-            className="flex-1 bg-transparent border-0 outline-none text-[#F4F7FB] font-mono text-xs focus:ring-0"
+            className="flex-1 bg-transparent border-0 outline-none text-white font-mono text-xs placeholder:text-ash/50 focus:ring-0"
             autoComplete="off"
             spellCheck="false"
           />
@@ -333,7 +334,7 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
               handleCommand(inputVal)
               setInputVal('')
             }}
-            className="px-2 py-1 bg-[#CCFF00] text-[#111317] font-bold text-[10px] hover:bg-[#b8e600] flex items-center gap-1"
+            className="px-3 py-1.5 bg-ember hover:bg-ember-bright text-white font-bold text-[11px] rounded-lg shadow-[0_0_12px_rgba(160,42,34,0.4)] transition-all flex items-center gap-1 cursor-pointer"
           >
             <span>ENTER</span>
             <CornerDownLeft className="w-3 h-3 stroke-[3]" />

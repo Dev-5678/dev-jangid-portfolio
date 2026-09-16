@@ -7,10 +7,10 @@ export interface AccentColorOption {
 }
 
 export const ACCENT_COLORS: AccentColorOption[] = [
-  { id: 'lime', name: 'Electric Lime', hex: '#CCFF00' },
-  { id: 'cyan', name: 'Cyber Cyan', hex: '#00E5FF' },
-  { id: 'orange', name: 'Blaze Orange', hex: '#FF5500' },
-  { id: 'matrix', name: 'Matrix Green', hex: '#00FF66' }
+  { id: 'ember', name: 'Crimson Ember', hex: '#A02A22' },
+  { id: 'vibrant', name: 'Vibrant Solar', hex: '#FC6B2F' },
+  { id: 'gold', name: 'Imperial Gold', hex: '#E5A93C' },
+  { id: 'obsidian', name: 'Silver Smoke', hex: '#B0B0B3' }
 ]
 
 export function useAccentColor() {

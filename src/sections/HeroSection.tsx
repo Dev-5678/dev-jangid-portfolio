@@ -34,7 +34,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
   const descRef = useRef<HTMLDivElement>(null)
   const ctaRef = useRef<HTMLDivElement>(null)
   const glowRef = useRef<HTMLDivElement>(null)
-  const scrollHintRef = useRef<HTMLDivElement>(null)
+  const scrollHintRef = useRef<HTMLAnchorElement>(null)
 
   useEffect(() => {
     const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -200,24 +200,23 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         </div>
       </div>
 
-      {/* 8. Center Animated Scroll Indicator Line */}
-      <div
+      {/* 8. Center Animated Kinetic Scroll Indicator */}
+      <a
+        href="#introduction"
         ref={scrollHintRef}
-        className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-[45] hidden md:flex flex-col items-center gap-2 opacity-0"
+        className="hero-scroll-indicator absolute bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-[45] flex flex-col items-center gap-1.5 sm:gap-2 opacity-0 cursor-pointer group select-none transition-transform duration-300 hover:scale-105"
+        aria-label="Scroll to Philosophy section"
       >
         <span
-          className="text-[9px] text-[#B5B5B5]/60 tracking-[0.35em] uppercase"
+          className="text-[9px] text-ash tracking-[0.35em] uppercase font-mono font-medium transition-colors group-hover:text-ember"
           style={{ fontFamily: 'var(--font-display)' }}
         >
           Scroll
         </span>
-        <div className="w-[1px] h-6 bg-gradient-to-b from-white/20 to-transparent relative overflow-hidden">
-          <div
-            className="absolute w-full h-3 bg-ember/60"
-            style={{ animation: 'reveal-up 2s ease-in-out infinite' }}
-          />
+        <div className="scroll-pill-track w-[18px] h-[30px] rounded-full border border-white/20 group-hover:border-ember/60 transition-colors flex items-start justify-center p-1 relative overflow-hidden bg-white/5 backdrop-blur-sm">
+          <div className="scroll-pill-dot w-1.5 h-1.5 rounded-full bg-ember shadow-[0_0_8px_#A02A22]" />
         </div>
-      </div>
+      </a>
     </section>
   )
 }

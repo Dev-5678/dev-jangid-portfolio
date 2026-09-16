@@ -30,8 +30,8 @@ const STRENGTHS = [
   },
   {
     icon: Layers,
-    title: "Cinematic Type-Safe Web & Kinetic Architecture",
-    desc: "Engineers ultra-responsive, accessible digital experiences using TypeScript, React 19, Tailwind CSS 4, and GSAP physics-driven kinetic typography for friction-free 60 FPS interactions."
+    title: "Full-Stack Web & Kinetic Architecture",
+    desc: "Engineers high-performance, accessible full-stack applications with TypeScript, React 19, Next.js, Node.js RESTful APIs, and Tailwind CSS 4, integrated with GSAP physics-driven kinetic typography."
   }
 ]
 

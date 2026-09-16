@@ -52,12 +52,12 @@ describe('Portfolio Resume Data Truth & Integrity', () => {
     expect(titles).toContain('Programming Languages')
     expect(titles).toContain('Core Computer Science & Systems')
     expect(titles).toContain('Artificial Intelligence & Cloud')
-    expect(titles).toContain('Modern Web & Frontend Engineering')
+    expect(titles).toContain('Full Stack Web Development')
     expect(titles).toContain('Aerospace & Embedded Telemetry')
     expect(titles).toContain('DevOps, Security & Tooling')
 
     const languages = skillCategories.find((c) => c.title === 'Programming Languages')?.skills
-    expect(languages).toContain('C++')
+    expect(languages?.some((l) => l.includes('C++'))).toBe(true)
     expect(languages).toContain('Java')
     expect(languages).toContain('Python 3')
     expect(languages).toContain('TypeScript')

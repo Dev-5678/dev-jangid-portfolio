@@ -138,7 +138,7 @@ export const skillCategories: SkillCategory[] = [
     title: "Programming Languages",
     description: "Production and algorithmic languages utilized for high-throughput systems, low-latency execution, database operations, and software development.",
     badge: "LANGUAGES",
-    skills: ["C++", "Java", "Python 3", "TypeScript", "JavaScript (ESNext)", "SQL (PostgreSQL / MySQL)", "C", "Bash & Linux Shell", "HTML5 & Modern CSS", "JSON-LD & YAML"]
+    skills: ["TypeScript", "Python 3", "Modern C++", "Java", "JavaScript", "SQL", "C", "Bash & Shell", "HTML5 & CSS3"]
   },
   {
     title: "Core Computer Science & Systems",
@@ -171,19 +171,20 @@ export const skillCategories: SkillCategory[] = [
     ]
   },
   {
-    title: "Modern Web & Frontend Engineering",
-    description: "High-performance, cinematic user interfaces engineered with modern reactive component patterns, kinetic physics, and micro-interaction design.",
-    badge: "FRONTEND_UI",
+    title: "Full Stack Web Development",
+    description: "End-to-end web engineering spanning reactive type-safe frontends, scalable REST & WebSocket backend services, and resilient relational & NoSQL datastores.",
+    badge: "FULL_STACK",
     skills: [
-      "React 19 & Next.js Paradigms",
-      "TypeScript Architecture",
+      "React 19",
+      "Next.js 15",
+      "TypeScript",
+      "Node.js & Express",
       "Tailwind CSS 4",
-      "GSAP Motion & Kinetic Typography",
-      "State Management (Zustand / Redux)",
-      "Vite & Rollup Bundling",
-      "WebSockets & RESTful APIs",
-      "Vitest & Automated Testing",
-      "Web Accessibility (WCAG 2.4.1)"
+      "RESTful APIs & WebSockets",
+      "PostgreSQL & MongoDB",
+      "GSAP Motion Physics",
+      "Vite & Build Tooling",
+      "Vitest & Playwright"
     ]
   },
   {
