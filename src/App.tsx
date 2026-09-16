@@ -63,7 +63,7 @@ export function App() {
   }, [playClick])
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#050505] text-[#e8e8ea] selection:bg-[#a02a22] selection:text-white relative">
+    <div className="min-h-screen flex flex-col bg-[var(--bg-main)] text-[var(--text-main)] selection:bg-ember selection:text-white relative transition-colors duration-300">
       {/* Cinematic Counter Loading Screen (from reel) */}
       <LoadingScreen />
 
@@ -154,6 +154,7 @@ export function App() {
       {/* Main Content Sections */}
       <main className="flex-1 w-full" id="main-content">
         <HeroSection
+          theme={theme}
           onOpenResume={() => {
             playClick()
             setIsResumeOpen(true)

@@ -347,30 +347,49 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
           </a>
         </div>
 
-        {/* Floating Toggle on Right (Strict Reel Replica: Only Menu +) */}
-        <button
-          ref={toggleBtnRef}
-          className="sm-toggle"
-          aria-label={isOpen ? 'Close menu' : 'Open menu'}
-          aria-expanded={isOpen}
-          aria-controls="staggered-menu-panel"
-          onClick={toggleMenu}
-          type="button"
-        >
-          <span className="sm-toggle-textWrap" aria-hidden="true">
-            <span ref={textInnerRef} className="sm-toggle-textInner">
-              {textLines.map((line, idx) => (
-                <span key={idx} className="sm-toggle-line">
-                  {line}
-                </span>
-              ))}
+        {/* Header Action Controls */}
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          {/* Quick 1-Click Theme Toggle Button */}
+          <button
+            onClick={onToggleTheme}
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            aria-pressed={theme === 'dark'}
+            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            className="sm-theme-toggle flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-full border transition-all duration-300 cursor-pointer shadow-sm hover:scale-105"
+            type="button"
+          >
+            {theme === 'dark' ? (
+              <Sun className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-amber-300 transition-transform duration-300 hover:rotate-45" />
+            ) : (
+              <Moon className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-zinc-700 transition-transform duration-300 hover:-rotate-12" />
+            )}
+          </button>
+
+          {/* Floating Toggle on Right (Strict Reel Replica: Menu +) */}
+          <button
+            ref={toggleBtnRef}
+            className="sm-toggle"
+            aria-label={isOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isOpen}
+            aria-controls="staggered-menu-panel"
+            onClick={toggleMenu}
+            type="button"
+          >
+            <span className="sm-toggle-textWrap" aria-hidden="true">
+              <span ref={textInnerRef} className="sm-toggle-textInner">
+                {textLines.map((line, idx) => (
+                  <span key={idx} className="sm-toggle-line">
+                    {line}
+                  </span>
+                ))}
+              </span>
             </span>
-          </span>
-          <span ref={iconRef} className="sm-icon" aria-hidden="true">
-            <span ref={lineHRef} className="sm-icon-line" />
-            <span ref={lineVRef} className="sm-icon-line sm-icon-line-v" />
-          </span>
-        </button>
+            <span ref={iconRef} className="sm-icon" aria-hidden="true">
+              <span ref={lineHRef} className="sm-icon-line" />
+              <span ref={lineVRef} className="sm-icon-line sm-icon-line-v" />
+            </span>
+          </button>
+        </div>
       </header>
 
       {/* Slide-Out Navigation Panel */}

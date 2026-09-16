@@ -12,7 +12,7 @@
     --ash: #8a8a8d;
     --silver: #b0b0b3;
     --cloud: #e8e8ea;
-    --white: #f5f5f7;
+    --white: #ffffff;
     --ember: #a02a22;
     --ember-dim: #801e18;
     --ember-bright: #b8342b;
@@ -27,32 +27,61 @@
     --font-mono: 'JetBrains Mono', monospace;
 
     --bg-main: #050505;
-    --bg-card: #0d0d0f;
+    --bg-card: rgba(20, 20, 22, 0.55);
+    --bg-card-border: rgba(255, 255, 255, 0.1);
     --text-main: #e8e8ea;
     --text-muted: #8a8a8d;
     --accent: #a02a22;
   }
 
+  /* High-end Light Mode Architecture */
+  html:not(.dark) {
+    --void: #f6f6f9;
+    --obsidian: #ffffff;
+    --graphite: #e8e8ed;
+    --smoke: #dcdce2;
+    --iron: #c4c4cc;
+    --ash: #5c5c66;
+    --silver: #3c3c43;
+    --cloud: #141418;
+    --white: #141418;
+    --ember: #a02a22;
+    --ember-dim: #801e18;
+    --ember-bright: #b8342b;
+    --ember-glow: rgba(160, 42, 34, 0.2);
+    --vibrant-orange: #d94512;
+    --vibrant-orange-glow: rgba(217, 69, 18, 0.25);
+
+    --bg-main: #f6f6f9;
+    --bg-card: rgba(255, 255, 255, 0.85);
+    --bg-card-border: rgba(0, 0, 0, 0.08);
+    --text-main: #141418;
+    --text-muted: #5c5c66;
+    --accent: #a02a22;
+  }
+
   html {
     scroll-behavior: smooth;
-    background: var(--void);
-    color: var(--cloud);
+    background: var(--bg-main);
+    color: var(--text-main);
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   body {
-    background: var(--void);
-    color: var(--cloud);
+    background: var(--bg-main);
+    color: var(--text-main);
     min-height: 100vh;
     overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   ::selection {
     background: var(--ember);
-    color: var(--white);
+    color: #ffffff;
   }
 }
 
@@ -106,13 +135,12 @@
 .glass-card {
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  background: rgba(20, 20, 22, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-card);
+  border: 1px solid var(--bg-card-border);
   border-radius: 20px;
   transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .glass-card:hover {
-  background: rgba(20, 20, 22, 0.6);
   border-color: rgba(160, 42, 34, 0.4);
   box-shadow: 0 0 60px rgba(252, 107, 47, 0.15);
 }
@@ -124,7 +152,7 @@
 }
 .scroll-expand__track {
   width: 100%;
-  min-height: 180vh;
+  min-height: 250vh;
   position: relative;
 }
 .scroll-expand__stage {
@@ -641,3 +669,155 @@
     font-size: clamp(1.5rem, 7.5vw, 2rem);
   }
 }
+
+/* High-End Light Mode Component Overrides */
+html:not(.dark) .noise-overlay {
+  opacity: 0.02;
+  filter: invert(1);
+}
+
+html:not(.dark) h2,
+html:not(.dark) h3,
+html:not(.dark) .text-white {
+  color: var(--cloud) !important;
+}
+
+html:not(.dark) .text-ash {
+  color: var(--ash) !important;
+}
+
+html:not(.dark) .text-silver {
+  color: var(--silver) !important;
+}
+
+html:not(.dark) .text-\[\#EAE6E1\] {
+  color: #141418 !important;
+}
+
+html:not(.dark) .text-\[\#C4C4C8\] {
+  color: #5c5c66 !important;
+}
+
+html:not(.dark) .text-\[\#B5B5B5\] {
+  color: #5c5c66 !important;
+}
+
+html:not(.dark) .bg-white\/\[0\.04\],
+html:not(.dark) .bg-white\/\[0\.03\] {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06) !important;
+}
+
+html:not(.dark) .border-white\/10,
+html:not(.dark) .border-white\/15,
+html:not(.dark) .border-white\/20 {
+  border-color: rgba(0, 0, 0, 0.09) !important;
+}
+
+html:not(.dark) .bg-white\/5 {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+  color: #141418 !important;
+}
+
+html:not(.dark) .staggered-menu-header {
+  background: rgba(246, 246, 249, 0.85) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+html:not(.dark) .sm-toggle {
+  background: rgba(255, 255, 255, 0.95) !important;
+  color: #141418 !important;
+  border-color: rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+html:not(.dark) .sm-icon-line {
+  background: #141418 !important;
+}
+
+html:not(.dark) .staggered-menu-panel {
+  background: #ffffff !important;
+  color: #141418 !important;
+  box-shadow: -15px 0 50px rgba(0, 0, 0, 0.12);
+}
+
+html:not(.dark) .sm-panel-item {
+  color: #141418 !important;
+}
+
+html:not(.dark) .sm-socials-title,
+html:not(.dark) .sm-socials-link {
+  color: #5c5c66 !important;
+}
+
+html:not(.dark) .sm-socials-link:hover {
+  color: #141418 !important;
+}
+
+/* Header Quick Theme Toggle Styling */
+.sm-theme-toggle {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+.sm-theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(160, 42, 34, 0.5);
+  box-shadow: 0 0 15px rgba(252, 107, 47, 0.25);
+}
+
+html:not(.dark) .sm-theme-toggle {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  color: #141418 !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08) !important;
+}
+html:not(.dark) .sm-theme-toggle:hover {
+  background: #ffffff !important;
+  border-color: rgba(160, 42, 34, 0.5) !important;
+  box-shadow: 0 4px 16px rgba(160, 42, 34, 0.18) !important;
+}
+
+/* Modern Precision Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-main);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(160, 42, 34, 0.45);
+  border-radius: 9999px;
+  border: 1px solid var(--bg-main);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(160, 42, 34, 0.85);
+}
+
+/* Philosophy Section: Stage & Typography Contrast Architecture */
+html:not(.dark) .scroll-expand__stage {
+  background: var(--bg-main) !important;
+}
+
+/* In light mode before expansion: Title is deep ink with soft halo */
+html:not(.dark) .scroll-expand__title {
+  color: #141418 !important;
+  text-shadow: 0 2px 20px rgba(255, 255, 255, 0.95), 0 0 8px rgba(255, 255, 255, 0.9) !important;
+}
+
+html:not(.dark) .scroll-expand__hint {
+  color: #5c5c66 !important;
+}
+
+/* Inside Expanded Aperture: Dark Artwork Backdrop Guarantee */
+.philosophy-quote,
+html:not(.dark) .philosophy-quote,
+.scroll-expand__overlay p,
+html:not(.dark) .scroll-expand__overlay p {
+  color: #ffffff !important;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.95), 0 2px 10px rgba(0, 0, 0, 0.9) !important;
+}
+
+

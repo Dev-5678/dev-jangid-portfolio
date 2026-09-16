@@ -4,6 +4,7 @@ import gsap from 'gsap'
 
 interface HeroSectionProps {
   onOpenResume?: () => void
+  theme?: 'light' | 'dark'
 }
 
 const DUST_PARTICLES = [
@@ -27,7 +28,7 @@ const DUST_PARTICLES = [
   { size: 1.9, color: 'rgba(255,255,255,0.2)', top: '38%', left: '52%', duration: 5.6, delay: 10.2 }
 ]
 
-export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenResume }) => {
+export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenResume, theme = 'dark' }) => {
   const heroRef = useRef<HTMLElement>(null)
   const tagRef = useRef<HTMLDivElement>(null)
   const descRef = useRef<HTMLDivElement>(null)
@@ -65,7 +66,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
       id="hero"
       aria-label="Introduction"
       className="relative h-screen h-[100svh] min-h-[100svh] overflow-hidden select-none touch-pan-y"
-      style={{ background: '#050505' }}
+      style={{ background: 'var(--bg-main)' }}
     >
       {/* 1. Subtle SVG Noise Grain Texture */}
       <div
@@ -181,7 +182,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
               weight={true}
               italic={true}
               alpha={false}
-              textColor="rgba(255, 255, 255, 0.88)"
+              textColor={theme === 'dark' ? 'rgba(255, 255, 255, 0.88)' : 'rgba(24, 24, 27, 0.95)'}
               minFontSize={16}
               className="text-pressure-title tp-flex"
             />
@@ -189,7 +190,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         </div>
 
         {/* Cinematic Sub-headline */}
-        <div className="mt-4 sm:mt-5 md:mt-6 text-center z-[20] px-2">
+        <div className="mt-8 sm:mt-12 md:mt-16 text-center z-[20] px-2">
           <p
             className="hero-line text-[clamp(0.55rem,2.2vw,0.88rem)] md:text-[clamp(0.72rem,1.08vw,0.88rem)] font-extrabold tracking-[0.12em] sm:tracking-[0.25em] uppercase text-ember drop-shadow-[0_0_20px_rgba(252,107,47,0.7)]"
             style={{ fontFamily: 'var(--font-poppins), sans-serif' }}

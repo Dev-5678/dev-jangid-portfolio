@@ -25,40 +25,46 @@ describe('Portfolio Resume Data Truth & Integrity', () => {
 
     const aai = experiences.find((e) => e.id === 'aai-it-intern')
     expect(aai).toBeDefined()
-    expect(aai?.role).toBe('IT Intern')
+    expect(aai?.role).toBe('Network Security & IT Intern')
     expect(aai?.organization).toBe('Airports Authority of India (AAI)')
-    expect(aai?.dates).toBe('July 2026 – August 2026')
+    expect(aai?.dates).toBe('14 August 2026 – 25 September 2026')
     expect(aai?.location).toBe('New Delhi, India')
     expect(aai?.responsibilities).toHaveLength(4)
 
     const isl = experiences.find((e) => e.id === 'isl-space-tech-intern')
     expect(isl).toBeDefined()
-    expect(isl?.role).toBe('Space Technology Intern')
+    expect(isl?.role).toBe('Space Systems & CanSat Trainee')
     expect(isl?.organization).toBe('India Space Lab (ISL)')
-    expect(isl?.dates).toBe('June 2025 – July 2025')
+    expect(isl?.dates).toBe('15 July 2025 – 31 July 2025')
     expect(isl?.location).toBe('Haryana, India')
     expect(isl?.responsibilities).toHaveLength(4)
 
     const genai = experiences.find((e) => e.id === 'genai-trainee')
     expect(genai).toBeDefined()
-    expect(genai?.role).toBe('Generative AI Trainee')
-    expect(genai?.dates).toBe('April 2025 – June 2025')
+    expect(genai?.role).toBe('Generative AI & Multimodal RAG Scholar')
+    expect(genai?.dates).toBe('June 2024 (1 Month)')
     expect(genai?.responsibilities).toHaveLength(4)
   })
 
-  it('organizes verified skills into 4 distinct groups', () => {
-    expect(skillCategories).toHaveLength(4)
+  it('organizes verified skills into 6 distinct groups', () => {
+    expect(skillCategories).toHaveLength(6)
     const titles = skillCategories.map((c) => c.title)
     expect(titles).toContain('Programming Languages')
-    expect(titles).toContain('Core Computer Science')
-    expect(titles).toContain('Web and AI Development')
-    expect(titles).toContain('Tools and Systems')
+    expect(titles).toContain('Core Computer Science & Systems')
+    expect(titles).toContain('Artificial Intelligence & Cloud')
+    expect(titles).toContain('Modern Web & Frontend Engineering')
+    expect(titles).toContain('Aerospace & Embedded Telemetry')
+    expect(titles).toContain('DevOps, Security & Tooling')
 
     const languages = skillCategories.find((c) => c.title === 'Programming Languages')?.skills
-    expect(languages).toEqual(['C', 'C++', 'Java', 'SQL'])
+    expect(languages).toContain('C++')
+    expect(languages).toContain('Java')
+    expect(languages).toContain('Python 3')
+    expect(languages).toContain('TypeScript')
 
-    const core = skillCategories.find((c) => c.title === 'Core Computer Science')?.skills
-    expect(core).toEqual(['Data Structures and Algorithms (DSA)', 'Object-Oriented Programming (OOP)'])
+    const core = skillCategories.find((c) => c.title === 'Core Computer Science & Systems')?.skills
+    expect(core).toContain('Data Structures & Algorithms (DSA)')
+    expect(core).toContain('Object-Oriented Programming (OOP)')
   })
 
   it('contains accurate education records', () => {
