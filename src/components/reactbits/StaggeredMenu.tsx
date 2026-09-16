@@ -347,96 +347,34 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
           </a>
         </div>
 
-        {/* Floating Quick Action Group on Right */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          {/* Quick Command Palette Button */}
-          {onOpenCommandPalette && (
-            <button
-              onClick={onOpenCommandPalette}
-              aria-label="Open Command Palette"
-              title="Open Command Palette (Ctrl+K)"
-              className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono text-ash hover:text-white bg-[#111114bf] border border-white/10 hover:border-white/20 rounded-full backdrop-blur-xl transition-all cursor-pointer"
-            >
-              <Search className="w-3 h-3 text-ember" />
-              <span>CMD</span>
-              <span className="text-[9px] bg-white/10 px-1 py-0.2 rounded text-silver">⌘K</span>
-            </button>
-          )}
-
-          {/* Quick Recruiter TL;DR Toggle */}
-          {onToggleTLDR && (
-            <button
-              onClick={onToggleTLDR}
-              aria-label="Toggle Recruiter 30-Second Executive TL;DR Mode"
-              title="Toggle 30-Second Recruiter Summary"
-              className={`hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full backdrop-blur-xl transition-all cursor-pointer border ${
-                isTLDR
-                  ? 'bg-ember text-white border-ember shadow-[0_0_15px_rgba(160,42,34,0.4)]'
-                  : 'bg-[#111114bf] text-ash hover:text-white border-white/10 hover:border-white/20'
-              }`}
-            >
-              <Zap className={`w-3 h-3 ${isTLDR ? 'fill-current text-white' : 'text-amber-400'}`} />
-              <span>{isTLDR ? 'TL;DR ON' : '30s TL;DR'}</span>
-            </button>
-          )}
-
-          {/* Quick Resume Pill (Reel Ember Signature) */}
-          {onOpenResume && (
-            <button
-              onClick={onOpenResume}
-              aria-label="Inspect Verified Resume PDF"
-              title="Inspect Verified Resume PDF"
-              className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 text-xs font-semibold tracking-wide text-white bg-ember hover:bg-ember-bright rounded-full shadow-[0_0_20px_rgba(160,42,34,0.45)] backdrop-blur-xl transition-all duration-300 cursor-pointer group"
-            >
-              <FileText className="w-3.5 h-3.5 transition-transform duration-300 group-hover:scale-110" />
-              <span>Resume</span>
-            </button>
-          )}
-
-          {/* Light/Dark Mode Switch */}
-          <button
-            onClick={onToggleTheme}
-            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-            aria-pressed={theme === 'dark'}
-            className="w-8 h-8 rounded-full bg-[#111114bf] border border-white/10 hover:border-white/20 text-ash hover:text-white flex items-center justify-center backdrop-blur-xl transition-all duration-200 cursor-pointer"
-            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-          >
-            {theme === 'dark' ? (
-              <Sun className="w-3.5 h-3.5 text-amber-300 transition-transform duration-300 hover:rotate-45" />
-            ) : (
-              <Moon className="w-3.5 h-3.5 text-silver transition-transform duration-300 hover:-rotate-12" />
-            )}
-          </button>
-
-          {/* Staggered Menu Toggle Button (Menu +) */}
-          <button
-            ref={toggleBtnRef}
-            className="sm-toggle"
-            aria-label={isOpen ? 'Close menu' : 'Open menu'}
-            aria-expanded={isOpen}
-            aria-controls="staggered-menu-panel"
-            onClick={toggleMenu}
-            type="button"
-          >
-            <span className="sm-toggle-textWrap" aria-hidden="true">
-              <span ref={textInnerRef} className="sm-toggle-textInner">
-                {textLines.map((line, idx) => (
-                  <span key={idx} className="sm-toggle-line">
-                    {line}
-                  </span>
-                ))}
-              </span>
+        {/* Floating Toggle on Right (Strict Reel Replica: Only Menu +) */}
+        <button
+          ref={toggleBtnRef}
+          className="sm-toggle"
+          aria-label={isOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={isOpen}
+          aria-controls="staggered-menu-panel"
+          onClick={toggleMenu}
+          type="button"
+        >
+          <span className="sm-toggle-textWrap" aria-hidden="true">
+            <span ref={textInnerRef} className="sm-toggle-textInner">
+              {textLines.map((line, idx) => (
+                <span key={idx} className="sm-toggle-line">
+                  {line}
+                </span>
+              ))}
             </span>
-            <span ref={iconRef} className="sm-icon" aria-hidden="true">
-              <span ref={lineHRef} className="sm-icon-line" />
-              <span ref={lineVRef} className="sm-icon-line sm-icon-line-v" />
-            </span>
-          </button>
-        </div>
+          </span>
+          <span ref={iconRef} className="sm-icon" aria-hidden="true">
+            <span ref={lineHRef} className="sm-icon-line" />
+            <span ref={lineVRef} className="sm-icon-line sm-icon-line-v" />
+          </span>
+        </button>
       </header>
 
       {/* Slide-Out Navigation Panel */}
-      <aside id="staggered-menu-panel" ref={panelRef} className="staggered-menu-panel" aria-hidden={!isOpen}>
+      <aside id="staggered-menu-panel" ref={panelRef} className="staggered-menu-panel">
         <div className="sm-panel-inner">
           {/* Main Navigation Item Links */}
           <ul className="sm-panel-list" role="list" data-numbering={displayItemNumbering || undefined}>
@@ -462,18 +400,97 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
             ))}
           </ul>
 
-          {/* Quick Tools Drawer inside Panel */}
-          <div className="pt-4 border-t border-white/10 flex flex-col gap-2.5">
+          {/* Quick Tools & Utilities Drawer inside Panel */}
+          <div className="pt-4 border-t border-white/10 flex flex-col gap-2">
+            {/* Quick Resume Button */}
+            {onOpenResume && (
+              <button
+                onClick={() => {
+                  handleDismiss()
+                  onOpenResume()
+                }}
+                aria-label="Inspect Verified Resume PDF"
+                className="flex items-center justify-between px-4 py-2.5 rounded-xl bg-ember/15 border border-ember/30 hover:bg-ember text-white text-xs font-semibold tracking-wide transition-all duration-300 text-left group cursor-pointer"
+              >
+                <div className="flex items-center gap-2.5">
+                  <FileText className="w-4 h-4 text-white transition-transform group-hover:scale-110" />
+                  <span>Inspect Resume PDF</span>
+                </div>
+                <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-white/20 text-white">Verified</span>
+              </button>
+            )}
+
+            {/* Quick Command Palette Button */}
+            {onOpenCommandPalette && (
+              <button
+                onClick={() => {
+                  handleDismiss()
+                  onOpenCommandPalette()
+                }}
+                aria-label="Open Command Palette"
+                className="flex items-center justify-between px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs font-mono transition-colors text-left cursor-pointer"
+              >
+                <div className="flex items-center gap-2">
+                  <Search className="w-3.5 h-3.5 text-ember" />
+                  <span>Command Palette</span>
+                </div>
+                <span className="text-[10px] bg-white/10 px-1.5 py-0.5 rounded text-silver">⌘K</span>
+              </button>
+            )}
+
+            {/* Light / Dark Mode Toggle */}
+            <button
+              onClick={onToggleTheme}
+              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+              aria-pressed={theme === 'dark'}
+              className="flex items-center justify-between px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs font-mono transition-colors text-left cursor-pointer"
+            >
+              <div className="flex items-center gap-2">
+                {theme === 'dark' ? (
+                  <Sun className="w-3.5 h-3.5 text-amber-400" />
+                ) : (
+                  <Moon className="w-3.5 h-3.5 text-silver" />
+                )}
+                <span>Theme Mode</span>
+              </div>
+              <span className="text-[10px] uppercase text-ash">{theme === 'dark' ? 'Dark' : 'Light'}</span>
+            </button>
+
+            {/* Recruiter TL;DR Summary Toggle */}
+            {onToggleTLDR && (
+              <button
+                onClick={onToggleTLDR}
+                aria-label="Toggle Recruiter 30-Second Executive TL;DR Mode"
+                className={`flex items-center justify-between px-4 py-2 rounded-xl border text-xs font-mono transition-colors text-left cursor-pointer ${
+                  isTLDR
+                    ? 'bg-ember/20 text-white border-ember/40'
+                    : 'bg-white/5 hover:bg-white/10 text-white border-transparent'
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <Zap className={`w-3.5 h-3.5 ${isTLDR ? 'text-amber-400 fill-current' : 'text-ash'}`} />
+                  <span>30s Recruiter TL;DR</span>
+                </div>
+                <span className={`text-[10px] px-1.5 py-0.5 rounded ${isTLDR ? 'bg-ember text-white' : 'bg-white/10 text-ash'}`}>
+                  {isTLDR ? 'ON' : 'OFF'}
+                </span>
+              </button>
+            )}
+
+            {/* Hacker CLI Terminal */}
             {onOpenConsole && (
               <button
                 onClick={() => {
                   handleDismiss()
                   onOpenConsole()
                 }}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs font-mono transition-colors text-left"
+                className="flex items-center justify-between px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs font-mono transition-colors text-left cursor-pointer"
               >
-                <Terminal className="w-4 h-4 text-ember" />
-                <span>Launch CLI Console [~]</span>
+                <div className="flex items-center gap-2">
+                  <Terminal className="w-3.5 h-3.5 text-ember" />
+                  <span>Hacker CLI Console</span>
+                </div>
+                <span className="text-[10px] bg-white/10 px-1.5 py-0.5 rounded text-silver">[~]</span>
               </button>
             )}
           </div>

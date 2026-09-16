@@ -144,7 +144,7 @@ export const ProjectsSection: React.FC = () => {
     <section
       id="projects"
       aria-label="Engineering Highlights and Projects"
-      className="relative w-full pt-12 sm:pt-16 md:pt-20 pb-16 sm:pb-24 md:pb-36 bg-black z-10 overflow-hidden"
+      className="relative w-full pt-12 sm:pt-16 md:pt-20 pb-16 sm:pb-24 md:pb-36 bg-transparent z-10 overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-16">
         {/* Section Header */}
