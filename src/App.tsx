@@ -22,11 +22,14 @@ import { CommandPalette } from './components/CommandPalette'
 import { OfflineBanner } from './components/OfflineBanner'
 import { CopyToast } from './components/CopyToast'
 import { personalInfo } from './data/portfolio'
-import { Zap, X } from 'lucide-react'
+import { Zap, X, ShieldCheck } from 'lucide-react'
 import { AAIProjectWebsite } from './pages/AAIProjectWebsite'
 import { CanSatProjectWebsite } from './pages/CanSatProjectWebsite'
 import { GeminiRAGProjectWebsite } from './pages/GeminiRAGProjectWebsite'
 import { SystemsEngineProjectWebsite } from './pages/SystemsEngineProjectWebsite'
+import { CustomCursor } from './components/CustomCursor'
+import { useAntiPlagiarism } from './hooks/useAntiPlagiarism'
+import { PlagiarismVerificationModal } from './components/PlagiarismVerificationModal'
 
 export function App() {
   const { theme, toggleTheme } = useTheme()
@@ -92,61 +95,99 @@ export function App() {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [playClick])
 
-  // Direct Standalone Project Website Rendering
+  const {
+    showToast: showAntiPlagToast,
+    toastMessage: antiPlagToastMsg,
+    isModalOpen: isPlagModalOpen,
+    openModal: openPlagModal,
+    closeModal: closePlagModal
+  } = useAntiPlagiarism()
+
+  // Dynamic Document Title updater
+  useEffect(() => {
+    if (projectRoute === 'aai') {
+      document.title = 'Dev Jangid | Airports Authority of India (AAI) Security Console'
+    } else if (projectRoute === 'cansat') {
+      document.title = 'Dev Jangid | Space Systems & CanSat Telemetry Ground Station'
+    } else if (projectRoute === 'rag') {
+      document.title = 'Dev Jangid | Gemini Multimodal RAG Enterprise Studio'
+    } else if (projectRoute === 'systems') {
+      document.title = 'Dev Jangid | C++20 High-Throughput Memory Engine'
+    } else {
+      document.title = 'Dev Jangid | Computer Science Engineer | Portfolio'
+    }
+  }, [projectRoute])
+
+  // Direct Standalone Project Website Rendering with Custom Cursor
   if (projectRoute === 'aai') {
     return (
-      <AAIProjectWebsite
-        onBack={() => {
-          window.location.hash = '#projects'
-          setProjectRoute(null)
-        }}
-        theme={theme}
-        onToggleTheme={toggleTheme}
-      />
+      <>
+        <CustomCursor />
+        <AAIProjectWebsite
+          onBack={() => {
+            window.location.hash = '#projects'
+            setProjectRoute(null)
+          }}
+          theme={theme}
+          onToggleTheme={toggleTheme}
+        />
+      </>
     )
   }
 
   if (projectRoute === 'cansat') {
     return (
-      <CanSatProjectWebsite
-        onBack={() => {
-          window.location.hash = '#projects'
-          setProjectRoute(null)
-        }}
-        theme={theme}
-        onToggleTheme={toggleTheme}
-      />
+      <>
+        <CustomCursor />
+        <CanSatProjectWebsite
+          onBack={() => {
+            window.location.hash = '#projects'
+            setProjectRoute(null)
+          }}
+          theme={theme}
+          onToggleTheme={toggleTheme}
+        />
+      </>
     )
   }
 
   if (projectRoute === 'rag') {
     return (
-      <GeminiRAGProjectWebsite
-        onBack={() => {
-          window.location.hash = '#projects'
-          setProjectRoute(null)
-        }}
-        theme={theme}
-        onToggleTheme={toggleTheme}
-      />
+      <>
+        <CustomCursor />
+        <GeminiRAGProjectWebsite
+          onBack={() => {
+            window.location.hash = '#projects'
+            setProjectRoute(null)
+          }}
+          theme={theme}
+          onToggleTheme={toggleTheme}
+        />
+      </>
     )
   }
 
   if (projectRoute === 'systems') {
     return (
-      <SystemsEngineProjectWebsite
-        onBack={() => {
-          window.location.hash = '#projects'
-          setProjectRoute(null)
-        }}
-        theme={theme}
-        onToggleTheme={toggleTheme}
-      />
+      <>
+        <CustomCursor />
+        <SystemsEngineProjectWebsite
+          onBack={() => {
+            window.location.hash = '#projects'
+            setProjectRoute(null)
+          }}
+          theme={theme}
+          onToggleTheme={toggleTheme}
+        />
+      </>
     )
   }
 
   return (
     <div className="min-h-screen flex flex-col bg-[var(--bg-main)] text-[var(--text-main)] selection:bg-ember selection:text-white relative transition-colors duration-300">
+      {/* Interactive Custom Cursor with trailing physics & hovering spotlight */}
+      <CustomCursor />
+
       {/* Cinematic Counter Loading Screen (from reel) */}
       <LoadingScreen />
 
@@ -182,6 +223,10 @@ export function App() {
         onOpenCommandPalette={() => {
           playClick()
           setIsPaletteOpen(true)
+        }}
+        onOpenPlagiarism={() => {
+          playClick()
+          openPlagModal()
         }}
         isTLDR={isTLDR}
         onToggleTLDR={() => {
@@ -303,6 +348,31 @@ export function App() {
 
       {/* Feature 3: Tactile Copy Notification Toast */}
       <CopyToast message={copiedText} onClose={clearCopied} />
+
+      {/* Verified 0% Plagiarism Floating Action Trigger Pill */}
+      <button
+        onClick={openPlagModal}
+        className="fixed bottom-6 right-6 z-40 hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/80 hover:bg-black border border-emerald-500/40 text-emerald-400 font-mono text-[11px] font-bold shadow-[0_0_20px_rgba(16,185,129,0.25)] backdrop-blur-md transition-all hover:scale-105 cursor-pointer"
+        title="View Official 0% Plagiarism & Original Architecture Verification"
+      >
+        <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+        <span>VERIFIED 0% PLAGIARISM</span>
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+      </button>
+
+      {/* Anti-Plagiarism & IP Protection Notification Toast */}
+      {showAntiPlagToast && (
+        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-2xl bg-[#0c0d12]/95 border border-emerald-500/50 text-white font-mono text-xs shadow-2xl flex items-center gap-2.5 animate-fade-in backdrop-blur-xl">
+          <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+          <span>{antiPlagToastMsg}</span>
+        </div>
+      )}
+
+      {/* Official Plagiarism & Originality Verification Modal */}
+      <PlagiarismVerificationModal
+        isOpen={isPlagModalOpen}
+        onClose={closePlagModal}
+      />
     </div>
   )
 }
