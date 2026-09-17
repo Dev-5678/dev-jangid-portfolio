@@ -266,6 +266,37 @@
 .scroll-pill-dot {
   animation: scrollDotGlide 2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
 }
+
+/* Hero Scroll Capsule Indicator — Precision Contrast */
+.scroll-pill-track {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+html:not(.dark) .hero-scroll-indicator span {
+  color: #141418 !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.35em !important;
+}
+
+html:not(.dark) .hero-scroll-indicator:hover span {
+  color: #A02A22 !important;
+}
+
+html:not(.dark) .scroll-pill-track {
+  background: #ffffff !important;
+  border: 1.5px solid rgba(20, 20, 24, 0.32) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+html:not(.dark) .hero-scroll-indicator:hover .scroll-pill-track {
+  border-color: #A02A22 !important;
+  box-shadow: 0 4px 16px rgba(160, 42, 34, 0.25) !important;
+}
+
+html:not(.dark) .scroll-pill-dot {
+  background: #A02A22 !important;
+  box-shadow: 0 0 8px rgba(160, 42, 34, 0.8), 0 1px 3px rgba(0, 0, 0, 0.25) !important;
+}
 .scroll-expand__overlay {
   text-align: center;
   z-index: 10;
