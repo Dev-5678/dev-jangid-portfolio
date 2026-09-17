@@ -1,7 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ApiRequest = any
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ApiResponse = any
+import type { VercelRequest, VercelResponse } from '@vercel/node'
 
 interface Ticket {
   id: string

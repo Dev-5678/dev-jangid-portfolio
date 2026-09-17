@@ -1,6 +1,6 @@
 import React, { useState, useRef, useLayoutEffect, useCallback, useEffect } from 'react'
 import gsap from 'gsap'
-import { Sun, Moon, FileText, Search, Terminal, Zap, ShieldCheck } from 'lucide-react'
+import { Sun, Moon, FileText, Search, Terminal, Zap } from 'lucide-react'
 
 export interface MenuItem {
   label: string
@@ -32,7 +32,6 @@ export interface StaggeredMenuProps {
   onOpenResume?: () => void
   onOpenCommandPalette?: () => void
   onOpenConsole?: () => void
-  onOpenPlagiarism?: () => void
   isTLDR?: boolean
   onToggleTLDR?: () => void
   isMuted?: boolean
@@ -58,7 +57,6 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   onOpenResume,
   onOpenCommandPalette,
   onOpenConsole,
-  onOpenPlagiarism,
   isTLDR = false,
   onToggleTLDR
 }) => {
@@ -456,24 +454,6 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                   <span>Command Palette</span>
                 </div>
                 <span className="text-[10px] bg-white/10 px-1.5 py-0.5 rounded text-silver">⌘K</span>
-              </button>
-            )}
-
-            {/* Quick 0% Plagiarism & Authenticity Certification Button */}
-            {onOpenPlagiarism && (
-              <button
-                onClick={() => {
-                  handleDismiss()
-                  onOpenPlagiarism()
-                }}
-                aria-label="Inspect Verified 0% Plagiarism Certification"
-                className="flex items-center justify-between px-4 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500/20 text-emerald-300 text-xs font-mono transition-colors text-left cursor-pointer"
-              >
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>0% Plagiarism Certificate</span>
-                </div>
-                <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded font-bold">VERIFIED</span>
               </button>
             )}
 
