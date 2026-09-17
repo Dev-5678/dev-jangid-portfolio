@@ -351,6 +351,19 @@ html:not(.dark) .scroll-pill-dot {
   display: flex;
   justify-content: space-between;
 }
+.text-pressure-title {
+  font-weight: 850;
+}
+.text-pressure-title span {
+  font-weight: 850;
+  display: inline-block;
+  will-change: font-variation-settings, transform;
+  text-shadow: 0 0 35px rgba(252, 107, 47, 0.45), 0 0 70px rgba(160, 42, 34, 0.25), 0 3px 6px rgba(0, 0, 0, 0.9);
+}
+html:not(.dark) .text-pressure-title span {
+  color: #111116 !important;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.12), 0 0 25px rgba(160, 42, 34, 0.25) !important;
+}
 .tp-stroke span {
   position: relative;
   color: rgba(255, 255, 255, 0.92);
