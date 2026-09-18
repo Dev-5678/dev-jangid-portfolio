@@ -17,16 +17,21 @@ export interface TextPressureProps {
   minFontSize?: number
 }
 
-const BASE_WGHT = 750
-const BASE_WDTH = 105
+interface LetterState {
+  x: number
+  y: number
+  scale: number
+  tilt: number
+  brightness: number
+}
 
 export const TextPressure: React.FC<TextPressureProps> = ({
   text = 'DEV JANGID',
-  fontFamily = 'Roboto Flex, Space Grotesk, sans-serif',
+  fontFamily = "'Space Grotesk', 'Roboto Flex', sans-serif",
   fontUrl = 'https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&display=swap',
-  width = true,
-  weight = true,
-  italic = true,
+  width: _width = true,
+  weight: _weight = true,
+  italic: _italic = true,
   alpha: _alpha = false,
   flex = true,
   stroke = false,
@@ -34,16 +39,21 @@ export const TextPressure: React.FC<TextPressureProps> = ({
   textColor = '#ffffff',
   strokeColor = '#A02A22',
   className = '',
-  minFontSize = 24
+  minFontSize = 28
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const titleRef = useRef<HTMLHeadingElement | null>(null)
   const spansRef = useRef<(HTMLSpanElement | null)[]>([])
-  const prevSettingsRef = useRef<string[]>([])
 
-  // In-memory cache for character centers (Zero getBoundingClientRect in rAF!)
+  // Hardware-accelerated letter physics state
+  const letterStatesRef = useRef<LetterState[]>([])
   const charCentersRef = useRef<{ x: number; y: number }[]>([])
-  const containerRectRef = useRef<{ left: number; top: number; width: number; height: number }>({ left: 0, top: 0, width: 0, height: 0 })
+  const containerRectRef = useRef<{ left: number; top: number; width: number; height: number }>({
+    left: 0,
+    top: 0,
+    width: 0,
+    height: 0
+  })
 
   const mousePos = useRef({ x: -3000, y: -3000 })
   const cursorTarget = useRef({ x: -3000, y: -3000 })
@@ -58,15 +68,21 @@ export const TextPressure: React.FC<TextPressureProps> = ({
   const chars = useMemo(() => text.split(''), [text])
   const letterCount = useMemo(() => chars.filter((c) => c !== ' ').length, [chars])
 
-  // Start the interaction animation loop on demand
+  // Initialize letter states
+  useEffect(() => {
+    letterStatesRef.current = chars
+      .filter((c) => c !== ' ')
+      .map(() => ({ x: 0, y: 0, scale: 1, tilt: 0, brightness: 1 }))
+  }, [chars])
+
+  // Start the pure GPU compositor animation loop on demand
   const startAnimation = useCallback(() => {
     if (isAnimatingRef.current) return
     isAnimatingRef.current = true
 
-    let idleFrames = 0
+    let idleCount = 0
 
     const animate = () => {
-      // If hero scrolled out of view, sleep
       if (!isVisibleRef.current) {
         isAnimatingRef.current = false
         rafIdRef.current = null
@@ -76,16 +92,18 @@ export const TextPressure: React.FC<TextPressureProps> = ({
       // Smooth cursor position interpolation
       const dxTarget = cursorTarget.current.x - mousePos.current.x
       const dyTarget = cursorTarget.current.y - mousePos.current.y
-      mousePos.current.x += dxTarget * 0.2
-      mousePos.current.y += dyTarget * 0.2
+      mousePos.current.x += dxTarget * 0.28
+      mousePos.current.y += dyTarget * 0.28
 
       const containerW = containerRectRef.current.width || 800
       const isMobile = containerW < 768
-      const radius = isMobile ? Math.max(0.55 * containerW, 200) : Math.max(containerW * 0.38, 280)
+      const radius = isMobile ? Math.max(containerW * 0.5, 180) : Math.max(containerW * 0.35, 260)
 
       const centers = charCentersRef.current
       const spans = spansRef.current
-      let anyActive = false
+      const states = letterStatesRef.current
+
+      let anyMoving = false
 
       for (let idx = 0; idx < spans.length; idx++) {
         const el = spans[idx]
@@ -97,38 +115,71 @@ export const TextPressure: React.FC<TextPressureProps> = ({
 
         const dx = charX - mousePos.current.x
         const dy = charY - mousePos.current.y
-        const dist = Math.sqrt(dx * dx + dy * dy)
-        const cursorInfluence = Math.max(0, 1 - dist / radius)
+        const dist = Math.hypot(dx, dy)
 
-        if (cursorInfluence > 0.01) {
-          anyActive = true
+        let targetY = 0
+        let targetX = 0
+        let targetScale = 1
+        let targetTilt = 0
+        let targetBrightness = 1
+
+        if (dist < radius) {
+          const influence = 1 - dist / radius
+          const power = influence * influence
+
+          // Magnetic 3D lift: characters elevate gracefully toward cursor
+          targetY = -power * 14
+          // Magnetic expand: characters subtly grow in prominence
+          targetScale = 1 + power * 0.12
+          // Subtle lateral parting: fluid wave effect
+          targetX = (dx / (dist + 0.1)) * power * -4
+          // Subtle kinetic tilt: characters gently angle toward pointer
+          targetTilt = -(dx / radius) * power * 7
+          // Radiant luminous brightness flare
+          targetBrightness = 1 + power * 0.35
         }
 
-        // Target weight and width calculated purely from cursor proximity
-        const targetWght = weight ? Math.round(BASE_WGHT + cursorInfluence * 220) : BASE_WGHT
-        const targetWdth = width ? Math.round(BASE_WDTH + cursorInfluence * 26) : BASE_WDTH
-        const targetItal = italic ? (cursorInfluence * 0.5).toFixed(2) : '0'
+        const state = states[idx] || { x: 0, y: 0, scale: 1, tilt: 0, brightness: 1 }
 
-        const fontVar = `'wght' ${targetWght}, 'wdth' ${targetWdth}, 'ital' ${targetItal}`
+        // Spring ease interpolation
+        state.x += (targetX - state.x) * 0.25
+        state.y += (targetY - state.y) * 0.25
+        state.scale += (targetScale - state.scale) * 0.25
+        state.tilt += (targetTilt - state.tilt) * 0.25
+        state.brightness += (targetBrightness - state.brightness) * 0.25
 
-        if (prevSettingsRef.current[idx] !== fontVar) {
-          prevSettingsRef.current[idx] = fontVar
-          el.style.fontVariationSettings = fontVar
+        states[idx] = state
+
+        // Check if still moving
+        if (
+          Math.abs(state.y - targetY) > 0.05 ||
+          Math.abs(state.x - targetX) > 0.05 ||
+          Math.abs(state.scale - targetScale) > 0.002
+        ) {
+          anyMoving = true
+        }
+
+        // Apply pure GPU transform & filter (Zero layout reflow, Zero font re-shaping!)
+        el.style.transform = `translate3d(${state.x.toFixed(2)}px, ${state.y.toFixed(2)}px, 0) scale(${state.scale.toFixed(3)}) rotate(${state.tilt.toFixed(2)}deg)`
+        if (targetBrightness > 1 || state.brightness > 1.01) {
+          el.style.filter = `brightness(${state.brightness.toFixed(2)})`
+        } else {
+          el.style.filter = 'none'
         }
       }
 
-      // If cursor is stationary or far away, sleep the loop after settling
       const cursorDistRemaining = Math.abs(dxTarget) + Math.abs(dyTarget)
-      if (!anyActive && cursorDistRemaining < 1) {
-        idleFrames++
-        if (idleFrames > 12) {
-          // Reset all characters to clean resting baseline
-          const baseVar = `'wght' ${BASE_WGHT}, 'wdth' ${BASE_WDTH}, 'ital' 0`
+
+      // When fully settled, sleep the rAF loop (0% CPU / 0% GPU)
+      if (!anyMoving && cursorDistRemaining < 1) {
+        idleCount++
+        if (idleCount > 10) {
+          // Snap clean resting state
           for (let idx = 0; idx < spans.length; idx++) {
             const el = spans[idx]
-            if (el && prevSettingsRef.current[idx] !== baseVar) {
-              prevSettingsRef.current[idx] = baseVar
-              el.style.fontVariationSettings = baseVar
+            if (el) {
+              el.style.transform = 'translate3d(0, 0, 0) scale(1) rotate(0deg)'
+              el.style.filter = 'none'
             }
           }
           isAnimatingRef.current = false
@@ -136,16 +187,16 @@ export const TextPressure: React.FC<TextPressureProps> = ({
           return
         }
       } else {
-        idleFrames = 0
+        idleCount = 0
       }
 
       rafIdRef.current = requestAnimationFrame(animate)
     }
 
     rafIdRef.current = requestAnimationFrame(animate)
-  }, [width, weight, italic])
+  }, [])
 
-  // Mouse & touch tracking with passive event triggers
+  // Mouse & Touch tracking with passive event triggers
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       cursorTarget.current.x = e.clientX
@@ -192,7 +243,7 @@ export const TextPressure: React.FC<TextPressureProps> = ({
     }
   }, [startAnimation])
 
-  // Viewport visibility observer: pause animation when hero is off-screen
+  // Viewport intersection observer: sleep when scrolled away
   useEffect(() => {
     if (!containerRef.current || typeof IntersectionObserver === 'undefined') return
     const observer = new IntersectionObserver(
@@ -211,7 +262,7 @@ export const TextPressure: React.FC<TextPressureProps> = ({
     return () => observer.disconnect()
   }, [startAnimation])
 
-  // Proportional font sizing: measures and caches geometry ONCE on resize/mount
+  // Measure and cache character centers in memory once on resize/mount
   const updateGeometry = useCallback(() => {
     if (!containerRef.current || !titleRef.current) return
     const rect = containerRef.current.getBoundingClientRect()
@@ -235,7 +286,6 @@ export const TextPressure: React.FC<TextPressureProps> = ({
     setScaleY(1)
     setLineHeight(1)
 
-    // Pre-measure character positions in next frame
     requestAnimationFrame(() => {
       if (!titleRef.current) return
       const titleRect = titleRef.current.getBoundingClientRect()
@@ -245,22 +295,12 @@ export const TextPressure: React.FC<TextPressureProps> = ({
         setLineHeight(ratio)
       }
 
-      // Cache all letter center coordinates in memory
       charCentersRef.current = spansRef.current.map((el) => {
         if (!el) return { x: 0, y: 0 }
         const u = el.getBoundingClientRect()
         return {
           x: u.left + u.width / 2,
           y: u.top + u.height / 2
-        }
-      })
-
-      // Set initial clean resting baseline
-      const baseVar = `'wght' ${BASE_WGHT}, 'wdth' ${BASE_WDTH}, 'ital' 0`
-      spansRef.current.forEach((el, idx) => {
-        if (el) {
-          el.style.fontVariationSettings = baseVar
-          prevSettingsRef.current[idx] = baseVar
         }
       })
     })
@@ -306,14 +346,17 @@ export const TextPressure: React.FC<TextPressureProps> = ({
 
         .text-pressure-title {
           color: ${textColor};
-          font-weight: 750;
+          font-weight: 850;
           letter-spacing: 0.04em;
+          font-variation-settings: 'wght' 850, 'wdth' 105;
         }
 
         .text-pressure-title span {
           display: inline-block;
-          font-weight: 750;
-          will-change: font-variation-settings;
+          font-weight: 850;
+          transform-origin: center bottom;
+          will-change: transform, filter;
+          user-select: none;
         }
       `}</style>
     ),
@@ -341,7 +384,7 @@ export const TextPressure: React.FC<TextPressureProps> = ({
           textAlign: 'center',
           userSelect: 'none',
           whiteSpace: 'nowrap',
-          fontWeight: 750,
+          fontWeight: 850,
           width: '100%',
           display: 'flex',
           alignItems: 'center',

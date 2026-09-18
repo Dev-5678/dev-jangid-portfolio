@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { TextPressure } from '../components/reactbits/TextPressure'
+import { ArrowUpRight } from 'lucide-react'
 import gsap from 'gsap'
 
 interface HeroSectionProps {
@@ -74,9 +75,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
       {/* 4. Top-Left Status Pill Badge */}
       <div
         ref={tagRef}
-        className="absolute top-16 sm:top-20 md:top-24 left-4 sm:left-6 md:left-14 lg:left-20 z-[40] opacity-0 flex items-center gap-2 sm:gap-2.5 max-w-[calc(100vw-5rem)]"
+        className="absolute top-16 sm:top-20 md:top-24 left-4 sm:left-6 md:left-14 lg:left-20 z-[40] opacity-0 flex items-center gap-2 sm:gap-2.5 max-w-[calc(100vw-5rem)] px-3 sm:px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.25)]"
       >
-        <span className="w-[7px] h-[7px] shrink-0 rounded-full bg-ember animate-pulse shadow-[0_0_10px_#A02A22]" />
+        <span className="relative flex h-2 w-2 shrink-0">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-ember opacity-75" />
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-ember shadow-[0_0_8px_#fc6b2f]" />
+        </span>
         <span
           className="text-[10px] sm:text-[11px] text-[#B5B5B5] tracking-[0.16em] sm:tracking-[0.22em] uppercase font-semibold truncate"
           style={{ fontFamily: 'var(--font-display)' }}
@@ -85,10 +89,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         </span>
       </div>
 
-      {/* 5. Engineering Subtitle (Adaptive: centered on mobile, pinned bottom-left on desktop) */}
+      {/* 5. Engineering Subtitle & Capability Chips (Adaptive: centered on mobile, pinned bottom-left on desktop) */}
       <div
         ref={descRef}
-        className="absolute bottom-[16%] sm:bottom-[15%] md:bottom-[11%] lg:bottom-[13%] left-4 right-4 sm:left-6 sm:right-6 md:left-14 md:right-auto lg:left-20 z-[40] max-w-[92vw] sm:max-w-[360px] md:max-w-[400px] lg:max-w-[440px] opacity-0 text-center md:text-left mx-auto md:mx-0"
+        className="absolute bottom-[16%] sm:bottom-[15%] md:bottom-[11%] lg:bottom-[13%] left-4 right-4 sm:left-6 sm:right-6 md:left-14 md:right-auto lg:left-20 z-[40] max-w-[92vw] sm:max-w-[360px] md:max-w-[420px] lg:max-w-[460px] opacity-0 text-center md:text-left mx-auto md:mx-0"
       >
         <p
           className="text-[11.5px] sm:text-[13px] md:text-[14px] text-[#B5B5B5] leading-[1.6] sm:leading-[1.75] font-normal tracking-wide"
@@ -96,6 +100,20 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         >
           Full-Stack Developer &amp; Computer Science Engineer crafting fast, resilient, and motion-driven digital products.
         </p>
+        <div className="mt-2.5 sm:mt-3 flex flex-wrap gap-1.5 sm:gap-2 justify-center md:justify-start">
+          <span className="px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-[10px] font-mono text-zinc-300 tracking-wider">
+            AAI NetSec
+          </span>
+          <span className="px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-[10px] font-mono text-zinc-300 tracking-wider">
+            CanSat UHF
+          </span>
+          <span className="px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-[10px] font-mono text-zinc-300 tracking-wider">
+            Gemini RAG
+          </span>
+          <span className="px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-[10px] font-mono text-zinc-300 tracking-wider">
+            C++ Systems
+          </span>
+        </div>
       </div>
 
       {/* 6. Magnetic Action Buttons (Adaptive: side-by-side on mobile, stacked on desktop) */}
@@ -105,14 +123,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
       >
         <a
           href="#projects"
-          className="relative inline-flex items-center justify-center gap-2 sm:gap-2.5 px-4 sm:px-7 py-2.5 sm:py-3.5 rounded-full font-semibold text-[11px] sm:text-[13px] tracking-wide transition-all duration-300 overflow-hidden cursor-pointer bg-ember hover:bg-ember-bright text-white border border-ember/70 shadow-[0_0_25px_rgba(160,42,34,0.55)] hover:shadow-[0_0_40px_rgba(252,107,47,0.75)] hover:scale-105 active:scale-95 group touch-manipulation flex-1 sm:flex-initial"
+          className="relative inline-flex items-center justify-center gap-2 sm:gap-2.5 px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full font-bold text-[12px] sm:text-[13px] tracking-wide transition-all duration-300 overflow-hidden cursor-pointer bg-ember hover:bg-ember-bright text-white border border-ember/70 shadow-[0_0_25px_rgba(160,42,34,0.55)] hover:shadow-[0_0_40px_rgba(252,107,47,0.75)] hover:scale-105 active:scale-95 group touch-manipulation flex-1 sm:flex-initial"
           title="Explore Engineering Highlights"
         >
-          <span className="relative z-10 flex items-center gap-2 sm:gap-3">
-            <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-black/30 border border-white/30 flex items-center justify-center transition-transform duration-500 group-hover:rotate-45 group-hover:bg-white group-hover:text-ember shrink-0">
-              <svg width="10" height="10" viewBox="0 0 12 12" fill="none" className="sm:w-[11px] sm:h-[11px]">
-                <path d="M1 11L11 1M11 1H3M11 1V9" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+          <span className="relative z-10 flex items-center gap-2 sm:gap-2.5">
+            <span className="w-6 h-6 rounded-full bg-black/30 border border-white/25 flex items-center justify-center transition-all duration-300 group-hover:rotate-45 group-hover:border-white/60 group-hover:bg-black/40 shrink-0">
+              <ArrowUpRight className="w-3.5 h-3.5 text-white stroke-[2.5]" />
             </span>
             <span className="whitespace-nowrap">Explore More</span>
           </span>
@@ -120,14 +136,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
 
         <a
           href="#contact"
-          className="relative inline-flex items-center justify-center gap-2 sm:gap-2.5 px-4 sm:px-7 py-2.5 sm:py-3.5 rounded-full font-semibold text-[11px] sm:text-[13px] tracking-wide transition-all duration-300 overflow-hidden cursor-pointer bg-white/10 hover:bg-white text-white hover:text-black border border-white/20 hover:border-white shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:shadow-[0_0_35px_rgba(255,255,255,0.5)] hover:scale-105 active:scale-95 group touch-manipulation backdrop-blur-md flex-1 sm:flex-initial"
+          className="relative inline-flex items-center justify-center gap-2 sm:gap-2.5 px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full font-bold text-[12px] sm:text-[13px] tracking-wide transition-all duration-300 overflow-hidden cursor-pointer bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-white/40 shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:shadow-[0_0_35px_rgba(255,255,255,0.3)] hover:scale-105 active:scale-95 group touch-manipulation backdrop-blur-md flex-1 sm:flex-initial"
           title="Direct Contact Transmission"
         >
-          <span className="relative z-10 flex items-center gap-2 sm:gap-3">
-            <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/10 border border-white/20 flex items-center justify-center transition-transform duration-500 group-hover:rotate-45 group-hover:bg-ember group-hover:text-white group-hover:border-ember shrink-0">
-              <svg width="10" height="10" viewBox="0 0 12 12" fill="none" className="sm:w-[11px] sm:h-[11px]">
-                <path d="M1 11L11 1M11 1H3M11 1V9" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+          <span className="relative z-10 flex items-center gap-2 sm:gap-2.5">
+            <span className="w-6 h-6 rounded-full bg-white/10 border border-white/20 flex items-center justify-center transition-all duration-300 group-hover:rotate-45 group-hover:border-white/50 group-hover:bg-white/20 shrink-0">
+              <ArrowUpRight className="w-3.5 h-3.5 text-white stroke-[2.5]" />
             </span>
             <span className="whitespace-nowrap">Let's Talk</span>
           </span>
@@ -136,7 +150,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
 
       {/* 7. Center Kinetic Bold Variable Typography with Radiant Ember Backlight */}
       <div
-        className="absolute top-[38%] sm:top-[42%] md:top-[44%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-[15] pointer-events-none select-none w-full flex flex-col items-center justify-center px-3 sm:px-4"
+        className="absolute top-[38%] sm:top-[42%] md:top-[44%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-[15] select-none w-full flex flex-col items-center justify-center px-3 sm:px-4"
         aria-hidden="true"
       >
         <div className="w-full max-w-[94vw] sm:max-w-[720px] md:max-w-[900px] lg:max-w-[1100px] h-[68px] sm:h-[95px] md:h-[135px] lg:h-[165px] relative flex items-center justify-center transform-gpu">
@@ -149,7 +163,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
                 : 'radial-gradient(ellipse at center, rgba(160, 42, 34, 0.12) 0%, transparent 70%)'
             }}
           />
-          <div style={{ position: 'relative', width: '100%', height: '100%', background: 'transparent' }}>
+          <div style={{ position: 'relative', width: '100%', height: '100%', background: 'transparent' }} className="cursor-default pointer-events-auto">
             <TextPressure
               text="DEV JANGID"
               fontFamily="Roboto Flex, Space Grotesk, sans-serif"
