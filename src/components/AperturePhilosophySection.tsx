@@ -33,9 +33,10 @@ export const AperturePhilosophySection: React.FC<AperturePhilosophySectionProps>
           trigger: trackRef.current,
           start: 'top top',
           end: 'bottom bottom',
-          scrub: 0.5,
+          scrub: 0.2,
           pin: stageRef.current,
-          anticipatePin: 1
+          anticipatePin: 1,
+          fastScrollEnd: true
         }
       })
 
@@ -91,6 +92,7 @@ export const AperturePhilosophySection: React.FC<AperturePhilosophySectionProps>
                 src="/images/philosophy-bg.jpg"
                 alt="Atmospheric dark cinematic background"
                 draggable={false}
+                decoding="async"
               />
               <div className="scroll-expand__scrim" />
               <div ref={overlayRef} className="scroll-expand__overlay">

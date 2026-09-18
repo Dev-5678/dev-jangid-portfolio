@@ -1,46 +1,69 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 
 interface LoadingScreenProps {
   onLoaded?: () => void
 }
 
 export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onLoaded }) => {
-  const [progress, setProgress] = useState(0)
+  // Check if user has already visited in this session
+  const alreadyVisited = typeof window !== 'undefined' && sessionStorage.getItem('dj_visited') === '1'
+  const [progress, setProgress] = useState(alreadyVisited ? 100 : 0)
   const [isFading, setIsFading] = useState(false)
-  const [isDone, setIsDone] = useState(false)
+  const [isDone, setIsDone] = useState(alreadyVisited)
+
+  const dismiss = useCallback(() => {
+    setIsFading(true)
+    try {
+      sessionStorage.setItem('dj_visited', '1')
+    } catch {
+      // Ignore
+    }
+    setTimeout(() => {
+      setIsDone(true)
+      onLoaded?.()
+    }, 150)
+  }, [onLoaded])
 
   useEffect(() => {
-    // Smooth progress counter up to 100
+    if (alreadyVisited) {
+      onLoaded?.()
+      return
+    }
+
+    // High-speed smooth progress counter (completes in ~240ms)
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval)
-          setTimeout(() => {
-            setIsFading(true)
-            setTimeout(() => {
-              setIsDone(true)
-              onLoaded?.()
-            }, 500)
-          }, 200)
+          dismiss()
           return 100
         }
-        const jump = Math.floor(Math.random() * 8) + 3
-        return Math.min(100, prev + jump)
+        const jump = Math.floor(Math.random() * 15) + 18
+        const next = Math.min(100, prev + jump)
+        if (next >= 100) {
+          clearInterval(interval)
+          dismiss()
+        }
+        return next
       })
-    }, 30)
+    }, 18)
 
     return () => clearInterval(interval)
-  }, [onLoaded])
+  }, [alreadyVisited, dismiss, onLoaded])
 
   if (isDone) return null
 
   return (
     <div
-      aria-hidden={isFading}
-      className={`loading-screen ${isFading ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+      onClick={dismiss}
+      onTouchStart={dismiss}
+      role="status"
+      aria-label="Loading portfolio"
+      className={`loading-screen cursor-pointer ${isFading ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
       style={{
         zIndex: 10000,
-        backgroundColor: '#050505'
+        backgroundColor: '#050505',
+        transition: 'opacity 0.2s ease-out'
       }}
     >
       <span className="loading-counter select-none">{progress}</span>
@@ -63,10 +86,15 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onLoaded }) => {
         <div
           className="loading-bar-fill"
           style={{
-            transform: `scaleX(${progress / 100})`
+            transform: `scaleX(${progress / 100})`,
+            transition: 'transform 0.08s ease-out'
           }}
         />
       </div>
+
+      <span className="text-[10px] text-zinc-500 font-mono tracking-wider uppercase mt-2 opacity-60">
+        Click to skip
+      </span>
     </div>
   )
 }

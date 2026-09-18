@@ -17,8 +17,10 @@ export const SkillsSection: React.FC = () => {
 
       {/* Ambient Ember Glow Pool */}
       <div
-        className="absolute top-1/3 left-0 w-[500px] h-[300px] rounded-full opacity-10 pointer-events-none blur-[140px]"
-        style={{ backgroundColor: 'var(--ember)' }}
+        className="absolute top-1/3 left-0 w-[500px] h-[300px] rounded-full pointer-events-none transform-gpu"
+        style={{
+          background: 'radial-gradient(ellipse, rgba(160, 42, 34, 0.10) 0%, transparent 70%)'
+        }}
         aria-hidden="true"
       />
 
