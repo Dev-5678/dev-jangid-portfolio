@@ -15,109 +15,104 @@ export interface TextPressureProps {
   strokeColor?: string
   className?: string
   minFontSize?: number
-  clickRipple?: boolean
 }
+
+// The exact distance mapping function from the Instagram reel (d6)
+const distMap = (dist: number, maxDist: number, minVal: number, maxVal: number) =>
+  Math.max(minVal, maxVal - Math.abs((maxVal * dist) / maxDist) + minVal)
 
 export const TextPressure: React.FC<TextPressureProps> = ({
   text = 'DEV JANGID',
-  fontFamily = 'Roboto Flex, Space Grotesk, sans-serif',
+  fontFamily = 'Roboto Flex, sans-serif',
   fontUrl = 'https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&display=swap',
   width = true,
   weight = true,
   italic = true,
-  alpha: _alpha = false,
-  flex = true,
+  alpha = false,
+  flex: _flex = true,
   stroke = false,
   scale = false,
-  textColor = '#ffffff',
-  strokeColor = '#A02A22',
+  textColor = 'rgba(255, 255, 255, 0.88)',
+  strokeColor = '#FF0000',
   className = '',
-  minFontSize = 28,
-  clickRipple = true
+  minFontSize = 16
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const titleRef = useRef<HTMLHeadingElement | null>(null)
   const spansRef = useRef<(HTMLSpanElement | null)[]>([])
   const prevSettingsRef = useRef<string[]>([])
+  const cachedCentersRef = useRef<{ x: number; y: number }[]>([])
 
-  const charCentersRef = useRef<{ x: number; y: number }[]>([])
-  const containerRectRef = useRef<{ left: number; top: number; width: number; height: number }>({
-    left: 0,
-    top: 0,
-    width: 0,
-    height: 0
-  })
-
-  const mousePos = useRef({ x: -3000, y: -3000 })
-  const cursorTarget = useRef({ x: -3000, y: -3000 })
-  const ripplesRef = useRef<{ x: number; y: number; start: number }[]>([])
+  // The exact inertia cursor tracking from the reel:
+  const mousePos = useRef({ x: 0, y: 0 })
+  const targetPos = useRef({ x: 0, y: 0 })
   const isVisibleRef = useRef(true)
 
   const [fontSize, setFontSize] = useState<number>(minFontSize)
   const [scaleY, setScaleY] = useState<number>(1)
   const [lineHeight, setLineHeight] = useState<number>(1)
 
-  const chars = useMemo(() => text.split(''), [text])
-  const letterCount = useMemo(() => chars.filter((c) => c !== ' ').length, [chars])
+  // Split into individual words to ensure natural, reduced gap between words!
+  const words = useMemo(() => text.trim().split(/\s+/), [text])
+  const totalLetters = useMemo(() => text.replace(/\s+/g, '').length, [text])
 
-  // Mouse & Touch tracking with passive event triggers
+  // Center target cursor directly in the middle of container (exact reel resting state!)
+  const centerTarget = useCallback(() => {
+    if (containerRef.current) {
+      const { left, top, width: w, height: h } = containerRef.current.getBoundingClientRect()
+      targetPos.current.x = left + w / 2
+      targetPos.current.y = top + h / 2
+    }
+  }, [])
+
+  // Mouse & touch listeners matching the reel:
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      cursorTarget.current.x = e.clientX
-      cursorTarget.current.y = e.clientY
+      targetPos.current.x = e.clientX
+      targetPos.current.y = e.clientY
     }
 
     const handleTouchStart = (e: TouchEvent) => {
       if (e.touches && e.touches.length > 0) {
-        cursorTarget.current.x = e.touches[0].clientX
-        cursorTarget.current.y = e.touches[0].clientY
+        targetPos.current.x = e.touches[0].clientX
+        targetPos.current.y = e.touches[0].clientY
       }
     }
 
     const handleTouchMove = (e: TouchEvent) => {
       if (e.touches && e.touches.length > 0) {
-        cursorTarget.current.x = e.touches[0].clientX
-        cursorTarget.current.y = e.touches[0].clientY
+        targetPos.current.x = e.touches[0].clientX
+        targetPos.current.y = e.touches[0].clientY
       }
     }
 
-    const resetToOffscreen = () => {
-      cursorTarget.current = { x: -3000, y: -3000 }
+    // On initial load, center cursor immediately
+    if (containerRef.current) {
+      const { left, top, width: w, height: h } = containerRef.current.getBoundingClientRect()
+      mousePos.current.x = left + w / 2
+      mousePos.current.y = top + h / 2
+      targetPos.current.x = mousePos.current.x
+      targetPos.current.y = mousePos.current.y
     }
 
-    const handlePress = (e: MouseEvent | TouchEvent) => {
-      if (!clickRipple) return
-      const clientX = 'touches' in e && e.touches[0] ? e.touches[0].clientX : (e as MouseEvent).clientX
-      const clientY = 'touches' in e && e.touches[0] ? e.touches[0].clientY : (e as MouseEvent).clientY
-      ripplesRef.current.push({
-        x: clientX,
-        y: clientY,
-        start: performance.now()
-      })
-      if (ripplesRef.current.length > 5) ripplesRef.current.shift()
-    }
-
-    const container = containerRef.current
     window.addEventListener('mousemove', handleMouseMove, { passive: true })
     window.addEventListener('touchstart', handleTouchStart, { passive: true })
     window.addEventListener('touchmove', handleTouchMove, { passive: true })
-    window.addEventListener('touchend', resetToOffscreen, { passive: true })
-    window.addEventListener('touchcancel', resetToOffscreen, { passive: true })
-    document.addEventListener('mouseleave', resetToOffscreen)
-    container?.addEventListener('pointerdown', handlePress as EventListener)
+    window.addEventListener('touchend', centerTarget, { passive: true })
+    window.addEventListener('touchcancel', centerTarget, { passive: true })
+    document.addEventListener('mouseleave', centerTarget)
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
       window.removeEventListener('touchstart', handleTouchStart)
       window.removeEventListener('touchmove', handleTouchMove)
-      window.removeEventListener('touchend', resetToOffscreen)
-      window.removeEventListener('touchcancel', resetToOffscreen)
-      document.removeEventListener('mouseleave', resetToOffscreen)
-      container?.removeEventListener('pointerdown', handlePress as EventListener)
+      window.removeEventListener('touchend', centerTarget)
+      window.removeEventListener('touchcancel', centerTarget)
+      document.removeEventListener('mouseleave', centerTarget)
     }
-  }, [clickRipple])
+  }, [centerTarget])
 
-  // Viewport intersection observer: pause loop when off-screen
+  // Viewport intersection observer to pause loop when offscreen
   useEffect(() => {
     if (!containerRef.current || typeof IntersectionObserver === 'undefined') return
     const observer = new IntersectionObserver(
@@ -130,40 +125,32 @@ export const TextPressure: React.FC<TextPressureProps> = ({
     return () => observer.disconnect()
   }, [])
 
-  // Measure and cache character centers in memory once on resize/mount
+  // Font size calculation from the reel:
   const updateGeometry = useCallback(() => {
     if (!containerRef.current || !titleRef.current) return
-    const rect = containerRef.current.getBoundingClientRect()
-    containerRectRef.current = {
-      left: rect.left,
-      top: rect.top,
-      width: rect.width,
-      height: rect.height
-    }
-
-    const effectiveChars = Math.max(letterCount + 1, 8)
-    let calcFontSize =
-      rect.width < 640
-        ? (rect.width * 0.94) / (effectiveChars * 0.58)
-        : (rect.width * 0.90) / (effectiveChars * 0.55)
-
-    calcFontSize = Math.min(calcFontSize, rect.height * 0.94)
-    calcFontSize = Math.max(calcFontSize, minFontSize)
-
-    setFontSize(calcFontSize)
+    const { width: containerW, height: containerH } = containerRef.current.getBoundingClientRect()
+    let nextFontSize =
+      containerW < 640
+        ? containerW / (0.72 * totalLetters)
+        : containerW / (totalLetters / 1.7)
+    nextFontSize = Math.max(nextFontSize, minFontSize)
+    setFontSize(nextFontSize)
     setScaleY(1)
     setLineHeight(1)
+
+    centerTarget()
 
     requestAnimationFrame(() => {
       if (!titleRef.current) return
       const titleRect = titleRef.current.getBoundingClientRect()
       if (scale && titleRect.height > 0) {
-        const ratio = rect.height / titleRect.height
+        const ratio = containerH / titleRect.height
         setScaleY(ratio)
         setLineHeight(ratio)
       }
 
-      charCentersRef.current = spansRef.current.map((el) => {
+      // Pre-cache character center coordinates so the 60fps loop has 0 layout thrashing!
+      cachedCentersRef.current = spansRef.current.map((el) => {
         if (!el) return { x: 0, y: 0 }
         const u = el.getBoundingClientRect()
         return {
@@ -172,13 +159,13 @@ export const TextPressure: React.FC<TextPressureProps> = ({
         }
       })
     })
-  }, [letterCount, minFontSize, scale])
+  }, [totalLetters, minFontSize, scale, centerTarget])
 
   useEffect(() => {
     let timeoutId: ReturnType<typeof setTimeout>
     const debouncedResize = () => {
       clearTimeout(timeoutId)
-      timeoutId = setTimeout(updateGeometry, 60)
+      timeoutId = setTimeout(updateGeometry, 80)
     }
 
     updateGeometry()
@@ -186,113 +173,73 @@ export const TextPressure: React.FC<TextPressureProps> = ({
     return () => window.removeEventListener('resize', debouncedResize)
   }, [updateGeometry])
 
-  // High-performance animation loop: The signature kinetic variable font pressure morphing, wave & click ripple
+  // The exact animation loop from the Instagram reel:
   useEffect(() => {
     let rafId: number
-    let lastTime = 0
 
-    const animate = (timestamp: number) => {
-      rafId = requestAnimationFrame(animate)
+    const tick = () => {
+      // Smooth inertia interpolation (/ 15 as in the reel)
+      mousePos.current.x += (targetPos.current.x - mousePos.current.x) / 15
+      mousePos.current.y += (targetPos.current.y - mousePos.current.y) / 15
 
-      if (!isVisibleRef.current) return
+      if (containerRef.current && isVisibleRef.current) {
+        const rect = containerRef.current.getBoundingClientRect()
+        const isMobile = window.innerWidth < 768
+        const maxDist = isMobile
+          ? Math.max(0.85 * rect.width, 0.45 * window.innerHeight)
+          : Math.max(rect.width / 2, 350)
 
-      // Throttle sub-millisecond computations (smooth 60-120fps)
-      if (timestamp - lastTime < 14) return
-      lastTime = timestamp
+        const spans = spansRef.current
+        const centers = cachedCentersRef.current
 
-      // Smooth cursor interpolation
-      mousePos.current.x += (cursorTarget.current.x - mousePos.current.x) * 0.18
-      mousePos.current.y += (cursorTarget.current.y - mousePos.current.y) * 0.18
+        for (let idx = 0; idx < spans.length; idx++) {
+          const span = spans[idx]
+          if (!span) continue
 
-      const containerW = containerRectRef.current.width || 800
-      const isMobile = containerW < 768
-      const radius = isMobile ? Math.max(0.6 * containerW, 200) : Math.max(containerW * 0.42, 320)
-      const time = timestamp * 0.0022
+          const center = centers[idx]
+          const cx = center ? center.x : 0
+          const cy = center ? center.y : 0
 
-      const centers = charCentersRef.current
-      const spans = spansRef.current
-      const ripples = ripplesRef.current
+          const dx = cx - mousePos.current.x
+          const dy = cy - mousePos.current.y
+          const d = Math.sqrt(dx * dx + dy * dy)
 
-      // Clean expired ripples (lifetime: 1.2s)
-      while (ripples.length && (timestamp - ripples[0].start) / 1000 > 1.2) {
-        ripples.shift()
-      }
+          // The exact reel formula:
+          const wdth = width ? Math.floor(distMap(d, maxDist, isMobile ? 25 : 5, isMobile ? 165 : 200)) : 100
+          const wght = weight ? Math.floor(distMap(d, maxDist, 100, 900)) : 400
+          const ital = italic ? distMap(d, maxDist, 0, 1).toFixed(2) : '0'
+          const alphaVal = alpha ? distMap(d, maxDist, 0, 1).toFixed(2) : '1'
 
-      for (let idx = 0; idx < spans.length; idx++) {
-        const el = spans[idx]
-        if (!el) continue
+          const fontVar = `'wght' ${wght}, 'wdth' ${wdth}, 'ital' ${ital}`
 
-        const center = centers[idx]
-        const charX = center ? center.x : 0
-        const charY = center ? center.y : 0
-
-        const dx = charX - mousePos.current.x
-        const dy = charY - mousePos.current.y
-        const dist = Math.sqrt(dx * dx + dy * dy)
-        const cursorInfluence = Math.max(0, 1 - dist / radius)
-
-        // Calculate click ripple shockwave influence
-        let rippleInfluence = 0
-        for (let r = 0; r < ripples.length; r++) {
-          const rip = ripples[r]
-          const age = (timestamp - rip.start) / 1000
-          if (age > 1.2) continue
-          const rDist = Math.hypot(charX - rip.x, charY - rip.y)
-          const waveRadius = age * 540 // propagates at 540px/s
-          const diff = Math.abs(rDist - waveRadius)
-          if (diff < 100) {
-            const fade = 1 - age / 1.2
-            const bump = (1 - diff / 100) * fade
-            rippleInfluence = Math.max(rippleInfluence, bump)
+          if (prevSettingsRef.current[idx] !== fontVar) {
+            prevSettingsRef.current[idx] = fontVar
+            span.style.fontVariationSettings = fontVar
+          }
+          if (alpha && span.style.opacity !== alphaVal) {
+            span.style.opacity = alphaVal
           }
         }
-
-        const totalInfluence = Math.min(1, cursorInfluence + rippleInfluence * 0.95)
-
-        // Harmonic organic breathing wave
-        const waveWght = Math.sin(time + idx * 0.55) * 65
-        const waveWdth = Math.cos(time * 0.9 + idx * 0.55) * 14
-
-        // Bold baseline: 750 weight, flexing up to 1000 Black directly under cursor or ripple
-        const rawWght = weight
-          ? 750 + totalInfluence * 240 + (1 - totalInfluence) * waveWght
-          : 800
-
-        // Expansive baseline: 112 width, expanding up to 148 on hover or ripple
-        const rawWdth = width
-          ? 112 + totalInfluence * 34 + (1 - totalInfluence) * waveWdth
-          : 110
-
-        // Kinetic italic slant angle
-        const rawItal = italic ? totalInfluence * 0.75 : 0
-
-        // Step-quantization prevents micro-thrashing and maximizes glyph cache hits
-        const clampedWght = Math.min(1000, Math.max(620, Math.round(rawWght / 6) * 6))
-        const clampedWdth = Math.min(151, Math.max(92, Math.round(rawWdth / 2) * 2))
-        const clampedItal = (Math.round(rawItal * 20) / 20).toFixed(2)
-
-        const fontVar = `'wght' ${clampedWght}, 'wdth' ${clampedWdth}, 'ital' ${clampedItal}`
-
-        if (prevSettingsRef.current[idx] !== fontVar) {
-          prevSettingsRef.current[idx] = fontVar
-          el.style.fontVariationSettings = fontVar
-        }
       }
+
+      rafId = requestAnimationFrame(tick)
     }
 
-    rafId = requestAnimationFrame(animate)
+    rafId = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(rafId)
-  }, [width, weight, italic])
+  }, [width, weight, italic, alpha])
 
   const styleTag = useMemo(
     () => (
       <style>{`
         @import url('${fontUrl}');
 
-        .tp-flex {
-          display: flex;
+        .tp-word-group {
+          display: inline-flex;
           align-items: center;
           justify-content: center;
+          gap: clamp(0.01em, 0.03em, 0.06em);
+          flex-shrink: 0;
         }
 
         .tp-stroke span {
@@ -312,7 +259,6 @@ export const TextPressure: React.FC<TextPressureProps> = ({
 
         .text-pressure-title {
           color: ${textColor};
-          letter-spacing: 0.04em;
         }
 
         .text-pressure-title span {
@@ -324,8 +270,6 @@ export const TextPressure: React.FC<TextPressureProps> = ({
     ),
     [fontUrl, textColor, strokeColor]
   )
-
-  const classNames = [className, flex ? 'tp-flex' : '', stroke ? 'tp-stroke' : ''].filter(Boolean).join(' ')
 
   let letterIndex = 0
 
@@ -340,66 +284,49 @@ export const TextPressure: React.FC<TextPressureProps> = ({
     textAlign: 'center',
     userSelect: 'none',
     whiteSpace: 'nowrap',
+    fontWeight: 100,
     width: '100%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: '0.04em',
-    cursor: 'pointer'
+    gap: 'clamp(0.28em, 1.2vw, 0.45em)' // Clean, natural, compact word spacing between DEV and JANGID!
   }
 
   return (
     <div
       ref={containerRef}
       style={{ position: 'relative', width: '100%', height: '100%', background: 'transparent' }}
-      className="select-none"
     >
       {styleTag}
       <h1
         ref={titleRef}
         aria-label={text}
-        className={`text-pressure-title ${classNames}`}
+        className={`text-pressure-title ${stroke ? 'tp-stroke' : ''} ${className}`}
         style={titleStyle}
       >
-        {chars.map((char, idx) => {
-          if (char === ' ') {
-            return (
-              <span
-                key={idx}
-                aria-hidden="true"
-                style={{
-                  display: 'inline-block',
-                  width: '0.42em',
-                  minWidth: '0.3em',
-                  flexShrink: 0
-                }}
-              >
-                &nbsp;
-              </span>
-            )
-          }
-
-          const charIdx = letterIndex++
-          return (
-            <span
-              key={idx}
-              ref={(el) => {
-                spansRef.current[charIdx] = el
-              }}
-              data-char={char}
-              aria-hidden="true"
-              style={{
-                display: 'inline-block',
-                flexShrink: 0,
-                textAlign: 'center',
-                minWidth: '0.28em',
-                color: stroke ? undefined : textColor
-              }}
-            >
-              {char}
-            </span>
-          )
-        })}
+        {words.map((word, wordIdx) => (
+          <span key={wordIdx} className="tp-word-group">
+            {word.split('').map((char) => {
+              const charIdx = letterIndex++
+              return (
+                <span
+                  key={charIdx}
+                  ref={(el) => {
+                    spansRef.current[charIdx] = el
+                  }}
+                  data-char={char}
+                  aria-hidden="true"
+                  style={{
+                    display: 'inline-block',
+                    color: stroke ? undefined : textColor
+                  }}
+                >
+                  {char}
+                </span>
+              )
+            })}
+          </span>
+        ))}
       </h1>
     </div>
   )
