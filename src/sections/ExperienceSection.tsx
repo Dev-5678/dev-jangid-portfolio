@@ -38,24 +38,24 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ isTLDR: _i
 
         <div className="space-y-8 sm:space-y-12 max-w-4xl mx-auto">
           {/* Experience Item 1: AAI */}
-          <div className="exp-item group pb-8 sm:pb-12 border-b border-white/10 last:border-b-0 flex flex-col md:flex-row md:items-start justify-between gap-4 sm:gap-6 md:gap-12 transition-colors duration-300">
+          <div className="exp-item group pb-8 sm:pb-12 border-b border-white/10 last:border-b-0 flex flex-col md:flex-row md:items-start justify-between gap-3 sm:gap-6 md:gap-12 transition-all duration-300">
             <div className="md:w-1/3 flex-shrink-0">
-              <span className="text-xs font-mono font-medium text-ash tracking-wider block mb-1">
+              <span className="text-[11px] sm:text-xs font-mono font-medium text-ash tracking-wider block mb-1">
                 14 August 2026 — 25 Sept 2026
               </span>
-              <span className="text-xs sm:text-sm font-semibold tracking-wider uppercase block font-mono text-ember">
+              <span className="text-xs sm:text-sm font-semibold tracking-wider uppercase block font-mono text-ember group-hover:text-ember-bright transition-colors">
                 Airports Authority of India
               </span>
             </div>
             <div className="md:w-2/3">
-              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2 sm:mb-3 tracking-tight group-hover:text-cloud transition-colors">
+              <h3 className="text-lg sm:text-2xl md:text-3xl font-bold text-white mb-2 sm:mb-3 tracking-tight group-hover:text-cloud transition-colors">
                 Network Security &amp; IT Intern
               </h3>
-              <p className="text-xs sm:text-sm md:text-base text-ash leading-relaxed mb-4 sm:mb-6 font-normal">
+              <p className="text-xs sm:text-sm md:text-base text-ash leading-relaxed mb-3 sm:mb-5 font-normal">
                 Northern Region HQ IT division. Supported enterprise network monitoring, system diagnostics, and operational compliance.
               </p>
-              <ul className="space-y-2.5">
-                <li className="flex items-start gap-3 text-sm text-silver font-normal">
+              <ul className="space-y-2 sm:space-y-2.5">
+                <li className="flex items-start gap-2.5 sm:gap-3 text-xs sm:text-sm text-silver font-normal">
                   <span className="text-ember font-bold mt-0.5 text-xs">▸</span>
                   <span className="leading-relaxed">Supported network security protocols and verified compliance across internal administrative subnets</span>
                 </li>
@@ -72,32 +72,32 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ isTLDR: _i
           </div>
 
           {/* Experience Item 2: India Space Lab */}
-          <div className="exp-item group pb-8 sm:pb-12 border-b border-white/10 last:border-b-0 flex flex-col md:flex-row md:items-start justify-between gap-4 sm:gap-6 md:gap-12 transition-colors duration-300">
+          <div className="exp-item group pb-8 sm:pb-12 border-b border-white/10 last:border-b-0 flex flex-col md:flex-row md:items-start justify-between gap-3 sm:gap-6 md:gap-12 transition-all duration-300">
             <div className="md:w-1/3 flex-shrink-0">
-              <span className="text-xs font-mono font-medium text-ash tracking-wider block mb-1">
+              <span className="text-[11px] sm:text-xs font-mono font-medium text-ash tracking-wider block mb-1">
                 15 July 2025 — 31 July 2025
               </span>
-              <span className="text-xs sm:text-sm font-semibold tracking-wider uppercase block font-mono text-ember">
+              <span className="text-xs sm:text-sm font-semibold tracking-wider uppercase block font-mono text-ember group-hover:text-ember-bright transition-colors">
                 India Space Lab
               </span>
             </div>
             <div className="md:w-2/3">
-              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2 sm:mb-3 tracking-tight group-hover:text-cloud transition-colors">
+              <h3 className="text-lg sm:text-2xl md:text-3xl font-bold text-white mb-2 sm:mb-3 tracking-tight group-hover:text-cloud transition-colors">
                 Space Systems &amp; CanSat Trainee
               </h3>
-              <p className="text-xs sm:text-sm md:text-base text-ash leading-relaxed mb-4 sm:mb-6 font-normal">
+              <p className="text-xs sm:text-sm md:text-base text-ash leading-relaxed mb-3 sm:mb-5 font-normal">
                 Hands-on training in miniature satellite architectures, telemetry payloads, and aerospace communications.
               </p>
-              <ul className="space-y-2.5">
-                <li className="flex items-start gap-3 text-sm text-silver font-normal">
+              <ul className="space-y-2 sm:space-y-2.5">
+                <li className="flex items-start gap-2.5 sm:gap-3 text-xs sm:text-sm text-silver font-normal">
                   <span className="text-ember font-bold mt-0.5 text-xs">▸</span>
                   <span className="leading-relaxed">Designed and assembled 1U CanSat payload incorporating barometric pressure and temperature sensors</span>
                 </li>
-                <li className="flex items-start gap-3 text-sm text-silver font-normal">
+                <li className="flex items-start gap-2.5 sm:gap-3 text-xs sm:text-sm text-silver font-normal">
                   <span className="text-ember font-bold mt-0.5 text-xs">▸</span>
                   <span className="leading-relaxed">Calibrated 433 MHz UHF radio frequency telemetry downlink transceiver for live packet decoding</span>
                 </li>
-                <li className="flex items-start gap-3 text-sm text-silver font-normal">
+                <li className="flex items-start gap-2.5 sm:gap-3 text-xs sm:text-sm text-silver font-normal">
                   <span className="text-ember font-bold mt-0.5 text-xs">▸</span>
                   <span className="leading-relaxed">Formulated parachute recovery protocols and evaluated descent rates from simulated altitudes</span>
                 </li>
@@ -106,32 +106,32 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ isTLDR: _i
           </div>
 
           {/* Experience Item 3: Generative AI */}
-          <div className="exp-item group pb-8 sm:pb-12 border-b border-white/10 last:border-b-0 flex flex-col md:flex-row md:items-start justify-between gap-4 sm:gap-6 md:gap-12 transition-colors duration-300">
+          <div className="exp-item group pb-8 sm:pb-12 border-b border-white/10 last:border-b-0 flex flex-col md:flex-row md:items-start justify-between gap-3 sm:gap-6 md:gap-12 transition-all duration-300">
             <div className="md:w-1/3 flex-shrink-0">
-              <span className="text-xs font-mono font-medium text-ash tracking-wider block mb-1">
+              <span className="text-[11px] sm:text-xs font-mono font-medium text-ash tracking-wider block mb-1">
                 June 2024 (1 Month)
               </span>
-              <span className="text-xs sm:text-sm font-semibold tracking-wider uppercase block font-mono text-ember">
+              <span className="text-xs sm:text-sm font-semibold tracking-wider uppercase block font-mono text-ember group-hover:text-ember-bright transition-colors">
                 Gen AI Academy Program
               </span>
             </div>
             <div className="md:w-2/3">
-              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2 sm:mb-3 tracking-tight group-hover:text-cloud transition-colors">
+              <h3 className="text-lg sm:text-2xl md:text-3xl font-bold text-white mb-2 sm:mb-3 tracking-tight group-hover:text-cloud transition-colors">
                 Generative AI &amp; Multimodal RAG Scholar
               </h3>
-              <p className="text-xs sm:text-sm md:text-base text-ash leading-relaxed mb-4 sm:mb-6 font-normal">
+              <p className="text-xs sm:text-sm md:text-base text-ash leading-relaxed mb-3 sm:mb-5 font-normal">
                 Specialized curriculum exploring Google Cloud GenAI SDKs, vector embeddings, and retrieval-augmented pipelines.
               </p>
-              <ul className="space-y-2.5">
-                <li className="flex items-start gap-3 text-sm text-silver font-normal">
+              <ul className="space-y-2 sm:space-y-2.5">
+                <li className="flex items-start gap-2.5 sm:gap-3 text-xs sm:text-sm text-silver font-normal">
                   <span className="text-ember font-bold mt-0.5 text-xs">▸</span>
                   <span className="leading-relaxed">Engineered multimodal query interfaces combining technical documents and Gemini models</span>
                 </li>
-                <li className="flex items-start gap-3 text-sm text-silver font-normal">
+                <li className="flex items-start gap-2.5 sm:gap-3 text-xs sm:text-sm text-silver font-normal">
                   <span className="text-ember font-bold mt-0.5 text-xs">▸</span>
                   <span className="leading-relaxed">Implemented vector cosine similarity semantic search reducing inference latency to under 250ms</span>
                 </li>
-                <li className="flex items-start gap-3 text-sm text-silver font-normal">
+                <li className="flex items-start gap-2.5 sm:gap-3 text-xs sm:text-sm text-silver font-normal">
                   <span className="text-ember font-bold mt-0.5 text-xs">▸</span>
                   <span className="leading-relaxed">Deployed end-to-end interactive Streamlit apps on cloud instances</span>
                 </li>

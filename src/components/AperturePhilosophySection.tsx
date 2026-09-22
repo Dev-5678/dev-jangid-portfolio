@@ -82,9 +82,9 @@ export const AperturePhilosophySection: React.FC<AperturePhilosophySectionProps>
         }
       })
 
-      // Responsive aperture radius: 85px on mobile, 125px on desktop
-      const isMobile = window.innerWidth < 640
-      const startCircle = isMobile ? 'circle(85px at 50% 50%)' : 'circle(125px at 50% 50%)'
+      // Responsive aperture radius: 68px on foldables, 85px on mobile, 125px on desktop
+      const w = window.innerWidth
+      const startCircle = w < 360 ? 'circle(68px at 50% 50%)' : w < 640 ? 'circle(85px at 50% 50%)' : 'circle(125px at 50% 50%)'
 
       // Frame clip-path expands from circular aperture to full screen (0 -> 0.55)
       tl.fromTo(
@@ -175,7 +175,7 @@ export const AperturePhilosophySection: React.FC<AperturePhilosophySectionProps>
                       The Philosophy
                     </span>
                   </div>
-                  <p className="philosophy-quote text-lg sm:text-2xl md:text-3xl lg:text-4xl font-medium leading-[1.35] sm:leading-[1.4] tracking-tight text-center max-w-3xl">
+                  <p className="philosophy-quote text-[15px] sm:text-2xl md:text-3xl lg:text-4xl font-medium leading-[1.4] tracking-tight text-center max-w-3xl">
                     I believe great software is born at the intersection of engineering precision and design intuition. Every pixel, every interaction, every line of code is an opportunity to create something that moves people.
                   </p>
                 </div>

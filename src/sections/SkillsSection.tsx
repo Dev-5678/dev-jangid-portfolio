@@ -45,22 +45,22 @@ export const SkillsSection: React.FC = () => {
             const IconComp = ICONS[idx % ICONS.length]
 
             return (
-              <div
+                <div
                 key={cat.title}
-                className="skill-block glass-card p-6 sm:p-7 hover:border-white/20 transition-all duration-300 relative overflow-hidden group flex flex-col"
+                className="skill-block glass-card p-5 sm:p-7 hover:border-ember/40 transition-all duration-300 relative overflow-hidden group flex flex-col justify-between"
               >
                 <div>
                   {/* Category Header */}
-                  <div className="flex items-center justify-between gap-3 pb-3.5 mb-3.5 border-b border-white/10">
-                    <div className="flex items-center gap-3.5">
-                      <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-ember group-hover:scale-105 group-hover:bg-ember/10 group-hover:border-ember/30 transition-all duration-300 shrink-0">
-                        <IconComp className="w-5 h-5" />
+                  <div className="flex flex-wrap items-center justify-between gap-2.5 pb-3.5 mb-3.5 border-b border-white/10">
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-ember group-hover:scale-110 group-hover:rotate-3 group-hover:bg-ember/15 group-hover:border-ember/30 transition-all duration-300 shrink-0">
+                        <IconComp className="w-4 h-4 sm:w-5 sm:h-5" />
                       </div>
-                      <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight group-hover:text-cloud transition-colors">
+                      <h3 className="text-base sm:text-xl font-bold text-white tracking-tight group-hover:text-cloud transition-colors">
                         {cat.title}
                       </h3>
                     </div>
-                    <span className="px-3 py-1 rounded-full bg-ember/10 border border-ember/25 text-ember text-xs font-mono font-medium shrink-0">
+                    <span className="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-ember/10 border border-ember/25 text-ember text-[11px] sm:text-xs font-mono font-medium shrink-0">
                       {cat.badge}
                     </span>
                   </div>
@@ -71,14 +71,14 @@ export const SkillsSection: React.FC = () => {
                   </p>
                 </div>
 
-                {/* Skills Badges (No empty gaps, cleanly organized) */}
-                <div className="flex flex-wrap gap-2 sm:gap-2.5 pt-3.5 border-t border-white/10">
+                {/* Skills Badges (Wraps cleanly without empty canyons) */}
+                <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-3.5 border-t border-white/10">
                   {cat.skills.map((skill) => (
                     <span
                       key={skill}
-                      className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-3.5 sm:py-1.5 rounded-full bg-white/5 border border-white/10 text-white text-xs sm:text-[13px] font-medium leading-normal hover:bg-white/10 hover:border-ember/40 transition-all cursor-default"
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full bg-white/5 border border-white/10 text-white text-[11px] sm:text-xs font-medium leading-normal hover:bg-white/10 hover:border-ember/40 hover:scale-105 active:scale-95 transition-all cursor-default"
                     >
-                      <span className="w-1.5 h-1.5 rounded-full bg-ember shrink-0" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-ember shrink-0 shadow-[0_0_6px_#fc6b2f]" />
                       <span>{skill}</span>
                     </span>
                   ))}

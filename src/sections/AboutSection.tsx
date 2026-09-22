@@ -96,44 +96,44 @@ export const AboutSection: React.FC = () => {
             "{personalInfo.bio}"
           </blockquote>
 
-          <div className="mt-8 pt-6 border-t border-white/10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="p-4 rounded-xl bg-white/[0.03] border border-white/10">
-              <span className="text-ash block text-[11px] font-semibold tracking-wider uppercase mb-1">Degree &amp; Academic Base</span>
-              <strong className="text-white text-sm font-semibold">{personalInfo.educationSummary || "B.Tech CSE (Expected 2027)"}</strong>
+          <div className="mt-8 pt-6 border-t border-white/10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            <div className="p-3.5 sm:p-4 rounded-xl bg-white/[0.03] border border-white/10 hover:border-white/20 transition-colors">
+              <span className="text-ash block text-[10px] sm:text-[11px] font-semibold tracking-wider uppercase mb-1">Degree &amp; Academic Base</span>
+              <strong className="text-white text-xs sm:text-sm font-semibold">{personalInfo.educationSummary || "B.Tech CSE (Expected 2027)"}</strong>
             </div>
-            <div className="p-4 rounded-xl bg-white/[0.03] border border-white/10">
-              <span className="text-ash block text-[11px] font-semibold tracking-wider uppercase mb-1">Core Specialization</span>
-              <strong className="text-white text-sm font-semibold">Security • Systems • GenAI</strong>
+            <div className="p-3.5 sm:p-4 rounded-xl bg-white/[0.03] border border-white/10 hover:border-white/20 transition-colors">
+              <span className="text-ash block text-[10px] sm:text-[11px] font-semibold tracking-wider uppercase mb-1">Core Specialization</span>
+              <strong className="text-white text-xs sm:text-sm font-semibold">Security • Systems • GenAI</strong>
             </div>
-            <div className="p-4 rounded-xl bg-white/[0.03] border border-white/10">
-              <span className="text-ash block text-[11px] font-semibold tracking-wider uppercase mb-1">Proven Track Record</span>
-              <strong className="text-white text-sm font-semibold">AAI Northern HQ &amp; Space Lab</strong>
+            <div className="p-3.5 sm:p-4 rounded-xl bg-white/[0.03] border border-white/10 hover:border-white/20 transition-colors">
+              <span className="text-ash block text-[10px] sm:text-[11px] font-semibold tracking-wider uppercase mb-1">Proven Track Record</span>
+              <strong className="text-white text-xs sm:text-sm font-semibold">AAI Northern HQ &amp; Space Lab</strong>
             </div>
-            <div className="p-4 rounded-xl bg-white/[0.03] border border-white/10">
-              <span className="text-ash block text-[11px] font-semibold tracking-wider uppercase mb-1">Location &amp; Mobility</span>
-              <strong className="text-white text-sm font-semibold">{personalInfo.location}</strong>
+            <div className="p-3.5 sm:p-4 rounded-xl bg-white/[0.03] border border-white/10 hover:border-white/20 transition-colors">
+              <span className="text-ash block text-[10px] sm:text-[11px] font-semibold tracking-wider uppercase mb-1">Location &amp; Mobility</span>
+              <strong className="text-white text-xs sm:text-sm font-semibold">{personalInfo.location}</strong>
             </div>
           </div>
         </div>
 
         {/* Technical Competencies Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           {STRENGTHS.map((item, idx) => {
             const IconComponent = item.icon
             return (
               <div
                 key={idx}
-                className="about-card glass-card p-6 sm:p-7 group hover:border-white/20 transition-all duration-300 relative overflow-hidden"
+                className="about-card glass-card p-5 sm:p-7 group hover:border-ember/40 transition-all duration-300 relative overflow-hidden"
               >
-                <div className="flex items-center gap-3.5 mb-3.5">
-                  <div className="w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-ember group-hover:scale-105 group-hover:bg-ember/10 group-hover:border-ember/30 transition-all duration-300 shrink-0">
-                    <IconComponent className="w-5 h-5" />
+                <div className="flex items-center gap-3 sm:gap-3.5 mb-3 sm:mb-3.5">
+                  <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-ember group-hover:scale-110 group-hover:rotate-3 group-hover:bg-ember/15 group-hover:border-ember/30 transition-all duration-300 shrink-0">
+                    <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
                   </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight group-hover:text-cloud transition-colors">
+                  <h3 className="text-base sm:text-xl font-bold text-white tracking-tight group-hover:text-cloud transition-colors">
                     {item.title}
                   </h3>
                 </div>
-                <p className="text-sm sm:text-base text-ash leading-relaxed font-normal">
+                <p className="text-xs sm:text-sm md:text-base text-ash leading-relaxed font-normal">
                   {item.desc}
                 </p>
               </div>
