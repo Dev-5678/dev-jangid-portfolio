@@ -69,26 +69,37 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
   useEffect(() => {
     if (!heroRef.current) return
 
-    const handleMove = (clientX: number, clientY: number) => {
-      const a = (clientX / window.innerWidth - 0.5) * 2
-      const s = (clientY / window.innerHeight - 0.5) * 2
+    // High-performance GSAP quickTo functions (zero memory allocation during mousemove)
+    const quickTitleX = titleContainerRef.current ? gsap.quickTo(titleContainerRef.current, 'x', { duration: 0.8, ease: 'power2.out' }) : null
+    const quickTitleY = titleContainerRef.current ? gsap.quickTo(titleContainerRef.current, 'y', { duration: 0.8, ease: 'power2.out' }) : null
+    const quickGlowX = glowRef.current ? gsap.quickTo(glowRef.current, 'x', { duration: 1.0, ease: 'power2.out' }) : null
+    const quickGlowY = glowRef.current ? gsap.quickTo(glowRef.current, 'y', { duration: 1.0, ease: 'power2.out' }) : null
 
-      if (titleContainerRef.current) {
-        gsap.to(titleContainerRef.current, { x: 30 * a, y: 18 * s, duration: 1.2, ease: 'power2.out' })
+    let rafScheduled = false
+    let lastClientX = 0
+    let lastClientY = 0
+
+    const updateParallax = () => {
+      rafScheduled = false
+      const a = (lastClientX / window.innerWidth - 0.5) * 2
+      const s = (lastClientY / window.innerHeight - 0.5) * 2
+
+      if (quickTitleX && quickTitleY) {
+        quickTitleX(24 * a)
+        quickTitleY(14 * s)
       }
-      if (glowRef.current) {
-        gsap.to(glowRef.current, { x: 45 * a, y: 30 * s, duration: 1.4, ease: 'power2.out' })
+      if (quickGlowX && quickGlowY) {
+        quickGlowX(32 * a)
+        quickGlowY(20 * s)
       }
-      if (dustRef.current) {
-        const dustNodes = dustRef.current.querySelectorAll('.dust')
-        dustNodes.forEach((node, i) => {
-          gsap.to(node, {
-            x: a * (2 + 0.8 * i),
-            y: s * (1.5 + 0.6 * i),
-            duration: 1.8 + 0.08 * i,
-            ease: 'power2.out'
-          })
-        })
+    }
+
+    const handleMove = (clientX: number, clientY: number) => {
+      lastClientX = clientX
+      lastClientY = clientY
+      if (!rafScheduled) {
+        rafScheduled = true
+        requestAnimationFrame(updateParallax)
       }
     }
 
@@ -98,11 +109,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
     }
 
     const onLeave = () => {
-      if (titleContainerRef.current) gsap.to(titleContainerRef.current, { x: 0, y: 0, duration: 1.8, ease: 'power2.out' })
-      if (glowRef.current) gsap.to(glowRef.current, { x: 0, y: 0, duration: 1.8, ease: 'power2.out' })
-      if (dustRef.current) {
-        const dustNodes = dustRef.current.querySelectorAll('.dust')
-        dustNodes.forEach((node) => gsap.to(node, { x: 0, y: 0, duration: 2, ease: 'power2.out' }))
+      if (quickTitleX && quickTitleY) {
+        quickTitleX(0)
+        quickTitleY(0)
+      }
+      if (quickGlowX && quickGlowY) {
+        quickGlowX(0)
+        quickGlowY(0)
       }
     }
 
@@ -129,17 +142,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
       className="relative h-screen h-[100svh] min-h-[100svh] overflow-hidden select-none touch-pan-y"
       style={{ background: 'var(--bg-main)' }}
     >
-      {/* 1. Subtle SVG Noise Grain Texture */}
-      <div
-        className="absolute inset-0 pointer-events-none z-[5]"
-        style={{
-          opacity: 0.035,
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-          backgroundRepeat: 'repeat',
-          backgroundSize: '256px'
-        }}
-        aria-hidden="true"
-      />
 
       {/* 2. Ambient Floating Dust Particles from Reel */}
       <div ref={dustRef} className="absolute inset-0 pointer-events-none z-[8]" aria-hidden="true">

@@ -28,7 +28,6 @@ export const CustomCursor: React.FC = () => {
   const followerPos = useRef({ x: -100, y: -100 })
   const dotRef = useRef<HTMLDivElement>(null)
   const ringRef = useRef<HTMLDivElement>(null)
-  const spotlightRef = useRef<HTMLDivElement>(null)
   const animFrameId = useRef<number | null>(null)
   const sparkIdCounter = useRef(0)
 
@@ -83,11 +82,6 @@ export const CustomCursor: React.FC = () => {
         dotRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`
       }
 
-      // Fast GPU transform for spotlight (Zero repaint!)
-      if (spotlightRef.current) {
-        spotlightRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`
-      }
-
       // Memoized interactive target check (only runs when hovering over a new element)
       if (e.target !== lastTargetRef.current) {
         lastTargetRef.current = e.target
@@ -129,14 +123,19 @@ export const CustomCursor: React.FC = () => {
     document.addEventListener('mouseleave', handleMouseLeave)
     document.addEventListener('mouseenter', handleMouseEnter)
 
-    // Smooth linear interpolation animation loop for follower ring
+    // Smooth linear interpolation animation loop for follower ring (idle sleep when resting)
     const renderLoop = () => {
-      const lerpFactor = 0.22
-      followerPos.current.x += (mousePos.current.x - followerPos.current.x) * lerpFactor
-      followerPos.current.y += (mousePos.current.y - followerPos.current.y) * lerpFactor
+      const dx = mousePos.current.x - followerPos.current.x
+      const dy = mousePos.current.y - followerPos.current.y
 
-      if (ringRef.current) {
-        ringRef.current.style.transform = `translate3d(${followerPos.current.x}px, ${followerPos.current.y}px, 0)`
+      if (Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1) {
+        const lerpFactor = 0.28
+        followerPos.current.x += dx * lerpFactor
+        followerPos.current.y += dy * lerpFactor
+
+        if (ringRef.current) {
+          ringRef.current.style.transform = `translate3d(${followerPos.current.x}px, ${followerPos.current.y}px, 0)`
+        }
       }
 
       animFrameId.current = requestAnimationFrame(renderLoop)
@@ -158,19 +157,6 @@ export const CustomCursor: React.FC = () => {
 
   return (
     <>
-      {/* 1. Fast GPU-composited ambient dynamic torchlight following cursor */}
-      {hasFinePointer && (
-        <div
-          ref={spotlightRef}
-          className="pointer-events-none fixed top-0 left-0 w-[450px] h-[450px] -translate-x-1/2 -translate-y-1/2 rounded-full z-20 transition-opacity duration-300 transform-gpu"
-          style={{
-            opacity: visible ? 1 : 0,
-            background: 'radial-gradient(circle, rgba(252, 107, 47, 0.12) 0%, transparent 70%)',
-            willChange: 'transform'
-          }}
-          aria-hidden="true"
-        />
-      )}
 
       {/* 2. Cute Sparkling Star Particles Burst (works on desktop click & mobile tap) */}
       {sparks.map((spark) => {

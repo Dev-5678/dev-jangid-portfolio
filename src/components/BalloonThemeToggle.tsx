@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Sun, Moon, Sparkles } from 'lucide-react'
 
 interface BalloonThemeToggleProps {
   theme: 'light' | 'dark'
@@ -13,23 +12,16 @@ export const BalloonThemeToggle: React.FC<BalloonThemeToggleProps> = ({
   className = ''
 }) => {
   const [isPulling, setIsPulling] = useState(false)
-  const [showSparkles, setShowSparkles] = useState(false)
-
   const isDark = theme === 'dark'
 
   const handlePull = () => {
     onToggleTheme()
     setIsPulling(true)
-    setShowSparkles(true)
 
-    // Release elastic spring recoil
+    // Snappy elastic spring recoil
     setTimeout(() => {
       setIsPulling(false)
-    }, 380)
-
-    setTimeout(() => {
-      setShowSparkles(false)
-    }, 700)
+    }, 280)
   }
 
   return (
@@ -37,52 +29,7 @@ export const BalloonThemeToggle: React.FC<BalloonThemeToggleProps> = ({
       className={`relative inline-flex flex-col items-center select-none ${className}`}
       style={{ touchAction: 'manipulation' }}
     >
-      {/* 1. Ceiling Anchor Bracket */}
-      <div
-        className={`w-3 h-1 rounded-full transition-colors duration-300 ${
-          isDark
-            ? 'bg-zinc-300 shadow-[0_0_8px_rgba(252,107,47,0.6)]'
-            : 'bg-zinc-800 shadow-[0_1px_3px_rgba(0,0,0,0.4)]'
-        }`}
-        aria-hidden="true"
-      />
-
-      {/* 2. Hanging Balloon Cord (High-contrast rope cord visible in both modes) */}
-      <div
-        className="relative flex justify-center items-center overflow-visible transition-all duration-300 ease-out"
-        style={{
-          width: '2px',
-          height: isPulling ? '36px' : '24px',
-          transformOrigin: 'top center'
-        }}
-        aria-hidden="true"
-      >
-        {/* The Rope Core Line with Glow */}
-        <div
-          className={`w-[2px] h-full rounded-full transition-all duration-300 ${
-            isDark
-              ? 'bg-gradient-to-b from-white via-amber-200 to-amber-400 shadow-[0_0_8px_rgba(252,107,47,0.8),0_0_2px_#ffffff]'
-              : 'bg-gradient-to-b from-zinc-800 via-zinc-900 to-amber-800 shadow-[0_1px_3px_rgba(0,0,0,0.5),0_0_2px_#000000]'
-          }`}
-          style={{
-            animation: isPulling ? 'none' : 'ropeSway 3.8s ease-in-out infinite'
-          }}
-        />
-
-        {/* Rope Texture Twist Knots */}
-        <div
-          className={`absolute top-1.5 w-1 h-1 rounded-full ${
-            isDark ? 'bg-white shadow-[0_0_4px_#fc6b2f]' : 'bg-black'
-          }`}
-        />
-        <div
-          className={`absolute top-3.5 w-1 h-1 rounded-full ${
-            isDark ? 'bg-amber-300 shadow-[0_0_4px_#fc6b2f]' : 'bg-zinc-800'
-          }`}
-        />
-      </div>
-
-      {/* 3. The 3D Realistic Glowing Balloon Button */}
+      {/* 1. Interactive 3D Realistic Glowing Balloon Button */}
       <button
         onClick={handlePull}
         onKeyDown={(e) => {
@@ -93,110 +40,134 @@ export const BalloonThemeToggle: React.FC<BalloonThemeToggleProps> = ({
         }}
         aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
         aria-pressed={isDark}
-        title={`Pull balloon to switch to ${isDark ? 'light' : 'dark'} mode`}
-        className="group relative cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-ember rounded-full"
-        style={{
-          transform: isPulling
-            ? 'translateY(12px) scale(0.9, 1.14)'
-            : 'translateY(0px) scale(1, 1)',
-          transition: isPulling
-            ? 'transform 0.12s cubic-bezier(0.2, 0, 0.4, 1)'
-            : 'transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)',
-          animation: isPulling ? 'none' : 'balloonFloat 4s ease-in-out infinite'
-        }}
+        title={`Pull string to switch to ${isDark ? 'light' : 'dark'} mode`}
+        className="group relative cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-ember rounded-full flex flex-col items-center touch-manipulation"
       >
-        {/* Balloon Latex Neck & Tied Knot at the Top */}
-        <div className="relative mx-auto -mb-1 flex flex-col items-center z-20" aria-hidden="true">
-          {/* Tied string wrap ring */}
-          <div
-            className={`w-2.5 h-1 rounded-full ${
-              isDark ? 'bg-amber-400 shadow-[0_0_6px_#fc6b2f]' : 'bg-zinc-800'
-            }`}
-          />
-          {/* Flared latex nozzle knot */}
-          <div
-            className={`w-3 h-1.5 rounded-t-sm transition-colors duration-300 ${
-              isDark
-                ? 'bg-gradient-to-r from-red-600 via-amber-500 to-red-600 shadow-[0_0_8px_rgba(252,107,47,0.9)]'
-                : 'bg-gradient-to-r from-amber-600 via-amber-500 to-amber-700 shadow-sm'
-            }`}
-            style={{
-              clipPath: 'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)'
-            }}
-          />
-        </div>
-
-        {/* Hyper-Realistic Volumetric 3D Glowing Balloon Body */}
+        {/* Floating Helium Balloon Assembly */}
         <div
-          className={`relative w-8 h-10 sm:w-9 sm:h-11 rounded-[50%_50%_50%_50%_/_38%_38%_62%_62%] flex items-center justify-center p-1.5 transition-all duration-300 transform-gpu group-hover:scale-108 active:scale-95 ${
-            isDark
-              ? 'bg-[radial-gradient(circle_at_32%_26%,#ff9966_0%,#fc6b2f_34%,#c02619_70%,#660b06_100%)] border border-amber-300/40'
-              : 'bg-[radial-gradient(circle_at_32%_26%,#ffffff_0%,#fde047_32%,#f59e0b_66%,#b45309_100%)] border border-amber-400/50'
-          }`}
+          className="relative flex flex-col items-center transform-gpu"
           style={{
-            filter: isDark
-              ? 'drop-shadow(0 0 8px rgba(252,107,47,0.9)) drop-shadow(0 0 20px rgba(252,107,47,0.55))'
-              : 'drop-shadow(0 0 8px rgba(245,158,11,0.85)) drop-shadow(0 0 18px rgba(251,191,36,0.45))',
-            boxShadow: isDark
-              ? 'inset 0 2px 4px rgba(255,255,255,0.7), inset 0 -4px 6px rgba(0,0,0,0.6)'
-              : 'inset 0 2px 4px rgba(255,255,255,0.9), inset 0 -4px 6px rgba(0,0,0,0.25)'
+            transform: isPulling
+              ? 'translateY(8px) scale(0.92, 1.10)'
+              : 'translateY(0px) scale(1, 1)',
+            transition: isPulling
+              ? 'transform 0.12s cubic-bezier(0.2, 0, 0.4, 1)'
+              : 'transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            animation: isPulling ? 'none' : 'balloonBuoyancy 4s ease-in-out infinite'
           }}
         >
-          {/* Specular Highlight Arc (Gives the glossy wet latex sheen) */}
+          {/* A. 3D Volumetric Glowing Latex Balloon Body */}
           <div
-            className="absolute top-1.5 left-2 w-3 h-3.5 rounded-[50%] bg-gradient-to-br from-white/95 via-white/50 to-transparent blur-[0.3px] rotate-[-26deg] pointer-events-none"
-            aria-hidden="true"
-          />
+            className={`relative w-7 h-9 sm:w-8 sm:h-10 rounded-[50%_50%_50%_50%_/_38%_38%_62%_62%] flex items-center justify-center p-1 transition-all duration-300 transform-gpu group-hover:scale-105 active:scale-95 ${
+              isDark
+                ? 'border border-amber-300/40'
+                : 'border border-amber-400/50'
+            }`}
+            style={{
+              background: isDark
+                ? 'radial-gradient(circle at 32% 26%, #ff8d4d 0%, #fc6b2f 32%, #b92010 68%, #4a0703 100%)'
+                : 'radial-gradient(circle at 32% 26%, #ffffff 0%, #fef08a 32%, #f59e0b 68%, #92400e 100%)',
+              boxShadow: isDark
+                ? '0 0 16px rgba(252, 107, 47, 0.75), 0 0 32px rgba(252, 107, 47, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.7), inset 0 -4px 6px rgba(0, 0, 0, 0.65)'
+                : '0 0 16px rgba(245, 158, 11, 0.7), 0 0 28px rgba(251, 191, 36, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.9), inset 0 -3px 5px rgba(0, 0, 0, 0.25)'
+            }}
+          >
+            {/* Primary Specular Softbox Highlight (Simulates glossy curved latex reflection) */}
+            <div
+              className="absolute top-1 left-1.5 w-2.5 h-3.5 rounded-[50%] bg-gradient-to-br from-white/95 via-white/45 to-transparent rotate-[-28deg] pointer-events-none"
+              style={{ filter: 'blur(0.3px)' }}
+              aria-hidden="true"
+            />
 
-          {/* Secondary Soft Rim Reflection (Adds 3D spherical depth) */}
-          <div
-            className="absolute bottom-2 right-1.5 w-1.5 h-2 rounded-full bg-white/30 blur-[0.6px] pointer-events-none"
-            aria-hidden="true"
-          />
+            {/* Pin-point Specular Glint */}
+            <div
+              className="absolute top-1.5 left-2.5 w-1 h-1 rounded-full bg-white pointer-events-none shadow-[0_0_2px_#ffffff]"
+              aria-hidden="true"
+            />
 
-          {/* Centered Sun / Moon Theme Icon */}
-          <div className="relative z-10 transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110">
-            {isDark ? (
-              <Sun className="w-4 h-4 text-amber-200 drop-shadow-[0_0_6px_rgba(255,255,255,0.9)]" />
-            ) : (
-              <Moon className="w-4 h-4 text-zinc-950 drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]" />
-            )}
+            {/* Secondary Rim Reflection (Adds spherical 3D volume) */}
+            <div
+              className="absolute bottom-1.5 right-1.5 w-1.5 h-2 rounded-full bg-white/25 pointer-events-none"
+              style={{ filter: 'blur(0.5px)' }}
+              aria-hidden="true"
+            />
           </div>
 
-          {/* Pulsating Glowing Aura Ring */}
-          <div
-            className={`absolute -inset-1 rounded-[50%_50%_50%_50%_/_38%_38%_62%_62%] pointer-events-none opacity-40 group-hover:opacity-100 transition-opacity duration-300 ${
-              isDark
-                ? 'shadow-[0_0_25px_rgba(252,107,47,0.8)]'
-                : 'shadow-[0_0_22px_rgba(249,115,22,0.8)]'
-            }`}
-            aria-hidden="true"
-          />
-        </div>
+          {/* B. Realistic Latex Knot at the Bottom of Balloon */}
+          <div className="relative -mt-0.5 flex flex-col items-center z-10" aria-hidden="true">
+            {/* Rolled Knot Ring */}
+            <div
+              className={`w-2.5 h-1 rounded-full ${
+                isDark ? 'bg-[#b92010] shadow-[0_0_4px_#fc6b2f]' : 'bg-[#b45309]'
+              }`}
+            />
+            {/* Flared Nozzle Lip */}
+            <div
+              className={`w-3 h-1.5 rounded-b-sm ${
+                isDark ? 'bg-[#7a0d04]' : 'bg-[#92400e]'
+              }`}
+              style={{
+                clipPath: 'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)'
+              }}
+            />
+          </div>
 
-        {/* Sparkle Particle Burst on Theme Pull */}
-        {showSparkles && (
-          <div className="absolute -inset-3 pointer-events-none flex items-center justify-center animate-ping">
-            <Sparkles
-              className={`w-7 h-7 ${
-                isDark ? 'text-amber-300 drop-shadow-[0_0_8px_#fc6b2f]' : 'text-amber-500 drop-shadow-[0_0_8px_#f59e0b]'
+          {/* C. Hanging Balloon Rope (High-contrast, clearly visible in BOTH Dark and Light modes!) */}
+          <div
+            className="relative flex flex-col items-center overflow-visible transition-all duration-200"
+            style={{
+              animation: isPulling ? 'none' : 'ropeSway 4s ease-in-out infinite',
+              transformOrigin: 'top center'
+            }}
+            aria-hidden="true"
+          >
+            {/* Rope Cord Line */}
+            <div
+              className={`w-[2px] transition-all duration-200 ${
+                isDark
+                  ? 'bg-gradient-to-b from-amber-300 via-amber-400 to-amber-500 shadow-[0_0_4px_#fc6b2f,0_0_2px_#fbbf24]'
+                  : 'bg-gradient-to-b from-zinc-800 via-zinc-900 to-slate-950 shadow-[0_1px_2px_rgba(0,0,0,0.4)]'
+              }`}
+              style={{
+                height: isPulling ? '26px' : '18px'
+              }}
+            />
+
+            {/* D. Precision Metallic Pull-Bead at Bottom of Cord */}
+            <div
+              className={`w-2.5 h-2.5 rounded-full -mt-0.5 transition-transform duration-200 group-hover:scale-125 ${
+                isDark
+                  ? 'bg-gradient-to-br from-amber-200 via-amber-400 to-amber-600 shadow-[0_0_8px_#fc6b2f] border border-amber-200/50'
+                  : 'bg-gradient-to-br from-slate-600 via-slate-800 to-zinc-950 shadow-[0_1px_3px_rgba(0,0,0,0.5)] border border-slate-700/50'
               }`}
             />
           </div>
-        )}
+        </div>
+
+        {/* E. Floating Minimalist Micro-Tooltip on Hover */}
+        <span
+          className={`absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap px-2 py-0.5 rounded-full text-[9px] font-mono tracking-wider uppercase pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-50 shadow-md ${
+            isDark
+              ? 'bg-[#18181e] text-amber-300 border border-amber-400/30'
+              : 'bg-white text-zinc-800 border border-zinc-200'
+          }`}
+          aria-hidden="true"
+        >
+          {isDark ? 'Light' : 'Dark'}
+        </span>
       </button>
 
-      {/* Embedded CSS Keyframes for natural balloon float and rope sway */}
+      {/* Embedded 120 FPS Hardware-Accelerated CSS Keyframes */}
       <style>{`
-        @keyframes balloonFloat {
+        @keyframes balloonBuoyancy {
           0%, 100% {
             transform: translateY(0px) rotate(0deg);
           }
-          30% {
-            transform: translateY(-4px) rotate(1.8deg);
+          35% {
+            transform: translateY(-3.5px) rotate(1.2deg);
           }
           70% {
-            transform: translateY(2px) rotate(-1.8deg);
+            transform: translateY(-1px) rotate(-1deg);
           }
         }
 
@@ -205,10 +176,10 @@ export const BalloonThemeToggle: React.FC<BalloonThemeToggleProps> = ({
             transform: rotate(0deg);
           }
           35% {
-            transform: rotate(2.2deg);
+            transform: rotate(1.5deg);
           }
-          75% {
-            transform: rotate(-2.2deg);
+          70% {
+            transform: rotate(-1.5deg);
           }
         }
       `}</style>

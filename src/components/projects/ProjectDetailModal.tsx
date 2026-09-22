@@ -7,7 +7,7 @@ import { HighThroughputSystemsApp } from './HighThroughputSystemsApp'
 
 export interface ProjectModalData {
   id: string
-  number: string
+  number?: string
   title: string
   domain: string
   description: string
@@ -75,7 +75,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
           <div className="flex items-center gap-2.5">
             <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981] animate-pulse" />
             <span className="font-mono text-xs font-bold text-white uppercase tracking-wider">
-              {project.number} // {project.title}
+              {project.title}
             </span>
             <span className="hidden sm:inline-block px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-ember/20 text-ember-bright border border-ember/40">
               {project.domain}

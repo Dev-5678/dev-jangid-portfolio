@@ -203,10 +203,6 @@ export const ProjectsSection: React.FC = () => {
                           <span>Open In Tab</span>
                         </button>
                       </div>
-
-                      <span className="text-[11px] sm:text-xs font-mono text-zinc-400 font-bold tracking-widest uppercase">
-                        {p.number}
-                      </span>
                     </div>
 
                     <div>
