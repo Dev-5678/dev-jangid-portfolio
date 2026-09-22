@@ -178,31 +178,29 @@ export const ProjectsSection: React.FC = () => {
                 <div className={`grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center ${isEven ? 'lg:flex-row-reverse' : ''}`}>
                   {/* Text Column */}
                   <div className={`lg:col-span-6 flex flex-col justify-between h-full space-y-4 sm:space-y-6 ${isEven ? 'lg:order-2' : 'lg:order-1'}`}>
-                    {/* Top Row: Meta & Launch Actions */}
-                    <div className="flex flex-wrap items-center justify-between gap-2.5 sm:gap-3">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <a
-                          href={`#/project/${p.id}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-white text-black font-extrabold text-[11px] sm:text-xs tracking-wider uppercase hover:scale-105 active:scale-95 transition-all shadow-[0_4px_25px_rgba(255,255,255,0.4)] group touch-manipulation cursor-pointer"
-                          title="Launch Dedicated Full-Stack Webpage in New Tab"
-                        >
-                          <span>Launch Live App</span>
-                          <ArrowUpRight className="w-3.5 h-3.5 text-black stroke-[2.5] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
-                        </a>
+                    {/* Centered Launch Actions for All Projects */}
+                    <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 w-full">
+                      <a
+                        href={`#/project/${p.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-white text-black font-extrabold text-[11px] sm:text-xs tracking-wider uppercase hover:scale-105 active:scale-95 transition-all shadow-[0_4px_25px_rgba(255,255,255,0.4)] group touch-manipulation cursor-pointer"
+                        title="Launch Dedicated Full-Stack Webpage in New Tab"
+                      >
+                        <span>Launch Live App</span>
+                        <ArrowUpRight className="w-3.5 h-3.5 text-black stroke-[2.5] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
+                      </a>
 
-                        <button
-                          onClick={() => {
-                            window.location.hash = `#/project/${p.id}`
-                            window.scrollTo(0, 0)
-                          }}
-                          className="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 font-semibold text-[11px] sm:text-xs tracking-wider uppercase transition-all backdrop-blur-md cursor-pointer active:scale-95"
-                          title="Open in Current Window"
-                        >
-                          <span>Open In Tab</span>
-                        </button>
-                      </div>
+                      <button
+                        onClick={() => {
+                          window.location.hash = `#/project/${p.id}`
+                          window.scrollTo(0, 0)
+                        }}
+                        className="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 font-semibold text-[11px] sm:text-xs tracking-wider uppercase transition-all backdrop-blur-md cursor-pointer active:scale-95"
+                        title="Open in Current Window"
+                      >
+                        <span>Open In Tab</span>
+                      </button>
                     </div>
 
                     <div>
