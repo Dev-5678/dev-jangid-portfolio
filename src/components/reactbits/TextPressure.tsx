@@ -17,10 +17,6 @@ export interface TextPressureProps {
   minFontSize?: number
 }
 
-// The exact distance mapping function from the Instagram reel (d6)
-const distMap = (dist: number, maxDist: number, minVal: number, maxVal: number) =>
-  Math.max(minVal, maxVal - Math.abs((maxVal * dist) / maxDist) + minVal)
-
 export const TextPressure: React.FC<TextPressureProps> = ({
   text = 'DEV JANGID',
   fontFamily = 'Roboto Flex, sans-serif',
@@ -128,14 +124,15 @@ export const TextPressure: React.FC<TextPressureProps> = ({
   const maxDistRef = useRef<number>(350)
   const isSettledRef = useRef<boolean>(false)
 
-  // Font size calculation adapted to 85% scale (preventing stretch and screen overflow at 100% zoom!)
+  // Font size calculation adapted to reduce over-stretch and maintain crisp proportions at 100% zoom
   const updateGeometry = useCallback(() => {
     if (!containerRef.current || !titleRef.current) return
     const { width: containerW, height: containerH } = containerRef.current.getBoundingClientRect()
     let nextFontSize =
       containerW < 640
-        ? (containerW * 0.85) / (0.74 * totalLetters)
-        : (containerW * 0.85) / (totalLetters / 1.55)
+        ? (containerW * 0.76) / (0.74 * totalLetters)
+        : (containerW * 0.74) / (totalLetters / 1.55)
+    nextFontSize = Math.min(nextFontSize, containerW < 640 ? 44 : 76)
     nextFontSize = Math.max(nextFontSize, minFontSize)
     setFontSize(nextFontSize)
     setScaleY(1)
@@ -182,7 +179,7 @@ export const TextPressure: React.FC<TextPressureProps> = ({
     return () => window.removeEventListener('resize', debouncedResize)
   }, [updateGeometry])
 
-  // The exact animation loop from the Instagram reel (optimized for locked 120 FPS):
+  // Animation loop with unified WORD-LEVEL glow for DEV and JANGID
   useEffect(() => {
     let rafId: number
 
@@ -208,33 +205,43 @@ export const TextPressure: React.FC<TextPressureProps> = ({
 
       if (containerRef.current && isVisibleRef.current) {
         const maxDist = maxDistRef.current
-        const isMobile = window.innerWidth < 768
         const spans = spansRef.current
         const centers = cachedCentersRef.current
+
+        // Calculate unified word centers for "DEV" (indices 0..2) and "JANGID" (indices 3..8)
+        const c0 = centers[0]
+        const c2 = centers[2]
+        const c3 = centers[3]
+        const c8 = centers[8]
+
+        const devCenterX = c0 && c2 ? (c0.x + c2.x) / 2 : 0
+        const devCenterY = c0 && c2 ? (c0.y + c2.y) / 2 : 0
+
+        const jangidCenterX = c3 && c8 ? (c3.x + c8.x) / 2 : 0
+        const jangidCenterY = c3 && c8 ? (c3.y + c8.y) / 2 : 0
+
+        const dDev = Math.hypot(devCenterX - mousePos.current.x, devCenterY - mousePos.current.y)
+        const dJangid = Math.hypot(jangidCenterX - mousePos.current.x, jangidCenterY - mousePos.current.y)
+
+        // Word-level proximities (entire DEV glows at once, entire JANGID glows at once!)
+        const wordRadius = maxDist * 0.45
+        const proxDev = Math.max(0, 1 - dDev / wordRadius)
+        const proxJangid = Math.max(0, 1 - dJangid / wordRadius)
 
         for (let idx = 0; idx < spans.length; idx++) {
           const span = spans[idx]
           if (!span) continue
 
-          const center = centers[idx]
-          const cx = center ? center.x : 0
-          const cy = center ? center.y : 0
+          // Indices 0, 1, 2 belong to "DEV"; indices 3..8 belong to "JANGID"
+          const isDev = idx < 3
+          const wordProx = isDev ? proxDev : proxJangid
 
-          const dx = cx - mousePos.current.x
-          const dy = cy - mousePos.current.y
-          const d = Math.sqrt(dx * dx + dy * dy)
-
-          // Bold, punchy kinetic variable typography (clearly visible at rest & dynamically expands on hover!)
-          const wdth = width ? Math.floor(distMap(d, maxDist, isMobile ? 85 : 92, isMobile ? 130 : 144)) : 100
-          const wght = weight ? Math.floor(distMap(d, maxDist, 550, 950)) : 700
-          const ital = italic ? distMap(d, maxDist, 0, 1).toFixed(2) : '0'
-          const alphaVal = alpha ? distMap(d, maxDist, 0.4, 1).toFixed(2) : '1'
-
-          // Proximity-based kinetic lift and glowing flare on hover
-          const hoverRadius = maxDist * 0.42
-          const prox = Math.max(0, 1 - d / hoverRadius)
-          const liftY = -12 * (prox * prox)
-          const scaleChar = 1 + 0.1 * prox
+          // Reduced stretch: max width clamped to 108, resting at 84 (clean, tight, muscular!)
+          const wdth = width ? Math.floor(84 + (108 - 84) * wordProx) : 95
+          const wght = weight ? Math.floor(550 + (850 - 550) * wordProx) : 700
+          const ital = italic ? (0.6 * wordProx).toFixed(2) : '0'
+          const liftY = -9 * (wordProx * wordProx)
+          const scaleWord = 1 + 0.04 * wordProx
 
           const fontVar = `'wght' ${wght}, 'wdth' ${wdth}, 'ital' ${ital}`
 
@@ -243,16 +250,16 @@ export const TextPressure: React.FC<TextPressureProps> = ({
             span.style.fontVariationSettings = fontVar
           }
 
-          if (prox > 0.05) {
-            span.style.transform = `translate3d(0, ${liftY.toFixed(1)}px, 0) scale(${scaleChar.toFixed(2)})`
-            span.style.textShadow = `0 0 ${Math.round(16 * prox)}px rgba(252, 107, 47, ${(prox * 0.95).toFixed(2)}), 0 0 ${Math.round(32 * prox)}px rgba(252, 107, 47, ${(prox * 0.6).toFixed(2)})`
+          if (wordProx > 0.06) {
+            span.style.transform = `translate3d(0, ${liftY.toFixed(1)}px, 0) scale(${scaleWord.toFixed(2)})`
+            span.style.textShadow = `0 0 ${Math.round(18 * wordProx)}px rgba(252, 107, 47, ${(wordProx * 0.95).toFixed(2)}), 0 0 ${Math.round(36 * wordProx)}px rgba(252, 107, 47, ${(wordProx * 0.7).toFixed(2)})`
           } else {
             span.style.transform = 'translate3d(0, 0, 0) scale(1)'
             span.style.textShadow = 'none'
           }
 
-          if (alpha && span.style.opacity !== alphaVal) {
-            span.style.opacity = alphaVal
+          if (alpha && span.style.opacity !== '1') {
+            span.style.opacity = '1'
           }
         }
       }
@@ -275,6 +282,17 @@ export const TextPressure: React.FC<TextPressureProps> = ({
           justify-content: center;
           gap: clamp(0.01em, 0.03em, 0.06em);
           flex-shrink: 0;
+          cursor: pointer;
+          transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .tp-word-group:hover {
+          transform: translateY(-8px) scale(1.04);
+        }
+
+        .tp-word-group:hover span {
+          font-variation-settings: 'wght' 850, 'wdth' 108, 'ital' 0 !important;
+          text-shadow: 0 0 20px rgba(252, 107, 47, 1), 0 0 35px rgba(252, 107, 47, 0.75), 0 0 50px rgba(252, 107, 47, 0.4) !important;
         }
 
         .tp-stroke span {
@@ -300,13 +318,7 @@ export const TextPressure: React.FC<TextPressureProps> = ({
           display: inline-block;
           will-change: font-variation-settings, transform, text-shadow;
           user-select: none;
-          cursor: pointer;
-          transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), text-shadow 0.25s ease-out;
-        }
-
-        .text-pressure-title span:hover {
-          transform: translateY(-8px) scale(1.1) !important;
-          text-shadow: 0 0 20px rgba(252, 107, 47, 1), 0 0 35px rgba(252, 107, 47, 0.75) !important;
+          transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), text-shadow 0.25s ease-out, font-variation-settings 0.25s ease-out;
         }
       `}</style>
     ),
