@@ -165,7 +165,7 @@ export const CustomCursor: React.FC = () => {
         return (
           <div
             key={spark.id}
-            className="pointer-events-none fixed z-50 select-none font-bold animate-cute-spark"
+            className="pointer-events-none fixed z-[999997] select-none font-bold animate-cute-spark"
             style={{
               left: `${spark.x}px`,
               top: `${spark.y}px`,
@@ -185,7 +185,7 @@ export const CustomCursor: React.FC = () => {
       {ripples.map((ripple) => (
         <div
           key={ripple.id}
-          className="pointer-events-none fixed z-40 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-ember/70 animate-cute-ripple"
+          className="pointer-events-none fixed z-[999996] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-ember/70 animate-cute-ripple"
           style={{
             left: `${ripple.x}px`,
             top: `${ripple.y}px`,
@@ -198,7 +198,7 @@ export const CustomCursor: React.FC = () => {
       {hasFinePointer && (
         <div
           ref={dotRef}
-          className={`pointer-events-none fixed top-0 left-0 z-50 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-200 ${
+          className={`pointer-events-none fixed top-0 left-0 z-[999999] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-200 ${
             visible ? 'opacity-100' : 'opacity-0'
           }`}
           aria-hidden="true"
@@ -219,7 +219,7 @@ export const CustomCursor: React.FC = () => {
       {hasFinePointer && (
         <div
           ref={ringRef}
-          className={`pointer-events-none fixed top-0 left-0 z-40 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 ${
+          className={`pointer-events-none fixed top-0 left-0 z-[999998] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 ${
             visible ? 'opacity-100' : 'opacity-0'
           }`}
           aria-hidden="true"

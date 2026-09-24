@@ -17,6 +17,7 @@ import {
 } from 'lucide-react'
 import { ACCENT_COLORS } from '../hooks/useAccentColor'
 import { downloadVCard } from '../utils/vCard'
+import { personalInfo } from '../data/portfolio'
 
 interface CommandPaletteProps {
   isOpen: boolean
@@ -70,6 +71,21 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
       }
     },
     {
+      id: 'download-resume-pdf',
+      title: 'Download Official Resume (Dev_Jangid_Resume.pdf)',
+      category: 'ACTIONS',
+      icon: Download,
+      run: () => {
+        onClose()
+        const link = document.createElement('a')
+        link.href = '/Dev_Jangid_Resume.pdf'
+        link.download = 'Dev_Jangid_Resume.pdf'
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+      }
+    },
+    {
       id: 'cli',
       title: 'Launch Interactive Hacker CLI Terminal',
       category: 'ACTIONS',
@@ -102,7 +118,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     },
     {
       id: 'copy-email',
-      title: 'Copy Email (devjangid911@gmail.com)',
+      title: `Copy Email (${personalInfo.email})`,
       category: 'ACTIONS',
       icon: Mail,
       run: () => {

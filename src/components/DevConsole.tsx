@@ -80,6 +80,7 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
               <div><strong className="text-ember font-semibold">cansat</strong> — Query simulated ISL telemetry</div>
               <div><strong className="text-ember font-semibold">aai</strong> — Northern Region IT audit status</div>
               <div><strong className="text-ember font-semibold">contact</strong> — Direct telephone &amp; email</div>
+              <div><strong className="text-ember font-semibold">resume</strong> — Download verified resume PDF</div>
               <div><strong className="text-ember font-semibold">theme</strong> — Toggle dark/light theme</div>
               <div><strong className="text-ember font-semibold">sudo hire</strong> — Fast-track recruiter dispatch</div>
               <div><strong className="text-ember font-semibold">clear</strong> — Reset console screen</div>
@@ -174,6 +175,27 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
               <p>Email: <a href={`mailto:${personalInfo.email}`} className="text-ember hover:underline font-mono">{personalInfo.email}</a></p>
               <p>Phone: <a href={`tel:${personalInfo.phone}`} className="text-ember hover:underline font-mono">{personalInfo.displayPhone}</a></p>
               <p>Location: {personalInfo.location}</p>
+            </div>
+          )
+        })
+        break
+
+      case 'resume':
+      case 'pdf':
+        newEntries.push({
+          type: 'success',
+          text: (
+            <div className="space-y-1.5 text-xs text-silver my-1">
+              <p className="text-white font-bold">&gt; OFFICIAL ATS RESUME PDF READY:</p>
+              <p>
+                <a
+                  href="/Dev_Jangid_Resume.pdf"
+                  download="Dev_Jangid_Resume.pdf"
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-ember text-white font-mono text-[10px] font-bold hover:bg-ember-bright transition-colors"
+                >
+                  Download Dev_Jangid_Resume.pdf
+                </a>
+              </p>
             </div>
           )
         })
