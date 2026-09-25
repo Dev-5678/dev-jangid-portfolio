@@ -5,8 +5,11 @@ interface LoadingScreenProps {
 }
 
 export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onLoaded }) => {
-  // Check if user has already visited in this session
-  const alreadyVisited = typeof window !== 'undefined' && sessionStorage.getItem('dj_visited') === '1'
+  // Check if user has already visited in this session or device
+  const alreadyVisited =
+    typeof window !== 'undefined' &&
+    (sessionStorage.getItem('dj_visited') === '1' || localStorage.getItem('dj_visited') === '1')
+
   const [progress, setProgress] = useState(alreadyVisited ? 100 : 0)
   const [isFading, setIsFading] = useState(false)
   const [isDone, setIsDone] = useState(alreadyVisited)
@@ -15,13 +18,14 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onLoaded }) => {
     setIsFading(true)
     try {
       sessionStorage.setItem('dj_visited', '1')
+      localStorage.setItem('dj_visited', '1')
     } catch {
-      // Ignore
+      // Ignore storage restrictions
     }
     setTimeout(() => {
       setIsDone(true)
       onLoaded?.()
-    }, 150)
+    }, 120)
   }, [onLoaded])
 
   useEffect(() => {
@@ -30,7 +34,7 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onLoaded }) => {
       return
     }
 
-    // High-speed smooth progress counter (completes in ~240ms)
+    // High-speed smooth progress counter (completes smoothly in ~120ms on all devices)
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
@@ -38,7 +42,7 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onLoaded }) => {
           dismiss()
           return 100
         }
-        const jump = Math.floor(Math.random() * 15) + 18
+        const jump = Math.floor(Math.random() * 20) + 25
         const next = Math.min(100, prev + jump)
         if (next >= 100) {
           clearInterval(interval)
@@ -46,7 +50,7 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onLoaded }) => {
         }
         return next
       })
-    }, 18)
+    }, 16)
 
     return () => clearInterval(interval)
   }, [alreadyVisited, dismiss, onLoaded])
@@ -59,11 +63,14 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onLoaded }) => {
       onTouchStart={dismiss}
       role="status"
       aria-label="Loading portfolio"
-      className={`loading-screen cursor-pointer ${isFading ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+      className={`loading-screen cursor-pointer select-none ${
+        isFading ? 'opacity-0 pointer-events-none' : 'opacity-100'
+      }`}
       style={{
         zIndex: 10000,
         backgroundColor: '#050505',
-        transition: 'opacity 0.2s ease-out'
+        transition: 'opacity 0.2s ease-out',
+        touchAction: 'none'
       }}
     >
       <span className="loading-counter select-none">{progress}</span>
@@ -93,7 +100,7 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onLoaded }) => {
       </div>
 
       <span className="text-[10px] text-zinc-500 font-mono tracking-wider uppercase mt-2 opacity-60">
-        Click to skip
+        Tap to enter
       </span>
     </div>
   )

@@ -65,11 +65,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
     return () => ctx.revert()
   }, [])
 
-  // Smooth mouse/touch parallax matching the reel
+  // Smooth mouse parallax on fine pointers only (skips on touch screens to ensure rock-solid touch scrolling)
   useEffect(() => {
     if (!heroRef.current) return
+    const isTouchOnly = window.matchMedia('(hover: none) and (pointer: coarse)').matches
+    if (isTouchOnly) return
 
-    // High-performance GSAP quickTo functions (zero memory allocation during mousemove)
     const quickTitleX = titleContainerRef.current ? gsap.quickTo(titleContainerRef.current, 'x', { duration: 0.8, ease: 'power2.out' }) : null
     const quickTitleY = titleContainerRef.current ? gsap.quickTo(titleContainerRef.current, 'y', { duration: 0.8, ease: 'power2.out' }) : null
     const quickGlowX = glowRef.current ? gsap.quickTo(glowRef.current, 'x', { duration: 1.0, ease: 'power2.out' }) : null
@@ -94,18 +95,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
       }
     }
 
-    const handleMove = (clientX: number, clientY: number) => {
-      lastClientX = clientX
-      lastClientY = clientY
+    const onMouseMove = (e: MouseEvent) => {
+      lastClientX = e.clientX
+      lastClientY = e.clientY
       if (!rafScheduled) {
         rafScheduled = true
         requestAnimationFrame(updateParallax)
       }
-    }
-
-    const onMouseMove = (e: MouseEvent) => handleMove(e.clientX, e.clientY)
-    const onTouchMove = (e: TouchEvent) => {
-      if (e.touches && e.touches[0]) handleMove(e.touches[0].clientX, e.touches[0].clientY)
     }
 
     const onLeave = () => {
@@ -120,16 +116,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
     }
 
     window.addEventListener('mousemove', onMouseMove, { passive: true })
-    window.addEventListener('touchmove', onTouchMove, { passive: true })
-    window.addEventListener('touchend', onLeave, { passive: true })
-    window.addEventListener('touchcancel', onLeave, { passive: true })
     document.addEventListener('mouseleave', onLeave)
 
     return () => {
       window.removeEventListener('mousemove', onMouseMove)
-      window.removeEventListener('touchmove', onTouchMove)
-      window.removeEventListener('touchend', onLeave)
-      window.removeEventListener('touchcancel', onLeave)
       document.removeEventListener('mouseleave', onLeave)
     }
   }, [])
@@ -139,10 +129,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
       ref={heroRef}
       id="hero"
       aria-label="Introduction"
-      className="relative h-screen h-[100svh] min-h-[100svh] overflow-hidden select-none touch-pan-y"
+      className="relative h-screen h-[100dvh] min-h-[100dvh] overflow-hidden select-none touch-pan-y"
       style={{ background: 'var(--bg-main)' }}
     >
-
       {/* 2. Ambient Floating Dust Particles from Reel */}
       <div ref={dustRef} className="absolute inset-0 pointer-events-none z-[8]" aria-hidden="true">
         {DUST_PARTICLES.map((p, i) => (
@@ -163,10 +152,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         ))}
       </div>
 
-      {/* 3. Ambient Radiant Ember Glow Orb behind Title (Reel specification) */}
+      {/* 3. Ambient Radiant Ember Glow Orb behind Title */}
       <div
         ref={glowRef}
-        className="absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2 w-[360px] h-[360px] sm:w-[600px] sm:h-[600px] md:w-[800px] md:h-[800px] pointer-events-none opacity-0 z-[6] transform-gpu"
+        className="absolute left-1/2 top-[34%] sm:top-[38%] -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] sm:w-[600px] sm:h-[600px] md:w-[800px] md:h-[800px] pointer-events-none opacity-0 z-[6] transform-gpu"
         style={{
           background: theme === 'dark'
             ? 'radial-gradient(circle, rgba(252,107,47,0.18) 0%, rgba(252,107,47,0.05) 40%, transparent 70%)'
@@ -176,10 +165,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         aria-hidden="true"
       />
 
-      {/* 4. Top-Left Status Pill Badge (Aligned in corner directly below DJ.) */}
+      {/* 4. Top Status Pill Badge (Centered on mobile, left-anchored under DJ. on desktop) */}
       <div
         ref={tagRef}
-        className="absolute top-16 sm:top-[72px] md:top-[76px] left-3 sm:left-5 md:left-6 lg:left-8 z-[40] opacity-0 flex items-center gap-2 sm:gap-2.5 max-w-[calc(100vw-5.5rem)] px-3 sm:px-4 py-1.5 rounded-full bg-white/[0.05] border border-white/10 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.25)]"
+        className="absolute top-[68px] sm:top-[72px] md:top-[76px] left-1/2 -translate-x-1/2 sm:left-5 md:left-6 lg:left-8 sm:translate-x-0 z-[40] opacity-0 flex items-center gap-2 sm:gap-2.5 max-w-[calc(100vw-3rem)] sm:max-w-[calc(100vw-5.5rem)] px-3.5 sm:px-4 py-1.5 rounded-full bg-white/[0.05] border border-white/10 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.25)] shrink-0"
       >
         <span className="relative flex h-2 w-2 shrink-0">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-ember opacity-75" />
@@ -193,55 +182,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         </span>
       </div>
 
-      {/* 5. Engineering Subtitle (Anchored to Left Corner) */}
-      <div
-        ref={descRef}
-        className="absolute bottom-5 sm:bottom-6 md:bottom-8 left-3 sm:left-5 md:left-6 lg:left-8 z-[40] max-w-[280px] sm:max-w-[340px] md:max-w-[380px] opacity-0 text-left"
-      >
-        <p
-          className="text-[11.5px] sm:text-[13px] md:text-[14px] text-[#C4C4C8] dark:text-[#E2E2E6] leading-[1.6] sm:leading-[1.75] font-normal tracking-wide drop-shadow-sm"
-          style={{ fontFamily: 'var(--font-poppins), sans-serif' }}
-        >
-          Full-Stack Developer &amp; Computer Science Engineer crafting fast, resilient, and motion-driven digital products.
-        </p>
-      </div>
-
-      {/* 6. Magnetic Action Buttons (Anchored to Right Corner) */}
-      <div
-        ref={ctaRef}
-        className="hero-cta-group absolute bottom-5 sm:bottom-6 md:bottom-8 right-3 sm:right-5 md:right-6 lg:right-8 z-[40] opacity-0 flex flex-col justify-end items-end gap-2 sm:gap-2.5"
-      >
-        <a
-          href="#projects"
-          className="relative inline-flex items-center justify-center gap-2 sm:gap-2.5 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full font-bold text-[11px] sm:text-[12.5px] tracking-wide transition-all duration-300 overflow-hidden cursor-pointer bg-ember hover:bg-ember-bright text-white border border-transparent shadow-[0_0_25px_rgba(160,42,34,0.5)] hover:shadow-[0_0_35px_rgba(252,107,47,0.8)] hover:scale-105 active:scale-95 group touch-manipulation text-center"
-          title="Explore Engineering Highlights"
-        >
-          <span className="relative z-10 flex items-center justify-center gap-2 sm:gap-2.5">
-            <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border border-white/30 flex items-center justify-center transition-transform duration-500 group-hover:rotate-45 shrink-0">
-              <ArrowUpRight className="w-3.5 h-3.5 text-white stroke-[2.5]" />
-            </span>
-            <span className="whitespace-nowrap">Explore Work →</span>
-          </span>
-        </a>
-
-        <a
-          href="#contact"
-          className="relative inline-flex items-center justify-center gap-2 sm:gap-2.5 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-bold text-[10.5px] sm:text-[11.5px] tracking-wide transition-all duration-300 overflow-hidden cursor-pointer bg-white/[0.06] text-white border border-white/20 hover:border-ember/50 hover:text-ember hover:shadow-[0_0_20px_rgba(255,255,255,0.25)] hover:scale-105 active:scale-95 group touch-manipulation backdrop-blur-md text-center"
-          title="Direct Contact Transmission"
-        >
-          <span className="relative z-10 flex items-center justify-center gap-2">
-            <span className="whitespace-nowrap">Let's Talk →</span>
-          </span>
-        </a>
-      </div>
-
-      {/* 7. Center Kinetic Bold Variable Typography matching Instagram Reel (Scaled 85% to fit seamlessly on 100% zoom!) */}
+      {/* 5. Center Kinetic Bold Variable Typography matching Instagram Reel */}
       <div
         ref={titleContainerRef}
-        className="absolute top-[28%] sm:top-[30%] md:top-[38%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-[15] select-none w-full flex flex-col items-center justify-center px-4"
+        className="absolute top-[32%] sm:top-[38%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-[15] select-none w-full flex flex-col items-center justify-center px-4"
         aria-hidden="true"
       >
-        <div className="w-full max-w-[480px] sm:max-w-[580px] md:max-w-[660px] h-[44px] sm:h-[66px] md:h-[92px] relative flex items-center justify-center transform-gpu drop-shadow-[0_0_35px_rgba(252,107,47,0.4)]">
+        <div className="w-full max-w-[340px] sm:max-w-[580px] md:max-w-[660px] h-[52px] sm:h-[66px] md:h-[92px] relative flex items-center justify-center transform-gpu drop-shadow-[0_0_35px_rgba(252,107,47,0.4)]">
           <div style={{ position: 'relative', width: '100%', height: '100%', background: 'transparent' }} className="cursor-default pointer-events-auto">
             <TextPressure
               text="DEV JANGID"
@@ -261,9 +208,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         </div>
 
         {/* Cinematic Sub-headline */}
-        <div className="mt-5 sm:mt-7 md:mt-10 lg:mt-12 text-center z-[20] px-2">
+        <div className="mt-3 sm:mt-7 md:mt-10 lg:mt-12 text-center z-[20] px-2">
           <p
-            className="hero-line text-[clamp(0.55rem,2vw,0.85rem)] md:text-[clamp(0.7rem,1vw,0.85rem)] font-extrabold tracking-[0.12em] sm:tracking-[0.24em] uppercase text-ember drop-shadow-[0_0_20px_rgba(252,107,47,0.7)]"
+            className="hero-line text-[11px] sm:text-xs md:text-sm font-extrabold tracking-[0.16em] sm:tracking-[0.24em] uppercase text-ember drop-shadow-[0_0_20px_rgba(252,107,47,0.7)]"
             style={{ fontFamily: 'var(--font-poppins), sans-serif' }}
           >
             Crafting Interfaces That People Remember.
@@ -271,7 +218,49 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         </div>
       </div>
 
-      {/* 8. Center Animated Kinetic Scroll Indicator (Streaming downwards animation to guide user smoothly down!) */}
+      {/* 6. Engineering Subtitle (Centered above buttons on mobile, bottom-left on desktop) */}
+      <div
+        ref={descRef}
+        className="absolute bottom-[86px] sm:bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 sm:left-5 md:left-6 lg:left-8 sm:translate-x-0 z-[40] w-full max-w-[320px] sm:max-w-[340px] md:max-w-[380px] opacity-0 text-center sm:text-left px-3 sm:px-0"
+      >
+        <p
+          className="text-[12px] sm:text-[13px] md:text-[14px] text-[#C4C4C8] dark:text-[#E2E2E6] leading-[1.6] sm:leading-[1.75] font-normal tracking-wide drop-shadow-sm"
+          style={{ fontFamily: 'var(--font-poppins), sans-serif' }}
+        >
+          Full-Stack Developer &amp; Computer Science Engineer crafting fast, resilient, and motion-driven digital products.
+        </p>
+      </div>
+
+      {/* 7. Action Buttons (Centered row on mobile, bottom-right column on desktop) */}
+      <div
+        ref={ctaRef}
+        className="hero-cta-group absolute bottom-6 sm:bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 sm:left-auto sm:right-5 md:right-6 lg:right-8 sm:translate-x-0 z-[40] opacity-0 flex flex-row sm:flex-col justify-center sm:justify-end items-center sm:items-end gap-2.5 w-full sm:w-auto px-3 sm:px-0"
+      >
+        <a
+          href="#projects"
+          className="relative inline-flex items-center justify-center gap-2 sm:gap-2.5 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full font-bold text-[11.5px] sm:text-[12.5px] tracking-wide transition-all duration-300 overflow-hidden cursor-pointer bg-ember hover:bg-ember-bright text-white border border-transparent shadow-[0_0_25px_rgba(160,42,34,0.5)] hover:shadow-[0_0_35px_rgba(252,107,47,0.8)] hover:scale-105 active:scale-95 group touch-manipulation text-center shrink-0"
+          title="Explore Engineering Highlights"
+        >
+          <span className="relative z-10 flex items-center justify-center gap-2 sm:gap-2.5">
+            <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border border-white/30 flex items-center justify-center transition-transform duration-500 group-hover:rotate-45 shrink-0">
+              <ArrowUpRight className="w-3.5 h-3.5 text-white stroke-[2.5]" />
+            </span>
+            <span className="whitespace-nowrap">Explore Work →</span>
+          </span>
+        </a>
+
+        <a
+          href="#contact"
+          className="relative inline-flex items-center justify-center gap-2 sm:gap-2.5 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-bold text-[11px] sm:text-[11.5px] tracking-wide transition-all duration-300 overflow-hidden cursor-pointer bg-white/[0.06] text-white border border-white/20 hover:border-ember/50 hover:text-ember hover:shadow-[0_0_20px_rgba(255,255,255,0.25)] hover:scale-105 active:scale-95 group touch-manipulation backdrop-blur-md text-center shrink-0"
+          title="Direct Contact Transmission"
+        >
+          <span className="relative z-10 flex items-center justify-center gap-2">
+            <span className="whitespace-nowrap">Let's Talk →</span>
+          </span>
+        </a>
+      </div>
+
+      {/* 8. Desktop Kinetic Scroll Indicator (Clean on desktop mice, hidden on mobile touch screens to prevent clutter) */}
       <a
         href="#introduction"
         ref={scrollHintRef}
@@ -280,7 +269,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
           const target = document.querySelector('#introduction')
           if (target) target.scrollIntoView({ behavior: 'smooth' })
         }}
-        className="hero-scroll-indicator absolute bottom-2.5 sm:bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 z-[45] flex flex-col items-center gap-1 opacity-0 cursor-pointer group select-none transition-all duration-300 hover:scale-110 active:scale-95 touch-manipulation"
+        className="hero-scroll-indicator hidden sm:flex absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 z-[45] flex-col items-center gap-1 opacity-0 cursor-pointer group select-none transition-all duration-300 hover:scale-110 active:scale-95 touch-manipulation"
         aria-label="Scroll down to The Philosophy section"
       >
         <span

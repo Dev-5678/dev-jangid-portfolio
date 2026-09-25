@@ -29,6 +29,8 @@ import { GeminiRAGProjectWebsite } from './pages/GeminiRAGProjectWebsite'
 import { SystemsEngineProjectWebsite } from './pages/SystemsEngineProjectWebsite'
 import { CustomCursor } from './components/CustomCursor'
 import { GlobalLiveBackground } from './components/GlobalLiveBackground'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 
 export function App() {
   const { theme, toggleTheme } = useTheme()
@@ -338,6 +340,10 @@ export function App() {
 
       {/* Feature 3: Tactile Copy Notification Toast */}
       <CopyToast message={copiedText} onClose={clearCopied} />
+
+      {/* Vercel Web Analytics & Real-Time Speed Insights */}
+      <Analytics />
+      <SpeedInsights />
 
     </div>
   )
