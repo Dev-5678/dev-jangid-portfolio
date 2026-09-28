@@ -260,7 +260,7 @@ export const standaloneProjects: ProjectItem[] = [
     title: "ProxiSpeak — Geospatial Proximity Audio Ecosystem",
     description: "Real-time 2D spatial audio communication grid engineered with React, WebSockets, and Web Audio API. Computes dynamic inverse-square Euclidean audio attenuation across virtual coordinate maps with zero audio bleed.",
     tags: ["React 19", "WebSockets / Socket.io", "Web Audio API", "Euclidean Math", "Spatial Audio"],
-    githubUrl: "https://github.com/dhruvsaini09/ProxiSpeak",
+    githubUrl: "https://github.com/Dev-5678/ProxiSpeak",
     liveUrl: "https://dev-jangid-portfolio.vercel.app/#/project/proxispeak",
     featured: true
   }

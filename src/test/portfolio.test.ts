@@ -84,10 +84,11 @@ describe('Portfolio Resume Data Truth & Integrity', () => {
     expect(highSchool?.date).toBe('April 2022')
   })
 
-  it('provides honest experience highlights and unpopulated standalone projects list', () => {
+  it('provides verified experience highlights and legitimate standalone projects', () => {
     expect(experienceHighlights).toHaveLength(3)
-    // No fabricated projects should be present
-    expect(standaloneProjects).toEqual([])
+    expect(standaloneProjects).toHaveLength(1)
+    expect(standaloneProjects[0].id).toBe('proxispeak')
+    expect(standaloneProjects[0].githubUrl).toBe('https://github.com/Dev-5678/ProxiSpeak')
   })
 
   it('has consistent navigation anchors', () => {
