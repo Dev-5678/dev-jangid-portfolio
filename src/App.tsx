@@ -27,6 +27,7 @@ import { AAIProjectWebsite } from './pages/AAIProjectWebsite'
 import { CanSatProjectWebsite } from './pages/CanSatProjectWebsite'
 import { GeminiRAGProjectWebsite } from './pages/GeminiRAGProjectWebsite'
 import { SystemsEngineProjectWebsite } from './pages/SystemsEngineProjectWebsite'
+import { ProxiSpeakProjectWebsite } from './pages/ProxiSpeakProjectWebsite'
 import { CustomCursor } from './components/CustomCursor'
 import { GlobalLiveBackground } from './components/GlobalLiveBackground'
 import { Analytics } from '@vercel/analytics/react'
@@ -52,6 +53,7 @@ export function App() {
     if (hash.includes('project/cansat') || path.includes('/project/cansat')) return 'cansat'
     if (hash.includes('project/gemini') || hash.includes('project/rag') || path.includes('/project/gemini') || path.includes('/project/rag')) return 'rag'
     if (hash.includes('project/systems') || hash.includes('project/high-throughput') || path.includes('/project/systems')) return 'systems'
+    if (hash.includes('project/proxispeak') || path.includes('/project/proxispeak')) return 'proxispeak'
     return null
   }
 
@@ -165,6 +167,22 @@ export function App() {
       <>
         <CustomCursor />
         <SystemsEngineProjectWebsite
+          onBack={() => {
+            window.location.hash = '#projects'
+            setProjectRoute(null)
+          }}
+          theme={theme}
+          onToggleTheme={toggleTheme}
+        />
+      </>
+    )
+  }
+
+  if (projectRoute === 'proxispeak') {
+    return (
+      <>
+        <CustomCursor />
+        <ProxiSpeakProjectWebsite
           onBack={() => {
             window.location.hash = '#projects'
             setProjectRoute(null)

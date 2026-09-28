@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
+  <defs>
+    <radialGradient id="bgGlow" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#0e172a" />
+      <stop offset="60%" stop-color="#070a12" />
+      <stop offset="100%" stop-color="#030408" />
+    </radialGradient>
+    <radialGradient id="amberGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fc6b2f" stop-opacity="0.8" />
+      <stop offset="70%" stop-color="#fc6b2f" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#fc6b2f" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="cyanGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.8" />
+      <stop offset="70%" stop-color="#38bdf8" stop-opacity="0.1" />
+      <stop offset="100%" stop-color="#38bdf8" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#fc6b2f" />
+      <stop offset="50%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#10b981" />
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1"/>
+      <circle cx="0" cy="0" r="1.5" fill="rgba(255, 255, 255, 0.12)" />
+    </pattern>
+  </defs>
+
+  <!-- Deep Cybernetic Canvas -->
+  <rect width="1200" height="675" fill="url(#bgGlow)" />
+  <rect width="1200" height="675" fill="url(#grid)" />
+
+  <!-- Proximity Audio Radii Waves -->
+  <circle cx="360" cy="300" r="220" fill="none" stroke="#fc6b2f" stroke-width="1.5" stroke-dasharray="6 6" opacity="0.35" />
+  <circle cx="360" cy="300" r="140" fill="none" stroke="#fc6b2f" stroke-width="2" opacity="0.6" />
+  <circle cx="360" cy="300" r="70" fill="url(#amberGlow)" />
+
+  <circle cx="840" cy="240" r="180" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="6 6" opacity="0.3" />
+  <circle cx="840" cy="240" r="110" fill="none" stroke="#38bdf8" stroke-width="2" opacity="0.5" />
+  <circle cx="840" cy="240" r="50" fill="url(#cyanGlow)" />
+
+  <circle cx="700" cy="490" r="150" fill="none" stroke="#10b981" stroke-width="1.5" stroke-dasharray="6 6" opacity="0.25" />
+  <circle cx="700" cy="490" r="40" fill="#10b981" opacity="0.15" />
+
+  <!-- Spatial Audio Connection Ray -->
+  <line x1="360" y1="300" x2="560" y2="350" stroke="#fc6b2f" stroke-width="3" stroke-dasharray="8 4" opacity="0.8" />
+  <line x1="840" y1="240" x2="560" y2="350" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.4" />
+
+  <!-- Node Beacons -->
+  <g transform="translate(360, 300)">
+    <circle r="18" fill="#fc6b2f" filter="drop-shadow(0 0 16px #fc6b2f)" />
+    <circle r="6" fill="#ffffff" />
+    <rect x="-80" y="32" width="160" height="28" rx="6" fill="#0b0f19" stroke="#fc6b2f" stroke-width="1" />
+    <text x="0" y="50" fill="#ffffff" font-family="monospace" font-size="11" font-weight="bold" text-anchor="middle">AI &amp; ROBOTICS LAB</text>
+  </g>
+
+  <g transform="translate(840, 240)">
+    <circle r="16" fill="#38bdf8" filter="drop-shadow(0 0 14px #38bdf8)" />
+    <circle r="5" fill="#ffffff" />
+    <rect x="-70" y="28" width="140" height="26" rx="6" fill="#0b0f19" stroke="#38bdf8" stroke-width="1" />
+    <text x="0" y="45" fill="#ffffff" font-family="monospace" font-size="10" font-weight="bold" text-anchor="middle">LIBRARY HUDDLE</text>
+  </g>
+
+  <g transform="translate(700, 490)">
+    <circle r="14" fill="#10b981" filter="drop-shadow(0 0 12px #10b981)" />
+    <circle r="4" fill="#ffffff" />
+    <rect x="-70" y="24" width="140" height="24" rx="6" fill="#0b0f19" stroke="#10b981" stroke-width="1" />
+    <text x="0" y="40" fill="#ffffff" font-family="monospace" font-size="10" font-weight="bold" text-anchor="middle">AMPHITHEATRE</text>
+  </g>
+
+  <!-- Player Avatar -->
+  <g transform="translate(560, 350)">
+    <circle r="36" fill="none" stroke="#fc6b2f" stroke-width="1.5" opacity="0.6">
+      <animate attributeName="r" values="24;42;24" dur="2s" repeatCount="indefinite" />
+      <animate attributeName="opacity" values="0.8;0.1;0.8" dur="2s" repeatCount="indefinite" />
+    </circle>
+    <circle r="22" fill="#000000" stroke="#ffffff" stroke-width="2.5" filter="drop-shadow(0 0 20px #fc6b2f)" />
+    <circle r="16" fill="#fc6b2f" />
+    <text x="0" y="5" fill="#ffffff" font-family="monospace" font-size="11" font-weight="900" text-anchor="middle">YOU</text>
+    
+    <rect x="-55" y="32" width="110" height="24" rx="12" fill="#000000" stroke="#fc6b2f" stroke-width="1.5" />
+    <text x="0" y="47" fill="#fc6b2f" font-family="monospace" font-size="9" font-weight="bold" text-anchor="middle">X:560 | Y:350</text>
+  </g>
+
+  <!-- Top HUD Overlay -->
+  <rect x="50" y="40" width="1100" height="70" rx="14" fill="#0a0e1a" fill-opacity="0.9" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" filter="drop-shadow(0 20px 40px rgba(0,0,0,0.8))" />
+  
+  <circle cx="85" cy="75" r="7" fill="#10b981" filter="drop-shadow(0 0 8px #10b981)" />
+  <text x="105" y="72" fill="#10b981" font-family="monospace" font-size="11" font-weight="bold" letter-spacing="2">GEOSPATIAL PROXIMITY AUDIO ECOSYSTEM</text>
+  <text x="105" y="90" fill="#ffffff" font-family="sans-serif" font-size="16" font-weight="900" letter-spacing="0.5">PROXISPEAK // WEBSOCKETS SPATIAL ENGINE</text>
+
+  <rect x="740" y="53" width="180" height="44" rx="8" fill="#131b2e" stroke="rgba(255,255,255,0.1)" />
+  <text x="755" y="70" fill="#94a3b8" font-family="monospace" font-size="9">EUCLIDEAN DISTANCE</text>
+  <text x="755" y="87" fill="#fc6b2f" font-family="monospace" font-size="14" font-weight="bold">d = 206 px (Active)</text>
+
+  <rect x="940" y="53" width="180" height="44" rx="8" fill="#131b2e" stroke="rgba(255,255,255,0.1)" />
+  <text x="955" y="70" fill="#94a3b8" font-family="monospace" font-size="9">SPATIAL ATTENUATION</text>
+  <text x="955" y="87" fill="#38bdf8" font-family="monospace" font-size="14" font-weight="bold">Vol: 84% | Pan: +0.3R</text>
+
+  <!-- Audio Waveform Graphic on bottom right -->
+  <g transform="translate(850, 580)">
+    <rect x="-20" y="-30" width="310" height="60" rx="10" fill="#0b0f19" fill-opacity="0.95" stroke="rgba(255,255,255,0.15)" />
+    <path d="M 0 0 Q 15 -25, 30 0 T 60 0 T 90 0 T 120 0 T 150 0 T 180 0 T 210 0 T 240 0 T 270 0" fill="none" stroke="url(#waveGrad)" stroke-width="2.5" />
+    <text x="10" y="20" fill="#94a3b8" font-family="monospace" font-size="9">SPATIAL FREQUENCY WAVEFORM // ZERO BLEED</text>
+  </g>
+</svg>

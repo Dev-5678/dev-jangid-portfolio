@@ -18,7 +18,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
 
   const plainTextResume = `DEV JANGID
 Faridabad, Haryana, India 121005 | ${personalInfo.displayPhone} | ${personalInfo.email}
-LinkedIn: https://www.linkedin.com/in/devjangid911/ | GitHub: https://github.com/devjangid911
+LinkedIn: https://www.linkedin.com/in/devjangid911/ | GitHub: https://github.com/Dev-5678
 
 ================================================================================
 PROFESSIONAL SUMMARY

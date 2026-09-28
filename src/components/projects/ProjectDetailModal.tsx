@@ -4,6 +4,7 @@ import { AAINetworkSecurityApp } from './AAINetworkSecurityApp'
 import { CanSatTelemetryApp } from './CanSatTelemetryApp'
 import { GeminiRAGStudioApp } from './GeminiRAGStudioApp'
 import { HighThroughputSystemsApp } from './HighThroughputSystemsApp'
+import { ProxiSpeakApp } from './ProxiSpeakApp'
 
 export interface ProjectModalData {
   id: string
@@ -12,7 +13,7 @@ export interface ProjectModalData {
   domain: string
   description: string
   tags: string[]
-  appType: 'aai' | 'cansat' | 'rag' | 'systems'
+  appType: 'aai' | 'cansat' | 'rag' | 'systems' | 'proxispeak'
   image?: string
   liveMetrics?: { label: string; value: string }[]
   architecture: {
@@ -128,6 +129,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
               {project.appType === 'cansat' && <CanSatTelemetryApp />}
               {project.appType === 'rag' && <GeminiRAGStudioApp />}
               {project.appType === 'systems' && <HighThroughputSystemsApp />}
+              {project.appType === 'proxispeak' && <ProxiSpeakApp />}
             </div>
           ) : (
             <div className="space-y-6">
