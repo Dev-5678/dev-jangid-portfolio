@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { personalInfo, skillCategories, experiences } from '../data/portfolio'
-import { Terminal as TerminalIcon, X, Maximize2, Minimize2, CornerDownLeft, Activity, Cpu, Radio } from 'lucide-react'
+import { Terminal as TerminalIcon, X, Maximize2, Minimize2, CornerDownLeft, Activity, Cpu, Radio, Quote } from 'lucide-react'
 import { MatrixRain } from './terminal/MatrixRain'
 import { TerminalSnake } from './terminal/TerminalSnake'
+import { DSAComplexityWidget } from './dsa/DSAComplexityWidget'
 
 interface HistoryEntry {
   type: 'input' | 'output' | 'error' | 'success'
@@ -23,11 +24,13 @@ const COMMANDS = [
   'proxispeak',
   'cansat',
   'aai',
+  'dsa',
   'matrix',
   'snake',
   'benchmark',
   'sysinfo',
   'diagnostics',
+  'quote',
   'contact',
   'resume',
   'theme',
@@ -87,12 +90,14 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
               <div><strong className="text-ember font-semibold">skills</strong> — Technical stack &amp; languages</div>
               <div><strong className="text-ember font-semibold">exp</strong> — Internships (AAI, ISL, GenAI)</div>
               <div><strong className="text-ember font-semibold">proxispeak</strong> — Geospatial audio ecosystem</div>
+              <div><strong className="text-amber-400 font-semibold">dsa</strong> — Big-O complexity &amp; code matrix</div>
               <div><strong className="text-ember font-semibold">cansat</strong> — Query simulated ISL telemetry</div>
               <div><strong className="text-ember font-semibold">aai</strong> — Northern Region IT audit status</div>
               <div><strong className="text-emerald-400 font-semibold">matrix</strong> — Stream green digital rain</div>
               <div><strong className="text-emerald-400 font-semibold">snake</strong> — Play retro arcade snake minigame</div>
               <div><strong className="text-cyan-400 font-semibold">benchmark</strong> — Stress-test V8 &amp; CPU MFLOPS</div>
               <div><strong className="text-cyan-400 font-semibold">sysinfo</strong> — Client GPU, cores &amp; telemetry</div>
+              <div><strong className="text-amber-400 font-semibold">quote</strong> — Computer science &amp; engineering axioms</div>
               <div><strong className="text-ember font-semibold">contact</strong> — Direct telephone &amp; email</div>
               <div><strong className="text-ember font-semibold">resume</strong> — Download verified resume PDF</div>
               <div><strong className="text-ember font-semibold">theme</strong> — Toggle dark/light theme</div>
@@ -357,6 +362,38 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
                 <div><span className="text-zinc-500">NETWORK TELEMETRY:</span> <strong className="text-cyan-400">{net}</strong></div>
                 <div><span className="text-zinc-500">DEPLOYED EDGE REGION:</span> <strong className="text-amber-400">bom1 (Mumbai Anycast CDN)</strong></div>
               </div>
+            </div>
+          )
+        })
+        break
+      }
+
+      case 'dsa':
+        newEntries.push({
+          type: 'output',
+          text: <DSAComplexityWidget />
+        })
+        break
+
+      case 'quote': {
+        const quotes = [
+          { text: 'Simplicity is prerequisite for reliability.', author: 'Edsger W. Dijkstra' },
+          { text: 'Talk is cheap. Show me the code.', author: 'Linus Torvalds' },
+          { text: 'Sometimes it is the people no one can imagine anything of who do the things no one can imagine.', author: 'Alan Turing' },
+          { text: 'Premature optimization is the root of all evil in programming.', author: 'Donald E. Knuth' },
+          { text: 'There is no language that can prevent you from writing bad programs.', author: 'Bjarne Stroustrup' }
+        ]
+        const q = quotes[Math.floor(Math.random() * quotes.length)]
+        newEntries.push({
+          type: 'output',
+          text: (
+            <div className="p-3.5 rounded-xl bg-white/5 border-l-2 border-amber-400 font-mono text-xs space-y-1">
+              <div className="flex items-center gap-2 text-amber-400 font-bold">
+                <Quote className="w-3.5 h-3.5" />
+                <span>ENGINEERING AXIOM</span>
+              </div>
+              <p className="text-white italic">"{q.text}"</p>
+              <div className="text-zinc-400 text-[10px]">— {q.author}</div>
             </div>
           )
         })
