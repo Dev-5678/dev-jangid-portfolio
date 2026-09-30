@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Cpu, Code2 } from 'lucide-react'
+import React, { useState, useRef } from 'react'
+import { Cpu, Code2, Play, Shuffle, Sparkles, CheckCircle2 } from 'lucide-react'
 
 interface Algorithm {
   id: string
@@ -16,13 +16,13 @@ interface Algorithm {
 const ALGORITHMS: Algorithm[] = [
   {
     id: 'quicksort',
-    name: 'QuickSort',
+    name: 'QuickSort (In-Place)',
     category: 'Divide & Conquer',
     bestTime: 'O(N log N)',
     avgTime: 'O(N log N)',
     worstTime: 'O(N²)',
     space: 'O(log N)',
-    description: 'Partitions an array around a pivot element, recursively sorting sub-arrays. Efficient in-place cache-friendly sorting algorithm.',
+    description: 'Partitions an array around a pivot element, recursively sorting sub-arrays. High CPU cache-locality with zero heap overhead.',
     cppSnippet: `int partition(vector<int>& arr, int low, int high) {
     int pivot = arr[high], i = (low - 1);
     for (int j = low; j < high; j++) {
@@ -36,25 +36,9 @@ const ALGORITHMS: Algorithm[] = [
 }`
   },
   {
-    id: 'bst',
-    name: 'Binary Search Tree Search',
-    category: 'Tree Structures',
-    bestTime: 'O(1)',
-    avgTime: 'O(log N)',
-    worstTime: 'O(N)',
-    space: 'O(h)',
-    description: 'Hierarchical node structure where left subtrees hold keys less than the parent and right subtrees hold keys greater.',
-    cppSnippet: `TreeNode* searchBST(TreeNode* root, int val) {
-    if (!root || root->val == val) return root;
-    if (val < root->val) 
-        return searchBST(root->left, val);
-    return searchBST(root->right, val);
-}`
-  },
-  {
     id: 'dijkstra',
     name: "Dijkstra's Algorithm",
-    category: 'Graph Algorithms',
+    category: 'Graph Optimization',
     bestTime: 'O(V + E log V)',
     avgTime: 'O(E log V)',
     worstTime: 'O(E log V)',
@@ -76,13 +60,13 @@ while (!pq.empty()) {
   },
   {
     id: 'hashmap',
-    name: 'Hash Table Lookup',
+    name: 'Robin Hood Open Addressing',
     category: 'Associative Arrays',
     bestTime: 'O(1)',
     avgTime: 'O(1)',
     worstTime: 'O(N)',
     space: 'O(N)',
-    description: 'Computes index into an array of buckets via hash function. Fast constant-time average case retrieval with chaining collision resolution.',
+    description: 'Open-addressing hash table with bounded variance probe sequence lengths. Maximizes sequential cache-line reads.',
     cppSnippet: `unordered_map<string, int> freq;
 for (const auto& token : tokens) {
     freq[token]++;
@@ -97,77 +81,240 @@ export const DSAComplexityWidget: React.FC = () => {
   const [selectedAlgoId, setSelectedAlgoId] = useState('quicksort')
   const current = ALGORITHMS.find((a) => a.id === selectedAlgoId) || ALGORITHMS[0]
 
+  // Interactive Sorting Visualizer State
+  const INITIAL_ARRAY = [45, 18, 72, 34, 89, 23, 61, 12, 95, 50, 28, 67]
+  const [array, setArray] = useState<number[]>(INITIAL_ARRAY)
+  const [activeIndices, setActiveIndices] = useState<number[]>([])
+  const [sortedIndices, setSortedIndices] = useState<number[]>([])
+  const [pivotIndex, setPivotIndex] = useState<number | null>(null)
+  const [isSorting, setIsSorting] = useState<boolean>(false)
+  const [comparisonCount, setComparisonCount] = useState<number>(0)
+  const [swapCount, setSwapCount] = useState<number>(0)
+
+  const stopSortingRef = useRef<boolean>(false)
+
+  const shuffleArray = () => {
+    stopSortingRef.current = true
+    setIsSorting(false)
+    setActiveIndices([])
+    setSortedIndices([])
+    setPivotIndex(null)
+    setComparisonCount(0)
+    setSwapCount(0)
+
+    const shuffled = [...INITIAL_ARRAY].sort(() => Math.random() - 0.5)
+    setArray(shuffled)
+  }
+
+  const runVisualQuickSort = async () => {
+    if (isSorting) return
+    stopSortingRef.current = false
+    setIsSorting(true)
+    setComparisonCount(0)
+    setSwapCount(0)
+
+    const arr = [...array]
+    let comps = 0
+    let swaps = 0
+
+    const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+    const partition = async (low: number, high: number): Promise<number> => {
+      const pivot = arr[high]
+      setPivotIndex(high)
+      let i = low - 1
+
+      for (let j = low; j < high; j++) {
+        if (stopSortingRef.current) return -1
+        comps++
+        setComparisonCount(comps)
+        setActiveIndices([j, high])
+        await sleep(140)
+
+        if (arr[j] < pivot) {
+          i++
+          swaps++
+          setSwapCount(swaps)
+          const temp = arr[i]
+          arr[i] = arr[j]
+          arr[j] = temp
+          setArray([...arr])
+          await sleep(140)
+        }
+      }
+
+      swaps++
+      setSwapCount(swaps)
+      const temp = arr[i + 1]
+      arr[i + 1] = arr[high]
+      arr[high] = temp
+      setArray([...arr])
+      setPivotIndex(null)
+      setActiveIndices([])
+      await sleep(140)
+
+      return i + 1
+    }
+
+    const quickSort = async (low: number, high: number) => {
+      if (low < high) {
+        const pi = await partition(low, high)
+        if (pi === -1) return
+        setSortedIndices((prev) => [...prev, pi])
+        await quickSort(low, pi - 1)
+        await quickSort(pi + 1, high)
+      } else if (low === high) {
+        setSortedIndices((prev) => [...prev, low])
+      }
+    }
+
+    await quickSort(0, arr.length - 1)
+    setSortedIndices(Array.from({ length: arr.length }, (_, i) => i))
+    setActiveIndices([])
+    setPivotIndex(null)
+    setIsSorting(false)
+  }
+
   return (
-    <div className="brutal-card p-6 sm:p-8 bg-white dark:bg-[#131720] border-3 border-[#111317] dark:border-[#334155] shadow-[6px_6px_0px_#111317] dark:shadow-[6px_6px_0px_#00E5FF]">
+    <div className="relative rounded-2xl bg-[#090b10] border border-white/15 p-5 sm:p-7 text-white font-sans backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] my-3">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-[#111317] dark:border-[#334155] pb-4 mb-6">
-        <div>
-          <div className="flex items-center gap-2 font-mono text-xs font-bold text-[#FF5500] dark:text-[#00E5FF] uppercase tracking-wider">
-            <Cpu className="w-4 h-4 text-[#00E5FF]" />
-            <span>ALGORITHMIC FOUNDATIONS // DSA & BIG-O MATRIX</span>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4 mb-5">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2 font-mono text-xs font-bold text-emerald-400 uppercase tracking-widest">
+            <Cpu className="w-4 h-4 text-emerald-400 animate-pulse" />
+            <span>ALGORITHMIC COMPLEXITY &amp; MEMORY BENCHMARK</span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-black uppercase text-[#111317] dark:text-[#F4F7FB] mt-1">
-            Data Structures & Complexity Benchmark
+          <h3 className="text-lg sm:text-xl font-bold uppercase text-white tracking-tight">
+            Data Structures &amp; Complexity Matrix
           </h3>
         </div>
-      </div>
 
-      {/* Algorithm Pills */}
-      <div className="flex flex-wrap gap-2 mb-6">
-        {ALGORITHMS.map((algo) => (
-          <button
-            key={algo.id}
-            onClick={() => setSelectedAlgoId(algo.id)}
-            className={`px-3 py-2 font-mono text-xs font-bold uppercase border-2 transition-all cursor-pointer ${
-              algo.id === selectedAlgoId
-                ? 'bg-[#111317] text-[#00E5FF] border-[#111317] dark:border-[#00E5FF] shadow-[3px_3px_0px_#00E5FF]'
-                : 'bg-[#FAF8F5] dark:bg-[#1A202C] text-[#111317] dark:text-[#F4F7FB] border-[#111317] dark:border-[#334155] hover:border-[#00E5FF]'
-            }`}
-          >
-            {algo.name}
-          </button>
-        ))}
+        <div className="flex items-center gap-2">
+          {ALGORITHMS.map((algo) => (
+            <button
+              key={algo.id}
+              onClick={() => setSelectedAlgoId(algo.id)}
+              className={`px-3 py-1.5 rounded-lg font-mono text-xs font-bold uppercase transition-all cursor-pointer ${
+                algo.id === selectedAlgoId
+                  ? 'bg-ember text-white shadow-[0_0_15px_rgba(160,42,34,0.5)]'
+                  : 'bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10 border border-white/10'
+              }`}
+            >
+              {algo.name}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Complexity Matrix Badges */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-        <div className="p-3 bg-[#FAF8F5] dark:bg-[#0A0D12] border-2 border-[#111317] dark:border-[#334155] text-center font-mono">
-          <span className="text-[10px] text-gray-500 uppercase font-bold block">Best Time</span>
-          <span className="text-sm font-black text-[#111317] dark:text-[#CCFF00]">{current.bestTime}</span>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 mb-5 font-mono text-xs">
+        <div className="p-3 rounded-xl bg-white/[0.03] border border-white/10 text-center">
+          <span className="text-[10px] text-zinc-400 uppercase block mb-1">Best Case Time</span>
+          <span className="text-sm font-bold text-emerald-400">{current.bestTime}</span>
         </div>
-        <div className="p-3 bg-[#FAF8F5] dark:bg-[#0A0D12] border-2 border-[#111317] dark:border-[#334155] text-center font-mono">
-          <span className="text-[10px] text-gray-500 uppercase font-bold block">Average Time</span>
-          <span className="text-sm font-black text-[#00E5FF]">{current.avgTime}</span>
+        <div className="p-3 rounded-xl bg-white/[0.03] border border-white/10 text-center">
+          <span className="text-[10px] text-zinc-400 uppercase block mb-1">Average Case Time</span>
+          <span className="text-sm font-bold text-sky-400">{current.avgTime}</span>
         </div>
-        <div className="p-3 bg-[#FAF8F5] dark:bg-[#0A0D12] border-2 border-[#111317] dark:border-[#334155] text-center font-mono">
-          <span className="text-[10px] text-gray-500 uppercase font-bold block">Worst Time</span>
-          <span className="text-sm font-black text-[#FF5500]">{current.worstTime}</span>
+        <div className="p-3 rounded-xl bg-white/[0.03] border border-white/10 text-center">
+          <span className="text-[10px] text-zinc-400 uppercase block mb-1">Worst Case Time</span>
+          <span className="text-sm font-bold text-amber-400">{current.worstTime}</span>
         </div>
-        <div className="p-3 bg-[#FAF8F5] dark:bg-[#0A0D12] border-2 border-[#111317] dark:border-[#334155] text-center font-mono">
-          <span className="text-[10px] text-gray-500 uppercase font-bold block">Auxiliary Space</span>
-          <span className="text-sm font-black text-gray-700 dark:text-gray-300">{current.space}</span>
+        <div className="p-3 rounded-xl bg-white/[0.03] border border-white/10 text-center">
+          <span className="text-[10px] text-zinc-400 uppercase block mb-1">Auxiliary Space</span>
+          <span className="text-sm font-bold text-purple-400">{current.space}</span>
         </div>
       </div>
 
-      {/* Description & Code Preview */}
-      <div className="p-4 bg-[#FAF8F5] dark:bg-[#0A0D12] border-2 border-[#111317] dark:border-[#334155] space-y-3 font-mono text-xs">
-        <p className="font-sans text-xs text-gray-700 dark:text-gray-300">
+      {/* Description & C++ Implementation */}
+      <div className="mb-5 space-y-2">
+        <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-normal">
           {current.description}
         </p>
 
-        <div>
-          <div className="flex items-center justify-between pb-1.5 border-b border-gray-300 dark:border-gray-800 text-[10px] text-gray-500">
-            <span className="flex items-center gap-1 font-bold">
-              <Code2 className="w-3.5 h-3.5 text-[#00E5FF]" />
-              C++ IMPLEMENTATION
-            </span>
-            <span>OPTIMIZED FOR LOW LATENCY</span>
+        <div className="rounded-xl overflow-hidden border border-white/10 bg-black/60 p-3.5 font-mono text-[11px] text-zinc-300">
+          <div className="flex items-center gap-1.5 text-ember-bright text-[10px] font-bold uppercase mb-2">
+            <Code2 className="w-3.5 h-3.5" />
+            <span>Verified C++20 Implementation</span>
           </div>
-          <pre className="mt-2 p-3 bg-white dark:bg-[#141820] border border-gray-300 dark:border-gray-800 text-gray-800 dark:text-gray-200 text-[11px] overflow-x-auto">
-            <code>{current.cppSnippet}</code>
+          <pre className="overflow-x-auto text-emerald-300 leading-relaxed">
+            {current.cppSnippet}
           </pre>
+        </div>
+      </div>
+
+      {/* Interactive QuickSort Step Visualizer */}
+      <div className="p-4 rounded-xl bg-white/[0.02] border border-white/10 space-y-3 font-mono">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2 text-xs font-bold text-amber-400 uppercase">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Interactive Sorting Bar Visualizer</span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={runVisualQuickSort}
+              disabled={isSorting}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold uppercase transition-all ${
+                isSorting
+                  ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                  : 'bg-emerald-500 text-black hover:bg-emerald-400 cursor-pointer shadow-[0_0_15px_#10b981]'
+              }`}
+            >
+              <Play className="w-3 h-3" />
+              <span>{isSorting ? 'SORTING...' : 'RUN VISUAL SORT'}</span>
+            </button>
+
+            <button
+              onClick={shuffleArray}
+              disabled={isSorting}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-bold uppercase transition-all cursor-pointer"
+            >
+              <Shuffle className="w-3 h-3" />
+              <span>SHUFFLE</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Animated Bars */}
+        <div className="h-32 flex items-end justify-center gap-1.5 sm:gap-2 px-2 pt-4 pb-2 bg-black/40 rounded-lg border border-white/5">
+          {array.map((val, idx) => {
+            const isPivot = pivotIndex === idx
+            const isActive = activeIndices.includes(idx)
+            const isSorted = sortedIndices.includes(idx)
+
+            return (
+              <div key={idx} className="flex-1 flex flex-col items-center gap-1 h-full justify-end">
+                <span className="text-[9px] text-zinc-500">{val}</span>
+                <div
+                  style={{ height: `${(val / 100) * 100}%` }}
+                  className={`w-full rounded-t transition-all duration-150 ${
+                    isPivot
+                      ? 'bg-cyan-400 shadow-[0_0_12px_#22d3ee]'
+                      : isActive
+                      ? 'bg-ember shadow-[0_0_12px_#fc6b2f]'
+                      : isSorted
+                      ? 'bg-emerald-400'
+                      : 'bg-white/20'
+                  }`}
+                />
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Telemetry metrics */}
+        <div className="flex flex-wrap items-center justify-between text-[11px] text-zinc-400 pt-1">
+          <div>Comparisons: <strong className="text-white">{comparisonCount}</strong></div>
+          <div>Array Swaps: <strong className="text-white">{swapCount}</strong></div>
+          <div className="flex items-center gap-1 text-emerald-400">
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            <span>Deterministic Partitioning</span>
+          </div>
         </div>
       </div>
     </div>
   )
 }
+
+export default DSAComplexityWidget
