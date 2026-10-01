@@ -30,6 +30,7 @@ const COMMANDS = [
   'benchmark',
   'sysinfo',
   'diagnostics',
+  'github',
   'quote',
   'contact',
   'resume',
@@ -97,6 +98,7 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
               <div><strong className="text-emerald-400 font-semibold">snake</strong> — Play retro arcade snake minigame</div>
               <div><strong className="text-cyan-400 font-semibold">benchmark</strong> — Stress-test V8 &amp; CPU MFLOPS</div>
               <div><strong className="text-cyan-400 font-semibold">sysinfo</strong> — Client GPU, cores &amp; telemetry</div>
+              <div><strong className="text-emerald-400 font-semibold">github</strong> — Live repositories &amp; streak</div>
               <div><strong className="text-amber-400 font-semibold">quote</strong> — Computer science &amp; engineering axioms</div>
               <div><strong className="text-ember font-semibold">contact</strong> — Direct telephone &amp; email</div>
               <div><strong className="text-ember font-semibold">resume</strong> — Download verified resume PDF</div>
@@ -399,6 +401,33 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
         })
         break
       }
+
+      case 'github':
+        newEntries.push({
+          type: 'output',
+          text: (
+            <div className="space-y-2 p-3.5 rounded-xl bg-white/5 border border-white/10 font-mono text-xs">
+              <div className="flex items-center gap-2 text-emerald-400 font-bold uppercase">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span>GITHUB TELEMETRY // DEV-5678</span>
+              </div>
+              <div className="space-y-1 text-zinc-300 text-[11px]">
+                <div>STATUS: <strong className="text-emerald-400">Pushed Today 🟢 (Active Streak)</strong></div>
+                <div>PUBLIC REPOSITORIES: <strong className="text-white">2 Repositories</strong></div>
+                <div>PROFILE URL: <a href="https://github.com/Dev-5678" target="_blank" rel="noopener noreferrer" className="text-ember-bright underline">github.com/Dev-5678</a></div>
+              </div>
+              <div className="pt-1 flex flex-wrap gap-2 text-[10px]">
+                <a href="https://github.com/Dev-5678/dev-jangid-portfolio" target="_blank" rel="noopener noreferrer" className="px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-white font-bold">
+                  dev-jangid-portfolio →
+                </a>
+                <a href="https://github.com/Dev-5678/ProxiSpeak" target="_blank" rel="noopener noreferrer" className="px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-white font-bold">
+                  ProxiSpeak →
+                </a>
+              </div>
+            </div>
+          )
+        })
+        break
 
       case 'theme':
         onToggleTheme()
