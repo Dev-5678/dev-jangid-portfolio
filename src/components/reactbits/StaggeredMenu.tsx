@@ -354,18 +354,6 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 
         {/* Header Action Controls */}
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* Interactive Balloon Theme Toggle (Smoothly hides when navigation drawer is open) */}
-          <div
-            className={`flex items-center justify-center -my-2.5 px-0.5 transition-all duration-300 transform-gpu ${
-              isOpen
-                ? 'opacity-0 scale-75 pointer-events-none -translate-x-2'
-                : 'opacity-100 scale-100 pointer-events-auto translate-x-0'
-            }`}
-            aria-hidden={isOpen}
-          >
-            <BalloonThemeToggle theme={theme} onToggleTheme={onToggleTheme} />
-          </div>
-
           {/* Floating Toggle on Right (Strict Reel Replica: Menu +) */}
           <button
             ref={toggleBtnRef}

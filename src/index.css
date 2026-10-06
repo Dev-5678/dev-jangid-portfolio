@@ -1141,3 +1141,24 @@ html:not(.dark) .hero-line {
 
 
 
+
+/* Top-Only Absolute Balloon Anchor: Sticks strictly to top of page, does NOT scroll along with viewport */
+.top-balloon-anchor {
+  position: absolute;
+  top: 1.5rem;
+  right: calc(2rem + 8.5rem);
+  z-index: 40;
+  pointer-events: auto;
+}
+@media (max-width: 640px) {
+  .top-balloon-anchor {
+    top: 1.25rem;
+    right: calc(1.25rem + 7.5rem);
+  }
+}
+@media (max-width: 380px) {
+  .top-balloon-anchor {
+    top: 1rem;
+    right: calc(1rem + 6.25rem);
+  }
+}

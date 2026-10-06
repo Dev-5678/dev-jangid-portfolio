@@ -7,6 +7,7 @@ import { useClipboard } from './hooks/useClipboard'
 import { useOnlineStatus } from './hooks/useOnlineStatus'
 
 import { StaggeredMenu } from './components/reactbits/StaggeredMenu'
+import { BalloonThemeToggle } from './components/BalloonThemeToggle'
 import { HeroSection } from './sections/HeroSection'
 import { AboutSection } from './sections/AboutSection'
 import { ExperienceSection } from './sections/ExperienceSection'
@@ -218,6 +219,17 @@ export function App() {
       >
         Skip to main content
       </a>
+
+      {/* Top-Only Absolute Balloon Theme Switch (Anchored strictly to top of page; does NOT scroll along with viewport) */}
+      <div className="top-balloon-anchor">
+        <BalloonThemeToggle
+          theme={theme}
+          onToggleTheme={() => {
+            playClick()
+            toggleTheme()
+          }}
+        />
+      </div>
 
       {/* Cinematic Staggered Menu Header (Exact Reel Replica) */}
       <StaggeredMenu
