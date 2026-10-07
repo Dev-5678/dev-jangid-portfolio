@@ -91,7 +91,7 @@ export const experiences: ExperienceItem[] = [
     role: "Network Security & IT Intern",
     organization: "Airports Authority of India (AAI)",
     location: "New Delhi, India",
-    dates: "14 August 2026 Ã¢â‚¬â€œ 25 September 2026",
+    dates: "14 August 2026 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ 25 September 2026",
     type: "Internship",
     responsibilities: [
       "Supported Northern Region HQ IT division with enterprise network monitoring, system diagnostics, and operational troubleshooting.",
@@ -106,7 +106,7 @@ export const experiences: ExperienceItem[] = [
     role: "Space Systems & CanSat Trainee",
     organization: "India Space Lab (ISL)",
     location: "Haryana, India",
-    dates: "15 July 2025 Ã¢â‚¬â€œ 31 July 2025",
+    dates: "15 July 2025 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ 31 July 2025",
     type: "Internship",
     responsibilities: [
       "Gained hands-on experience in 1U CanSat payload design, telemetry tracking, and aerospace communication systems.",
@@ -268,12 +268,20 @@ export const standaloneProjects: ProjectItem[] = [
     description: "Distributed execution runtime for autonomous AI multi-agent workflows. Implements Kahn's topological sort for parallel wave scheduling, sandboxed tool security perimeters, episodic semantic vector memory (Cosine), and OpenTelemetry distributed tracing.",
     tags: ["TypeScript 5", "DAG Topological Scheduler", "OpenTelemetry", "Vector Embeddings", "SSE Streaming"],
     githubUrl: "https://github.com/Dev-5678/AgentForge",
+  },
+  {
+    id: "hyper-route",
+    title: "HyperRoute - High-Throughput Edge API Gateway & Rate Limiter",
+    description: "Distributed edge reverse proxy featuring atomic sliding-window counter rate limiting, token-bucket burst smoothing, upstream round-robin load balancing with circuit breakers, and sub-millisecond OpenMetrics Prometheus telemetry.",
+    tags: ["Node.js", "Redis Lua Scripts", "Sliding-Window", "Load Balancer", "Prometheus", "Docker"],
+    githubUrl: "https://github.com/Dev-5678/HyperRoute",
+    featured: true
     featured: true
     featured: true
   },
   {
     id: "proxispeak",
-    title: "ProxiSpeak Ã¢â‚¬â€ Geospatial Proximity Audio Ecosystem",
+    title: "ProxiSpeak ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Geospatial Proximity Audio Ecosystem",
     description: "Real-time 2D spatial audio communication grid engineered with React, WebSockets, and Web Audio API. Computes dynamic inverse-square Euclidean audio attenuation across virtual coordinate maps with zero audio bleed.",
     tags: ["React 19", "WebSockets / Socket.io", "Web Audio API", "Euclidean Math", "Spatial Audio"],
     githubUrl: "https://github.com/Dev-5678/ProxiSpeak",
@@ -285,7 +293,7 @@ export const standaloneProjects: ProjectItem[] = [
 export const educationHistory: EducationItem[] = [
   {
     id: "degree-bachelor",
-    degree: "BachelorÃ¢â‚¬â„¢s Degree Ã¢â‚¬â€ Computer Science and Engineering",
+    degree: "BachelorÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢s Degree ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Computer Science and Engineering",
     institution: "Jagannath University",
     location: "Bahadurgarh, Haryana",
     date: "Expected June 2027",
