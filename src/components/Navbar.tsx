@@ -89,7 +89,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <Search className="w-3.5 h-3.5 text-ash" />
               <span>CMD</span>
               <span className="text-[9px] bg-white/10 px-1.5 py-0.5 rounded text-silver font-mono">
-                ⌘K
+                âŒ˜K
               </span>
             </button>
           )}
