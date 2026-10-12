@@ -1,4 +1,4 @@
-# Dev Jangid — Interactive 3D Mechanical Terminal & Engineering Portfolio
+# Dev Jangid â€” Interactive 3D Mechanical Terminal & Engineering Portfolio
 
 <div align="center">
 
@@ -9,31 +9,31 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4.0-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-**[Explore Live Portfolio](https://dev-jangid-portfolio.vercel.app)** • **[Direct ATS Resume PDF](https://dev-jangid-portfolio.vercel.app/resume.pdf)** • **[GitHub Profile](https://github.com/Dev-5678)**
+**[Explore Live Portfolio](https://dev-jangid-portfolio.vercel.app)** â€¢ **[Direct ATS Resume PDF](https://dev-jangid-portfolio.vercel.app/resume.pdf)** â€¢ **[GitHub Profile](https://github.com/Dev-5678)**
 
 </div>
 
 ---
 
-## 🌟 Overview
+## ðŸŒŸ Overview
 
 High-performance, interactive portfolio and system telemetry station for **Dev Jangid** (Computer Science Engineer specializing in Enterprise Systems, Aerospace Telemetry, and Multimodal Artificial Intelligence). Built with an obsidian and ember aesthetic, featuring:
 
-- ⌨️ **Interactive 3D Mechanical Terminal Keyboard**: Realistic vector SVG keycaps (`C`, `Java`, `React`, `Git`, `OS`, `SQL`), touch and mouse orbit camera controls, and Web Audio API synthesized mechanical keystroke acoustics.
-- 🚀 **5 Full-Stack Standalone Web Applications**:
+- âŒ¨ï¸ **Interactive 3D Mechanical Terminal Keyboard**: Realistic vector SVG keycaps (`C`, `Java`, `React`, `Git`, `OS`, `SQL`), touch and mouse orbit camera controls, and Web Audio API synthesized mechanical keystroke acoustics.
+- ðŸš€ **5 Full-Stack Standalone Web Applications**:
   1. **AAI Network Security & IT Infrastructure**: VLAN 101 ANS airside isolation, stateful packet inspection, high-availability MySQL database clustering, and live flight radar tracking.
   2. **CanSat & CubeSat Space Telemetry System**: 1U space payload collecting atmospheric lapse rates, 433.92 MHz UHF FSK radio frequency packet decoding with CRC-16 checksums, and descent triggers.
   3. **Multimodal Generative AI & RAG Engine**: Google Cloud Vertex AI & Gemini 1.5 Pro inference engine with dense 768-dimensional vector embeddings and cosine similarity search.
   4. **High-Throughput Low-Latency Systems Engine**: In-place QuickSort partitioning, flat min-heap Dijkstra routing, and Robin Hood open-addressing hash maps.
   5. **ProxiSpeak Geospatial Audio Ecosystem**: Real-time 2D spatial audio communication grid calculating dynamic inverse-square Euclidean distance attenuation and stereo panning across virtual coordinate maps.
-- ⚡ **Live Dynamic GitHub Telemetry**: Automated live data fetching from GitHub API (`@Dev-5678`), tracking public repositories, daily commit streaks, and verified language breakdowns with client-side cache protection.
-- 🕹️ **Dev Console (` ` ` / Ctrl+K)**: Built-in hacker terminal equipped with playable retro arcade Snake, green Matrix digital rain stream, V8 hardware compute benchmarks (MFLOPS), client GPU diagnostics, and CLI shortcuts.
-- 📄 **ATS-Compliant Resume System**: Integrated in-app interactive modal with 1-click verified PDF download (`/resume.pdf` & `/Dev_Jangid_Resume.pdf`).
-- 📈 **Real-Time Observability**: Vercel Analytics and Speed Insights tracking global visitor origins and Core Web Vitals.
+- âš¡ **Live Dynamic GitHub Telemetry**: Automated live data fetching from GitHub API (`@Dev-5678`), tracking public repositories, daily commit streaks, and verified language breakdowns with client-side cache protection.
+- ðŸ•¹ï¸ **Dev Console (` ` ` / Ctrl+K)**: Built-in hacker terminal equipped with playable retro arcade Snake, green Matrix digital rain stream, V8 hardware compute benchmarks (MFLOPS), client GPU diagnostics, and CLI shortcuts.
+- ðŸ“„ **ATS-Compliant Resume System**: Integrated in-app interactive modal with 1-click verified PDF download (`/resume.pdf` & `/Dev_Jangid_Resume.pdf`).
+- ðŸ“ˆ **Real-Time Observability**: Vercel Analytics and Speed Insights tracking global visitor origins and Core Web Vitals.
 
 ---
 
-## 🏗️ Architecture & Subsystem Layout
+## ðŸ—ï¸ Architecture & Subsystem Layout
 
 ```mermaid
 graph TD
@@ -57,7 +57,7 @@ graph TD
 
 ---
 
-## 🛠️ Tech Stack & Tooling
+## ðŸ› ï¸ Tech Stack & Tooling
 
 | Domain | Technology Stack |
 | :--- | :--- |
@@ -71,7 +71,7 @@ graph TD
 
 ---
 
-## 💻 Local Development
+## ðŸ’» Local Development
 
 ### Prerequisites
 - Node.js `v20+` or `v24+`
@@ -105,7 +105,7 @@ npm run build
 
 ---
 
-## 🎮 Interactive Terminal Shortcuts
+## ðŸŽ® Interactive Terminal Shortcuts
 
 While browsing the portfolio, open the Developer Console by pressing the backtick key (`` ` ``) or typing `Ctrl+K`:
 
@@ -122,7 +122,17 @@ dev@jangid:~$ sudo hire    # Open priority recruiter dispatch
 
 ---
 
-## 📄 License
+## ðŸ“„ License
 
 This project is open-source and released under the [MIT License](LICENSE).
 Built with passion by **[Dev Jangid](https://github.com/Dev-5678)**.
+
+---
+
+## ?? Featured S-Tier Engineering Systems
+
+| Project | Live Repository | Domain / Caliber | Key Architectural Innovations |
+| :--- | :--- | :--- | :--- |
+| **NexusCRDT** | [Dev-5678/NexusCRDT](https://github.com/Dev-5678/NexusCRDT) | Distributed Real-Time Systems *(Figma / Miro)* | State-based CRDTs, Vector Clocks, Lamport timestamps, 60fps HTML5 Canvas with live presence interpolation. |
+| **AgentForge** | [Dev-5678/AgentForge](https://github.com/Dev-5678/AgentForge) | AI Systems & Agent Runtime *(OpenAI / Scale AI)* | Kahn's DAG topological wave scheduler, sandboxed tool security perimeter, semantic vector memory, OpenTelemetry spans. |
+| **HyperRoute** | [Dev-5678/HyperRoute](https://github.com/Dev-5678/HyperRoute) | Backend Infrastructure *(Cloudflare / Stripe)* | Atomic sliding-window counter, continuous token-bucket replenishment, round-robin balancer with circuit breakers. |

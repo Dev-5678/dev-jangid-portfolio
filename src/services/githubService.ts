@@ -178,3 +178,5 @@ export async function fetchGitHubTelemetry(username = 'Dev-5678'): Promise<GitHu
     }
   }
 }
+
+export const TRIFECTA_REPOS = ['NexusCRDT', 'AgentForge', 'HyperRoute', 'ProxiSpeak', 'dev-jangid-portfolio'];
