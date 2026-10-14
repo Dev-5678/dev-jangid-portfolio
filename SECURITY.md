@@ -1,6 +1,6 @@
 # Security Policy
 
-## 🔒 Supported Versions
+## ðŸ”’ Supported Versions
 
 We take security and software integrity seriously across all production deployments:
 
@@ -9,7 +9,7 @@ We take security and software integrity seriously across all production deployme
 | `2.x`   | :white_check_mark: |
 | `< 2.0` | :x:                |
 
-## 🚨 Reporting a Vulnerability
+## ðŸš¨ Reporting a Vulnerability
 
 If you discover a potential security vulnerability within this repository or associated live deployments, please report it responsibly:
 
@@ -18,3 +18,6 @@ If you discover a potential security vulnerability within this repository or ass
 3. **Disclosure Policy**: Please do not open public GitHub issues for sensitive security vulnerabilities until we have verified and remediated the issue.
 
 We strive to acknowledge receipt within 24 hours.
+
+## Reporting Vulnerabilities
+Report vulnerabilities directly via GitHub security advisories.
