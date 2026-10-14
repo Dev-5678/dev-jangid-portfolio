@@ -2,14 +2,14 @@
 
 Thank you for your interest in contributing to this open-source engineering portfolio and system telemetry station!
 
-## 🌿 Branching Strategy
+## ðŸŒ¿ Branching Strategy
 
 - `main`: Production-ready, stable codebase deployed live to Vercel.
 - `feat/<feature-name>`: New interactive widgets, pages, or tools.
 - `fix/<bug-name>`: Bug fixes or responsiveness patches.
 - `docs/<doc-name>`: Documentation, architecture updates, or guides.
 
-## 📝 Commit Conventions
+## ðŸ“ Commit Conventions
 
 We adhere to the [Conventional Commits](https://www.conventionalcommits.org/) specification:
 
@@ -20,7 +20,7 @@ We adhere to the [Conventional Commits](https://www.conventionalcommits.org/) sp
 - `perf:` Performance optimizations or memory enhancements.
 - `ci:` GitHub Actions CI/CD workflows or script tooling.
 
-## 🧪 Verification Checklist Before Submitting a PR
+## ðŸ§ª Verification Checklist Before Submitting a PR
 
 1. **Type Check**: Ensure zero TypeScript errors:
    ```bash
@@ -35,6 +35,9 @@ We adhere to the [Conventional Commits](https://www.conventionalcommits.org/) sp
    npm run build
    ```
 
-## 📬 Questions & Contact
+## ðŸ“¬ Questions & Contact
 
 For inquiries or suggestions, reach out via [jangid.dev20@gmail.com](mailto:jangid.dev20@gmail.com) or submit a GitHub Issue.
+
+## S-Tier Systems Verification
+All PRs must include unit tests and pass benchmark verification.
