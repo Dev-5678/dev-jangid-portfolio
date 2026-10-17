@@ -212,6 +212,8 @@
   display: flex;
   position: absolute;
   inset: 0;
+  will-change: transform, opacity, filter;
+  transform: translateZ(0);
 }
 .scroll-expand__hint {
   font-family: var(--font-display);
@@ -307,6 +309,8 @@ html:not(.dark) .scroll-pill-dot {
   display: flex;
   position: absolute;
   inset: 0;
+  will-change: transform, opacity, filter;
+  transform: translateZ(0);
 }
 
 /* Loading Screen Animation */

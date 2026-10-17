@@ -28,6 +28,48 @@ export const AperturePhilosophySection: React.FC<AperturePhilosophySectionProps>
     }
 
     const ctx = gsap.context(() => {
+      // 1. Cinematic Entry Blur-to-Focus for "The Philosophy"
+      // Starts blurred when it appears at the bottom of the viewport, clarifies to crisp focus as you scroll into position!
+      gsap.fromTo(
+        titleRef.current,
+        {
+          filter: 'blur(18px)',
+          opacity: 0.3,
+          scale: 0.93
+        },
+        {
+          filter: 'blur(0px)',
+          opacity: 1,
+          scale: 1,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: trackRef.current,
+            start: 'top 92%',
+            end: 'top 12%',
+            scrub: 0.4
+          }
+        }
+      )
+
+      // Background preview also clarifies from blur on entry
+      gsap.fromTo(
+        frameRef.current,
+        {
+          filter: 'blur(12px)'
+        },
+        {
+          filter: 'blur(0px)',
+          ease: 'power1.out',
+          scrollTrigger: {
+            trigger: trackRef.current,
+            start: 'top 92%',
+            end: 'top 12%',
+            scrub: 0.4
+          }
+        }
+      )
+
+      // 2. Main Pinned timeline: circular aperture expansion + philosophy manifesto clarity reveal
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: trackRef.current,
@@ -58,22 +100,49 @@ export const AperturePhilosophySection: React.FC<AperturePhilosophySectionProps>
         0
       )
 
-      // Title & hint fade out early (0 -> 0.25)
-      tl.to(titleRef.current, { opacity: 0, scale: 0.9, duration: 0.25, ease: 'power1.in' }, 0)
+      // Title & hint smoothly blur and dissolve as aperture expands (0 -> 0.25)
+      tl.to(
+        titleRef.current,
+        {
+          opacity: 0,
+          scale: 0.88,
+          filter: 'blur(12px)',
+          duration: 0.25,
+          ease: 'power1.in'
+        },
+        0
+      )
       tl.to(hintRef.current, { opacity: 0, y: 15, duration: 0.2, ease: 'power1.in' }, 0)
 
-      // Media subtle zoom (0 -> 1.0)
-      tl.fromTo(mediaRef.current, { scale: 1.15 }, { scale: 1.0, duration: 1, ease: 'none' }, 0)
+      // Media subtle zoom and blur clearing (0 -> 0.6)
+      tl.fromTo(
+        mediaRef.current,
+        { scale: 1.15, filter: 'blur(8px)' },
+        { scale: 1.0, filter: 'blur(0px)', duration: 0.6, ease: 'power1.out' },
+        0
+      )
 
-      // Overlay manifesto fades in and settles (0.35 -> 0.65)
+      // Overlay manifesto appears blurred and clarifies to razor-sharp focus as you scroll (0.35 -> 0.65)
       tl.fromTo(
         overlayRef.current,
-        { opacity: 0, scale: 0.94, y: 20 },
-        { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: 'power2.out' },
+        {
+          opacity: 0,
+          scale: 0.94,
+          y: 20,
+          filter: 'blur(16px)'
+        },
+        {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          filter: 'blur(0px)',
+          duration: 0.3,
+          ease: 'power2.out'
+        },
         0.35
       )
 
-      // Buffer zone (0.65 -> 1.0): Manifesto remains resting and comfortably readable while scrolling
+      // Buffer zone (0.65 -> 1.0): Manifesto remains crystal clear and readable while scrolling
       tl.to({}, { duration: 0.35 })
     }, trackRef)
 

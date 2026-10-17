@@ -153,7 +153,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         className="absolute top-[38%] sm:top-[42%] md:top-[44%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-[15] select-none w-full flex flex-col items-center justify-center px-3 sm:px-4"
         aria-hidden="true"
       >
-        <div className="w-full max-w-[94vw] sm:max-w-[720px] md:max-w-[900px] lg:max-w-[1100px] h-[68px] sm:h-[95px] md:h-[135px] lg:h-[165px] relative flex items-center justify-center transform-gpu">
+        <div className="w-full max-w-[94vw] sm:max-w-[760px] md:max-w-[980px] lg:max-w-[1180px] h-[72px] sm:h-[105px] md:h-[140px] lg:h-[170px] relative flex items-center justify-center transform-gpu">
           {/* Luminous Ember Back-Aura (Hardware-accelerated on GPU, 0 CPU re-rasterization!) */}
           <div
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[85%] h-[130%] pointer-events-none -z-10 rounded-full"
@@ -168,16 +168,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
               text="DEV JANGID"
               fontFamily="Roboto Flex"
               flex={true}
-              scale={true}
+              scale={false}
               width={true}
               weight={true}
               italic={true}
               alpha={false}
               stroke={false}
-              radius={0.5}
-              smoothing={0.4}
-              idle="wave"
-              idleSpeed={1}
               clickRipple={true}
               textColor={theme === 'dark' ? '#ffffff' : '#111116'}
               minFontSize={28}
