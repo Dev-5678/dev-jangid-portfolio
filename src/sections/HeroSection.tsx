@@ -144,25 +144,32 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
       >
         <a
           href="#projects"
-          className="relative inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-medium text-sm tracking-wide transition-colors duration-300 overflow-hidden cursor-pointer bg-ember text-white hover:bg-ember-bright border border-transparent shadow-[0_0_25px_rgba(160,42,34,0.4)] !rounded-full !px-4 sm:!px-7 !py-2.5 sm:!py-3.5 !text-[11px] sm:!text-[13px] !tracking-wide group touch-manipulation"
+          className="relative inline-flex items-center justify-center gap-2.5 px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full font-semibold text-[11px] sm:text-[13px] tracking-wide transition-all duration-300 overflow-hidden cursor-pointer bg-ember hover:bg-ember-bright text-white border border-ember/60 shadow-[0_0_25px_rgba(160,42,34,0.5)] hover:shadow-[0_0_40px_rgba(252,107,47,0.7)] hover:scale-105 active:scale-95 group touch-manipulation"
+          title="Explore Engineering Highlights"
         >
-          <span className="relative z-10 flex items-center gap-2">
-            <span className="flex items-center gap-2 sm:gap-3">
-              <span className="w-5 h-5 sm:w-7 sm:h-7 rounded-full border border-void/30 flex items-center justify-center transition-transform duration-500 group-hover:rotate-45">
-                <svg width="10" height="10" viewBox="0 0 12 12" fill="none" className="sm:w-[12px] sm:h-[12px]">
-                  <path d="M1 11L11 1M11 1H3M11 1V9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </span>
-              Explore Work →
+          <span className="relative z-10 flex items-center gap-2 sm:gap-3">
+            <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-black/30 border border-white/30 flex items-center justify-center transition-transform duration-500 group-hover:rotate-45 group-hover:bg-white group-hover:text-ember">
+              <svg width="10" height="10" viewBox="0 0 12 12" fill="none" className="sm:w-[11px] sm:h-[11px]">
+                <path d="M1 11L11 1M11 1H3M11 1V9" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </span>
+            <span>Explore More</span>
           </span>
         </a>
 
         <a
           href="#contact"
-          className="relative inline-flex items-center justify-center gap-2 px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full font-medium text-[11px] sm:text-[13px] tracking-wide transition-colors duration-300 overflow-hidden cursor-pointer bg-transparent text-white border border-white/20 hover:border-ember/50 hover:text-ember !border-white/15 touch-manipulation"
+          className="relative inline-flex items-center justify-center gap-2.5 px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full font-semibold text-[11px] sm:text-[13px] tracking-wide transition-all duration-300 overflow-hidden cursor-pointer bg-white/10 hover:bg-white text-white hover:text-black border border-white/20 hover:border-white shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:shadow-[0_0_35px_rgba(255,255,255,0.5)] hover:scale-105 active:scale-95 group touch-manipulation backdrop-blur-md"
+          title="Direct Contact Transmission"
         >
-          <span className="relative z-10 flex items-center gap-2">Let's Talk →</span>
+          <span className="relative z-10 flex items-center gap-2 sm:gap-3">
+            <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/10 border border-white/20 flex items-center justify-center transition-transform duration-500 group-hover:rotate-45 group-hover:bg-ember group-hover:text-white group-hover:border-ember">
+              <svg width="10" height="10" viewBox="0 0 12 12" fill="none" className="sm:w-[11px] sm:h-[11px]">
+                <path d="M1 11L11 1M11 1H3M11 1V9" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+            <span>Let's Talk</span>
+          </span>
         </a>
       </div>
 

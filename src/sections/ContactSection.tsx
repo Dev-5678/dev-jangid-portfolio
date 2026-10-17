@@ -303,14 +303,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onCopyText }) =>
           className="section-container relative z-10 px-4 sm:px-6 md:px-8 mt-12 sm:mt-16 pt-6 pb-8 border-t border-white/10"
         >
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
-            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 text-xs text-ash">
-              <span>© 2026 Dev Jangid. Crafted with passion.</span>
-              <span className="hidden sm:inline">•</span>
-              <span className="inline-flex items-center gap-1 text-emerald-400 font-mono text-[11px] font-bold">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                Verified 0% Plagiarism (Turnitin / AST Certified)
-              </span>
-            </div>
+            <p className="text-xs text-ash">
+              © 2026 Dev Jangid. Crafted with passion.
+            </p>
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               className="text-xs text-ash hover:text-white transition-colors flex items-center gap-1.5 font-medium group cursor-pointer py-1"
