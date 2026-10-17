@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { experienceHighlights, standaloneProjects } from '../data/portfolio'
 import { SpotlightCard } from '../components/reactbits/SpotlightCard'
-import { FolderGit2 } from 'lucide-react'
+import { FolderGit2, Satellite } from 'lucide-react'
+import { CanSatTelemetryWidget } from '../components/telemetry/CanSatTelemetryWidget'
+import { AAINetworkInspectorWidget } from '../components/telemetry/AAINetworkInspectorWidget'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -15,7 +17,7 @@ const HIGHLIGHT_SPOTLIGHTS = [
 
 export const ProjectsSection: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null)
-  const [viewMode, setViewMode] = useState<'highlights' | 'standalone'>('highlights')
+  const [viewMode, setViewMode] = useState<'highlights' | 'simulators' | 'standalone'>('highlights')
 
   useEffect(() => {
     const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -69,6 +71,17 @@ export const ProjectsSection: React.FC = () => {
             }`}
           >
             Domain Highlights ({experienceHighlights.length})
+          </button>
+          <button
+            onClick={() => setViewMode('simulators')}
+            className={`px-3 py-1.5 transition-colors flex items-center gap-1 ${
+              viewMode === 'simulators'
+                ? 'bg-[#111317] text-[#CCFF00] dark:bg-[#CCFF00] dark:text-[#111317]'
+                : 'text-gray-600 dark:text-gray-400 hover:text-[#111317] dark:hover:text-[#F4F7FB]'
+            }`}
+          >
+            <Satellite className="w-3.5 h-3.5 text-[#00E5FF]" />
+            <span>Live Simulators (2)</span>
           </button>
           <button
             onClick={() => setViewMode('standalone')}
@@ -147,7 +160,26 @@ export const ProjectsSection: React.FC = () => {
         </div>
       )}
 
-      {/* Mode 2: Standalone Projects (with honest, elegant empty state) */}
+      {/* Mode 2: Interactive Engineering Simulators */}
+      {viewMode === 'simulators' && (
+        <div className="space-y-8 animate-in fade-in duration-300">
+          <div className="p-4 bg-[#FAF8F5] dark:bg-[#1A202C] border-2 border-[#111317] dark:border-[#334155] font-mono text-xs flex items-center justify-between">
+            <span className="text-gray-600 dark:text-gray-300">
+              Interactive engineering dashboards demonstrating hands-on telemetry (ISL) &amp; IT infrastructure audits (AAI).
+            </span>
+            <span className="hidden sm:inline-block px-2 py-0.5 bg-[#00E5FF] text-[#111317] font-bold text-[10px]">
+              LIVE SIMULATION ACTIVE
+            </span>
+          </div>
+
+          <div className="space-y-8">
+            <CanSatTelemetryWidget />
+            <AAINetworkInspectorWidget />
+          </div>
+        </div>
+      )}
+
+      {/* Mode 3: Standalone Projects (with honest, elegant empty state) */}
       {viewMode === 'standalone' && (
         <SpotlightCard
           spotlightColor="rgba(204, 255, 0, 0.15)"

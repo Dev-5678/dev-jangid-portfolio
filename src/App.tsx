@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTheme } from './hooks/useTheme'
 import { Navbar } from './components/Navbar'
 import { PortalEntry } from './components/PortalEntry'
@@ -13,9 +13,15 @@ import { Footer } from './components/Footer'
 import { ClickSpark } from './components/reactbits/ClickSpark'
 import { MicroSlatsBg } from './components/reactbits/MicroSlatsBg'
 import { Dock } from './components/reactbits/Dock'
+import { VelocityMarquee } from './components/reactbits/VelocityMarquee'
+import { TargetCursor } from './components/reactbits/TargetCursor'
+import { DevConsole } from './components/DevConsole'
+import { ResumeModal } from './components/ResumeModal'
 
 export function App() {
   const { theme, toggleTheme } = useTheme()
+  const [isConsoleOpen, setIsConsoleOpen] = useState(false)
+  const [isResumeOpen, setIsResumeOpen] = useState(false)
   const [isPortalOpen, setIsPortalOpen] = useState(() => {
     if (typeof window === 'undefined') return false
     // Don't show portal if URL has hash anchor (e.g. direct link to #experience)
@@ -23,6 +29,20 @@ export function App() {
     // Check if user visited in this session
     return sessionStorage.getItem('hasVisitedPortal') !== 'true'
   })
+
+  // Global hotkey: backtick / tilde (`) toggles the hacker Dev Console
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null
+      const isInput = target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)
+      if (e.key === '`' && !isInput) {
+        e.preventDefault()
+        setIsConsoleOpen((prev) => !prev)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
 
   const handlePortalEnter = () => {
     setIsPortalOpen(false)
@@ -45,6 +65,9 @@ export function App() {
       {/* React Bits Click Effects: Neon Spark Particle Bursts */}
       <ClickSpark sparkColor={['#CCFF00', '#00E5FF', '#FF5500', '#FFFFFF']} sparkCount={14} sparkSize={3} />
 
+      {/* Reactive Sci-Fi Crosshair Target Cursor */}
+      <TargetCursor />
+
       {/* Skip to Main Content Link for Keyboard Accessibility (WCAG 2.4.1) */}
       <a
         href="#main-content"
@@ -61,11 +84,20 @@ export function App() {
         theme={theme}
         onToggleTheme={toggleTheme}
         onOpenPortal={handleOpenPortal}
+        onOpenConsole={() => setIsConsoleOpen(true)}
+        onOpenResume={() => setIsResumeOpen(true)}
       />
 
       {/* Main Content Sections */}
       <main className="flex-1 w-full pb-20" id="main-content">
-        <HeroSection />
+        <HeroSection
+          onOpenResume={() => setIsResumeOpen(true)}
+          onOpenConsole={() => setIsConsoleOpen(true)}
+        />
+        
+        {/* Infinite Dual-Band Velocity Marquee */}
+        <VelocityMarquee />
+
         <AboutSection />
         <ExperienceSection />
         <SkillsSection />
@@ -79,6 +111,21 @@ export function App() {
         theme={theme}
         onToggleTheme={toggleTheme}
         onOpenPortal={handleOpenPortal}
+        onOpenConsole={() => setIsConsoleOpen(true)}
+        onOpenResume={() => setIsResumeOpen(true)}
+      />
+
+      {/* Dev Console CLI Terminal Simulator */}
+      <DevConsole
+        isOpen={isConsoleOpen}
+        onClose={() => setIsConsoleOpen(false)}
+        onToggleTheme={toggleTheme}
+      />
+
+      {/* Verified Resume Modal with Print Capability */}
+      <ResumeModal
+        isOpen={isResumeOpen}
+        onClose={() => setIsResumeOpen(false)}
       />
 
       {/* Footer */}
