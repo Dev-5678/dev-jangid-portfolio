@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+    /* Light Mode Tokens */
+    --bg-main: #FAF8F5;
+    --bg-card: #FFFFFF;
+    --text-main: #111317;
+    --text-muted: #4B5563;
+    --border-color: #111317;
+    --accent: #CCFF00;
+    --accent-orange: #FF5500;
+    --accent-cyan: #00E5FF;
+    --shadow-color: #111317;
+  }
+
+  .dark {
+    /* Dark Mode Tokens */
+    --bg-main: #0A0D12;
+    --bg-card: #131720;
+    --text-main: #F4F7FB;
+    --text-muted: #94A3B8;
+    --border-color: #334155;
+    --accent: #CCFF00;
+    --accent-orange: #FF6B2B;
+    --accent-cyan: #38BDF8;
+    --shadow-color: #CCFF00;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-sans);
+  }
+
+  body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    overflow-x: hidden;
+  }
+}
+
+/* Custom Neo-Brutalist Utilities */
+.brutal-border {
+  border: 3px solid #111317;
+}
+.dark .brutal-border {
+  border: 3px solid #334155;
+}
+.dark .brutal-border-accent {
+  border: 3px solid #CCFF00;
+}
+
+.brutal-card {
+  background-color: #FFFFFF;
+  border: 3px solid #111317;
+  box-shadow: 4px 4px 0px 0px #111317;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.dark .brutal-card {
+  background-color: #131720;
+  border: 3px solid #334155;
+  box-shadow: 4px 4px 0px 0px #1E293B;
+}
+
+.brutal-card-hover:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px #111317;
+}
+.dark .brutal-card-hover:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px #CCFF00;
+  border-color: #CCFF00;
+}
+
+.brutal-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  border: 3px solid #111317;
+  box-shadow: 4px 4px 0px 0px #111317;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  cursor: pointer;
+}
+.brutal-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px #111317;
+}
+.brutal-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px 0px #111317;
+}
+.dark .brutal-btn {
+  border-color: #334155;
+  box-shadow: 4px 4px 0px 0px #CCFF00;
+}
+.dark .brutal-btn:hover {
+  border-color: #CCFF00;
+  box-shadow: 6px 6px 0px 0px #CCFF00;
+}
+.dark .brutal-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px 0px #CCFF00;
+}
+
+/* Technical Monospace Elements */
+.font-mono-tech {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
+/* Technical Grid Pattern */
+.bg-tech-grid {
+  background-size: 30px 30px;
+  background-image: 
+    linear-gradient(to right, rgba(17, 19, 23, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(17, 19, 23, 0.05) 1px, transparent 1px);
+}
+.dark .bg-tech-grid {
+  background-image: 
+    linear-gradient(to right, rgba(204, 255, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(204, 255, 0, 0.04) 1px, transparent 1px);
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

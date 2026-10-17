@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <!-- Neo-Brutalist Shadow -->
+  <rect x="8" y="8" width="88" height="88" rx="8" fill="#111317" />
+  <!-- Main Badge Box -->
+  <rect x="4" y="4" width="88" height="88" rx="8" fill="#CCFF00" stroke="#111317" stroke-width="6" />
+  <!-- Monogram DJ -->
+  <text x="48" y="66" font-family="'Space Grotesk', system-ui, -apple-system, sans-serif" font-size="52" font-weight="900" fill="#111317" text-anchor="middle" letter-spacing="-3">DJ</text>
+  <!-- Technical corner dot -->
+  <circle cx="80" cy="18" r="4" fill="#111317" />
+</svg>

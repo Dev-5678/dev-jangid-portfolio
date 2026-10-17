@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#22262F" stroke-width="1" stroke-opacity="0.4" />
+    </pattern>
+  </defs>
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#0C0E14" />
+  <rect width="1200" height="630" fill="url(#grid)" />
+  
+  <!-- Outer Frame -->
+  <rect x="40" y="40" width="1120" height="550" fill="#141820" stroke="#CCFF00" stroke-width="4" rx="8" />
+  
+  <!-- Offset Accent Shadow -->
+  <rect x="52" y="52" width="1120" height="550" fill="none" stroke="#111317" stroke-width="2" rx="8" />
+
+  <!-- Badge -->
+  <rect x="80" y="80" width="220" height="42" fill="#CCFF00" rx="4" />
+  <text x="190" y="107" font-family="'Courier New', monospace" font-size="16" font-weight="900" fill="#0C0E14" text-anchor="middle" letter-spacing="2">SYSTEM://PORTFOLIO</text>
+
+  <!-- Main Headline -->
+  <text x="80" y="220" font-family="'Space Grotesk', system-ui, sans-serif" font-size="76" font-weight="900" fill="#F4F7FB" letter-spacing="-1">DEV JANGID</text>
+  
+  <!-- Subtitle -->
+  <text x="80" y="285" font-family="'Space Grotesk', system-ui, sans-serif" font-size="36" font-weight="700" fill="#CCFF00">COMPUTER SCIENCE ENGINEER</text>
+
+  <!-- Summary statement -->
+  <text x="80" y="360" font-family="system-ui, sans-serif" font-size="22" fill="#94A3B8" width="700">
+    Airports Authority of India (IT) • India Space Lab • Generative AI &amp; Full-Stack Systems
+  </text>
+  <text x="80" y="395" font-family="system-ui, sans-serif" font-size="20" fill="#64748B">
+    Faridabad, India • jangid.dev20@gmail.com
+  </text>
+
+  <!-- Monogram Box Right Side -->
+  <g transform="translate(860, 160)">
+    <rect x="16" y="16" width="220" height="220" rx="12" fill="#CCFF00" />
+    <rect x="0" y="0" width="220" height="220" rx="12" fill="#141820" stroke="#F4F7FB" stroke-width="6" />
+    <text x="110" y="145" font-family="'Space Grotesk', sans-serif" font-size="110" font-weight="900" fill="#CCFF00" text-anchor="middle">DJ</text>
+    <circle cx="180" cy="40" r="8" fill="#CCFF00" />
+  </g>
+  
+  <!-- Status footer bar -->
+  <rect x="80" y="490" width="1040" height="54" fill="#1A202C" stroke="#334155" stroke-width="2" rx="4" />
+  <circle cx="110" cy="517" r="6" fill="#10B981" />
+  <text x="130" y="522" font-family="'Courier New', monospace" font-size="16" fill="#F4F7FB">STATUS: ACTIVE // OPEN TO OPPORTUNITIES // NEO-BRUTALIST ARCHITECTURE</text>
+</svg>
