@@ -351,17 +351,17 @@ html:not(.dark) .scroll-pill-dot {
   justify-content: space-between;
 }
 .text-pressure-title {
-  font-weight: 850;
+  font-weight: 750;
 }
 .text-pressure-title span {
-  font-weight: 850;
+  font-weight: 750;
   display: inline-block;
-  will-change: font-variation-settings, transform;
-  text-shadow: 0 0 35px rgba(252, 107, 47, 0.45), 0 0 70px rgba(160, 42, 34, 0.25), 0 3px 6px rgba(0, 0, 0, 0.9);
+  will-change: font-variation-settings;
+  text-shadow: 0 0 14px rgba(252, 107, 47, 0.45), 0 2px 4px rgba(0, 0, 0, 0.8);
 }
 html:not(.dark) .text-pressure-title span {
   color: #111116 !important;
-  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.12), 0 0 25px rgba(160, 42, 34, 0.25) !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 10px rgba(160, 42, 34, 0.18) !important;
 }
 .tp-stroke span {
   position: relative;

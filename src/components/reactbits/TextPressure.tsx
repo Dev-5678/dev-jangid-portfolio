@@ -17,6 +17,9 @@ export interface TextPressureProps {
   minFontSize?: number
 }
 
+const BASE_WGHT = 750
+const BASE_WDTH = 105
+
 export const TextPressure: React.FC<TextPressureProps> = ({
   text = 'DEV JANGID',
   fontFamily = 'Roboto Flex, Space Grotesk, sans-serif',
@@ -42,9 +45,11 @@ export const TextPressure: React.FC<TextPressureProps> = ({
   const charCentersRef = useRef<{ x: number; y: number }[]>([])
   const containerRectRef = useRef<{ left: number; top: number; width: number; height: number }>({ left: 0, top: 0, width: 0, height: 0 })
 
-  const mousePos = useRef({ x: -2000, y: -2000 })
-  const cursorTarget = useRef({ x: -2000, y: -2000 })
+  const mousePos = useRef({ x: -3000, y: -3000 })
+  const cursorTarget = useRef({ x: -3000, y: -3000 })
   const isVisibleRef = useRef(true)
+  const isAnimatingRef = useRef(false)
+  const rafIdRef = useRef<number | null>(null)
 
   const [fontSize, setFontSize] = useState<number>(minFontSize)
   const [scaleY, setScaleY] = useState<number>(1)
@@ -53,17 +58,106 @@ export const TextPressure: React.FC<TextPressureProps> = ({
   const chars = useMemo(() => text.split(''), [text])
   const letterCount = useMemo(() => chars.filter((c) => c !== ' ').length, [chars])
 
-  // Mouse & touch tracking with passive listeners
+  // Start the interaction animation loop on demand
+  const startAnimation = useCallback(() => {
+    if (isAnimatingRef.current) return
+    isAnimatingRef.current = true
+
+    let idleFrames = 0
+
+    const animate = () => {
+      // If hero scrolled out of view, sleep
+      if (!isVisibleRef.current) {
+        isAnimatingRef.current = false
+        rafIdRef.current = null
+        return
+      }
+
+      // Smooth cursor position interpolation
+      const dxTarget = cursorTarget.current.x - mousePos.current.x
+      const dyTarget = cursorTarget.current.y - mousePos.current.y
+      mousePos.current.x += dxTarget * 0.2
+      mousePos.current.y += dyTarget * 0.2
+
+      const containerW = containerRectRef.current.width || 800
+      const isMobile = containerW < 768
+      const radius = isMobile ? Math.max(0.55 * containerW, 200) : Math.max(containerW * 0.38, 280)
+
+      const centers = charCentersRef.current
+      const spans = spansRef.current
+      let anyActive = false
+
+      for (let idx = 0; idx < spans.length; idx++) {
+        const el = spans[idx]
+        if (!el) continue
+
+        const center = centers[idx]
+        const charX = center ? center.x : 0
+        const charY = center ? center.y : 0
+
+        const dx = charX - mousePos.current.x
+        const dy = charY - mousePos.current.y
+        const dist = Math.sqrt(dx * dx + dy * dy)
+        const cursorInfluence = Math.max(0, 1 - dist / radius)
+
+        if (cursorInfluence > 0.01) {
+          anyActive = true
+        }
+
+        // Target weight and width calculated purely from cursor proximity
+        const targetWght = weight ? Math.round(BASE_WGHT + cursorInfluence * 220) : BASE_WGHT
+        const targetWdth = width ? Math.round(BASE_WDTH + cursorInfluence * 26) : BASE_WDTH
+        const targetItal = italic ? (cursorInfluence * 0.5).toFixed(2) : '0'
+
+        const fontVar = `'wght' ${targetWght}, 'wdth' ${targetWdth}, 'ital' ${targetItal}`
+
+        if (prevSettingsRef.current[idx] !== fontVar) {
+          prevSettingsRef.current[idx] = fontVar
+          el.style.fontVariationSettings = fontVar
+        }
+      }
+
+      // If cursor is stationary or far away, sleep the loop after settling
+      const cursorDistRemaining = Math.abs(dxTarget) + Math.abs(dyTarget)
+      if (!anyActive && cursorDistRemaining < 1) {
+        idleFrames++
+        if (idleFrames > 12) {
+          // Reset all characters to clean resting baseline
+          const baseVar = `'wght' ${BASE_WGHT}, 'wdth' ${BASE_WDTH}, 'ital' 0`
+          for (let idx = 0; idx < spans.length; idx++) {
+            const el = spans[idx]
+            if (el && prevSettingsRef.current[idx] !== baseVar) {
+              prevSettingsRef.current[idx] = baseVar
+              el.style.fontVariationSettings = baseVar
+            }
+          }
+          isAnimatingRef.current = false
+          rafIdRef.current = null
+          return
+        }
+      } else {
+        idleFrames = 0
+      }
+
+      rafIdRef.current = requestAnimationFrame(animate)
+    }
+
+    rafIdRef.current = requestAnimationFrame(animate)
+  }, [width, weight, italic])
+
+  // Mouse & touch tracking with passive event triggers
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       cursorTarget.current.x = e.clientX
       cursorTarget.current.y = e.clientY
+      startAnimation()
     }
 
     const handleTouchStart = (e: TouchEvent) => {
       if (e.touches && e.touches.length > 0) {
         cursorTarget.current.x = e.touches[0].clientX
         cursorTarget.current.y = e.touches[0].clientY
+        startAnimation()
       }
     }
 
@@ -71,11 +165,13 @@ export const TextPressure: React.FC<TextPressureProps> = ({
       if (e.touches && e.touches.length > 0) {
         cursorTarget.current.x = e.touches[0].clientX
         cursorTarget.current.y = e.touches[0].clientY
+        startAnimation()
       }
     }
 
     const resetToOffscreen = () => {
-      cursorTarget.current = { x: -2000, y: -2000 }
+      cursorTarget.current = { x: -3000, y: -3000 }
+      startAnimation()
     }
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true })
@@ -92,8 +188,9 @@ export const TextPressure: React.FC<TextPressureProps> = ({
       window.removeEventListener('touchend', resetToOffscreen)
       window.removeEventListener('touchcancel', resetToOffscreen)
       document.removeEventListener('mouseleave', resetToOffscreen)
+      if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current)
     }
-  }, [])
+  }, [startAnimation])
 
   // Viewport visibility observer: pause animation when hero is off-screen
   useEffect(() => {
@@ -101,12 +198,18 @@ export const TextPressure: React.FC<TextPressureProps> = ({
     const observer = new IntersectionObserver(
       ([entry]) => {
         isVisibleRef.current = entry.isIntersecting
+        if (entry.isIntersecting) {
+          startAnimation()
+        } else if (rafIdRef.current) {
+          cancelAnimationFrame(rafIdRef.current)
+          isAnimatingRef.current = false
+        }
       },
       { threshold: 0.05 }
     )
     observer.observe(containerRef.current)
     return () => observer.disconnect()
-  }, [])
+  }, [startAnimation])
 
   // Proportional font sizing: measures and caches geometry ONCE on resize/mount
   const updateGeometry = useCallback(() => {
@@ -122,17 +225,17 @@ export const TextPressure: React.FC<TextPressureProps> = ({
     const effectiveChars = Math.max(letterCount + 1, 8)
     let calcFontSize =
       rect.width < 640
-        ? (rect.width * 0.95) / (effectiveChars * 0.58)
-        : (rect.width * 0.92) / (effectiveChars * 0.56)
+        ? (rect.width * 0.94) / (effectiveChars * 0.6)
+        : (rect.width * 0.90) / (effectiveChars * 0.58)
 
-    calcFontSize = Math.min(calcFontSize, rect.height * 0.94)
+    calcFontSize = Math.min(calcFontSize, rect.height * 0.92)
     calcFontSize = Math.max(calcFontSize, minFontSize)
 
     setFontSize(calcFontSize)
     setScaleY(1)
     setLineHeight(1)
 
-    // Pre-measure character positions in the next frame so layout has settled
+    // Pre-measure character positions in next frame
     requestAnimationFrame(() => {
       if (!titleRef.current) return
       const titleRect = titleRef.current.getBoundingClientRect()
@@ -142,13 +245,22 @@ export const TextPressure: React.FC<TextPressureProps> = ({
         setLineHeight(ratio)
       }
 
-      // Cache all letter center coordinates once (avoids any getBoundingClientRect during rAF)
+      // Cache all letter center coordinates in memory
       charCentersRef.current = spansRef.current.map((el) => {
         if (!el) return { x: 0, y: 0 }
         const u = el.getBoundingClientRect()
         return {
           x: u.left + u.width / 2,
           y: u.top + u.height / 2
+        }
+      })
+
+      // Set initial clean resting baseline
+      const baseVar = `'wght' ${BASE_WGHT}, 'wdth' ${BASE_WDTH}, 'ital' 0`
+      spansRef.current.forEach((el, idx) => {
+        if (el) {
+          el.style.fontVariationSettings = baseVar
+          prevSettingsRef.current[idx] = baseVar
         }
       })
     })
@@ -165,79 +277,6 @@ export const TextPressure: React.FC<TextPressureProps> = ({
     window.addEventListener('resize', debouncedResize)
     return () => window.removeEventListener('resize', debouncedResize)
   }, [updateGeometry])
-
-  // High-performance 120 FPS animation loop (ZERO layout thrashing, pure mathematical calculations)
-  useEffect(() => {
-    let rafId: number
-    let lastTime = 0
-
-    const animate = (timestamp: number) => {
-      rafId = requestAnimationFrame(animate)
-
-      // Skip processing when scrolled out of view
-      if (!isVisibleRef.current) return
-
-      // Throttle to ~60-120fps max, avoid redundant sub-millisecond computations
-      if (timestamp - lastTime < 14) return
-      lastTime = timestamp
-
-      // Smooth cursor lerp
-      mousePos.current.x += (cursorTarget.current.x - mousePos.current.x) * 0.15
-      mousePos.current.y += (cursorTarget.current.y - mousePos.current.y) * 0.15
-
-      const containerW = containerRectRef.current.width || 800
-      const isMobile = containerW < 768
-      const radius = isMobile ? Math.max(0.6 * containerW, 200) : Math.max(containerW * 0.42, 320)
-      const time = timestamp * 0.0022
-
-      const centers = charCentersRef.current
-      const spans = spansRef.current
-
-      for (let idx = 0; idx < spans.length; idx++) {
-        const el = spans[idx]
-        if (!el) continue
-
-        const center = centers[idx]
-        const charX = center ? center.x : 0
-        const charY = center ? center.y : 0
-
-        const dx = charX - mousePos.current.x
-        const dy = charY - mousePos.current.y
-        const dist = Math.sqrt(dx * dx + dy * dy)
-        const cursorInfluence = Math.max(0, 1 - dist / radius)
-
-        // Harmonic organic breathing wave
-        const waveWght = Math.sin(time + idx * 0.55) * 65
-        const waveWdth = Math.cos(time * 0.9 + idx * 0.55) * 14
-
-        // Bold baseline: 750 weight, surging to 1000 Black under cursor
-        const f = weight
-          ? Math.round(750 + cursorInfluence * 240 + (1 - cursorInfluence) * waveWght)
-          : 800
-
-        // Wide baseline: 112 width, stretching to 148 on hover
-        const p = width
-          ? Math.round(112 + cursorInfluence * 34 + (1 - cursorInfluence) * waveWdth)
-          : 110
-
-        const m = italic ? (cursorInfluence * 0.75).toFixed(2) : '0'
-
-        const clampedWght = Math.min(1000, Math.max(620, f))
-        const clampedWdth = Math.min(151, Math.max(92, p))
-
-        const fontVar = `'wght' ${clampedWght}, 'wdth' ${clampedWdth}, 'ital' ${m}`
-
-        // Write to DOM ONLY if value actually changed (avoids useless style recalculations)
-        if (prevSettingsRef.current[idx] !== fontVar) {
-          prevSettingsRef.current[idx] = fontVar
-          el.style.fontVariationSettings = fontVar
-        }
-      }
-    }
-
-    rafId = requestAnimationFrame(animate)
-    return () => cancelAnimationFrame(rafId)
-  }, [width, weight, italic])
 
   const styleTag = useMemo(
     () => (
@@ -267,12 +306,13 @@ export const TextPressure: React.FC<TextPressureProps> = ({
 
         .text-pressure-title {
           color: ${textColor};
-          font-weight: 850;
+          font-weight: 750;
+          letter-spacing: 0.04em;
         }
 
         .text-pressure-title span {
           display: inline-block;
-          font-weight: 850;
+          font-weight: 750;
           will-change: font-variation-settings;
         }
       `}</style>
@@ -301,7 +341,7 @@ export const TextPressure: React.FC<TextPressureProps> = ({
           textAlign: 'center',
           userSelect: 'none',
           whiteSpace: 'nowrap',
-          fontWeight: 850,
+          fontWeight: 750,
           width: '100%',
           display: 'flex',
           alignItems: 'center',

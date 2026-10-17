@@ -139,7 +139,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         className="absolute top-[38%] sm:top-[42%] md:top-[44%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-[15] pointer-events-none select-none w-full flex flex-col items-center justify-center px-3 sm:px-4"
         aria-hidden="true"
       >
-        <div className="w-full max-w-[94vw] sm:max-w-[720px] md:max-w-[900px] lg:max-w-[1100px] h-[68px] sm:h-[95px] md:h-[135px] lg:h-[165px] relative flex items-center justify-center transform-gpu drop-shadow-[0_0_40px_rgba(252,107,47,0.35)]">
+        <div className="w-full max-w-[94vw] sm:max-w-[720px] md:max-w-[900px] lg:max-w-[1100px] h-[68px] sm:h-[95px] md:h-[135px] lg:h-[165px] relative flex items-center justify-center transform-gpu">
+          {/* Luminous Ember Back-Aura (Hardware-accelerated on GPU, 0 CPU re-rasterization!) */}
+          <div
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[85%] h-[130%] pointer-events-none -z-10 rounded-full"
+            style={{
+              background: theme === 'dark'
+                ? 'radial-gradient(ellipse at center, rgba(252, 107, 47, 0.22) 0%, rgba(160, 42, 34, 0.08) 50%, transparent 75%)'
+                : 'radial-gradient(ellipse at center, rgba(160, 42, 34, 0.12) 0%, transparent 70%)'
+            }}
+          />
           <div style={{ position: 'relative', width: '100%', height: '100%', background: 'transparent' }}>
             <TextPressure
               text="DEV JANGID"
@@ -160,7 +169,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         {/* Cinematic Sub-headline */}
         <div className="mt-4 sm:mt-8 md:mt-12 text-center z-[20] px-2">
           <p
-            className="hero-line text-[clamp(0.64rem,2.4vw,0.88rem)] md:text-[clamp(0.74rem,1.1vw,0.92rem)] font-extrabold tracking-[0.15em] sm:tracking-[0.26em] uppercase text-ember drop-shadow-[0_0_20px_rgba(252,107,47,0.7)]"
+            className="hero-line text-[clamp(0.64rem,2.4vw,0.88rem)] md:text-[clamp(0.74rem,1.1vw,0.92rem)] font-extrabold tracking-[0.15em] sm:tracking-[0.26em] uppercase text-ember [text-shadow:0_0_12px_rgba(252,107,47,0.6)]"
             style={{ fontFamily: 'var(--font-poppins), sans-serif' }}
           >
             Crafting Interfaces That People Remember.
