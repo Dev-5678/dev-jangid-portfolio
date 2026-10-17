@@ -17,6 +17,8 @@ import { ContactSection } from './sections/ContactSection'
 import { Footer } from './components/Footer'
 
 import { MicroSlatsBg } from './components/reactbits/MicroSlatsBg'
+import { AtmosphericOverlay } from './components/AtmosphericOverlay'
+import { AperturePhilosophySection } from './components/AperturePhilosophySection'
 import { VelocityMarquee } from './components/reactbits/VelocityMarquee'
 import { DevConsole } from './components/DevConsole'
 import { ResumeModal } from './components/ResumeModal'
@@ -75,6 +77,9 @@ export function App() {
 
       {/* Ambient Micro-Slats 3D Background */}
       <MicroSlatsBg theme={theme} />
+
+      {/* Atmospheric Micro-Dust & Organic Noise Overlay */}
+      <AtmosphericOverlay theme={theme} />
 
       {/* Skip to Main Content Link for Keyboard Accessibility (WCAG 2.4.1) */}
       <a
@@ -148,6 +153,14 @@ export function App() {
         
         {/* Infinite Dual-Band Velocity Marquee */}
         <VelocityMarquee />
+
+        {/* Viral Reel Flex: Scroll-Expanding Philosophy & System Architecture Aperture */}
+        <AperturePhilosophySection
+          onOpenResume={() => {
+            playClick()
+            setIsResumeOpen(true)
+          }}
+        />
 
         <AboutSection />
         

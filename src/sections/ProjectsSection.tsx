@@ -183,64 +183,93 @@ export const ProjectsSection: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-            {experienceHighlights.map((item, idx) => (
-              <SpotlightCard
-                key={item.id}
-                spotlightColor={HIGHLIGHT_SPOTLIGHTS[idx % HIGHLIGHT_SPOTLIGHTS.length]}
-                className="proj-card brutal-card-hover p-6 sm:p-7 bg-white dark:bg-[#131720] border-3 border-[#111317] dark:border-[#334155] shadow-[5px_5px_0px_#111317] dark:shadow-[5px_5px_0px_#1E293B] flex flex-col justify-between"
-              >
-                <div>
-                  {/* Category Pill */}
-                  <div className="flex items-center justify-between pb-3 mb-4 border-b-2 border-[#111317] dark:border-[#334155] font-mono text-[11px]">
-                    <span className="font-bold text-[#FF5500] dark:text-[#CCFF00] uppercase">
-                      {item.category}
+            {experienceHighlights.map((item, idx) => {
+              const windowId =
+                item.id === 'exp-high-1'
+                  ? 'sec://aai-northern-region.ans'
+                  : item.id === 'exp-high-2'
+                  ? 'rf://cansat-433mhz.fsk'
+                  : 'ai://gemini-rag-multimodal.py'
+
+              return (
+                <SpotlightCard
+                  key={item.id}
+                  spotlightColor={HIGHLIGHT_SPOTLIGHTS[idx % HIGHLIGHT_SPOTLIGHTS.length]}
+                  className="proj-card mac-glass-window brutal-card-hover p-0 bg-white/95 dark:bg-[#131720]/80 border-3 border-[#111317] dark:border-[#334155] shadow-[6px_6px_0px_#111317] dark:shadow-[6px_6px_0px_#1E293B] flex flex-col justify-between overflow-hidden relative group"
+                >
+                  {/* Top Hairline Gradient Highlight */}
+                  <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-black/25 dark:via-white/40 to-transparent pointer-events-none z-10" />
+
+                  {/* Dual Corner Glow Orbs */}
+                  <div className="absolute -top-16 -left-16 w-40 h-40 bg-cyan-500/10 dark:bg-cyan-500/15 rounded-full blur-2xl pointer-events-none" />
+                  <div className="absolute -bottom-16 -right-16 w-40 h-40 bg-[#FF5500]/10 dark:bg-[#CCFF00]/10 rounded-full blur-2xl pointer-events-none" />
+
+                  {/* macOS Window Header Bar */}
+                  <div className="flex items-center justify-between px-4 py-2.5 bg-black/[0.04] dark:bg-white/[0.04] border-b-2 border-[#111317] dark:border-[#334155] font-mono text-[11px] select-none relative z-10">
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#FF5F56] shadow-[0_0_6px_rgba(255,95,86,0.6)]" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E] shadow-[0_0_6px_rgba(255,189,46,0.6)]" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#27C93F] shadow-[0_0_6px_rgba(39,201,63,0.6)]" />
+                    </div>
+                    <span className="text-[10px] text-gray-500 dark:text-gray-400 font-bold tracking-wider truncate max-w-[170px]">
+                      {windowId}
                     </span>
-                    <span className="text-gray-400 font-bold">0{idx + 1}</span>
+                    <span className="text-gray-400 font-black text-[10px]">0{idx + 1}</span>
                   </div>
 
-                  {/* Title */}
-                  <h3 className="font-sans font-black text-xl uppercase tracking-tight text-[#111317] dark:text-[#F4F7FB] mb-3">
-                    {item.title}
-                  </h3>
+                  {/* Card Body */}
+                  <div className="p-6 sm:p-7 flex flex-col justify-between flex-1 relative z-10">
+                    <div>
+                      {/* Category Pill */}
+                      <div className="inline-block px-2.5 py-0.5 bg-[#111317] text-[#CCFF00] dark:bg-[#CCFF00] dark:text-[#111317] font-mono text-[10px] font-bold uppercase tracking-wider mb-3">
+                        {item.category}
+                      </div>
 
-                  {/* Description */}
-                  <p className="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-6 font-sans">
-                    {item.description}
-                  </p>
-                </div>
+                      {/* Title */}
+                      <h3 className="font-sans font-black text-xl uppercase tracking-tight text-[#111317] dark:text-[#F4F7FB] mb-3 group-hover:text-[#FF5500] dark:group-hover:text-[#CCFF00] transition-colors">
+                        {item.title}
+                      </h3>
 
-                <div>
-                  {/* Context note */}
-                  <div className="p-2.5 bg-gray-50 dark:bg-[#1A202C] border border-[#111317] dark:border-[#334155] mb-4 text-[11px] font-mono text-gray-600 dark:text-gray-300">
-                    <span className="text-gray-400 block text-[9px]">CONTEXT:</span>
-                    {item.context}
+                      {/* Description */}
+                      <p className="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-5 font-sans">
+                        {item.description}
+                      </p>
+                    </div>
+
+                    <div>
+                      {/* Context note */}
+                      <div className="p-2.5 bg-black/[0.02] dark:bg-white/[0.03] border border-[#111317]/20 dark:border-white/10 rounded mb-4 text-[11px] font-mono text-gray-600 dark:text-gray-300 backdrop-blur-sm">
+                        <span className="text-gray-400 block text-[9px] font-bold">CONTEXT:</span>
+                        {item.context}
+                      </div>
+
+                      {/* Technical Scope Badges (Frosted Glass Pills) */}
+                      <div className="flex flex-wrap gap-1.5 pt-3 mb-4 border-t border-dashed border-gray-300 dark:border-gray-800">
+                        {item.technicalScope.map((tech) => (
+                          <span
+                            key={tech}
+                            className="px-2.5 py-1 rounded-full bg-black/5 dark:bg-white/[0.06] text-[#111317] dark:text-[#F4F7FB] font-mono text-[10px] font-bold border border-black/10 dark:border-white/15 backdrop-blur-md shadow-xs"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* Feature 11: View Architectural Blueprint Button */}
+                      {BLUEPRINTS[item.id] && (
+                        <button
+                          onClick={() => setActiveBlueprint(BLUEPRINTS[item.id])}
+                          className="w-full brutal-btn py-2 bg-white dark:bg-[#1A202C] text-[#111317] dark:text-[#CCFF00] font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 hover:bg-[#CCFF00] hover:text-[#111317] dark:hover:bg-[#CCFF00] dark:hover:text-[#111317] group-hover:shadow-[0_0_15px_rgba(204,255,0,0.3)] transition-all"
+                        >
+                          <Layers className="w-3.5 h-3.5" />
+                          <span>View Blueprint Spec</span>
+                        </button>
+                      )}
+                    </div>
                   </div>
-
-                  {/* Technical Scope Badges */}
-                  <div className="flex flex-wrap gap-1.5 pt-3 mb-4 border-t-2 border-dashed border-gray-200 dark:border-gray-800">
-                    {item.technicalScope.map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-2 py-0.5 bg-[#FAF8F5] dark:bg-[#1A202C] text-[#111317] dark:text-[#F4F7FB] font-mono text-[10px] font-bold border border-[#111317] dark:border-[#334155]"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Feature 11: View Architectural Blueprint Button */}
-                  {BLUEPRINTS[item.id] && (
-                    <button
-                      onClick={() => setActiveBlueprint(BLUEPRINTS[item.id])}
-                      className="w-full brutal-btn py-2 bg-white dark:bg-[#1A202C] text-[#111317] dark:text-[#CCFF00] font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 hover:bg-[#CCFF00] hover:text-[#111317] dark:hover:bg-[#CCFF00] dark:hover:text-[#111317]"
-                    >
-                      <Layers className="w-3.5 h-3.5" />
-                      <span>View Blueprint Spec</span>
-                    </button>
-                  )}
-                </div>
-              </SpotlightCard>
-            ))}
+                </SpotlightCard>
+              )
+            })}
           </div>
         </div>
       )}

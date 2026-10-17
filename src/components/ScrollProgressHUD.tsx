@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 const SECTION_MAP: Record<string, string> = {
   hero: '00 // SYS_INIT',
+  philosophy: '00.5 // PHILOSOPHY',
   about: '01 // OVERVIEW',
   experience: '02 // EXPERIENCE',
   skills: '03 // STACK & CAPABILITIES',
@@ -23,7 +24,7 @@ export const ScrollProgressHUD: React.FC = () => {
       }
 
       // Check current section
-      const sectionIds = ['contact', 'education', 'projects', 'skills', 'experience', 'about', 'hero']
+      const sectionIds = ['contact', 'education', 'projects', 'skills', 'experience', 'about', 'philosophy', 'hero']
       for (const id of sectionIds) {
         const el = document.getElementById(id)
         if (el) {
