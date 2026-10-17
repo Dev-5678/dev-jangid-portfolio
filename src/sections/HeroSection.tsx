@@ -27,7 +27,7 @@ const DUST_PARTICLES = [
   { size: 1.9, color: 'rgba(255,255,255,0.2)', top: '38%', left: '52%', duration: 5.6, delay: 10.2 }
 ]
 
-export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume }) => {
+export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenResume }) => {
   const heroRef = useRef<HTMLElement>(null)
   const tagRef = useRef<HTMLDivElement>(null)
   const descRef = useRef<HTMLDivElement>(null)
@@ -65,7 +65,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume }) => {
       id="hero"
       aria-label="Introduction"
       className="relative h-screen h-[100svh] min-h-[100svh] overflow-hidden select-none touch-pan-y"
-      style={{ background: '#111111' }}
+      style={{ background: '#050505' }}
     >
       {/* 1. Subtle SVG Noise Grain Texture */}
       <div
@@ -79,27 +79,18 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume }) => {
         aria-hidden="true"
       />
 
-      {/* 2. Radial Ellipse Vignette */}
-      <div
-        className="absolute inset-0 pointer-events-none z-[4]"
-        style={{
-          background: 'radial-gradient(ellipse 80% 70% at 50% 45%, transparent 30%, #111111 100%)'
-        }}
-        aria-hidden="true"
-      />
-
-      {/* 3. Central Ambient Ember Glow Orb */}
+      {/* 2. Ambient Ember Glow Orb behind Title */}
       <div
         ref={glowRef}
-        className="absolute left-1/2 top-[45%] -translate-x-1/2 -translate-y-1/2 w-[360px] h-[360px] sm:w-[600px] sm:h-[600px] md:w-[800px] md:h-[800px] pointer-events-none opacity-0 z-[6]"
+        className="absolute left-1/2 top-[44%] -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] sm:w-[550px] sm:h-[550px] md:w-[700px] md:h-[700px] pointer-events-none opacity-0 z-[6]"
         style={{
-          background: 'radial-gradient(circle, rgba(252,107,47,0.18) 0%, rgba(252,107,47,0.05) 40%, transparent 70%)',
-          filter: 'blur(35px)'
+          background: 'radial-gradient(circle, rgba(252,107,47,0.12) 0%, rgba(252,107,47,0.03) 45%, transparent 70%)',
+          filter: 'blur(40px)'
         }}
         aria-hidden="true"
       />
 
-      {/* 4. 18 Floating Ambient Micro-Dust Particles */}
+      {/* 3. Floating Ambient Micro-Dust Particles */}
       <div className="absolute inset-0 pointer-events-none z-[8]" aria-hidden="true">
         {DUST_PARTICLES.map((d, i) => (
           <div
@@ -118,7 +109,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume }) => {
         ))}
       </div>
 
-      {/* 5. Top-Left Status Pill Badge */}
+      {/* 4. Top-Left Status Pill Badge */}
       <div
         ref={tagRef}
         className="absolute top-12 sm:top-20 md:top-24 left-4 sm:left-6 md:left-14 lg:left-20 z-[40] opacity-0 flex items-center gap-2 sm:gap-2.5 max-w-[calc(100vw-5rem)]"
@@ -132,10 +123,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume }) => {
         </span>
       </div>
 
-      {/* 6. Bottom-Left Engineering Subtitle */}
+      {/* 5. Bottom-Left Engineering Subtitle */}
       <div
         ref={descRef}
-        className="absolute bottom-[20%] sm:bottom-[18%] md:top-[72%] md:bottom-auto left-4 sm:left-6 md:left-14 lg:left-20 z-[40] max-w-[calc(100vw-2rem)] sm:max-w-[320px] md:max-w-[380px] lg:max-w-[420px] opacity-0"
+        className="absolute bottom-[20%] sm:bottom-[18%] md:top-[74%] md:bottom-auto left-4 sm:left-6 md:left-14 lg:left-20 z-[40] max-w-[calc(100vw-2rem)] sm:max-w-[320px] md:max-w-[380px] lg:max-w-[420px] opacity-0"
       >
         <p
           className="text-[11.5px] sm:text-[13px] md:text-[14px] text-[#B5B5B5] leading-[1.6] sm:leading-[1.8] font-normal tracking-wide"
@@ -145,7 +136,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume }) => {
         </p>
       </div>
 
-      {/* 7. Bottom-Right Magnetic Action Buttons */}
+      {/* 6. Bottom-Right Magnetic Action Buttons (Exact 2-button layout from Reel) */}
       <div
         ref={ctaRef}
         className="absolute bottom-6 sm:bottom-[8%] md:bottom-[12%] left-4 right-4 sm:left-auto sm:right-6 md:right-14 lg:right-20 z-[40] opacity-0 flex flex-row sm:flex-col justify-between sm:justify-end items-center sm:items-end gap-2.5 sm:gap-3.5"
@@ -166,28 +157,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume }) => {
           </span>
         </a>
 
-        <div className="flex items-center gap-2">
-          {onOpenResume && (
-            <button
-              onClick={onOpenResume}
-              className="relative inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full font-medium text-[11px] sm:text-[12px] tracking-wide transition-colors duration-300 overflow-hidden cursor-pointer bg-transparent text-white border border-white/20 hover:border-ember/50 hover:text-ember !border-white/15 touch-manipulation"
-            >
-              Resume ↗
-            </button>
-          )}
-
-          <a
-            href="#contact"
-            className="relative inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full font-medium text-[11px] sm:text-[12px] tracking-wide transition-colors duration-300 overflow-hidden cursor-pointer bg-transparent text-white border border-white/20 hover:border-ember/50 hover:text-ember !border-white/15 touch-manipulation"
-          >
-            <span className="relative z-10 flex items-center gap-2">Let's Talk →</span>
-          </a>
-        </div>
+        <a
+          href="#contact"
+          className="relative inline-flex items-center justify-center gap-2 px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full font-medium text-[11px] sm:text-[13px] tracking-wide transition-colors duration-300 overflow-hidden cursor-pointer bg-transparent text-white border border-white/20 hover:border-ember/50 hover:text-ember !border-white/15 touch-manipulation"
+        >
+          <span className="relative z-10 flex items-center gap-2">Let's Talk →</span>
+        </a>
       </div>
 
-      {/* 8. Center Kinetic Variable Typography with Ember Stroke & Drop Shadow */}
+      {/* 7. Center Kinetic Variable Typography with Ember Stroke & Drop Shadow */}
       <div
-        className="absolute top-[25%] sm:top-[28%] md:top-[38%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-[15] pointer-events-none select-none w-full flex flex-col items-center justify-center px-4"
+        className="absolute top-[40%] sm:top-[42%] md:top-[44%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-[15] pointer-events-none select-none w-full flex flex-col items-center justify-center px-4"
         aria-hidden="true"
       >
         <div className="w-full max-w-[700px] md:max-w-[850px] h-[52px] sm:h-[80px] md:h-[135px] relative flex items-center justify-center scale-y-[1.15] transform-gpu drop-shadow-[0_0_35px_rgba(252,107,47,0.3)]">
@@ -209,7 +189,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume }) => {
         </div>
 
         {/* Cinematic Sub-headline */}
-        <div className="mt-12 sm:mt-2.5 md:mt-4 text-center z-[20] px-2">
+        <div className="mt-4 sm:mt-5 md:mt-6 text-center z-[20] px-2">
           <p
             className="hero-line text-[clamp(0.55rem,2.2vw,0.88rem)] md:text-[clamp(0.72rem,1.08vw,0.88rem)] font-extrabold tracking-[0.12em] sm:tracking-[0.25em] uppercase text-ember drop-shadow-[0_0_20px_rgba(252,107,47,0.7)]"
             style={{ fontFamily: 'var(--font-poppins), sans-serif' }}
@@ -219,7 +199,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume }) => {
         </div>
       </div>
 
-      {/* 9. Center Animated Scroll Indicator Line */}
+      {/* 8. Center Animated Scroll Indicator Line */}
       <div
         ref={scrollHintRef}
         className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-[45] hidden md:flex flex-col items-center gap-2 opacity-0"
@@ -237,12 +217,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume }) => {
           />
         </div>
       </div>
-
-      {/* 10. Bottom Gradient Scrim to Void */}
-      <div
-        className="absolute bottom-0 left-0 right-0 h-28 pointer-events-none z-[50]"
-        style={{ background: 'linear-gradient(to top, var(--void) 0%, transparent 100%)' }}
-      />
     </section>
   )
 }

@@ -129,27 +129,26 @@ export function App() {
         accentColor="#a02a22"
       />
 
-      {/* Feature 1: Recruiter 30-Second Executive Summary Alert Banner */}
+      {/* Feature 1: Recruiter 30-Second Executive Summary Floating Indicator */}
       {isTLDR && (
-        <div className="bg-[#0e0e11] text-white border-b border-ember/30 px-4 py-3 font-mono text-xs backdrop-blur-md">
-          <div className="max-w-6xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 bg-ember rounded-full animate-ping" />
-              <Zap className="w-4 h-4 text-ember fill-current" />
-              <span className="font-bold text-ember uppercase">30-SECOND RECRUITER TL;DR ACTIVE:</span>
-              <span className="text-ash hidden md:inline">
-                Displaying high-impact institutional highlights (AAI, ISL, Gemini RAG, C++/Java).
-              </span>
-            </div>
-            <button
-              onClick={toggleTLDR}
-              className="self-start sm:self-auto px-2.5 py-1 bg-ember/20 hover:bg-ember text-white rounded-full font-medium text-[10px] flex items-center gap-1 uppercase transition-colors border border-ember/40 cursor-pointer"
-            >
-              <X className="w-3 h-3" />
-              <span>Disable TL;DR</span>
-            </button>
+        <aside
+          aria-label="TLDR active status"
+          className="fixed bottom-6 left-4 sm:left-6 z-50 bg-[#0e0e11]/95 text-white border border-ember/40 px-4 py-2.5 rounded-2xl font-mono text-xs shadow-[0_10px_30px_rgba(0,0,0,0.8),0_0_20px_rgba(160,42,34,0.3)] backdrop-blur-xl flex items-center gap-3"
+        >
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 bg-ember rounded-full animate-ping" />
+            <Zap className="w-3.5 h-3.5 text-ember fill-current" />
+            <span className="font-bold text-ember uppercase text-[11px]">30s TL;DR Active</span>
           </div>
-        </div>
+          <button
+            onClick={toggleTLDR}
+            aria-label="Disable TL;DR"
+            className="px-2 py-0.5 bg-white/10 hover:bg-ember text-white rounded-full font-medium text-[10px] flex items-center gap-1 uppercase transition-colors cursor-pointer"
+          >
+            <X className="w-3 h-3" />
+            <span>Close</span>
+          </button>
+        </aside>
       )}
 
       {/* Main Content Sections */}
