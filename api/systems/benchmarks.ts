@@ -1,7 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ApiRequest = any
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ApiResponse = any
+import type { VercelRequest, VercelResponse } from '@vercel/node'
 
 interface BenchmarkRecord {
   id: string
@@ -37,7 +34,7 @@ let benchmarksStore: BenchmarkRecord[] = [
   }
 ]
 
-export default function handler(req: ApiRequest, res: ApiResponse) {
+export default function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
