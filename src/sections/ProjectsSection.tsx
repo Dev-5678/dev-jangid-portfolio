@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
-import { ProjectDetailModal, type ProjectModalData } from '../components/projects/ProjectDetailModal'
-import { Layers, Play, Radio, ShieldCheck, Sparkles, Cpu, ExternalLink, Terminal } from 'lucide-react'
+import React from 'react'
+import type { ProjectModalData } from '../components/projects/ProjectDetailModal'
+import { Radio, ShieldCheck, Sparkles, Cpu, ExternalLink, Terminal } from 'lucide-react'
 
 const PROJECTS: ProjectModalData[] = [
   {
@@ -107,19 +107,6 @@ const PROJECTS: ProjectModalData[] = [
 ]
 
 export const ProjectsSection: React.FC = () => {
-  const [activeProject, setActiveProject] = useState<ProjectModalData | null>(null)
-  const [modalInitialTab, setModalInitialTab] = useState<'apparatus' | 'blueprint'>('apparatus')
-
-  const handleOpenApparatus = (p: ProjectModalData) => {
-    setActiveProject(p)
-    setModalInitialTab('apparatus')
-  }
-
-  const handleOpenBlueprint = (p: ProjectModalData) => {
-    setActiveProject(p)
-    setModalInitialTab('blueprint')
-  }
-
   return (
     <section
       id="projects"
@@ -132,7 +119,7 @@ export const ProjectsSection: React.FC = () => {
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-ember/60 bg-black/60 backdrop-blur-md shadow-[0_0_20px_rgba(160,42,34,0.3)]">
             <span className="w-2 h-2 rounded-full bg-ember shadow-[0_0_10px_#A02A22] animate-pulse" />
             <span className="text-white text-[10px] sm:text-xs font-semibold tracking-[0.3em] uppercase">
-              Selected Projects
+              Full-Stack Standalone Web Applications
             </span>
           </div>
 
@@ -147,7 +134,7 @@ export const ProjectsSection: React.FC = () => {
             className="text-ash text-xs sm:text-sm md:text-base max-w-2xl font-light tracking-wide"
             style={{ fontFamily: "var(--font-josefin), 'Josefin Sans', sans-serif" }}
           >
-            FROM MISSION-CRITICAL CIVIL AVIATION TO AEROSPACE TELEMETRY &amp; CLOUD AI — CRAFTED WITH MATHEMATICAL PRECISION.
+            FROM MISSION-CRITICAL CIVIL AVIATION RADAR TO AEROSPACE TELEMETRY &amp; CLOUD AI — COMPLETE DYNAMIC WEBSITES WITH REAL-WORLD DATA &amp; DATABASES.
           </p>
         </div>
 
@@ -159,7 +146,7 @@ export const ProjectsSection: React.FC = () => {
             return (
               <div
                 key={p.id}
-                className="relative rounded-2xl sm:rounded-[32px] bg-white/[0.04] border border-white/20 backdrop-blur-3xl overflow-hidden px-4 py-6 sm:px-10 sm:py-10 lg:px-14 lg:py-14 min-h-[380px] sm:min-h-[480px] lg:min-h-[530px] flex flex-col justify-center shadow-[0_20px_60px_rgba(0,0,0,0.8),inset_0_1px_1px_rgba(255,255,255,0.25),inset_0_0_24px_rgba(255,255,255,0.03)] transform-gpu transition-all hover:border-ember/40"
+                className="relative rounded-2xl sm:rounded-[32px] bg-white/[0.04] border border-white/20 backdrop-blur-3xl overflow-hidden px-4 py-6 sm:px-10 sm:py-10 lg:px-14 lg:py-14 min-h-[380px] sm:min-h-[480px] lg:min-h-[530px] flex flex-col justify-center shadow-[0_20px_60px_rgba(0,0,0,0.8),inset_0_1px_1px_rgba(255,255,255,0.25),inset_0_0_24px_rgba(255,255,255,0.03)] transform-gpu transition-all hover:border-ember/50"
               >
                 {/* Dual Corner Ambient Aurora Glows */}
                 <div className="absolute -top-24 -left-24 w-80 h-80 bg-ember/10 rounded-full blur-3xl pointer-events-none" />
@@ -174,30 +161,22 @@ export const ProjectsSection: React.FC = () => {
                     <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                       <a
                         href={`#/project/${p.id}`}
-                        className="inline-flex items-center gap-1.5 sm:gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full bg-white text-black font-semibold text-[11px] sm:text-xs tracking-wider uppercase hover:scale-105 transition-all shadow-[0_4px_25px_rgba(255,255,255,0.3)] group touch-manipulation cursor-pointer"
-                        title="Visit Standalone Showcase Website"
+                        className="inline-flex items-center gap-1.5 sm:gap-2 px-4 py-2.5 rounded-full bg-white text-black font-bold text-xs tracking-wider uppercase hover:scale-105 transition-all shadow-[0_4px_25px_rgba(255,255,255,0.4)] group touch-manipulation cursor-pointer"
+                        title="Open Separate Full-Stack Webpage"
                       >
-                        <span>Visit Live Website</span>
-                        <ExternalLink className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-black stroke-[2.5] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
+                        <span>Launch Project Webpage</span>
+                        <ExternalLink className="w-3.5 h-3.5 text-black stroke-[2.5] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
                       </a>
 
-                      <button
-                        onClick={() => handleOpenApparatus(p)}
-                        className="px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 font-semibold text-[11px] sm:text-xs tracking-wider uppercase transition-all backdrop-blur-md cursor-pointer flex items-center gap-1.5"
-                        title="Quick Modal View"
+                      <a
+                        href={`#/project/${p.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 font-semibold text-xs tracking-wider uppercase transition-all backdrop-blur-md cursor-pointer"
+                        title="Open in Separate Tab/Window"
                       >
-                        <Play className="w-3 h-3 text-ember fill-ember" />
-                        <span>Quick View Modal</span>
-                      </button>
-
-                      <button
-                        onClick={() => handleOpenBlueprint(p)}
-                        className="px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-full bg-white/5 hover:bg-white/15 text-zinc-300 border border-white/10 font-semibold text-[11px] sm:text-xs tracking-wider uppercase transition-all backdrop-blur-md cursor-pointer flex items-center gap-1"
-                        title="Blueprint Specifications"
-                      >
-                        <Layers className="w-3 h-3 text-ember" />
-                        <span>Blueprint</span>
-                      </button>
+                        <span>Open In New Tab ↗</span>
+                      </a>
 
                       <span className="ml-auto text-[11px] sm:text-xs font-mono text-zinc-400 font-bold tracking-widest uppercase">
                         {p.number}
@@ -361,14 +340,6 @@ export const ProjectsSection: React.FC = () => {
           })}
         </div>
       </div>
-
-      {/* Unified Project Detail Modal */}
-      <ProjectDetailModal
-        isOpen={Boolean(activeProject)}
-        onClose={() => setActiveProject(null)}
-        project={activeProject}
-        initialTab={modalInitialTab}
-      />
     </section>
   )
 }
