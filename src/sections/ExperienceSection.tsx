@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { experiences } from '../data/portfolio'
+import { SpotlightCard } from '../components/reactbits/SpotlightCard'
+import { DecryptedText } from '../components/reactbits/DecryptedText'
 import { Calendar, MapPin, Briefcase } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -46,7 +48,7 @@ export const ExperienceSection: React.FC = () => {
             <span>TIMELINE // WORK_HISTORY</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[#111317] dark:text-[#F4F7FB]">
-            PRACTICAL EXPERIENCE
+            <DecryptedText text="PRACTICAL EXPERIENCE" speed={30} maxIterations={10} />
           </h2>
         </div>
         <p className="font-mono text-xs text-gray-500 dark:text-gray-400 max-w-xs">
@@ -63,8 +65,11 @@ export const ExperienceSection: React.FC = () => {
               {index + 1}
             </div>
 
-            {/* Experience Card */}
-            <div className="brutal-card p-6 sm:p-8 bg-white dark:bg-[#131720] border-3 border-[#111317] dark:border-[#334155] shadow-[5px_5px_0px_#111317] dark:shadow-[5px_5px_0px_#1E293B] group-hover:border-[#CCFF00] transition-all">
+            {/* Experience Card with Spotlight */}
+            <SpotlightCard
+              spotlightColor="rgba(204, 255, 0, 0.12)"
+              className="p-6 sm:p-8 bg-white dark:bg-[#131720] border-3 border-[#111317] dark:border-[#334155] shadow-[5px_5px_0px_#111317] dark:shadow-[5px_5px_0px_#1E293B] group-hover:border-[#CCFF00] transition-all"
+            >
               {/* Header Badges */}
               <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-4 border-b-2 border-[#111317] dark:border-[#334155] font-mono text-xs">
                 <div className="flex items-center gap-2">
@@ -124,7 +129,7 @@ export const ExperienceSection: React.FC = () => {
                   ))}
                 </div>
               </div>
-            </div>
+            </SpotlightCard>
           </div>
         ))}
       </div>

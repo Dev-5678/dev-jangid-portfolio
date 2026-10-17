@@ -10,6 +10,9 @@ import { ProjectsSection } from './sections/ProjectsSection'
 import { EducationSection } from './sections/EducationSection'
 import { ContactSection } from './sections/ContactSection'
 import { Footer } from './components/Footer'
+import { ClickSpark } from './components/reactbits/ClickSpark'
+import { InteractiveParticlesBg } from './components/reactbits/InteractiveParticlesBg'
+import { Dock } from './components/reactbits/Dock'
 
 export function App() {
   const { theme, toggleTheme } = useTheme()
@@ -35,7 +38,13 @@ export function App() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF8F5] dark:bg-[#0A0D12] text-[#111317] dark:text-[#F4F7FB] selection:bg-[#CCFF00] selection:text-[#111317]">
+    <div className="min-h-screen flex flex-col bg-[#FAF8F5] dark:bg-[#0A0D12] text-[#111317] dark:text-[#F4F7FB] selection:bg-[#CCFF00] selection:text-[#111317] relative">
+      {/* React Bits Ambient Background: Interactive Constellation Particles */}
+      <InteractiveParticlesBg />
+
+      {/* React Bits Click Effects: Neon Spark Particle Bursts */}
+      <ClickSpark sparkColor={['#CCFF00', '#00E5FF', '#FF5500', '#FFFFFF']} sparkCount={14} sparkSize={3} />
+
       {/* Skip to Main Content Link for Keyboard Accessibility (WCAG 2.4.1) */}
       <a
         href="#main-content"
@@ -55,7 +64,7 @@ export function App() {
       />
 
       {/* Main Content Sections */}
-      <main className="flex-1 w-full" id="main-content">
+      <main className="flex-1 w-full pb-20" id="main-content">
         <HeroSection />
         <AboutSection />
         <ExperienceSection />
@@ -64,6 +73,13 @@ export function App() {
         <EducationSection />
         <ContactSection />
       </main>
+
+      {/* React Bits Modern Floating Dock Navigation */}
+      <Dock
+        theme={theme}
+        onToggleTheme={toggleTheme}
+        onOpenPortal={handleOpenPortal}
+      />
 
       {/* Footer */}
       <Footer />
