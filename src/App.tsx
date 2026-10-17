@@ -14,15 +14,11 @@ import { SkillsSection } from './sections/SkillsSection'
 import { ProjectsSection } from './sections/ProjectsSection'
 import { EducationSection } from './sections/EducationSection'
 import { ContactSection } from './sections/ContactSection'
-import { Footer } from './components/Footer'
-
 import { LoadingScreen } from './components/LoadingScreen'
 import { AperturePhilosophySection } from './components/AperturePhilosophySection'
-import { VelocityMarquee } from './components/reactbits/VelocityMarquee'
 import { DevConsole } from './components/DevConsole'
 import { ResumeModal } from './components/ResumeModal'
 import { CommandPalette } from './components/CommandPalette'
-import { ScrollProgressHUD } from './components/ScrollProgressHUD'
 import { OfflineBanner } from './components/OfflineBanner'
 import { CopyToast } from './components/CopyToast'
 import { personalInfo } from './data/portfolio'
@@ -77,13 +73,10 @@ export function App() {
       {/* Feature 15: Offline Resilient Mode Banner */}
       <OfflineBanner isOnline={isOnline} />
 
-      {/* Feature 5: Top Scroll Progress Bar & HUD Section Indicator */}
-      <ScrollProgressHUD />
-
       {/* Skip to Main Content Link for Keyboard Accessibility (WCAG 2.4.1) */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2.5 focus:bg-[var(--accent,#CCFF00)] focus:text-[#111317] focus:font-mono focus:font-bold focus:border-3 focus:border-[#111317] focus:shadow-[4px_4px_0px_#111317]"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2.5 focus:bg-ember focus:text-white focus:font-sans focus:font-semibold focus:rounded-full focus:shadow-[0_0_25px_rgba(160,42,34,0.6)] focus:border focus:border-white/20"
       >
         Skip to main content
       </a>
@@ -120,19 +113,19 @@ export function App() {
 
       {/* Feature 1: Recruiter 30-Second Executive Summary Alert Banner */}
       {isTLDR && (
-        <div className="bg-[#111317] text-[#FAF8F5] border-b-3 border-[#FF5500] px-4 py-3 font-mono text-xs">
+        <div className="bg-[#0e0e11] text-white border-b border-ember/30 px-4 py-3 font-mono text-xs backdrop-blur-md">
           <div className="max-w-6xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 bg-[#FF5500] rounded-full animate-ping" />
-              <Zap className="w-4 h-4 text-[#FF5500] fill-current" />
-              <span className="font-bold text-[#FF5500] uppercase">30-SECOND RECRUITER TL;DR ACTIVE:</span>
-              <span className="text-gray-300 hidden md:inline">
+              <span className="w-2.5 h-2.5 bg-ember rounded-full animate-ping" />
+              <Zap className="w-4 h-4 text-ember fill-current" />
+              <span className="font-bold text-ember uppercase">30-SECOND RECRUITER TL;DR ACTIVE:</span>
+              <span className="text-ash hidden md:inline">
                 Displaying high-impact institutional highlights (AAI, ISL, Gemini RAG, C++/Java).
               </span>
             </div>
             <button
               onClick={toggleTLDR}
-              className="self-start sm:self-auto px-2 py-0.5 bg-[#FF5500] hover:bg-[#e04b00] text-white font-bold text-[10px] flex items-center gap-1 uppercase transition-colors"
+              className="self-start sm:self-auto px-2.5 py-1 bg-ember/20 hover:bg-ember text-white rounded-full font-medium text-[10px] flex items-center gap-1 uppercase transition-colors border border-ember/40 cursor-pointer"
             >
               <X className="w-3 h-3" />
               <span>Disable TL;DR</span>
@@ -149,9 +142,6 @@ export function App() {
             setIsResumeOpen(true)
           }}
         />
-        
-        {/* Infinite Dual-Band Velocity Marquee */}
-        <VelocityMarquee />
 
         {/* Viral Reel Flex: Scroll-Expanding Philosophy & System Architecture Aperture */}
         <AperturePhilosophySection
@@ -209,9 +199,6 @@ export function App() {
 
       {/* Feature 3: Tactile Copy Notification Toast */}
       <CopyToast message={copiedText} onClose={clearCopied} />
-
-      {/* Footer */}
-      <Footer />
     </div>
   )
 }

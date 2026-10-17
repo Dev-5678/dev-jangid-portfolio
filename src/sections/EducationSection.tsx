@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react'
 import { educationHistory } from '../data/portfolio'
-import { TiltedCard } from '../components/reactbits/TiltedCard'
 import { GraduationCap, Calendar, MapPin } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -24,7 +23,7 @@ export const EducationSection: React.FC = () => {
         y: 30,
         opacity: 0,
         duration: 0.6,
-        stagger: 0.2,
+        stagger: 0.15,
         ease: 'power2.out'
       })
     }, sectionRef)
@@ -37,68 +36,85 @@ export const EducationSection: React.FC = () => {
       ref={sectionRef}
       id="education"
       aria-label="Academic History"
-      className="py-16 sm:py-24 px-4 sm:px-6 max-w-6xl mx-auto border-t-3 border-[#111317] dark:border-[#334155]"
+      className="relative py-16 sm:py-24 md:py-36 overflow-hidden"
+      style={{ fontFamily: 'var(--font-poppins), sans-serif' }}
     >
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
-        <div>
-          <div className="inline-flex items-center gap-2 font-mono text-xs font-black tracking-widest text-[#FF5500] dark:text-[#CCFF00] uppercase mb-2">
-            <span>[05]</span>
-            <span>ACADEMIC // CREDENTIALS</span>
-          </div>
-          <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[#111317] dark:text-[#F4F7FB]">
-            EDUCATION
-          </h2>
-        </div>
-        <p className="font-mono text-xs text-gray-500 dark:text-gray-400 max-w-xs">
-          Academic qualifications verified from official resume credentials.
-        </p>
-      </div>
+      {/* Top Hairline Separator */}
+      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#2a2a2e] to-transparent" aria-hidden="true" />
 
-      {/* Grid of Education Cards with 3D Tilt */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-        {educationHistory.map((edu, idx) => (
-          <div key={edu.id} className="edu-card">
-            <TiltedCard
-              maxTilt={8}
-              className="p-6 sm:p-8 bg-white dark:bg-[#131720] border-3 border-[#111317] dark:border-[#334155] shadow-[5px_5px_0px_#111317] dark:shadow-[5px_5px_0px_#1E293B] flex flex-col justify-between h-full"
+      {/* Ambient Ember Glow Pool */}
+      <div
+        className="absolute top-1/3 right-1/4 w-[500px] h-[300px] rounded-full opacity-10 pointer-events-none blur-[140px]"
+        style={{ backgroundColor: 'var(--ember)' }}
+        aria-hidden="true"
+      />
+
+      <div className="section-container relative z-10 px-4 sm:px-6 md:px-8 max-w-6xl mx-auto">
+        {/* Header */}
+        <div className="mb-10 sm:mb-16">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="w-8 h-[2px] bg-ember inline-block rounded-full" />
+            <span className="text-ember text-xs font-bold tracking-[0.25em] uppercase">Academics</span>
+          </div>
+          <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1.1] tracking-tight">
+            Education
+          </h2>
+          <p className="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg text-ash max-w-xl leading-relaxed font-normal">
+            Academic credentials and technical computer science foundations.
+          </p>
+        </div>
+
+        {/* Grid of Education Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+          {educationHistory.map((edu, idx) => (
+            <div
+              key={edu.id}
+              className="edu-card glass-card p-6 sm:p-8 flex flex-col justify-between hover:border-white/20 transition-all duration-300 relative overflow-hidden group"
             >
               <div>
                 {/* Top Badges */}
-                <div className="flex items-center justify-between pb-3 mb-4 border-b-2 border-[#111317] dark:border-[#334155] font-mono text-xs">
-                  <span className="px-2.5 py-1 bg-[#111317] text-[#CCFF00] font-bold text-xs uppercase">
-                    {edu.isExpected ? 'IN_PROGRESS' : 'COMPLETED'}
+                <div className="flex items-center justify-between pb-4 mb-4 border-b border-white/10">
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-medium border font-mono ${
+                      edu.isExpected
+                        ? 'bg-ember/10 border-ember/30 text-ember'
+                        : 'bg-white/5 border-white/10 text-white'
+                    }`}
+                  >
+                    {edu.isExpected ? 'In Progress' : 'Completed'}
                   </span>
-                  <span className="flex items-center gap-1 font-bold text-[#FF5500] dark:text-[#CCFF00]">
-                    <Calendar className="w-3.5 h-3.5" />
-                    {edu.date}
+                  <span className="flex items-center gap-1.5 text-xs font-mono text-ash font-medium">
+                    <Calendar className="w-3.5 h-3.5 text-ember" />
+                    <span>{edu.date}</span>
                   </span>
                 </div>
 
                 {/* Degree */}
-                <h3 className="font-sans font-black text-xl sm:text-2xl uppercase tracking-tight text-[#111317] dark:text-[#F4F7FB] mb-2">
+                <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight mt-2 mb-3 group-hover:text-cloud transition-colors">
                   {edu.degree}
                 </h3>
 
                 {/* Institution */}
-                <div className="flex items-center gap-2 text-base font-bold text-gray-800 dark:text-gray-200 mt-2">
-                  <GraduationCap className="w-5 h-5 text-[#CCFF00] dark:text-[#CCFF00] stroke-[2.5]" />
+                <div className="flex items-center gap-2.5 text-sm sm:text-base text-silver font-medium">
+                  <GraduationCap className="w-4 h-4 text-ember shrink-0" />
                   <span>{edu.institution}</span>
                 </div>
               </div>
 
               {/* Location footer */}
-              <div className="mt-6 pt-4 border-t-2 border-dashed border-gray-200 dark:border-gray-800 flex items-center justify-between font-mono text-xs text-gray-600 dark:text-gray-400">
+              <div className="mt-8 pt-5 border-t border-white/10 flex items-center justify-between text-xs text-ash">
                 <span className="flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-[#FF5500]" />
-                  {edu.location}
+                  <MapPin className="w-3.5 h-3.5 text-ember shrink-0" />
+                  <span>{edu.location}</span>
                 </span>
-                <span className="text-[10px] text-gray-400 font-bold">#0{idx + 1}</span>
+                <span className="font-mono text-ash/60 font-semibold tracking-wider">#{String(idx + 1).padStart(2, '0')}</span>
               </div>
-            </TiltedCard>
-          </div>
-        ))}
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   )
 }
+
+export default EducationSection
