@@ -15,16 +15,12 @@ describe('App Root Integration & Accessibility', () => {
     expect(skipLink).toHaveAttribute('href', '#main-content')
   })
 
-  it('renders portal entry dialog and allows entering main site', () => {
+  it('directly renders the main site without entrance blockades', () => {
     render(<App />)
-    const portalDialog = screen.getByRole('dialog')
-    expect(portalDialog).toBeInTheDocument()
-
-    const enterBtn = screen.getByRole('button', { name: /direct access/i })
-    fireEvent.click(enterBtn)
-
-    // After entering, dialog is dismissed
+    // No blocking dialogs on load
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    // Hero introduction is immediately accessible
+    expect(screen.getByRole('region', { name: /introduction/i })).toBeInTheDocument()
   })
 
   it('toggles dark and light mode and persists in localStorage', () => {
@@ -40,11 +36,8 @@ describe('App Root Integration & Accessibility', () => {
     expect(localStorage.getItem('theme')).toBe(updatedAriaPressed === 'true' ? 'dark' : 'light')
   })
 
-  it('renders all 6 navigation sections', () => {
+  it('renders all 6 navigation sections directly', () => {
     render(<App />)
-    // Dismiss portal
-    const directBtn = screen.getByRole('button', { name: /direct access/i })
-    fireEvent.click(directBtn)
 
     expect(screen.getByRole('region', { name: /introduction/i })).toBeInTheDocument()
     expect(screen.getByRole('region', { name: /about dev jangid/i })).toBeInTheDocument()
@@ -53,5 +46,20 @@ describe('App Root Integration & Accessibility', () => {
     expect(screen.getByRole('region', { name: /engineering highlights and projects/i })).toBeInTheDocument()
     expect(screen.getByRole('region', { name: /academic history/i })).toBeInTheDocument()
     expect(screen.getByRole('region', { name: /contact dev jangid/i })).toBeInTheDocument()
+  })
+
+  it('opens and closes the verified resume modal from the navbar', () => {
+    render(<App />)
+
+    const resumeBtn = screen.getByRole('button', { name: /inspect verified resume pdf/i })
+    fireEvent.click(resumeBtn)
+
+    const modalDialog = screen.getByRole('dialog', { name: /verified resume/i })
+    expect(modalDialog).toBeInTheDocument()
+
+    const closeBtn = screen.getByRole('button', { name: /close resume modal/i })
+    fireEvent.click(closeBtn)
+
+    expect(screen.queryByRole('dialog', { name: /verified resume/i })).not.toBeInTheDocument()
   })
 })

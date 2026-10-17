@@ -4,16 +4,15 @@ import { CrystalizedBall } from '../components/reactbits/CrystalizedBall'
 import { TextPressure } from '../components/reactbits/TextPressure'
 import { ShinyText } from '../components/reactbits/ShinyText'
 import { Magnet } from '../components/reactbits/Magnet'
-import { ArrowDown, Mail, MapPin, FileText, Clock, Activity, Terminal } from 'lucide-react'
+import { ArrowDown, Mail, MapPin, FileText, Clock, Activity } from 'lucide-react'
 import { useLiveTelemetry } from '../hooks/useLiveTelemetry'
 import gsap from 'gsap'
 
 interface HeroSectionProps {
   onOpenResume?: () => void
-  onOpenConsole?: () => void
 }
 
-export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onOpenConsole }) => {
+export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume }) => {
   const { istTime, latency } = useLiveTelemetry()
   const heroRef = useRef<HTMLElement>(null)
   const titleWrapRef = useRef<HTMLDivElement>(null)
@@ -163,19 +162,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onOpenCo
                 >
                   <FileText className="w-4 h-4 stroke-[2.5] text-[#FF5500]" />
                   <span>Resume [PDF]</span>
-                </button>
-              </Magnet>
-            )}
-
-            {onOpenConsole && (
-              <Magnet padding={30} magnetStrength={0.3}>
-                <button
-                  onClick={onOpenConsole}
-                  className="hidden sm:flex brutal-btn px-4 py-3.5 bg-[#111317] text-[#CCFF00] font-mono font-bold text-sm uppercase tracking-wider items-center gap-2 hover:bg-[#CCFF00] hover:text-[#111317] border-2 border-[#111317] dark:border-[#CCFF00]"
-                  title="Launch Interactive Hacker CLI Terminal (Hotkey: `)"
-                >
-                  <Terminal className="w-4 h-4 stroke-[2.5]" />
-                  <span>CLI [~]</span>
                 </button>
               </Magnet>
             )}

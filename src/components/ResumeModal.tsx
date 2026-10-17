@@ -41,7 +41,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
               onClick={onClose}
               className="p-1 hover:bg-red-500 hover:text-white text-gray-300 transition-colors"
               title="Close Resume"
-              aria-label="Close"
+              aria-label="Close resume modal"
             >
               <X className="w-5 h-5 stroke-[2.5]" />
             </button>
