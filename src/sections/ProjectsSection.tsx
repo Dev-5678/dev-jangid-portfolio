@@ -1,6 +1,6 @@
 import React from 'react'
 import type { ProjectModalData } from '../components/projects/ProjectDetailModal'
-import { Radio, ShieldCheck, Sparkles, Cpu, ExternalLink, Terminal } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
 
 const PROJECTS: ProjectModalData[] = [
   {
@@ -11,6 +11,12 @@ const PROJECTS: ProjectModalData[] = [
     description: 'Segregated enterprise architecture isolating Northern Region administrative subnets from critical Air Navigation Services (ANS). Features stateful firewall packet inspection, continuous security compliance auditing, and high-availability MySQL cluster replication with automated IT incident diagnostics.',
     tags: ['VLAN SEGREGATION', 'NETWORK ACLS', 'AIR NAVIGATION SERVICES', 'SQL CLUSTER', 'ITIL SOPS'],
     appType: 'aai',
+    image: '/projects/aai-security.jpg',
+    liveMetrics: [
+      { label: 'VLAN 101 ANS', value: '100% Isolated' },
+      { label: 'Uptime', value: '99.98%' },
+      { label: 'Compliance', value: 'Zero Violations' }
+    ],
     architecture: {
       overview: 'Multi-tiered enterprise network isolating mission-critical flight radar and navigation telemetry (ANS) from administrative and internal headquarters operations. Implements least-privilege stateful packet inspection, zero public internet routing on airside subnets, and automated disaster-recovery database synchronization.',
       subsystems: [
@@ -37,6 +43,12 @@ const PROJECTS: ProjectModalData[] = [
     description: '1U CanSat aerospace telemetry payload transmitting live barometric altitude, atmospheric pressure, and dual-axis gyroscopic pitch/roll orientation packets. Employs 433.92 MHz UHF radio frequency telemetry with ground station packet decoders and dual-stage parachute descent triggers.',
     tags: ['433 MHZ UHF', 'EMBEDDED C/C++', 'FSK TELEMETRY', 'SENSORS I2C/SPI', 'AEROSPACE'],
     appType: 'cansat',
+    image: '/projects/cansat-space.jpg',
+    liveMetrics: [
+      { label: 'RF Telemetry', value: '433.92 MHz UHF' },
+      { label: 'Integrity', value: 'CRC-16 OK' },
+      { label: 'Descent Trigger', value: '<500m AGL' }
+    ],
     architecture: {
       overview: 'Compact 1U space payload engineered to collect atmospheric lapse data and flight dynamics during high-altitude descent. Microcontroller samples onboard barometric and inertial sensors over I2C/SPI, encodes data into binary telemetry frames, and transmits over 433 MHz UHF radio frequency with CRC-16 checksum integrity.',
       subsystems: [
@@ -62,6 +74,12 @@ const PROJECTS: ProjectModalData[] = [
     description: 'Enterprise retrieval-augmented generation (RAG) pipeline. Converts complex technical queries and documentation into dense 768-dimensional vector embeddings, retrieves semantic ground-truth context via cosine similarity, and utilizes Gemini 1.5 Pro to synthesize reliable, zero-hallucination responses.',
     tags: ['GEMINI 1.5 PRO', 'VECTOR EMBEDDINGS', 'COSINE SIMILARITY', 'MULTIMODAL RAG', 'STREAMLIT'],
     appType: 'rag',
+    image: '/projects/gemini-rag.jpg',
+    liveMetrics: [
+      { label: 'Vector Store', value: '768-Dim Dense' },
+      { label: 'Latency', value: '<180ms' },
+      { label: 'Grounding', value: 'Zero Hallucination' }
+    ],
     architecture: {
       overview: 'End-to-end intelligent knowledge synthesis architecture combining Google Cloud Vertex AI, Gemini 1.5 Pro, and vector database retrieval. Employs semantic chunking, cosine distance ranking, and strict prompt grounding constraints to guarantee hallucination-free technical responses.',
       subsystems: [
@@ -87,6 +105,12 @@ const PROJECTS: ProjectModalData[] = [
     description: 'High-throughput algorithmic profiling and streaming telemetry engine. Implements cache-aligned in-place QuickSort partitioning, flat min-heap Dijkstra routing, and Robin Hood open-addressing hash maps to guarantee microsecond deterministic execution under peak computational load.',
     tags: ['MODERN C++', 'CACHE LOCALITY', 'BIG-O COMPLEXITY', 'IN-PLACE SORTING', 'SYSTEMS ENGINE'],
     appType: 'systems',
+    image: '/projects/systems-engine.jpg',
+    liveMetrics: [
+      { label: 'Throughput', value: '2.4M ops/ms' },
+      { label: 'L1 Cache Hit', value: '99.4%' },
+      { label: 'Memory', value: 'Zero Heap Alloc' }
+    ],
     architecture: {
       overview: 'Low-latency computational engine engineered in Modern C++ to maximize CPU cache-line locality and minimize memory bus stalls. Designed for telemetry stream sorting, route optimization, and sub-microsecond state lookup in real-time environments.',
       subsystems: [
@@ -163,7 +187,7 @@ export const ProjectsSection: React.FC = () => {
                         title="Launch Dedicated Full-Stack Webpage in New Tab"
                       >
                         <span>Launch Live Webpage</span>
-                        <ExternalLink className="w-3.5 h-3.5 text-black stroke-[2.5] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
+                        <ArrowUpRight className="w-3.5 h-3.5 text-black stroke-[2.5] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
                       </a>
 
                       <button
@@ -211,124 +235,67 @@ export const ProjectsSection: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Interactive Live Mini-HUD Preview Column */}
+                  {/* Cinematic AI Project Showcase Image with Floating Telemetry HUD */}
                   <div className={`lg:col-span-6 flex items-center justify-center ${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
                     <div
                       onClick={() => {
                         window.open(`/#/project/${p.id}`, '_blank')
                       }}
-                      className="relative w-full max-w-xl rounded-xl sm:rounded-2xl overflow-hidden border border-white/20 bg-[#090a0f] backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.2)] p-2 sm:p-4 group cursor-pointer transition-all hover:border-ember/60 hover:shadow-[0_20px_60px_rgba(160,42,34,0.3)]"
-                      title="1-Click: Open dedicated webpage in separate tab"
+                      className="relative w-full max-w-xl rounded-2xl sm:rounded-3xl overflow-hidden border border-white/20 bg-[#090a0f] backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.2)] group cursor-pointer transition-all duration-500 hover:border-ember/70 hover:shadow-[0_25px_70px_rgba(160,42,34,0.35)] hover:-translate-y-1"
+                      title="Click to launch live standalone project website in new tab"
                     >
-                      {/* Terminal Chrome Window Bar */}
-                      <div className="flex items-center justify-between px-2.5 py-1.5 sm:px-3 sm:py-2 bg-white/[0.05] border-b border-white/10 rounded-t-lg sm:rounded-t-xl mb-3">
+                      {/* High-Tech Terminal Window Header */}
+                      <div className="flex items-center justify-between px-3.5 py-2.5 bg-black/75 border-b border-white/10 backdrop-blur-xl relative z-20">
                         <div className="flex items-center gap-1.5">
                           <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]" />
                           <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
                           <span className="w-2.5 h-2.5 rounded-full bg-[#27c93f]" />
                           <span className="ml-2 font-mono text-[10px] text-zinc-400 truncate">
-                            runtime://{p.id}.apparatus
+                            system://{p.id}.visual.ai
                           </span>
                         </div>
-                        <span className="font-mono text-[9px] text-emerald-400 font-bold flex items-center gap-1">
+                        <div className="flex items-center gap-1.5">
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                          ONLINE
-                        </span>
+                          <span className="font-mono text-[9px] text-emerald-400 font-bold uppercase tracking-wider">
+                            LIVE SYSTEM
+                          </span>
+                        </div>
                       </div>
 
-                      {/* Mini Live Dashboard Card Content */}
-                      <div className="p-3 sm:p-4 rounded-lg bg-black/60 border border-white/5 font-mono text-xs space-y-3">
-                        <div className="flex items-center justify-between pb-2 border-b border-white/10">
-                          <div className="flex items-center gap-2">
-                            {p.appType === 'aai' && <ShieldCheck className="w-4 h-4 text-emerald-400" />}
-                            {p.appType === 'cansat' && <Radio className="w-4 h-4 text-ember-bright animate-pulse" />}
-                            {p.appType === 'rag' && <Sparkles className="w-4 h-4 text-amber-400" />}
-                            {p.appType === 'systems' && <Cpu className="w-4 h-4 text-cyan-400" />}
-                            <span className="text-white font-bold text-[11px] uppercase tracking-wide">
-                              {p.title}
-                            </span>
-                          </div>
+                      {/* Cinematic AI Visual Preview with Zoom & Luminous Flare */}
+                      <div className="relative aspect-[16/10] sm:aspect-video w-full overflow-hidden bg-black/50">
+                        {p.image && (
+                          <img
+                            src={p.image}
+                            alt={p.title}
+                            loading="lazy"
+                            className="w-full h-full object-cover object-center transition-all duration-700 ease-out group-hover:scale-108 group-hover:brightness-110"
+                          />
+                        )}
+
+                        {/* Atmospheric Ember Vignette & Gradient Shading */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none" />
+                        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_45%,rgba(0,0,0,0.7)_100%)] pointer-events-none" />
+
+                        {/* Center Interactive Launch Pill on Hover */}
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 z-20 pointer-events-none">
+                          <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-black font-extrabold text-xs tracking-wider uppercase shadow-[0_0_35px_rgba(255,255,255,0.7)] transform scale-95 group-hover:scale-100 transition-transform duration-300">
+                            <span>Launch Live App</span>
+                            <ArrowUpRight className="w-4 h-4 text-black stroke-[2.5]" />
+                          </span>
                         </div>
 
-                        {/* Domain Specific Visual Indicators */}
-                        {p.appType === 'aai' && (
-                          <div className="space-y-2">
-                            <div className="flex justify-between text-[11px]">
-                              <span className="text-zinc-400">VLAN 101 Airside ANS:</span>
-                              <span className="text-emerald-400 font-bold">100% ISOLATED</span>
+                        {/* Floating Telemetry Metric Badges */}
+                        <div className="absolute bottom-3 left-3 right-3 flex flex-wrap items-center gap-1.5 sm:gap-2 z-10">
+                          {p.liveMetrics?.map((m) => (
+                            <div
+                              key={m.label}
+                              className="px-2.5 py-1 rounded-lg bg-black/80 border border-white/20 backdrop-blur-md flex items-center gap-1.5 text-[10px] font-mono shadow-md"
+                            >
+                              <span className="text-zinc-400">{m.label}:</span>
+                              <span className="text-white font-bold">{m.value}</span>
                             </div>
-                            <div className="flex justify-between text-[11px]">
-                              <span className="text-zinc-400">SQL Replica Lag:</span>
-                              <span className="text-white font-bold">1.4ms (Nominal)</span>
-                            </div>
-                            <div className="flex justify-between text-[11px]">
-                              <span className="text-zinc-400">Compliance Audit:</span>
-                              <span className="text-ember font-bold">ZERO VIOLATIONS</span>
-                            </div>
-                          </div>
-                        )}
-
-                        {p.appType === 'cansat' && (
-                          <div className="space-y-2">
-                            <div className="flex justify-between text-[11px]">
-                              <span className="text-zinc-400">RF Carrier:</span>
-                              <span className="text-ember font-bold">433.920 MHz FSK</span>
-                            </div>
-                            <div className="flex justify-between text-[11px]">
-                              <span className="text-zinc-400">Altitude Staging:</span>
-                              <span className="text-white font-bold">482.4m // Parachute Armed</span>
-                            </div>
-                            <div className="flex justify-between text-[11px]">
-                              <span className="text-zinc-400">Packet Integrity:</span>
-                              <span className="text-emerald-400 font-bold">CRC16 VALIDATED</span>
-                            </div>
-                          </div>
-                        )}
-
-                        {p.appType === 'rag' && (
-                          <div className="space-y-2">
-                            <div className="flex justify-between text-[11px]">
-                              <span className="text-zinc-400">Vector Embeddings:</span>
-                              <span className="text-amber-400 font-bold">768-dim Float32</span>
-                            </div>
-                            <div className="flex justify-between text-[11px]">
-                              <span className="text-zinc-400">Cosine Similarity:</span>
-                              <span className="text-white font-bold">0.962 (Top Match)</span>
-                            </div>
-                            <div className="flex justify-between text-[11px]">
-                              <span className="text-zinc-400">Inference Speed:</span>
-                              <span className="text-emerald-400 font-bold">&lt; 190ms</span>
-                            </div>
-                          </div>
-                        )}
-
-                        {p.appType === 'systems' && (
-                          <div className="space-y-2">
-                            <div className="flex justify-between text-[11px]">
-                              <span className="text-zinc-400">Sorting Throughput:</span>
-                              <span className="text-cyan-400 font-bold">2.4M ops/ms</span>
-                            </div>
-                            <div className="flex justify-between text-[11px]">
-                              <span className="text-zinc-400">L1 Cache Hit Rate:</span>
-                              <span className="text-white font-bold">99.4% (In-Place)</span>
-                            </div>
-                            <div className="flex justify-between text-[11px]">
-                              <span className="text-zinc-400">Execution Guarantee:</span>
-                              <span className="text-emerald-400 font-bold">Sub-Millisecond Bound</span>
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Interactive Trigger Overlay */}
-                        <div className="pt-2 border-t border-white/10 flex items-center justify-between text-[10px] text-zinc-400 group-hover:text-white transition-colors">
-                          <span className="flex items-center gap-1">
-                            <Terminal className="w-3 h-3 text-ember" />
-                            <span>1-Click: Open full showcase website</span>
-                          </span>
-                          <span className="px-2 py-0.5 rounded bg-white/10 text-white font-bold group-hover:bg-ember transition-colors flex items-center gap-1">
-                            <span>VISIT SITE</span>
-                            <ExternalLink className="w-3 h-3" />
-                          </span>
+                          ))}
                         </div>
                       </div>
                     </div>

@@ -13,6 +13,8 @@ export interface ProjectModalData {
   description: string
   tags: string[]
   appType: 'aai' | 'cansat' | 'rag' | 'systems'
+  image?: string
+  liveMetrics?: { label: string; value: string }[]
   architecture: {
     overview: string
     subsystems: { name: string; role: string; tech: string }[]

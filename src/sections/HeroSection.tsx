@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { TextPressure } from '../components/reactbits/TextPressure'
+import { ArrowUpRight } from 'lucide-react'
 import gsap from 'gsap'
 
 interface HeroSectionProps {
@@ -122,14 +123,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
       >
         <a
           href="#projects"
-          className="relative inline-flex items-center justify-center gap-2 sm:gap-2.5 px-4 sm:px-7 py-2.5 sm:py-3.5 rounded-full font-semibold text-[11px] sm:text-[13px] tracking-wide transition-all duration-300 overflow-hidden cursor-pointer bg-ember hover:bg-ember-bright text-white border border-ember/70 shadow-[0_0_25px_rgba(160,42,34,0.55)] hover:shadow-[0_0_40px_rgba(252,107,47,0.75)] hover:scale-105 active:scale-95 group touch-manipulation flex-1 sm:flex-initial"
+          className="relative inline-flex items-center justify-center gap-2 sm:gap-2.5 px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full font-bold text-[12px] sm:text-[13px] tracking-wide transition-all duration-300 overflow-hidden cursor-pointer bg-ember hover:bg-ember-bright text-white border border-ember/70 shadow-[0_0_25px_rgba(160,42,34,0.55)] hover:shadow-[0_0_40px_rgba(252,107,47,0.75)] hover:scale-105 active:scale-95 group touch-manipulation flex-1 sm:flex-initial"
           title="Explore Engineering Highlights"
         >
-          <span className="relative z-10 flex items-center gap-2 sm:gap-3">
-            <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-black/30 border border-white/30 flex items-center justify-center transition-transform duration-500 group-hover:rotate-45 group-hover:bg-white group-hover:text-ember shrink-0">
-              <svg width="10" height="10" viewBox="0 0 12 12" fill="none" className="sm:w-[11px] sm:h-[11px]">
-                <path d="M1 11L11 1M11 1H3M11 1V9" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+          <span className="relative z-10 flex items-center gap-2 sm:gap-2.5">
+            <span className="w-6 h-6 rounded-full bg-black/30 border border-white/25 flex items-center justify-center transition-all duration-300 group-hover:rotate-45 group-hover:border-white/60 group-hover:bg-black/40 shrink-0">
+              <ArrowUpRight className="w-3.5 h-3.5 text-white stroke-[2.5]" />
             </span>
             <span className="whitespace-nowrap">Explore More</span>
           </span>
@@ -137,14 +136,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
 
         <a
           href="#contact"
-          className="relative inline-flex items-center justify-center gap-2 sm:gap-2.5 px-4 sm:px-7 py-2.5 sm:py-3.5 rounded-full font-semibold text-[11px] sm:text-[13px] tracking-wide transition-all duration-300 overflow-hidden cursor-pointer bg-white/10 hover:bg-white text-white hover:text-black border border-white/20 hover:border-white shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:shadow-[0_0_35px_rgba(255,255,255,0.5)] hover:scale-105 active:scale-95 group touch-manipulation backdrop-blur-md flex-1 sm:flex-initial"
+          className="relative inline-flex items-center justify-center gap-2 sm:gap-2.5 px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full font-bold text-[12px] sm:text-[13px] tracking-wide transition-all duration-300 overflow-hidden cursor-pointer bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-white/40 shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:shadow-[0_0_35px_rgba(255,255,255,0.3)] hover:scale-105 active:scale-95 group touch-manipulation backdrop-blur-md flex-1 sm:flex-initial"
           title="Direct Contact Transmission"
         >
-          <span className="relative z-10 flex items-center gap-2 sm:gap-3">
-            <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/10 border border-white/20 flex items-center justify-center transition-transform duration-500 group-hover:rotate-45 group-hover:bg-ember group-hover:text-white group-hover:border-ember shrink-0">
-              <svg width="10" height="10" viewBox="0 0 12 12" fill="none" className="sm:w-[11px] sm:h-[11px]">
-                <path d="M1 11L11 1M11 1H3M11 1V9" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+          <span className="relative z-10 flex items-center gap-2 sm:gap-2.5">
+            <span className="w-6 h-6 rounded-full bg-white/10 border border-white/20 flex items-center justify-center transition-all duration-300 group-hover:rotate-45 group-hover:border-white/50 group-hover:bg-white/20 shrink-0">
+              <ArrowUpRight className="w-3.5 h-3.5 text-white stroke-[2.5]" />
             </span>
             <span className="whitespace-nowrap">Let's Talk</span>
           </span>
