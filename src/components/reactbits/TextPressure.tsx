@@ -17,21 +17,13 @@ export interface TextPressureProps {
   minFontSize?: number
 }
 
-interface LetterState {
-  x: number
-  y: number
-  scale: number
-  tilt: number
-  brightness: number
-}
-
 export const TextPressure: React.FC<TextPressureProps> = ({
   text = 'DEV JANGID',
-  fontFamily = "'Space Grotesk', 'Roboto Flex', sans-serif",
+  fontFamily = 'Roboto Flex, Space Grotesk, sans-serif',
   fontUrl = 'https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&display=swap',
-  width: _width = true,
-  weight: _weight = true,
-  italic: _italic = true,
+  width = true,
+  weight = true,
+  italic = true,
   alpha: _alpha = false,
   flex = true,
   stroke = false,
@@ -44,9 +36,8 @@ export const TextPressure: React.FC<TextPressureProps> = ({
   const containerRef = useRef<HTMLDivElement | null>(null)
   const titleRef = useRef<HTMLHeadingElement | null>(null)
   const spansRef = useRef<(HTMLSpanElement | null)[]>([])
+  const prevSettingsRef = useRef<string[]>([])
 
-  // Hardware-accelerated letter physics state
-  const letterStatesRef = useRef<LetterState[]>([])
   const charCentersRef = useRef<{ x: number; y: number }[]>([])
   const containerRectRef = useRef<{ left: number; top: number; width: number; height: number }>({
     left: 0,
@@ -58,8 +49,6 @@ export const TextPressure: React.FC<TextPressureProps> = ({
   const mousePos = useRef({ x: -3000, y: -3000 })
   const cursorTarget = useRef({ x: -3000, y: -3000 })
   const isVisibleRef = useRef(true)
-  const isAnimatingRef = useRef(false)
-  const rafIdRef = useRef<number | null>(null)
 
   const [fontSize, setFontSize] = useState<number>(minFontSize)
   const [scaleY, setScaleY] = useState<number>(1)
@@ -68,147 +57,17 @@ export const TextPressure: React.FC<TextPressureProps> = ({
   const chars = useMemo(() => text.split(''), [text])
   const letterCount = useMemo(() => chars.filter((c) => c !== ' ').length, [chars])
 
-  // Initialize letter states
-  useEffect(() => {
-    letterStatesRef.current = chars
-      .filter((c) => c !== ' ')
-      .map(() => ({ x: 0, y: 0, scale: 1, tilt: 0, brightness: 1 }))
-  }, [chars])
-
-  // Start the pure GPU compositor animation loop on demand
-  const startAnimation = useCallback(() => {
-    if (isAnimatingRef.current) return
-    isAnimatingRef.current = true
-
-    let idleCount = 0
-
-    const animate = () => {
-      if (!isVisibleRef.current) {
-        isAnimatingRef.current = false
-        rafIdRef.current = null
-        return
-      }
-
-      // Smooth cursor position interpolation
-      const dxTarget = cursorTarget.current.x - mousePos.current.x
-      const dyTarget = cursorTarget.current.y - mousePos.current.y
-      mousePos.current.x += dxTarget * 0.28
-      mousePos.current.y += dyTarget * 0.28
-
-      const containerW = containerRectRef.current.width || 800
-      const isMobile = containerW < 768
-      const radius = isMobile ? Math.max(containerW * 0.5, 180) : Math.max(containerW * 0.35, 260)
-
-      const centers = charCentersRef.current
-      const spans = spansRef.current
-      const states = letterStatesRef.current
-
-      let anyMoving = false
-
-      for (let idx = 0; idx < spans.length; idx++) {
-        const el = spans[idx]
-        if (!el) continue
-
-        const center = centers[idx]
-        const charX = center ? center.x : 0
-        const charY = center ? center.y : 0
-
-        const dx = charX - mousePos.current.x
-        const dy = charY - mousePos.current.y
-        const dist = Math.hypot(dx, dy)
-
-        let targetY = 0
-        let targetX = 0
-        let targetScale = 1
-        let targetTilt = 0
-        let targetBrightness = 1
-
-        if (dist < radius) {
-          const influence = 1 - dist / radius
-          const power = influence * influence
-
-          // Magnetic 3D lift: characters elevate gracefully toward cursor
-          targetY = -power * 14
-          // Magnetic expand: characters subtly grow in prominence
-          targetScale = 1 + power * 0.12
-          // Subtle lateral parting: fluid wave effect
-          targetX = (dx / (dist + 0.1)) * power * -4
-          // Subtle kinetic tilt: characters gently angle toward pointer
-          targetTilt = -(dx / radius) * power * 7
-          // Radiant luminous brightness flare
-          targetBrightness = 1 + power * 0.35
-        }
-
-        const state = states[idx] || { x: 0, y: 0, scale: 1, tilt: 0, brightness: 1 }
-
-        // Spring ease interpolation
-        state.x += (targetX - state.x) * 0.25
-        state.y += (targetY - state.y) * 0.25
-        state.scale += (targetScale - state.scale) * 0.25
-        state.tilt += (targetTilt - state.tilt) * 0.25
-        state.brightness += (targetBrightness - state.brightness) * 0.25
-
-        states[idx] = state
-
-        // Check if still moving
-        if (
-          Math.abs(state.y - targetY) > 0.05 ||
-          Math.abs(state.x - targetX) > 0.05 ||
-          Math.abs(state.scale - targetScale) > 0.002
-        ) {
-          anyMoving = true
-        }
-
-        // Apply pure GPU transform & filter (Zero layout reflow, Zero font re-shaping!)
-        el.style.transform = `translate3d(${state.x.toFixed(2)}px, ${state.y.toFixed(2)}px, 0) scale(${state.scale.toFixed(3)}) rotate(${state.tilt.toFixed(2)}deg)`
-        if (targetBrightness > 1 || state.brightness > 1.01) {
-          el.style.filter = `brightness(${state.brightness.toFixed(2)})`
-        } else {
-          el.style.filter = 'none'
-        }
-      }
-
-      const cursorDistRemaining = Math.abs(dxTarget) + Math.abs(dyTarget)
-
-      // When fully settled, sleep the rAF loop (0% CPU / 0% GPU)
-      if (!anyMoving && cursorDistRemaining < 1) {
-        idleCount++
-        if (idleCount > 10) {
-          // Snap clean resting state
-          for (let idx = 0; idx < spans.length; idx++) {
-            const el = spans[idx]
-            if (el) {
-              el.style.transform = 'translate3d(0, 0, 0) scale(1) rotate(0deg)'
-              el.style.filter = 'none'
-            }
-          }
-          isAnimatingRef.current = false
-          rafIdRef.current = null
-          return
-        }
-      } else {
-        idleCount = 0
-      }
-
-      rafIdRef.current = requestAnimationFrame(animate)
-    }
-
-    rafIdRef.current = requestAnimationFrame(animate)
-  }, [])
-
   // Mouse & Touch tracking with passive event triggers
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       cursorTarget.current.x = e.clientX
       cursorTarget.current.y = e.clientY
-      startAnimation()
     }
 
     const handleTouchStart = (e: TouchEvent) => {
       if (e.touches && e.touches.length > 0) {
         cursorTarget.current.x = e.touches[0].clientX
         cursorTarget.current.y = e.touches[0].clientY
-        startAnimation()
       }
     }
 
@@ -216,13 +75,11 @@ export const TextPressure: React.FC<TextPressureProps> = ({
       if (e.touches && e.touches.length > 0) {
         cursorTarget.current.x = e.touches[0].clientX
         cursorTarget.current.y = e.touches[0].clientY
-        startAnimation()
       }
     }
 
     const resetToOffscreen = () => {
       cursorTarget.current = { x: -3000, y: -3000 }
-      startAnimation()
     }
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true })
@@ -239,28 +96,21 @@ export const TextPressure: React.FC<TextPressureProps> = ({
       window.removeEventListener('touchend', resetToOffscreen)
       window.removeEventListener('touchcancel', resetToOffscreen)
       document.removeEventListener('mouseleave', resetToOffscreen)
-      if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current)
     }
-  }, [startAnimation])
+  }, [])
 
-  // Viewport intersection observer: sleep when scrolled away
+  // Viewport intersection observer: pause loop when off-screen
   useEffect(() => {
     if (!containerRef.current || typeof IntersectionObserver === 'undefined') return
     const observer = new IntersectionObserver(
       ([entry]) => {
         isVisibleRef.current = entry.isIntersecting
-        if (entry.isIntersecting) {
-          startAnimation()
-        } else if (rafIdRef.current) {
-          cancelAnimationFrame(rafIdRef.current)
-          isAnimatingRef.current = false
-        }
       },
       { threshold: 0.05 }
     )
     observer.observe(containerRef.current)
     return () => observer.disconnect()
-  }, [startAnimation])
+  }, [])
 
   // Measure and cache character centers in memory once on resize/mount
   const updateGeometry = useCallback(() => {
@@ -318,6 +168,80 @@ export const TextPressure: React.FC<TextPressureProps> = ({
     return () => window.removeEventListener('resize', debouncedResize)
   }, [updateGeometry])
 
+  // High-performance animation loop: The signature kinetic variable font pressure morphing & harmonic wave
+  useEffect(() => {
+    let rafId: number
+    let lastTime = 0
+
+    const animate = (timestamp: number) => {
+      rafId = requestAnimationFrame(animate)
+
+      if (!isVisibleRef.current) return
+
+      // Throttle sub-millisecond computations (smooth 60-120fps)
+      if (timestamp - lastTime < 14) return
+      lastTime = timestamp
+
+      // Smooth cursor interpolation
+      mousePos.current.x += (cursorTarget.current.x - mousePos.current.x) * 0.18
+      mousePos.current.y += (cursorTarget.current.y - mousePos.current.y) * 0.18
+
+      const containerW = containerRectRef.current.width || 800
+      const isMobile = containerW < 768
+      const radius = isMobile ? Math.max(0.6 * containerW, 200) : Math.max(containerW * 0.42, 320)
+      const time = timestamp * 0.0022
+
+      const centers = charCentersRef.current
+      const spans = spansRef.current
+
+      for (let idx = 0; idx < spans.length; idx++) {
+        const el = spans[idx]
+        if (!el) continue
+
+        const center = centers[idx]
+        const charX = center ? center.x : 0
+        const charY = center ? center.y : 0
+
+        const dx = charX - mousePos.current.x
+        const dy = charY - mousePos.current.y
+        const dist = Math.sqrt(dx * dx + dy * dy)
+        const cursorInfluence = Math.max(0, 1 - dist / radius)
+
+        // Harmonic organic breathing wave
+        const waveWght = Math.sin(time + idx * 0.55) * 65
+        const waveWdth = Math.cos(time * 0.9 + idx * 0.55) * 14
+
+        // Bold baseline: 750 weight, flexing up to 1000 Black directly under cursor
+        const rawWght = weight
+          ? 750 + cursorInfluence * 240 + (1 - cursorInfluence) * waveWght
+          : 800
+
+        // Expansive baseline: 112 width, expanding up to 148 on hover
+        const rawWdth = width
+          ? 112 + cursorInfluence * 34 + (1 - cursorInfluence) * waveWdth
+          : 110
+
+        // Kinetic italic slant angle
+        const rawItal = italic ? cursorInfluence * 0.75 : 0
+
+        // Step-quantization prevents micro-thrashing and maximizes glyph cache hits
+        const clampedWght = Math.min(1000, Math.max(620, Math.round(rawWght / 6) * 6))
+        const clampedWdth = Math.min(151, Math.max(92, Math.round(rawWdth / 2) * 2))
+        const clampedItal = (Math.round(rawItal * 20) / 20).toFixed(2)
+
+        const fontVar = `'wght' ${clampedWght}, 'wdth' ${clampedWdth}, 'ital' ${clampedItal}`
+
+        if (prevSettingsRef.current[idx] !== fontVar) {
+          prevSettingsRef.current[idx] = fontVar
+          el.style.fontVariationSettings = fontVar
+        }
+      }
+    }
+
+    rafId = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(rafId)
+  }, [width, weight, italic])
+
   const styleTag = useMemo(
     () => (
       <style>{`
@@ -346,16 +270,12 @@ export const TextPressure: React.FC<TextPressureProps> = ({
 
         .text-pressure-title {
           color: ${textColor};
-          font-weight: 850;
           letter-spacing: 0.04em;
-          font-variation-settings: 'wght' 850, 'wdth' 105;
         }
 
         .text-pressure-title span {
           display: inline-block;
-          font-weight: 850;
-          transform-origin: center bottom;
-          will-change: transform, filter;
+          will-change: font-variation-settings;
           user-select: none;
         }
       `}</style>
@@ -384,7 +304,6 @@ export const TextPressure: React.FC<TextPressureProps> = ({
           textAlign: 'center',
           userSelect: 'none',
           whiteSpace: 'nowrap',
-          fontWeight: 850,
           width: '100%',
           display: 'flex',
           alignItems: 'center',

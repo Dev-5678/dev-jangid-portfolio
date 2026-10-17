@@ -244,26 +244,16 @@ export const ProjectsSection: React.FC = () => {
                       className="relative w-full max-w-xl rounded-2xl sm:rounded-3xl overflow-hidden border border-white/20 bg-[#090a0f] backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.2)] group cursor-pointer transition-all duration-500 hover:border-ember/70 hover:shadow-[0_25px_70px_rgba(160,42,34,0.35)] hover:-translate-y-1"
                       title="Click to launch live standalone project website in new tab"
                     >
-                      {/* High-Tech Terminal Window Header */}
-                      <div className="flex items-center justify-between px-3.5 py-2.5 bg-black/75 border-b border-white/10 backdrop-blur-xl relative z-20">
-                        <div className="flex items-center gap-1.5">
-                          <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]" />
-                          <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
-                          <span className="w-2.5 h-2.5 rounded-full bg-[#27c93f]" />
-                          <span className="ml-2 font-mono text-[10px] text-zinc-400 truncate">
-                            system://{p.id}.visual.ai
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
+                      {/* Cinematic AI Visual Preview (Full Bleed) with Zoom & Luminous Flare */}
+                      <div className="relative aspect-[16/10] sm:aspect-video w-full overflow-hidden bg-black/50">
+                        {/* Clean Floating Live Badge */}
+                        <div className="absolute top-3.5 right-3.5 flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/70 border border-white/20 backdrop-blur-md z-10 shadow-lg">
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                           <span className="font-mono text-[9px] text-emerald-400 font-bold uppercase tracking-wider">
                             LIVE SYSTEM
                           </span>
                         </div>
-                      </div>
 
-                      {/* Cinematic AI Visual Preview with Zoom & Luminous Flare */}
-                      <div className="relative aspect-[16/10] sm:aspect-video w-full overflow-hidden bg-black/50">
                         {p.image && (
                           <img
                             src={p.image}
