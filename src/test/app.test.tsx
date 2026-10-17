@@ -25,7 +25,7 @@ describe('App Root Integration & Accessibility', () => {
 
   it('toggles dark and light mode and persists in localStorage', () => {
     render(<App />)
-    const themeBtn = screen.getByRole('button', { name: /switch to (dark|light) mode/i })
+    const themeBtn = screen.getAllByRole('button', { name: /switch to (dark|light) mode/i })[0]
     expect(themeBtn).toBeInTheDocument()
 
     const initialAriaPressed = themeBtn.getAttribute('aria-pressed')

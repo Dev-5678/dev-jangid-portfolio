@@ -76,8 +76,8 @@ export const personalInfo: PersonalInfo = {
   email: "jangid.dev20@gmail.com",
   phone: "9212553300",
   displayPhone: "+91 92125 53300",
-  bio: "Dynamic IT professional with hands-on experience at Airports Authority of India, specializing in system maintenance and network security compliance. Proficient in data structures and algorithms, with strong problem-solving skills focused on improving IT processes and delivering innovative solutions in fast-paced environments.",
-  roleSummary: "Specializing in System Maintenance, Network Security Compliance, Data Structures, and Generative AI Solutions.",
+  bio: "Dev Jangid is a distinguished Computer Science Engineer specializing in enterprise systems, aerospace telemetry, and multimodal artificial intelligence. With hands-on institutional experience at Airports Authority of India, he led critical network security compliance assessments, database replication audits, and infrastructure diagnostics across enterprise operational backbones. Dev bridges rigorous low-level algorithmic mastery with production-grade AI systems, engineering resilient software that scales deterministically in fast-paced, high-stakes environments.",
+  roleSummary: "Specializing in Mission-Critical Systems, Network Security Compliance, Low-Latency Data Structures, and Multimodal Generative AI.",
   monogram: "DJ",
   status: "OPEN FOR OPPORTUNITIES",
   educationSummary: "B.Tech CSE (Expected 2027)",
@@ -136,59 +136,84 @@ export const experiences: ExperienceItem[] = [
 export const skillCategories: SkillCategory[] = [
   {
     title: "Programming Languages",
-    description: "Production and algorithmic languages used for high-performance systems, database operations, and software development.",
+    description: "Production and algorithmic languages utilized for high-throughput systems, low-latency execution, database operations, and software development.",
     badge: "LANGUAGES",
-    skills: ["C++", "Java", "Python", "TypeScript", "JavaScript (ESNext)", "SQL", "C", "HTML5 & Modern CSS"]
+    skills: ["C++", "Java", "Python 3", "TypeScript", "JavaScript (ESNext)", "SQL (PostgreSQL / MySQL)", "C", "Bash & Linux Shell", "HTML5 & Modern CSS", "JSON-LD & YAML"]
   },
   {
     title: "Core Computer Science & Systems",
-    description: "Deep computational foundations, algorithmic complexity optimization, and enterprise infrastructure.",
+    description: "Foundational computational theory, algorithmic complexity optimization, memory architecture, and mission-critical enterprise infrastructure.",
     badge: "CORE_CS",
     skills: [
       "Data Structures & Algorithms (DSA)",
       "Object-Oriented Programming (OOP)",
-      "Network Security & Compliance",
+      "Operating Systems & Concurrency",
+      "Computer Networks & TCP/IP",
+      "Network Security Compliance",
       "VLAN & Subnet Segregation",
-      "Linux & POSIX Shell",
-      "Database Administration"
+      "Database Administration & Replication",
+      "Linux System Administration (POSIX)"
     ]
   },
   {
     title: "Artificial Intelligence & Cloud",
-    description: "Next-generation generative intelligence, semantic retrieval architectures, and rapid cloud deployment.",
+    description: "Next-generation generative intelligence, semantic vector search, intelligent agent pipelines, and rapid cloud deployment.",
     badge: "AI_CLOUD",
     skills: [
       "Multimodal Generative AI",
       "Gemini 1.5 Pro & Vertex AI",
       "Retrieval-Augmented Generation (RAG)",
       "High-Dimensional Vector Embeddings",
+      "Vector Databases (Pinecone / ChromaDB)",
+      "LangChain & Tool-Calling Agents",
       "Streamlit Application Engine",
       "Prompt Optimization & Context Grounding"
     ]
   },
   {
     title: "Modern Web & Frontend Engineering",
-    description: "Interactive, motion-driven user interfaces built with modern reactive component patterns and build pipelines.",
+    description: "High-performance, cinematic user interfaces engineered with modern reactive component patterns, kinetic physics, and micro-interaction design.",
     badge: "FRONTEND_UI",
     skills: [
       "React 19 & Next.js Paradigms",
-      "GSAP Motion & Kinetic Typography",
+      "TypeScript Architecture",
       "Tailwind CSS 4",
+      "GSAP Motion & Kinetic Typography",
+      "State Management (Zustand / Redux)",
       "Vite & Rollup Bundling",
       "WebSockets & RESTful APIs",
-      "Vitest & Accessibility (WCAG 2.4.1)"
+      "Vitest & Automated Testing",
+      "Web Accessibility (WCAG 2.4.1)"
     ]
   },
   {
     title: "Aerospace & Embedded Telemetry",
-    description: "Mission-critical hardware/software communication and remote sensing protocols.",
+    description: "Mission-critical hardware/software communication, RF radio links, embedded firmware, and real-time remote telemetry pipelines.",
     badge: "TELEMETRY",
     skills: [
       "1U CanSat Payload Architecture",
       "433 MHz UHF Radio Telemetry",
       "FSK Packet Decoding",
-      "Sensor Telemetry Pipelines",
-      "Drone Navigation Protocols"
+      "Microcontrollers (ESP32 / Arduino / C++)",
+      "Sensor Fusion & Telemetry Pipelines",
+      "I2C / SPI / UART Bus Protocols",
+      "Drone Navigation Protocols",
+      "Ground Station Serial Decoding"
+    ]
+  },
+  {
+    title: "DevOps, Security & Tooling",
+    description: "Continuous delivery workflows, cloud infrastructure, container orchestration, network diagnostics, and developer productivity tooling.",
+    badge: "DEVOPS_TOOLS",
+    skills: [
+      "Git & GitHub Actions CI/CD",
+      "Docker & Containerization",
+      "Google Cloud Platform (GCP)",
+      "Linux CLI & SSH Environments",
+      "Nginx Web Server & Reverse Proxy",
+      "Wireshark Network Packet Inspection",
+      "Postman & API Benchmarking",
+      "Agile & Scrum Methodologies"
     ]
   }
 ]

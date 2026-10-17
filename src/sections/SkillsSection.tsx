@@ -1,8 +1,8 @@
 import React from 'react'
 import { skillCategories } from '../data/portfolio'
-import { Code, Cpu, Sparkles, Layers, Radio } from 'lucide-react'
+import { Code, Cpu, Sparkles, Layers, Radio, ShieldCheck } from 'lucide-react'
 
-const ICONS = [Code, Cpu, Sparkles, Layers, Radio]
+const ICONS = [Code, Cpu, Sparkles, Layers, Radio, ShieldCheck]
 
 export const SkillsSection: React.FC = () => {
   return (

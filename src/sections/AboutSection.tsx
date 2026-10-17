@@ -5,33 +5,33 @@ import { Code2, Database, Network, Sparkles, MapPin, Terminal, Radio, Layers } f
 const STRENGTHS = [
   {
     icon: Network,
-    title: "IT Systems & Network Security",
-    desc: "Hands-on experience monitoring enterprise networks, diagnosing server tickets, and evaluating network security compliance at Airports Authority of India (Northern Region HQ)."
+    title: "Mission-Critical Systems & Network Security",
+    desc: "Engineered network security compliance, evaluated enterprise subnet traffic, and supported live database replication at Airports Authority of India (Northern Region HQ) with high operational reliability."
   },
   {
     icon: Sparkles,
-    title: "Generative AI & Multimodal RAG",
-    desc: "Production workflow implementation with Gemini 1.5 Pro, Vertex AI, Streamlit, and retrieval-augmented generation pipelines using high-dimensional vector embeddings."
+    title: "Generative AI & Multimodal RAG Systems",
+    desc: "Architects production AI pipelines harnessing Gemini 1.5 Pro, high-dimensional vector embeddings, and retrieval-augmented generation (RAG) to autonomously reason over complex document corpora with deterministic precision."
   },
   {
     icon: Code2,
-    title: "Software Engineering & Algorithms",
-    desc: "Rigorous foundation in Data Structures and Algorithms (DSA), Object-Oriented Programming (OOP), C, C++, and Java for deterministic microsecond execution."
+    title: "Algorithmic Complexity & Systems Engineering",
+    desc: "Demonstrates rigorous computational foundations in Data Structures and Algorithms (DSA), low-level memory efficiency, and Object-Oriented Architecture in C++, Java, and Python for latency-critical execution."
   },
   {
     icon: Radio,
-    title: "Aerospace Telemetry & Embedded Systems",
-    desc: "Hands-on payload engineering at India Space Lab, calibrating 433 MHz UHF radio frequency telemetry transceivers, CanSat sensors, and drone protocols."
+    title: "Aerospace Telemetry & Embedded IoT",
+    desc: "Calibrated 433 MHz UHF radio frequency telemetry transceivers and designed sensor payload decoding architectures for 1U CanSat micro-satellites at India Space Lab under extreme operational constraints."
   },
   {
     icon: Database,
-    title: "Database Administration & SQL",
-    desc: "Managing relational schemas, writing optimized SQL queries, transaction isolation, and assisting with live database replication in enterprise operations."
+    title: "Enterprise Relational Databases & High Availability",
+    desc: "Designs optimized relational schemas, executes ACID transaction tuning, and administers high-availability database replication routines that preserve absolute data integrity in enterprise environments."
   },
   {
     icon: Layers,
-    title: "Modern Type-Safe Web Architecture",
-    desc: "Building fast, reactive user interfaces with TypeScript, React 19, Tailwind CSS 4, and GSAP kinetic physics for motion-driven digital products."
+    title: "Cinematic Type-Safe Web & Kinetic Architecture",
+    desc: "Engineers ultra-responsive, accessible digital experiences using TypeScript, React 19, Tailwind CSS 4, and GSAP physics-driven kinetic typography for friction-free 60 FPS interactions."
   }
 ]
 
@@ -81,7 +81,7 @@ export const AboutSection: React.FC = () => {
           <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-ember/10 border border-ember/25 text-ember text-xs font-mono font-medium">
               <Terminal className="w-3.5 h-3.5" />
-              <span>Executive Statement</span>
+              <span>Executive Dossier</span>
             </div>
             <div className="flex items-center gap-2 text-xs font-mono text-ash">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
@@ -94,17 +94,21 @@ export const AboutSection: React.FC = () => {
             "{personalInfo.bio}"
           </blockquote>
 
-          <div className="mt-8 pt-6 border-t border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="mt-8 pt-6 border-t border-white/10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="p-4 rounded-xl bg-white/[0.03] border border-white/10">
-              <span className="text-ash block text-[11px] font-semibold tracking-wider uppercase mb-1">Current Degree</span>
+              <span className="text-ash block text-[11px] font-semibold tracking-wider uppercase mb-1">Degree &amp; Academic Base</span>
               <strong className="text-white text-sm font-semibold">{personalInfo.educationSummary || "B.Tech CSE (Expected 2027)"}</strong>
             </div>
             <div className="p-4 rounded-xl bg-white/[0.03] border border-white/10">
-              <span className="text-ash block text-[11px] font-semibold tracking-wider uppercase mb-1">Core Focus</span>
-              <strong className="text-white text-sm font-semibold">Network Security &amp; GenAI</strong>
+              <span className="text-ash block text-[11px] font-semibold tracking-wider uppercase mb-1">Core Specialization</span>
+              <strong className="text-white text-sm font-semibold">Security • Systems • GenAI</strong>
             </div>
             <div className="p-4 rounded-xl bg-white/[0.03] border border-white/10">
-              <span className="text-ash block text-[11px] font-semibold tracking-wider uppercase mb-1">Location</span>
+              <span className="text-ash block text-[11px] font-semibold tracking-wider uppercase mb-1">Proven Track Record</span>
+              <strong className="text-white text-sm font-semibold">AAI Northern HQ &amp; Space Lab</strong>
+            </div>
+            <div className="p-4 rounded-xl bg-white/[0.03] border border-white/10">
+              <span className="text-ash block text-[11px] font-semibold tracking-wider uppercase mb-1">Location &amp; Mobility</span>
               <strong className="text-white text-sm font-semibold">{personalInfo.location}</strong>
             </div>
           </div>

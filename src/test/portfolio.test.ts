@@ -46,19 +46,20 @@ describe('Portfolio Resume Data Truth & Integrity', () => {
     expect(genai?.responsibilities).toHaveLength(4)
   })
 
-  it('organizes verified skills into 5 distinct groups', () => {
-    expect(skillCategories).toHaveLength(5)
+  it('organizes verified skills into 6 distinct groups', () => {
+    expect(skillCategories).toHaveLength(6)
     const titles = skillCategories.map((c) => c.title)
     expect(titles).toContain('Programming Languages')
     expect(titles).toContain('Core Computer Science & Systems')
     expect(titles).toContain('Artificial Intelligence & Cloud')
     expect(titles).toContain('Modern Web & Frontend Engineering')
     expect(titles).toContain('Aerospace & Embedded Telemetry')
+    expect(titles).toContain('DevOps, Security & Tooling')
 
     const languages = skillCategories.find((c) => c.title === 'Programming Languages')?.skills
     expect(languages).toContain('C++')
     expect(languages).toContain('Java')
-    expect(languages).toContain('Python')
+    expect(languages).toContain('Python 3')
     expect(languages).toContain('TypeScript')
 
     const core = skillCategories.find((c) => c.title === 'Core Computer Science & Systems')?.skills

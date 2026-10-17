@@ -33,40 +33,43 @@ export const AperturePhilosophySection: React.FC<AperturePhilosophySectionProps>
           trigger: trackRef.current,
           start: 'top top',
           end: 'bottom bottom',
-          scrub: 0.8,
+          scrub: 0.5,
           pin: stageRef.current,
           anticipatePin: 1
         }
       })
 
-      // Frame clip-path expands from circle(120px at 50% 50%) to full screen
+      // Frame clip-path expands from circle(120px at 50% 50%) to full screen (0 -> 0.52)
       tl.fromTo(
         frameRef.current,
         {
           clipPath: 'circle(120px at 50% 50%)'
         },
         {
-          clipPath: 'circle(140% at 50% 50%)',
+          clipPath: 'circle(145% at 50% 50%)',
           ease: 'power2.inOut',
-          duration: 1
+          duration: 0.55
         },
         0
       )
 
-      // Title & hint fade out
-      tl.to(titleRef.current, { opacity: 0, scale: 0.9, duration: 0.35, ease: 'power1.in' }, 0)
-      tl.to(hintRef.current, { opacity: 0, y: 15, duration: 0.25, ease: 'power1.in' }, 0)
+      // Title & hint fade out early (0 -> 0.25)
+      tl.to(titleRef.current, { opacity: 0, scale: 0.9, duration: 0.25, ease: 'power1.in' }, 0)
+      tl.to(hintRef.current, { opacity: 0, y: 15, duration: 0.2, ease: 'power1.in' }, 0)
 
-      // Media subtle zoom
-      tl.fromTo(mediaRef.current, { scale: 1.18 }, { scale: 1.0, duration: 1, ease: 'none' }, 0)
+      // Media subtle zoom (0 -> 1.0)
+      tl.fromTo(mediaRef.current, { scale: 1.15 }, { scale: 1.0, duration: 1, ease: 'none' }, 0)
 
-      // Overlay manifesto fades in
+      // Overlay manifesto fades in and settles (0.35 -> 0.65)
       tl.fromTo(
         overlayRef.current,
         { opacity: 0, scale: 0.94, y: 20 },
-        { opacity: 1, scale: 1, y: 0, duration: 0.6, ease: 'power2.out' },
-        0.3
+        { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: 'power2.out' },
+        0.35
       )
+
+      // Buffer zone (0.65 -> 1.0): Manifesto remains resting and comfortably readable while scrolling
+      tl.to({}, { duration: 0.35 })
     }, trackRef)
 
     return () => ctx.revert()
@@ -91,13 +94,13 @@ export const AperturePhilosophySection: React.FC<AperturePhilosophySectionProps>
                   className="flex flex-col items-center justify-center gap-4 sm:gap-7 max-w-4xl mx-auto px-4 sm:px-6 select-none"
                   style={{ fontFamily: "var(--font-josefin), 'Josefin Sans', sans-serif" }}
                 >
-                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-ember/30 bg-ember/10 backdrop-blur-md">
-                    <span className="w-1.5 h-1.5 rounded-full bg-ember shadow-[0_0_8px_#A02A22]" />
-                    <span className="text-ember text-[10px] sm:text-xs font-semibold tracking-[0.3em] uppercase">
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-ember/60 bg-black/70 backdrop-blur-md shadow-[0_0_20px_rgba(160,42,34,0.35)]">
+                    <span className="w-2 h-2 rounded-full bg-ember shadow-[0_0_10px_#A02A22] animate-pulse" />
+                    <span className="text-white text-[10px] sm:text-xs font-semibold tracking-[0.3em] uppercase">
                       The Philosophy
                     </span>
                   </div>
-                  <p className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-medium text-white leading-[1.35] sm:leading-[1.4] tracking-tight text-center max-w-3xl drop-shadow-lg">
+                  <p className="philosophy-quote text-lg sm:text-2xl md:text-3xl lg:text-4xl font-medium leading-[1.35] sm:leading-[1.4] tracking-tight text-center max-w-3xl">
                     I believe great software is born at the intersection of engineering precision and design intuition. Every pixel, every interaction, every line of code is an opportunity to create something that moves people.
                   </p>
                 </div>
