@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { personalInfo, navItems } from '../data/portfolio'
-import { Sun, Moon, Menu, X, Terminal, FileText, Search, Zap, Volume2, VolumeX } from 'lucide-react'
+import { Menu, X, Terminal, FileText, Search, Zap, Volume2, VolumeX } from 'lucide-react'
+import { BalloonThemeToggle } from './BalloonThemeToggle'
 
 interface NavbarProps {
   theme: 'light' | 'dark'
@@ -148,20 +149,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           )}
 
-          {/* Theme Switch Button */}
-          <button
-            onClick={onToggleTheme}
-            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-            aria-pressed={theme === 'dark'}
-            className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-ash hover:text-white border border-white/10 hover:border-white/20 flex items-center justify-center transition-all duration-200 cursor-pointer"
-            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-          >
-            {theme === 'dark' ? (
-              <Sun className="w-4 h-4 text-amber-300 transition-transform duration-300 hover:rotate-45" />
-            ) : (
-              <Moon className="w-4 h-4 text-silver transition-transform duration-300 hover:-rotate-12" />
-            )}
-          </button>
+          {/* Balloon Theme Switch with Visible Hanging Rope */}
+          <div className="flex items-center justify-center -my-2.5 px-0.5">
+            <BalloonThemeToggle theme={theme} onToggleTheme={onToggleTheme} />
+          </div>
 
           {/* Mobile Menu Button */}
           <button

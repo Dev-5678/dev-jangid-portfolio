@@ -253,7 +253,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         className="absolute top-[25%] sm:top-[28%] md:top-[38%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-[15] select-none w-full flex flex-col items-center justify-center px-4"
         aria-hidden="true"
       >
-        <div className="w-full max-w-[700px] md:max-w-[850px] h-[52px] sm:h-[80px] md:h-[135px] relative flex items-center justify-center scale-y-[1.15] transform-gpu drop-shadow-[0_0_35px_rgba(252,107,47,0.3)]">
+        <div className="w-full max-w-[700px] md:max-w-[850px] h-[58px] sm:h-[88px] md:h-[142px] relative flex items-center justify-center scale-y-[1.15] transform-gpu drop-shadow-[0_0_35px_rgba(252,107,47,0.3)]">
           <div style={{ position: 'relative', width: '100%', height: '100%', background: 'transparent' }} className="cursor-default pointer-events-auto">
             <TextPressure
               text="DEV JANGID"
@@ -272,8 +272,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
           </div>
         </div>
 
-        {/* Cinematic Sub-headline */}
-        <div className="mt-12 sm:mt-2.5 md:mt-4 text-center z-[20] px-2">
+        {/* Cinematic Sub-headline (Slid down with generous breathing space to prevent any overlap!) */}
+        <div className="mt-8 sm:mt-10 md:mt-14 lg:mt-16 text-center z-[20] px-2">
           <p
             className="hero-line text-[clamp(0.55rem,2.2vw,0.88rem)] md:text-[clamp(0.72rem,1.08vw,0.88rem)] font-extrabold tracking-[0.12em] sm:tracking-[0.25em] uppercase text-ember drop-shadow-[0_0_20px_rgba(252,107,47,0.7)]"
             style={{ fontFamily: 'var(--font-poppins), sans-serif' }}
@@ -283,24 +283,21 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         </div>
       </div>
 
-      {/* 8. Center Animated Kinetic Scroll Indicator from reel */}
+      {/* 8. Center Animated Kinetic Scroll Indicator (Clearly visible with glowing bouncing pill) */}
       <a
         href="#introduction"
         ref={scrollHintRef}
-        className="hero-scroll-indicator absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-[45] flex flex-col items-center gap-2 opacity-0 cursor-pointer group select-none transition-transform duration-300 hover:scale-105"
-        aria-label="Scroll to Philosophy section"
+        className="hero-scroll-indicator absolute bottom-3 sm:bottom-5 md:bottom-7 left-1/2 -translate-x-1/2 z-[45] flex flex-col items-center gap-1.5 sm:gap-2 opacity-0 cursor-pointer group select-none transition-all duration-300 hover:scale-110 touch-manipulation"
+        aria-label="Scroll down to The Philosophy section"
       >
         <span
-          className="text-[9px] text-[#B5B5B5]/60 tracking-[0.35em] uppercase font-mono font-medium transition-colors group-hover:text-ember"
+          className="text-[9.5px] tracking-[0.32em] uppercase font-mono font-bold transition-colors text-[#B5B5B5] group-hover:text-ember drop-shadow-sm"
           style={{ fontFamily: 'var(--font-display)' }}
         >
           Scroll
         </span>
-        <div className="w-[1px] h-6 bg-gradient-to-b from-white/20 to-transparent relative overflow-hidden">
-          <div
-            className="absolute w-full h-3 bg-ember/60 animate-pulse"
-            style={{ animation: 'reveal-up 2s ease-in-out infinite' }}
-          />
+        <div className="w-[20px] h-[32px] sm:w-[22px] sm:h-[36px] rounded-full border-2 border-white/40 dark:border-white/40 light:border-zinc-800/60 group-hover:border-ember transition-colors flex items-start justify-center p-1.5 relative overflow-hidden bg-white/5 dark:bg-white/5 light:bg-black/5 backdrop-blur-md shadow-[0_0_15px_rgba(252,107,47,0.3)]">
+          <div className="w-1.5 h-2.5 rounded-full bg-ember shadow-[0_0_10px_#fc6b2f] animate-bounce" />
         </div>
       </a>
     </section>

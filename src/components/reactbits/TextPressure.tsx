@@ -29,7 +29,7 @@ export const TextPressure: React.FC<TextPressureProps> = ({
   weight = true,
   italic = true,
   alpha = false,
-  flex = true,
+  flex: _flex = true,
   stroke = false,
   scale = false,
   textColor = 'rgba(255, 255, 255, 0.88)',
@@ -44,7 +44,6 @@ export const TextPressure: React.FC<TextPressureProps> = ({
   const cachedCentersRef = useRef<{ x: number; y: number }[]>([])
 
   // The exact inertia cursor tracking from the reel:
-  // mousePos is smoothed (lerps by / 15), targetPos is where the cursor currently is or rests at center
   const mousePos = useRef({ x: 0, y: 0 })
   const targetPos = useRef({ x: 0, y: 0 })
   const isVisibleRef = useRef(true)
@@ -53,7 +52,9 @@ export const TextPressure: React.FC<TextPressureProps> = ({
   const [scaleY, setScaleY] = useState<number>(1)
   const [lineHeight, setLineHeight] = useState<number>(1)
 
-  const chars = useMemo(() => text.split(''), [text])
+  // Split into individual words to ensure natural, reduced gap between words!
+  const words = useMemo(() => text.trim().split(/\s+/), [text])
+  const totalLetters = useMemo(() => text.replace(/\s+/g, '').length, [text])
 
   // Center target cursor directly in the middle of container (exact reel resting state!)
   const centerTarget = useCallback(() => {
@@ -130,8 +131,8 @@ export const TextPressure: React.FC<TextPressureProps> = ({
     const { width: containerW, height: containerH } = containerRef.current.getBoundingClientRect()
     let nextFontSize =
       containerW < 640
-        ? containerW / (0.72 * chars.length)
-        : containerW / (chars.length / 2)
+        ? containerW / (0.72 * totalLetters)
+        : containerW / (totalLetters / 1.7)
     nextFontSize = Math.max(nextFontSize, minFontSize)
     setFontSize(nextFontSize)
     setScaleY(1)
@@ -158,7 +159,7 @@ export const TextPressure: React.FC<TextPressureProps> = ({
         }
       })
     })
-  }, [chars.length, minFontSize, scale, centerTarget])
+  }, [totalLetters, minFontSize, scale, centerTarget])
 
   useEffect(() => {
     let timeoutId: ReturnType<typeof setTimeout>
@@ -233,9 +234,12 @@ export const TextPressure: React.FC<TextPressureProps> = ({
       <style>{`
         @import url('${fontUrl}');
 
-        .tp-flex {
-          display: flex;
-          justify-content: space-between;
+        .tp-word-group {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: clamp(0.01em, 0.03em, 0.06em);
+          flex-shrink: 0;
         }
 
         .tp-stroke span {
@@ -267,8 +271,6 @@ export const TextPressure: React.FC<TextPressureProps> = ({
     [fontUrl, textColor, strokeColor]
   )
 
-  const classNames = [className, flex ? 'tp-flex' : '', stroke ? 'tp-stroke' : ''].filter(Boolean).join(' ')
-
   let letterIndex = 0
 
   const titleStyle: CSSProperties = {
@@ -283,7 +285,11 @@ export const TextPressure: React.FC<TextPressureProps> = ({
     userSelect: 'none',
     whiteSpace: 'nowrap',
     fontWeight: 100,
-    width: '100%'
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 'clamp(0.28em, 1.2vw, 0.45em)' // Clean, natural, compact word spacing between DEV and JANGID!
   }
 
   return (
@@ -295,45 +301,32 @@ export const TextPressure: React.FC<TextPressureProps> = ({
       <h1
         ref={titleRef}
         aria-label={text}
-        className={`text-pressure-title ${classNames}`}
+        className={`text-pressure-title ${stroke ? 'tp-stroke' : ''} ${className}`}
         style={titleStyle}
       >
-        {chars.map((char, idx) => {
-          if (char === ' ') {
-            return (
-              <span
-                key={idx}
-                aria-hidden="true"
-                style={{
-                  display: 'inline-block',
-                  width: '0.45em',
-                  minWidth: '0.3em',
-                  flexShrink: 0
-                }}
-              >
-                &nbsp;
-              </span>
-            )
-          }
-
-          const charIdx = letterIndex++
-          return (
-            <span
-              key={idx}
-              ref={(el) => {
-                spansRef.current[charIdx] = el
-              }}
-              data-char={char}
-              aria-hidden="true"
-              style={{
-                display: 'inline-block',
-                color: stroke ? undefined : textColor
-              }}
-            >
-              {char}
-            </span>
-          )
-        })}
+        {words.map((word, wordIdx) => (
+          <span key={wordIdx} className="tp-word-group">
+            {word.split('').map((char) => {
+              const charIdx = letterIndex++
+              return (
+                <span
+                  key={charIdx}
+                  ref={(el) => {
+                    spansRef.current[charIdx] = el
+                  }}
+                  data-char={char}
+                  aria-hidden="true"
+                  style={{
+                    display: 'inline-block',
+                    color: stroke ? undefined : textColor
+                  }}
+                >
+                  {char}
+                </span>
+              )
+            })}
+          </span>
+        ))}
       </h1>
     </div>
   )
