@@ -96,7 +96,7 @@ export const AperturePhilosophySection: React.FC<AperturePhilosophySectionProps>
                 >
                   <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-ember/60 bg-black/70 backdrop-blur-md shadow-[0_0_20px_rgba(160,42,34,0.35)]">
                     <span className="w-2 h-2 rounded-full bg-ember shadow-[0_0_10px_#A02A22] animate-pulse" />
-                    <span className="text-white text-[10px] sm:text-xs font-semibold tracking-[0.3em] uppercase">
+                    <span className="philosophy-badge-text text-white text-[10px] sm:text-xs font-semibold tracking-[0.3em] uppercase">
                       The Philosophy
                     </span>
                   </div>

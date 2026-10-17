@@ -45,13 +45,13 @@ export const SkillsSection: React.FC = () => {
             return (
               <div
                 key={cat.title}
-                className="skill-block glass-card p-6 sm:p-8 hover:border-white/20 transition-all duration-300 relative overflow-hidden group flex flex-col justify-between"
+                className="skill-block glass-card p-6 sm:p-7 hover:border-white/20 transition-all duration-300 relative overflow-hidden group flex flex-col"
               >
                 <div>
                   {/* Category Header */}
-                  <div className="flex items-center justify-between gap-3 pb-4 mb-4 border-b border-white/10">
+                  <div className="flex items-center justify-between gap-3 pb-3.5 mb-3.5 border-b border-white/10">
                     <div className="flex items-center gap-3.5">
-                      <div className="w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-ember group-hover:scale-105 group-hover:bg-ember/10 group-hover:border-ember/30 transition-all duration-300 shrink-0">
+                      <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-ember group-hover:scale-105 group-hover:bg-ember/10 group-hover:border-ember/30 transition-all duration-300 shrink-0">
                         <IconComp className="w-5 h-5" />
                       </div>
                       <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight group-hover:text-cloud transition-colors">
@@ -64,13 +64,13 @@ export const SkillsSection: React.FC = () => {
                   </div>
 
                   {/* Description */}
-                  <p className="text-xs sm:text-sm text-ash leading-relaxed mb-6 font-normal">
+                  <p className="text-xs sm:text-sm text-ash leading-relaxed mb-4 font-normal">
                     {cat.description}
                   </p>
                 </div>
 
-                {/* Skills Badges */}
-                <div className="flex flex-wrap gap-2 sm:gap-2.5 pt-3 mt-auto">
+                {/* Skills Badges (No empty gaps, cleanly organized) */}
+                <div className="flex flex-wrap gap-2 sm:gap-2.5 pt-3.5 border-t border-white/10">
                   {cat.skills.map((skill) => (
                     <span
                       key={skill}
