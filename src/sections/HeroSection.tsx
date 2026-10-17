@@ -176,13 +176,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
               text="DEV JANGID"
               fontFamily="Roboto Flex, Space Grotesk, sans-serif"
               flex={true}
-              stroke={true}
+              stroke={false}
               width={true}
               weight={true}
-              italic={false}
+              italic={true}
               alpha={false}
-              textColor="rgba(255, 255, 255, 0.92)"
-              strokeColor="#A02A22"
+              textColor="rgba(255, 255, 255, 0.88)"
+              minFontSize={16}
               className="text-pressure-title tp-flex"
             />
           </div>
