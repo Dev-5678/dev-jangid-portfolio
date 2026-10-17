@@ -1,15 +1,17 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   :root {
     --font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
-    /* Light Mode Tokens */
+    /* Light Mode Tokens (Crisp, High-Contrast Neo-Brutalist) */
     --bg-main: #FAF8F5;
     --bg-card: #FFFFFF;
     --text-main: #111317;
-    --text-muted: #4B5563;
+    --text-muted: #374151;
     --border-color: #111317;
     --accent: #CCFF00;
     --accent-orange: #FF5500;
@@ -18,7 +20,7 @@
   }
 
   .dark {
-    /* Dark Mode Tokens */
+    /* Dark Mode Tokens (Deep Space Ink + Radiant Neon) */
     --bg-main: #0A0D12;
     --bg-card: #131720;
     --text-main: #F4F7FB;
@@ -55,12 +57,14 @@
 
 .brutal-card {
   background-color: #FFFFFF;
+  color: #111317;
   border: 3px solid #111317;
   box-shadow: 4px 4px 0px 0px #111317;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 .dark .brutal-card {
   background-color: #131720;
+  color: #F4F7FB;
   border: 3px solid #334155;
   box-shadow: 4px 4px 0px 0px #1E293B;
 }
@@ -109,19 +113,6 @@
 /* Technical Monospace Elements */
 .font-mono-tech {
   font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
-}
-
-/* Technical Grid Pattern */
-.bg-tech-grid {
-  background-size: 30px 30px;
-  background-image: 
-    linear-gradient(to right, rgba(17, 19, 23, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(17, 19, 23, 0.05) 1px, transparent 1px);
-}
-.dark .bg-tech-grid {
-  background-image: 
-    linear-gradient(to right, rgba(204, 255, 0, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(204, 255, 0, 0.04) 1px, transparent 1px);
 }
 
 /* Reduced Motion Override */

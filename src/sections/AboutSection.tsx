@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { personalInfo } from '../data/portfolio'
 import { SpotlightCard } from '../components/reactbits/SpotlightCard'
-import { DecryptedText } from '../components/reactbits/DecryptedText'
 import { Code2, Database, Network, Sparkles, MapPin, Terminal } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -79,10 +78,10 @@ export const AboutSection: React.FC = () => {
             <span>SYSTEM_SPECIFICATION // PROFILE</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[#111317] dark:text-[#F4F7FB]">
-            <DecryptedText text="ABOUT DEV JANGID" speed={30} maxIterations={10} />
+            ABOUT DEV JANGID
           </h2>
         </div>
-        <div className="font-mono text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
+        <div className="font-mono text-xs text-[#111317] dark:text-gray-400 flex items-center gap-1.5 font-bold">
           <MapPin className="w-4 h-4 text-[#FF5500]" />
           <span>{personalInfo.location}</span>
         </div>
@@ -91,7 +90,7 @@ export const AboutSection: React.FC = () => {
       {/* Main Editorial Bio Spotlight Card */}
       <SpotlightCard
         spotlightColor="rgba(204, 255, 0, 0.14)"
-        className="about-card p-6 sm:p-10 bg-white dark:bg-[#131720] border-3 border-[#111317] dark:border-[#334155] shadow-[6px_6px_0px_#111317] dark:shadow-[6px_6px_0px_#1E293B] mb-12"
+        className="about-card p-6 sm:p-10 bg-white dark:bg-[#131720] border-3 border-[#111317] dark:border-[#334155] shadow-[6px_6px_0px_#111317] dark:shadow-[6px_6px_0px_#1E293B] mb-12 text-[#111317] dark:text-[#F4F7FB]"
       >
         <div className="flex items-center gap-2 mb-6 font-mono text-xs font-bold text-[#FF5500] dark:text-[#CCFF00]">
           <Terminal className="w-4 h-4" />
@@ -104,16 +103,16 @@ export const AboutSection: React.FC = () => {
 
         <div className="mt-8 pt-6 border-t-2 border-dashed border-gray-300 dark:border-gray-700 grid grid-cols-1 sm:grid-cols-3 gap-4 font-mono text-xs">
           <div className="p-3 bg-gray-50 dark:bg-[#1A202C] border border-[#111317] dark:border-[#334155]">
-            <span className="text-gray-400 block text-[10px]">CURRENT ACADEMICS</span>
-            <strong className="text-[#111317] dark:text-[#F4F7FB]">B.Tech CSE (Expected 2027)</strong>
+            <span className="text-gray-500 dark:text-gray-400 block text-[10px] font-bold">CURRENT ACADEMICS</span>
+            <strong className="text-[#111317] dark:text-[#F4F7FB]">{personalInfo.educationSummary || "B.Tech CSE (Expected 2027)"}</strong>
           </div>
           <div className="p-3 bg-gray-50 dark:bg-[#1A202C] border border-[#111317] dark:border-[#334155]">
-            <span className="text-gray-400 block text-[10px]">CORE EMPHASIS</span>
+            <span className="text-gray-500 dark:text-gray-400 block text-[10px] font-bold">CORE EMPHASIS</span>
             <strong className="text-[#111317] dark:text-[#F4F7FB]">Network Security &amp; GenAI</strong>
           </div>
           <div className="p-3 bg-gray-50 dark:bg-[#1A202C] border border-[#111317] dark:border-[#334155]">
-            <span className="text-gray-400 block text-[10px]">OPERATIONAL STATUS</span>
-            <strong className="text-[#CCFF00] dark:text-[#CCFF00] font-black">{personalInfo.status}</strong>
+            <span className="text-gray-500 dark:text-gray-400 block text-[10px] font-bold">OPERATIONAL STATUS</span>
+            <strong className="text-[#111317] dark:text-[#CCFF00] font-black">{personalInfo.status}</strong>
           </div>
         </div>
       </SpotlightCard>
@@ -139,7 +138,7 @@ export const AboutSection: React.FC = () => {
                   {item.title}
                 </h3>
               </div>
-              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed font-sans">
+              <p className="text-sm text-[#374151] dark:text-gray-300 leading-relaxed font-sans font-medium">
                 {item.desc}
               </p>
             </SpotlightCard>

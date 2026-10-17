@@ -62,7 +62,7 @@ export const Dock: React.FC<DockProps> = ({ theme, onToggleTheme, onOpenPortal }
           <div
             onMouseEnter={() => setHoveredIdx(idx)}
             onMouseLeave={() => setHoveredIdx(null)}
-            className={`relative flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 bg-white dark:bg-[#1A202C] border-2 border-[#111317] dark:border-[#334155] shadow-[2px_2px_0px_#111317] dark:shadow-[2px_2px_0px_#334155] cursor-pointer transition-all duration-200 ${scale} hover:border-[#CCFF00] hover:bg-[#CCFF00] hover:text-[#111317] dark:hover:bg-[#CCFF00] dark:hover:text-[#111317]`}
+            className={`relative flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 bg-white dark:bg-[#1A202C] text-[#111317] dark:text-[#F4F7FB] border-2 border-[#111317] dark:border-[#334155] shadow-[2px_2px_0px_#111317] dark:shadow-[2px_2px_0px_#334155] cursor-pointer transition-all duration-200 ${scale} hover:border-[#CCFF00] hover:bg-[#CCFF00] hover:text-[#111317] dark:hover:bg-[#CCFF00] dark:hover:text-[#111317]`}
           >
             <IconComponent className="w-5 h-5 transition-transform" />
 

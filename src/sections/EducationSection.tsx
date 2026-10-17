@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { educationHistory } from '../data/portfolio'
 import { TiltedCard } from '../components/reactbits/TiltedCard'
-import { DecryptedText } from '../components/reactbits/DecryptedText'
 import { GraduationCap, Calendar, MapPin } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -48,7 +47,7 @@ export const EducationSection: React.FC = () => {
             <span>ACADEMIC // CREDENTIALS</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[#111317] dark:text-[#F4F7FB]">
-            <DecryptedText text="EDUCATION" speed={30} maxIterations={10} />
+            EDUCATION
           </h2>
         </div>
         <p className="font-mono text-xs text-gray-500 dark:text-gray-400 max-w-xs">

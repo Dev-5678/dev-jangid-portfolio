@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { experienceHighlights, standaloneProjects } from '../data/portfolio'
 import { SpotlightCard } from '../components/reactbits/SpotlightCard'
-import { DecryptedText } from '../components/reactbits/DecryptedText'
 import { FolderGit2 } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -55,7 +54,7 @@ export const ProjectsSection: React.FC = () => {
             <span>ENGINEERING // HIGHLIGHTS_AND_PROJECTS</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[#111317] dark:text-[#F4F7FB]">
-            <DecryptedText text="WORK HIGHLIGHTS" speed={30} maxIterations={10} />
+            WORK HIGHLIGHTS
           </h2>
         </div>
 
