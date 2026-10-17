@@ -74,9 +74,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
       {/* 4. Top-Left Status Pill Badge */}
       <div
         ref={tagRef}
-        className="absolute top-16 sm:top-20 md:top-24 left-4 sm:left-6 md:left-14 lg:left-20 z-[40] opacity-0 flex items-center gap-2 sm:gap-2.5 max-w-[calc(100vw-5rem)]"
+        className="absolute top-16 sm:top-20 md:top-24 left-4 sm:left-6 md:left-14 lg:left-20 z-[40] opacity-0 flex items-center gap-2 sm:gap-2.5 max-w-[calc(100vw-5rem)] px-3 sm:px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.25)]"
       >
-        <span className="w-[7px] h-[7px] shrink-0 rounded-full bg-ember animate-pulse shadow-[0_0_10px_#A02A22]" />
+        <span className="relative flex h-2 w-2 shrink-0">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-ember opacity-75" />
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-ember shadow-[0_0_8px_#fc6b2f]" />
+        </span>
         <span
           className="text-[10px] sm:text-[11px] text-[#B5B5B5] tracking-[0.16em] sm:tracking-[0.22em] uppercase font-semibold truncate"
           style={{ fontFamily: 'var(--font-display)' }}
@@ -85,10 +88,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         </span>
       </div>
 
-      {/* 5. Engineering Subtitle (Adaptive: centered on mobile, pinned bottom-left on desktop) */}
+      {/* 5. Engineering Subtitle & Capability Chips (Adaptive: centered on mobile, pinned bottom-left on desktop) */}
       <div
         ref={descRef}
-        className="absolute bottom-[16%] sm:bottom-[15%] md:bottom-[11%] lg:bottom-[13%] left-4 right-4 sm:left-6 sm:right-6 md:left-14 md:right-auto lg:left-20 z-[40] max-w-[92vw] sm:max-w-[360px] md:max-w-[400px] lg:max-w-[440px] opacity-0 text-center md:text-left mx-auto md:mx-0"
+        className="absolute bottom-[16%] sm:bottom-[15%] md:bottom-[11%] lg:bottom-[13%] left-4 right-4 sm:left-6 sm:right-6 md:left-14 md:right-auto lg:left-20 z-[40] max-w-[92vw] sm:max-w-[360px] md:max-w-[420px] lg:max-w-[460px] opacity-0 text-center md:text-left mx-auto md:mx-0"
       >
         <p
           className="text-[11.5px] sm:text-[13px] md:text-[14px] text-[#B5B5B5] leading-[1.6] sm:leading-[1.75] font-normal tracking-wide"
@@ -96,6 +99,20 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         >
           Full-Stack Developer &amp; Computer Science Engineer crafting fast, resilient, and motion-driven digital products.
         </p>
+        <div className="mt-2.5 sm:mt-3 flex flex-wrap gap-1.5 sm:gap-2 justify-center md:justify-start">
+          <span className="px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-[10px] font-mono text-zinc-300 tracking-wider">
+            AAI NetSec
+          </span>
+          <span className="px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-[10px] font-mono text-zinc-300 tracking-wider">
+            CanSat UHF
+          </span>
+          <span className="px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-[10px] font-mono text-zinc-300 tracking-wider">
+            Gemini RAG
+          </span>
+          <span className="px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-[10px] font-mono text-zinc-300 tracking-wider">
+            C++ Systems
+          </span>
+        </div>
       </div>
 
       {/* 6. Magnetic Action Buttons (Adaptive: side-by-side on mobile, stacked on desktop) */}
@@ -136,7 +153,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
 
       {/* 7. Center Kinetic Bold Variable Typography with Radiant Ember Backlight */}
       <div
-        className="absolute top-[38%] sm:top-[42%] md:top-[44%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-[15] pointer-events-none select-none w-full flex flex-col items-center justify-center px-3 sm:px-4"
+        className="absolute top-[38%] sm:top-[42%] md:top-[44%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-[15] select-none w-full flex flex-col items-center justify-center px-3 sm:px-4"
         aria-hidden="true"
       >
         <div className="w-full max-w-[94vw] sm:max-w-[720px] md:max-w-[900px] lg:max-w-[1100px] h-[68px] sm:h-[95px] md:h-[135px] lg:h-[165px] relative flex items-center justify-center transform-gpu">
@@ -149,7 +166,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
                 : 'radial-gradient(ellipse at center, rgba(160, 42, 34, 0.12) 0%, transparent 70%)'
             }}
           />
-          <div style={{ position: 'relative', width: '100%', height: '100%', background: 'transparent' }}>
+          <div style={{ position: 'relative', width: '100%', height: '100%', background: 'transparent' }} className="cursor-default pointer-events-auto">
             <TextPressure
               text="DEV JANGID"
               fontFamily="Roboto Flex, Space Grotesk, sans-serif"

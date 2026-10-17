@@ -36,7 +36,11 @@ export const Navbar: React.FC<NavbarProps> = ({
   }
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#050505]/85 backdrop-blur-xl border-b border-white/10 transition-colors">
+    <header className={`sticky top-0 z-40 w-full backdrop-blur-xl border-b transition-colors duration-300 ${
+      theme === 'dark'
+        ? 'bg-[#050505]/85 border-white/10 text-white'
+        : 'bg-[#f6f6f9]/85 border-black/10 text-[#141418] shadow-sm'
+    }`}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-4">
         {/* Brand / Logo */}
         <a
@@ -44,11 +48,11 @@ export const Navbar: React.FC<NavbarProps> = ({
           className="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-ember rounded-full p-1"
           aria-label="Dev Jangid Home"
         >
-          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/5 border border-white/15 text-white font-bold font-sans text-sm sm:text-base flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.05)] group-hover:border-ember/50 group-hover:bg-ember/10 group-hover:text-ember transition-all duration-300">
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/5 border border-white/15 font-bold font-sans text-sm sm:text-base flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.05)] group-hover:border-ember/50 group-hover:bg-ember/10 group-hover:text-ember transition-all duration-300">
             {personalInfo.monogram}
           </div>
           <div className="flex flex-col">
-            <span className="font-extrabold text-sm sm:text-base tracking-tight uppercase text-white group-hover:text-cloud transition-colors">
+            <span className="font-extrabold text-sm sm:text-base tracking-tight uppercase group-hover:text-ember transition-colors">
               {personalInfo.name}
             </span>
             <span className="text-[10px] sm:text-[11px] font-sans font-medium text-ash uppercase tracking-wider flex items-center gap-1.5">
@@ -64,7 +68,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <a
               key={item.code}
               href={item.href}
-              className="text-xs font-medium uppercase tracking-wider text-ash hover:text-white px-3 py-1.5 rounded-full hover:bg-white/5 transition-all duration-200"
+              className="text-xs font-medium uppercase tracking-wider text-ash hover:text-[var(--text-main)] px-3 py-1.5 rounded-full hover:bg-white/5 transition-all duration-200"
             >
               {item.label}
             </a>
@@ -173,14 +177,18 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-white/10 bg-[#0a0a0d]/95 backdrop-blur-2xl px-5 py-6 shadow-2xl animate-in slide-in-from-top-2">
+        <div className={`lg:hidden border-t px-5 py-6 shadow-2xl backdrop-blur-2xl animate-in slide-in-from-top-2 ${
+          theme === 'dark'
+            ? 'border-white/10 bg-[#0a0a0d]/95 text-white'
+            : 'border-black/10 bg-[#ffffff]/95 text-[#141418]'
+        }`}>
           <nav className="flex flex-col gap-2" aria-label="Mobile Navigation">
             {navItems.map((item) => (
               <a
                 key={item.code}
                 href={item.href}
                 onClick={handleLinkClick}
-                className="flex items-center justify-between p-3 rounded-xl bg-white/[0.03] hover:bg-white/10 border border-white/10 text-sm font-medium text-white transition-all"
+                className="flex items-center justify-between p-3 rounded-xl bg-white/[0.05] hover:bg-white/10 border border-white/10 text-sm font-medium transition-all"
               >
                 <span>{item.label}</span>
                 <span className="text-xs text-ember font-mono font-medium">
