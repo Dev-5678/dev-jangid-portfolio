@@ -16,8 +16,7 @@ import { EducationSection } from './sections/EducationSection'
 import { ContactSection } from './sections/ContactSection'
 import { Footer } from './components/Footer'
 
-import { MicroSlatsBg } from './components/reactbits/MicroSlatsBg'
-import { AtmosphericOverlay } from './components/AtmosphericOverlay'
+import { LoadingScreen } from './components/LoadingScreen'
 import { AperturePhilosophySection } from './components/AperturePhilosophySection'
 import { VelocityMarquee } from './components/reactbits/VelocityMarquee'
 import { DevConsole } from './components/DevConsole'
@@ -68,18 +67,18 @@ export function App() {
   }, [playClick])
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF8F5] dark:bg-[#0A0D12] text-[#111317] dark:text-[#F4F7FB] selection:bg-[var(--accent,#CCFF00)] selection:text-[#111317] relative">
+    <div className="min-h-screen flex flex-col bg-[#050505] text-[#e8e8ea] selection:bg-[#a02a22] selection:text-white relative">
+      {/* Cinematic Counter Loading Screen (from reel) */}
+      <LoadingScreen />
+
+      {/* Global SVG Fractal Noise Overlay (from reel) */}
+      <div className="noise-overlay" aria-hidden="true" />
+
       {/* Feature 15: Offline Resilient Mode Banner */}
       <OfflineBanner isOnline={isOnline} />
 
       {/* Feature 5: Top Scroll Progress Bar & HUD Section Indicator */}
       <ScrollProgressHUD />
-
-      {/* Ambient Micro-Slats 3D Background */}
-      <MicroSlatsBg theme={theme} />
-
-      {/* Atmospheric Micro-Dust & Organic Noise Overlay */}
-      <AtmosphericOverlay theme={theme} />
 
       {/* Skip to Main Content Link for Keyboard Accessibility (WCAG 2.4.1) */}
       <a

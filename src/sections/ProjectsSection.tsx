@@ -1,22 +1,63 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { experienceHighlights } from '../data/portfolio'
-import { SpotlightCard } from '../components/reactbits/SpotlightCard'
-import { FolderGit2, Satellite, Cpu, Layers } from 'lucide-react'
+import React, { useState } from 'react'
+import { ProjectBlueprintModal, type BlueprintData } from '../components/ProjectBlueprintModal'
 import { CanSatTelemetryWidget } from '../components/telemetry/CanSatTelemetryWidget'
 import { AAINetworkInspectorWidget } from '../components/telemetry/AAINetworkInspectorWidget'
 import { GeminiRAGVisualizer } from '../components/ai/GeminiRAGVisualizer'
 import { DSAComplexityWidget } from '../components/dsa/DSAComplexityWidget'
-import { GitHubStatsCard } from '../components/github/GitHubStatsCard'
-import { ProjectBlueprintModal, type BlueprintData } from '../components/ProjectBlueprintModal'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { X } from 'lucide-react'
 
-gsap.registerPlugin(ScrollTrigger)
+interface ProjectItem {
+  id: string
+  number: string
+  title: string
+  description: string
+  tags: string[]
+  image: string
+  alt: string
+  simType: 'aai' | 'cansat' | 'rag' | 'dsa'
+}
 
-const HIGHLIGHT_SPOTLIGHTS = [
-  'rgba(204, 255, 0, 0.15)',
-  'rgba(0, 229, 255, 0.15)',
-  'rgba(255, 85, 0, 0.15)'
+const PROJECTS: ProjectItem[] = [
+  {
+    id: 'exp-high-1',
+    number: '01 / 04',
+    title: 'AAI Network Security & IT Infrastructure',
+    description: 'Segregated enterprise architecture isolating Northern Region administrative systems from critical Air Navigation Services (ANS). Features continuous security compliance monitoring, database replication, and automated IT diagnostics.',
+    tags: ['VLAN SEGREGATION', 'NETWORK ACLS', 'AIR NAVIGATION SERVICES', 'SQL CLUSTER'],
+    image: '/portfolio/echo-crafting.png',
+    alt: 'AAI Network Security Preview',
+    simType: 'aai'
+  },
+  {
+    id: 'exp-high-2',
+    number: '02 / 04',
+    title: 'CanSat & CubeSat Space Telemetry System',
+    description: 'Simulated 1U CanSat payload measuring atmospheric pressure, altitude, and payload temperature. Employs 433 MHz UHF radio frequency telemetry with ground station packet decoders and parachute recovery triggers.',
+    tags: ['433 MHZ UHF', 'EMBEDDED C/C++', 'FSK TELEMETRY', 'AEROSPACE'],
+    image: '/portfolio/julian-vance.png',
+    alt: 'CanSat Space Telemetry Preview',
+    simType: 'cansat'
+  },
+  {
+    id: 'exp-high-3',
+    number: '03 / 04',
+    title: 'Multimodal Generative AI & RAG Engine',
+    description: 'Enterprise retrieval-augmented generation pipeline. Converts complex technical queries and documents into high-dimensional vector embeddings, retrieves semantic ground-truth context, and uses Gemini 1.5 Pro to synthesize reliable responses.',
+    tags: ['GEMINI 1.5 PRO', 'VECTOR EMBEDDINGS', 'PYTHON', 'RAG PIPELINE'],
+    image: '/portfolio/echo-studio.png',
+    alt: 'Generative AI RAG Engine Preview',
+    simType: 'rag'
+  },
+  {
+    id: 'exp-high-4',
+    number: '04 / 04',
+    title: 'Data Structures & Algorithms Complexity Matrix',
+    description: 'Benchmark suite evaluating asymptotic complexities across sorting, graph traversals, and dynamic programming algorithms. Built to guarantee deterministic microsecond latency in high-throughput data streams.',
+    tags: ['C++', 'JAVA', 'BIG-O EFFICIENCY', 'ALGORITHMS'],
+    image: '/portfolio/mocha-miso.jpg',
+    alt: 'DSA Systems Matrix Preview',
+    simType: 'dsa'
+  }
 ]
 
 const BLUEPRINTS: Record<string, BlueprintData> = {
@@ -74,282 +115,193 @@ const BLUEPRINTS: Record<string, BlueprintData> = {
       'Synthesizing multimodal technical inputs (text + diagrams) into clear action plans.',
       'Optimizing end-to-end inference latency under 250ms.'
     ]
+  },
+  'exp-high-4': {
+    title: 'Data Structures & Algorithms Complexity Matrix',
+    subtitle: 'Core Computer Science & Systems',
+    architectureOverview: 'High-performance algorithmic implementations focusing on cache locality, asymptotic bounds, and deterministic execution times under peak computational load.',
+    components: [
+      { name: 'Graph Traversal Engine', role: 'Shortest path & topological routing', tech: 'C++ Dijkstra / A*' },
+      { name: 'Dynamic Memory Cache', role: 'State memoization & amortized lookup', tech: 'Hash Maps / Red-Black Trees' },
+      { name: 'Execution Benchmark', role: 'Real-time microsecond profiling', tech: 'Chrono Profiling' }
+    ],
+    securityAndCompliance: [
+      'Deterministic memory bounds preventing buffer overruns.',
+      'Asymptotically optimal space complexity guarantees.'
+    ],
+    keyChallengesSolved: [
+      'Achieving sub-millisecond route optimization in large network topologies.',
+      'Eliminating garbage-collection pauses in critical loops.'
+    ]
   }
 }
 
 export const ProjectsSection: React.FC = () => {
-  const sectionRef = useRef<HTMLElement>(null)
-  const [viewMode, setViewMode] = useState<'highlights' | 'simulators' | 'metrics' | 'standalone'>('highlights')
   const [activeBlueprint, setActiveBlueprint] = useState<BlueprintData | null>(null)
-
-  useEffect(() => {
-    const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (isReduced) return
-
-    const ctx = gsap.context(() => {
-      gsap.from('.proj-card', {
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 75%',
-          toggleActions: 'play none none none'
-        },
-        y: 35,
-        opacity: 0,
-        duration: 0.6,
-        stagger: 0.15,
-        ease: 'power2.out'
-      })
-    }, sectionRef)
-
-    return () => ctx.revert()
-  }, [viewMode])
+  const [activeSimulator, setActiveSimulator] = useState<'aai' | 'cansat' | 'rag' | 'dsa' | null>(null)
 
   return (
     <section
-      ref={sectionRef}
       id="projects"
       aria-label="Engineering Highlights and Projects"
-      className="py-16 sm:py-24 px-4 sm:px-6 max-w-6xl mx-auto border-t-3 border-[#111317] dark:border-[#334155]"
+      className="relative w-full pt-12 sm:pt-16 md:pt-20 pb-16 sm:pb-24 md:pb-36 bg-black z-10 overflow-hidden"
     >
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
-        <div>
-          <div className="inline-flex items-center gap-2 font-mono text-xs font-black tracking-widest text-[#FF5500] dark:text-[#CCFF00] uppercase mb-2">
-            <span>[04]</span>
-            <span>ENGINEERING // HIGHLIGHTS_AND_PROJECTS</span>
-          </div>
-          <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[#111317] dark:text-[#F4F7FB]">
-            WORK HIGHLIGHTS
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-16">
+        {/* Section Header */}
+        <div className="text-center mb-12 sm:mb-20">
+          <h2
+            className="inline-block select-none text-3xl sm:text-5xl md:text-7xl font-extrabold tracking-tight text-[#EAE6E1] uppercase mb-3 sm:mb-4"
+            style={{ fontFamily: "var(--font-josefin), 'Josefin Sans', sans-serif" }}
+          >
+            SELECTED PROJECTS
           </h2>
+          <p
+            className="text-[11px] sm:text-sm font-bold tracking-[0.15em] sm:tracking-[0.2em] text-[#C4C4C8] uppercase max-w-2xl mx-auto leading-relaxed px-2"
+            style={{ fontFamily: "var(--font-josefin), 'Josefin Sans', sans-serif" }}
+          >
+            FROM MISSION-CRITICAL SYSTEMS TO CLOUD AI ARCHITECTURES — CRAFTED WITH MOTION, PURPOSE, AND PRECISION.
+          </p>
         </div>
 
-        {/* View Mode Toggle: Highlights vs Simulators vs Metrics */}
-        <div className="flex flex-wrap items-center p-1 bg-white dark:bg-[#131720] border-2 border-[#111317] dark:border-[#334155] shadow-[2px_2px_0px_#111317] dark:shadow-[2px_2px_0px_#334155] font-mono text-xs font-bold gap-1">
-          <button
-            onClick={() => setViewMode('highlights')}
-            className={`px-3 py-1.5 transition-colors cursor-pointer ${
-              viewMode === 'highlights'
-                ? 'bg-[#111317] text-[#CCFF00] dark:bg-[#CCFF00] dark:text-[#111317]'
-                : 'text-gray-600 dark:text-gray-400 hover:text-[#111317] dark:hover:text-[#F4F7FB]'
-            }`}
-          >
-            Domain Highlights ({experienceHighlights.length})
-          </button>
-          <button
-            onClick={() => setViewMode('simulators')}
-            className={`px-3 py-1.5 transition-colors flex items-center gap-1 cursor-pointer ${
-              viewMode === 'simulators'
-                ? 'bg-[#111317] text-[#CCFF00] dark:bg-[#CCFF00] dark:text-[#111317]'
-                : 'text-gray-600 dark:text-gray-400 hover:text-[#111317] dark:hover:text-[#F4F7FB]'
-            }`}
-          >
-            <Satellite className="w-3.5 h-3.5 text-[#00E5FF]" />
-            <span>Interactive Simulators (4)</span>
-          </button>
-          <button
-            onClick={() => setViewMode('metrics')}
-            className={`px-3 py-1.5 transition-colors flex items-center gap-1 cursor-pointer ${
-              viewMode === 'metrics'
-                ? 'bg-[#111317] text-[#CCFF00] dark:bg-[#CCFF00] dark:text-[#111317]'
-                : 'text-gray-600 dark:text-gray-400 hover:text-[#111317] dark:hover:text-[#F4F7FB]'
-            }`}
-          >
-            <Cpu className="w-3.5 h-3.5 text-[#FF5500]" />
-            <span>Codebase Metrics</span>
-          </button>
-          <button
-            onClick={() => setViewMode('standalone')}
-            className={`px-3 py-1.5 transition-colors cursor-pointer ${
-              viewMode === 'standalone'
-                ? 'bg-[#111317] text-[#CCFF00] dark:bg-[#CCFF00] dark:text-[#111317]'
-                : 'text-gray-600 dark:text-gray-400 hover:text-[#111317] dark:hover:text-[#F4F7FB]'
-            }`}
-          >
-            Standalone Projects
-          </button>
+        {/* Project Cards (Exact alternating 2-column layout from reel) */}
+        <div className="flex flex-col gap-10 sm:gap-14">
+          {PROJECTS.map((p, idx) => {
+            const isEven = idx % 2 === 1
+
+            return (
+              <div
+                key={p.id}
+                className="relative rounded-2xl sm:rounded-[32px] bg-white/[0.04] border border-white/20 backdrop-blur-3xl overflow-hidden px-4 py-6 sm:px-10 sm:py-10 lg:px-14 lg:py-14 min-h-[380px] sm:min-h-[480px] lg:min-h-[530px] flex flex-col justify-center shadow-[0_20px_60px_rgba(0,0,0,0.8),inset_0_1px_1px_rgba(255,255,255,0.25),inset_0_0_24px_rgba(255,255,255,0.03)] transform-gpu"
+              >
+                {/* Dual Corner Ambient Aurora Glows */}
+                <div className="absolute -top-24 -left-24 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+                <div className="absolute -bottom-24 -right-24 w-80 h-80 bg-pink-500/10 rounded-full blur-3xl pointer-events-none" />
+                
+                {/* Top Hairline Gradient Highlight */}
+                <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
+
+                <div className={`grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-14 items-center ${isEven ? 'lg:flex-row-reverse' : ''}`}>
+                  {/* Text Column */}
+                  <div className={`lg:col-span-6 flex flex-col justify-between h-full space-y-4 sm:space-y-6 ${isEven ? 'lg:order-2' : 'lg:order-1'}`}>
+                    <div className="flex items-center gap-2.5 sm:gap-3.5">
+                      <button
+                        onClick={() => setActiveSimulator(p.simType)}
+                        className="inline-flex items-center gap-1.5 sm:gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full bg-white text-black font-semibold text-[11px] sm:text-xs tracking-wider uppercase hover:scale-105 transition-all shadow-[0_4px_20px_rgba(255,255,255,0.25)] group touch-manipulation cursor-pointer"
+                        title="Launch Interactive Simulator"
+                      >
+                        <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-black group-hover:scale-110 transition-transform shrink-0" viewBox="0 0 24 24">
+                          <path d="M12 2L24 22H0L12 2Z" />
+                        </svg>
+                        <span>Interactive Simulator</span>
+                        <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-black stroke-[2.5] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                          <polyline points="15 3 21 3 21 9" />
+                          <line x1="10" y1="14" x2="21" y2="3" />
+                        </svg>
+                      </button>
+
+                      {BLUEPRINTS[p.id] && (
+                        <button
+                          onClick={() => setActiveBlueprint(BLUEPRINTS[p.id])}
+                          className="px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 font-semibold text-[11px] sm:text-xs tracking-wider uppercase transition-all backdrop-blur-md cursor-pointer"
+                        >
+                          Blueprint Spec
+                        </button>
+                      )}
+
+                      <span className="ml-auto text-[11px] sm:text-xs font-mono text-slate-400 font-bold tracking-widest uppercase">
+                        {p.number}
+                      </span>
+                    </div>
+
+                    <h3
+                      className="text-2xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight"
+                      style={{ fontFamily: "var(--font-josefin), 'Josefin Sans', sans-serif" }}
+                    >
+                      {p.title}
+                    </h3>
+
+                    <p className="text-slate-300 text-xs sm:text-sm md:text-base leading-relaxed max-w-xl">
+                      {p.description}
+                    </p>
+
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2.5 pt-2 sm:pt-4">
+                      {p.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-bold tracking-wider text-white uppercase bg-white/[0.06] border border-white/15 backdrop-blur-lg shadow-sm"
+                          style={{ fontFamily: "var(--font-josefin), 'Josefin Sans', sans-serif" }}
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Mockup Preview Column */}
+                  <div className={`lg:col-span-6 flex items-center justify-center ${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
+                    <div
+                      onClick={() => setActiveSimulator(p.simType)}
+                      className="relative w-full max-w-xl rounded-xl sm:rounded-2xl overflow-hidden border border-white/20 bg-white/[0.03] backdrop-blur-2xl shadow-[0_15px_35px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.2)] p-1.5 sm:p-3 group cursor-pointer"
+                    >
+                      {/* macOS Window Controls */}
+                      <div className="flex items-center gap-1 sm:gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-2 bg-white/[0.05] border-b border-white/10 rounded-t-lg sm:rounded-t-xl">
+                        <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[#ff5f56]" />
+                        <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[#ffbd2e]" />
+                        <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[#27c93f]" />
+                        <span className="ml-2 font-mono text-[10px] text-gray-400 truncate">
+                          preview://{p.id}.runtime
+                        </span>
+                      </div>
+
+                      <img
+                        src={p.image}
+                        alt={p.alt}
+                        loading="lazy"
+                        className="w-full h-auto object-cover rounded-b-lg sm:rounded-b-xl group-hover:scale-[1.02] transition-transform duration-500 transform-gpu"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
         </div>
       </div>
 
-      {/* Mode 1: Domain Highlights with Architectural Blueprint buttons */}
-      {viewMode === 'highlights' && (
-        <div className="space-y-8">
-          <div className="p-4 bg-[#FAF8F5] dark:bg-[#1A202C] border-2 border-[#111317] dark:border-[#334155] font-mono text-xs flex items-center justify-between">
-            <span className="text-gray-600 dark:text-gray-300">
-              Technical domains backed by institutional internships and specialized training. Click blueprint to view system architectures.
-            </span>
-            <span className="hidden sm:inline-block px-2 py-0.5 bg-[#CCFF00] text-[#111317] font-bold text-[10px]">
-              BLUEPRINTS ACTIVE
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-            {experienceHighlights.map((item, idx) => {
-              const windowId =
-                item.id === 'exp-high-1'
-                  ? 'sec://aai-northern-region.ans'
-                  : item.id === 'exp-high-2'
-                  ? 'rf://cansat-433mhz.fsk'
-                  : 'ai://gemini-rag-multimodal.py'
-
-              return (
-                <SpotlightCard
-                  key={item.id}
-                  spotlightColor={HIGHLIGHT_SPOTLIGHTS[idx % HIGHLIGHT_SPOTLIGHTS.length]}
-                  className="proj-card mac-glass-window brutal-card-hover p-0 bg-white/95 dark:bg-[#131720]/80 border-3 border-[#111317] dark:border-[#334155] shadow-[6px_6px_0px_#111317] dark:shadow-[6px_6px_0px_#1E293B] flex flex-col justify-between overflow-hidden relative group"
-                >
-                  {/* Top Hairline Gradient Highlight */}
-                  <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-black/25 dark:via-white/40 to-transparent pointer-events-none z-10" />
-
-                  {/* Dual Corner Glow Orbs */}
-                  <div className="absolute -top-16 -left-16 w-40 h-40 bg-cyan-500/10 dark:bg-cyan-500/15 rounded-full blur-2xl pointer-events-none" />
-                  <div className="absolute -bottom-16 -right-16 w-40 h-40 bg-[#FF5500]/10 dark:bg-[#CCFF00]/10 rounded-full blur-2xl pointer-events-none" />
-
-                  {/* macOS Window Header Bar */}
-                  <div className="flex items-center justify-between px-4 py-2.5 bg-black/[0.04] dark:bg-white/[0.04] border-b-2 border-[#111317] dark:border-[#334155] font-mono text-[11px] select-none relative z-10">
-                    <div className="flex items-center gap-1.5">
-                      <span className="w-2.5 h-2.5 rounded-full bg-[#FF5F56] shadow-[0_0_6px_rgba(255,95,86,0.6)]" />
-                      <span className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E] shadow-[0_0_6px_rgba(255,189,46,0.6)]" />
-                      <span className="w-2.5 h-2.5 rounded-full bg-[#27C93F] shadow-[0_0_6px_rgba(39,201,63,0.6)]" />
-                    </div>
-                    <span className="text-[10px] text-gray-500 dark:text-gray-400 font-bold tracking-wider truncate max-w-[170px]">
-                      {windowId}
-                    </span>
-                    <span className="text-gray-400 font-black text-[10px]">0{idx + 1}</span>
-                  </div>
-
-                  {/* Card Body */}
-                  <div className="p-6 sm:p-7 flex flex-col justify-between flex-1 relative z-10">
-                    <div>
-                      {/* Category Pill */}
-                      <div className="inline-block px-2.5 py-0.5 bg-[#111317] text-[#CCFF00] dark:bg-[#CCFF00] dark:text-[#111317] font-mono text-[10px] font-bold uppercase tracking-wider mb-3">
-                        {item.category}
-                      </div>
-
-                      {/* Title */}
-                      <h3 className="font-sans font-black text-xl uppercase tracking-tight text-[#111317] dark:text-[#F4F7FB] mb-3 group-hover:text-[#FF5500] dark:group-hover:text-[#CCFF00] transition-colors">
-                        {item.title}
-                      </h3>
-
-                      {/* Description */}
-                      <p className="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-5 font-sans">
-                        {item.description}
-                      </p>
-                    </div>
-
-                    <div>
-                      {/* Context note */}
-                      <div className="p-2.5 bg-black/[0.02] dark:bg-white/[0.03] border border-[#111317]/20 dark:border-white/10 rounded mb-4 text-[11px] font-mono text-gray-600 dark:text-gray-300 backdrop-blur-sm">
-                        <span className="text-gray-400 block text-[9px] font-bold">CONTEXT:</span>
-                        {item.context}
-                      </div>
-
-                      {/* Technical Scope Badges (Frosted Glass Pills) */}
-                      <div className="flex flex-wrap gap-1.5 pt-3 mb-4 border-t border-dashed border-gray-300 dark:border-gray-800">
-                        {item.technicalScope.map((tech) => (
-                          <span
-                            key={tech}
-                            className="px-2.5 py-1 rounded-full bg-black/5 dark:bg-white/[0.06] text-[#111317] dark:text-[#F4F7FB] font-mono text-[10px] font-bold border border-black/10 dark:border-white/15 backdrop-blur-md shadow-xs"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-
-                      {/* Feature 11: View Architectural Blueprint Button */}
-                      {BLUEPRINTS[item.id] && (
-                        <button
-                          onClick={() => setActiveBlueprint(BLUEPRINTS[item.id])}
-                          className="w-full brutal-btn py-2 bg-white dark:bg-[#1A202C] text-[#111317] dark:text-[#CCFF00] font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 hover:bg-[#CCFF00] hover:text-[#111317] dark:hover:bg-[#CCFF00] dark:hover:text-[#111317] group-hover:shadow-[0_0_15px_rgba(204,255,0,0.3)] transition-all"
-                        >
-                          <Layers className="w-3.5 h-3.5" />
-                          <span>View Blueprint Spec</span>
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                </SpotlightCard>
-              )
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* Mode 2: Interactive Engineering Simulators (4 Simulators) */}
-      {viewMode === 'simulators' && (
-        <div className="space-y-10 animate-in fade-in duration-300">
-          <div className="p-4 bg-[#FAF8F5] dark:bg-[#1A202C] border-2 border-[#111317] dark:border-[#334155] font-mono text-xs flex items-center justify-between">
-            <span className="text-gray-600 dark:text-gray-300">
-              Four real-time interactive engineering simulators covering Space Telemetry, AAI Security Audits, Multimodal RAG, and DSA Algorithms.
-            </span>
-            <span className="hidden sm:inline-block px-2 py-0.5 bg-[#00E5FF] text-[#111317] font-bold text-[10px]">
-              SIMULATORS RUNNING
-            </span>
-          </div>
-
-          {/* 1. CanSat Telemetry with Descent Radar */}
-          <CanSatTelemetryWidget />
-
-          {/* 2. AAI Network Compliance Inspector with Audit Trace */}
-          <AAINetworkInspectorWidget />
-
-          {/* 3. Multimodal RAG & Gemini Pipeline Trace */}
-          <GeminiRAGVisualizer />
-
-          {/* 4. DSA Complexity Benchmark Matrix */}
-          <DSAComplexityWidget />
-        </div>
-      )}
-
-      {/* Mode 3: Verified Codebase Metrics */}
-      {viewMode === 'metrics' && (
-        <div className="animate-in fade-in duration-300">
-          <GitHubStatsCard />
-        </div>
-      )}
-
-      {/* Mode 4: Standalone Projects */}
-      {viewMode === 'standalone' && (
-        <SpotlightCard
-          spotlightColor="rgba(204, 255, 0, 0.15)"
-          className="proj-card p-8 sm:p-12 bg-white dark:bg-[#131720] border-3 border-[#111317] dark:border-[#334155] shadow-[6px_6px_0px_#111317] dark:shadow-[6px_6px_0px_#1E293B] text-center max-w-2xl mx-auto"
+      {/* Interactive Simulator Modal */}
+      {activeSimulator && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl animate-in fade-in duration-200"
+          onClick={() => setActiveSimulator(null)}
         >
-          <div className="w-16 h-16 mx-auto mb-6 bg-[#FAF8F5] dark:bg-[#1A202C] border-3 border-[#111317] dark:border-[#CCFF00] shadow-[3px_3px_0px_#111317] flex items-center justify-center text-[#111317] dark:text-[#CCFF00]">
-            <FolderGit2 className="w-8 h-8 stroke-[2]" />
+          <div
+            className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-[#0d0d0f] border border-white/20 rounded-2xl shadow-[0_25px_70px_rgba(0,0,0,0.9)] p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between pb-4 mb-6 border-b border-white/10">
+              <span className="font-mono text-xs font-bold text-white uppercase tracking-wider">
+                Live Simulator Runtime // {activeSimulator.toUpperCase()}
+              </span>
+              <button
+                onClick={() => setActiveSimulator(null)}
+                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {activeSimulator === 'aai' && <AAINetworkInspectorWidget />}
+            {activeSimulator === 'cansat' && <CanSatTelemetryWidget />}
+            {activeSimulator === 'rag' && <GeminiRAGVisualizer />}
+            {activeSimulator === 'dsa' && <DSAComplexityWidget />}
           </div>
-
-          <div className="inline-block px-3 py-1 bg-[#111317] text-[#CCFF00] font-mono text-xs font-bold uppercase tracking-wider mb-4 border border-[#111317]">
-            NO_FABRICATED_REPOSITORIES
-          </div>
-
-          <h3 className="text-2xl font-black uppercase tracking-tight text-[#111317] dark:text-[#F4F7FB] mb-3">
-            Dedicated Standalone Projects
-          </h3>
-
-          <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-md mx-auto mb-6">
-            In accordance with engineering integrity principles, no unverified standalone projects or placeholder links are published here. Dev's practical engineering work is captured under institutional internships (Airports Authority of India &amp; India Space Lab).
-          </p>
-
-          <div className="p-4 bg-gray-50 dark:bg-[#1A202C] border-2 border-dashed border-gray-300 dark:border-gray-700 font-mono text-xs text-left max-w-md mx-auto">
-            <span className="text-[#FF5500] dark:text-[#CCFF00] font-bold block mb-1">
-              // FOR DEVELOPER EXPANSION:
-            </span>
-            <span className="text-gray-600 dark:text-gray-400">
-              To add standalone software projects with live demos or GitHub repositories, edit the <code>standaloneProjects</code> array in <code>src/data/portfolio.ts</code>.
-            </span>
-          </div>
-
-          <div className="mt-8">
-            <button
-              onClick={() => setViewMode('highlights')}
-              className="brutal-btn px-6 py-3 bg-[#CCFF00] text-[#111317] font-mono font-bold text-xs uppercase tracking-wider cursor-pointer"
-            >
-              Return to Domain Highlights
-            </button>
-          </div>
-        </SpotlightCard>
+        </div>
       )}
 
-      {/* Feature 11: Architectural Blueprint Modal */}
+      {/* Architectural Blueprint Modal */}
       <ProjectBlueprintModal
         isOpen={Boolean(activeBlueprint)}
         onClose={() => setActiveBlueprint(null)}
