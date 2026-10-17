@@ -6,7 +6,7 @@ import { useTLDRMode } from './hooks/useTLDRMode'
 import { useClipboard } from './hooks/useClipboard'
 import { useOnlineStatus } from './hooks/useOnlineStatus'
 
-import { Navbar } from './components/Navbar'
+import { StaggeredMenu } from './components/reactbits/StaggeredMenu'
 import { HeroSection } from './sections/HeroSection'
 import { AboutSection } from './sections/AboutSection'
 import { ExperienceSection } from './sections/ExperienceSection'
@@ -81,8 +81,8 @@ export function App() {
         Skip to main content
       </a>
 
-      {/* Navigation Header */}
-      <Navbar
+      {/* Cinematic Staggered Menu Header (Exact Reel Replica) */}
+      <StaggeredMenu
         theme={theme}
         onToggleTheme={() => {
           playClick()
@@ -109,6 +109,24 @@ export function App() {
         onToggleMute={() => {
           toggleMute()
         }}
+        items={[
+          { label: 'Home', link: '#hero' },
+          { label: 'Philosophy', link: '#introduction' },
+          { label: 'Projects', link: '#projects' },
+          { label: 'Experience', link: '#experience' },
+          { label: 'About', link: '#about' },
+          { label: 'Skills', link: '#skills' },
+          { label: 'Education', link: '#education' },
+          { label: 'Contact', link: '#contact' }
+        ]}
+        socialItems={[
+          { label: 'GitHub', link: personalInfo.github || 'https://github.com' },
+          { label: 'LinkedIn', link: personalInfo.linkedin || 'https://linkedin.com' },
+          { label: 'Email', link: `mailto:${personalInfo.email}` },
+          { label: 'Twitter / X', link: 'https://x.com' }
+        ]}
+        colors={['#18181e', '#23232c', '#0f0f12']}
+        accentColor="#a02a22"
       />
 
       {/* Feature 1: Recruiter 30-Second Executive Summary Alert Banner */}
@@ -151,19 +169,22 @@ export function App() {
           }}
         />
 
-        <AboutSection />
-        
-        {/* Experience Section with Tag Filters & TL;DR Mode */}
-        <ExperienceSection isTLDR={isTLDR} />
-        
-        <SkillsSection />
-        
-        {/* Projects Section with 4 Interactive Simulators & Blueprint Modals */}
+        {/* Projects Section with 5 macOS Window Cards (matches Reel order) */}
         <ProjectsSection />
-        
+
+        {/* Experience Section with Reel Ember Glow */}
+        <ExperienceSection isTLDR={isTLDR} />
+
+        {/* About Dev Jangid Section */}
+        <AboutSection />
+
+        {/* Technical Skills Section */}
+        <SkillsSection />
+
+        {/* Education & Credentials Section */}
         <EducationSection />
-        
-        {/* Contact Section with One-Click Copy & vCard Download */}
+
+        {/* Contact Section with Direct Transmission & Back-to-Top Footer */}
         <ContactSection onCopyText={(text, label) => copy(text, label)} />
       </main>
 
