@@ -166,16 +166,22 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
           <div style={{ position: 'relative', width: '100%', height: '100%', background: 'transparent' }} className="cursor-default pointer-events-auto">
             <TextPressure
               text="DEV JANGID"
-              fontFamily="Roboto Flex, Space Grotesk, sans-serif"
+              fontFamily="Roboto Flex"
               flex={true}
-              stroke={false}
+              scale={true}
               width={true}
               weight={true}
               italic={true}
               alpha={false}
+              stroke={false}
+              radius={0.5}
+              smoothing={0.4}
+              idle="wave"
+              idleSpeed={1}
+              clickRipple={true}
               textColor={theme === 'dark' ? '#ffffff' : '#111116'}
               minFontSize={28}
-              className="text-pressure-title tp-flex"
+              className="text-pressure-title"
             />
           </div>
         </div>
