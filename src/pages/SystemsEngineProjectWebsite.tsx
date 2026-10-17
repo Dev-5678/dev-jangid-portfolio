@@ -218,10 +218,10 @@ export const SystemsEngineProjectWebsite: React.FC<ProjectPageProps> = ({ onBack
       {/* Main Dynamic Workspace Navigation */}
       <section className="px-4 sm:px-8 py-4 max-w-7xl mx-auto">
         <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-white/10">
-          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-white/5 border border-white/10 font-mono text-xs">
+          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-white/5 border border-white/10 font-mono text-xs overflow-x-auto max-w-full [scrollbar-width:none] shrink-0">
             <button
               onClick={() => setActiveTab('profiler')}
-              className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
+              className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1.5 shrink-0 whitespace-nowrap ${
                 activeTab === 'profiler'
                   ? 'bg-ember text-white font-bold shadow-[0_0_12px_rgba(160,42,34,0.4)]'
                   : 'text-zinc-400 hover:text-white'
@@ -232,7 +232,7 @@ export const SystemsEngineProjectWebsite: React.FC<ProjectPageProps> = ({ onBack
             </button>
             <button
               onClick={() => setActiveTab('live_market')}
-              className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
+              className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1.5 shrink-0 whitespace-nowrap ${
                 activeTab === 'live_market'
                   ? 'bg-ember text-white font-bold shadow-[0_0_12px_rgba(160,42,34,0.4)]'
                   : 'text-zinc-400 hover:text-white'
@@ -243,7 +243,7 @@ export const SystemsEngineProjectWebsite: React.FC<ProjectPageProps> = ({ onBack
             </button>
             <button
               onClick={() => setActiveTab('benchmark_db')}
-              className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
+              className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1.5 shrink-0 whitespace-nowrap ${
                 activeTab === 'benchmark_db'
                   ? 'bg-ember text-white font-bold shadow-[0_0_12px_rgba(160,42,34,0.4)]'
                   : 'text-zinc-400 hover:text-white'
@@ -254,7 +254,7 @@ export const SystemsEngineProjectWebsite: React.FC<ProjectPageProps> = ({ onBack
             </button>
             <button
               onClick={() => setActiveTab('specs')}
-              className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
+              className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1.5 shrink-0 whitespace-nowrap ${
                 activeTab === 'specs'
                   ? 'bg-ember text-white font-bold shadow-[0_0_12px_rgba(160,42,34,0.4)]'
                   : 'text-zinc-400 hover:text-white'

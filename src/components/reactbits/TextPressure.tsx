@@ -17,30 +17,28 @@ export interface TextPressureProps {
   minFontSize?: number
 }
 
-const distCalc = (dist: number, radius: number, minVal: number, maxRange: number) =>
-  Math.max(minVal, maxRange - Math.abs((maxRange * dist) / radius) + minVal)
-
 export const TextPressure: React.FC<TextPressureProps> = ({
   text = 'DEV JANGID',
-  fontFamily = 'Roboto Flex',
+  fontFamily = 'Roboto Flex, Space Grotesk, sans-serif',
   fontUrl = 'https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&display=swap',
   width = true,
   weight = true,
   italic = true,
-  alpha = false,
+  alpha: _alpha = false,
   flex = true,
   stroke = false,
   scale = false,
-  textColor = 'rgba(255, 255, 255, 0.88)',
+  textColor = '#ffffff',
   strokeColor = '#A02A22',
   className = '',
-  minFontSize = 16
+  minFontSize = 24
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const titleRef = useRef<HTMLHeadingElement | null>(null)
   const spansRef = useRef<(HTMLSpanElement | null)[]>([])
-  const mousePos = useRef({ x: 0, y: 0 })
-  const cursorTarget = useRef({ x: 0, y: 0 })
+  const mousePos = useRef({ x: -1000, y: -1000 })
+  const cursorTarget = useRef({ x: -1000, y: -1000 })
+  const hasInteracted = useRef(false)
 
   const [fontSize, setFontSize] = useState<number>(minFontSize)
   const [scaleY, setScaleY] = useState<number>(1)
@@ -49,17 +47,19 @@ export const TextPressure: React.FC<TextPressureProps> = ({
   const chars = useMemo(() => text.split(''), [text])
   const letterCount = useMemo(() => chars.filter((c) => c !== ' ').length, [chars])
 
-  // Mouse & touch tracking with fluid 15-factor lag
+  // Mouse & touch tracking with smooth lag interpolation
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       cursorTarget.current.x = e.clientX
       cursorTarget.current.y = e.clientY
+      hasInteracted.current = true
     }
 
     const handleTouchStart = (e: TouchEvent) => {
       if (e.touches && e.touches.length > 0) {
         cursorTarget.current.x = e.touches[0].clientX
         cursorTarget.current.y = e.touches[0].clientY
+        hasInteracted.current = true
       }
     }
 
@@ -67,43 +67,39 @@ export const TextPressure: React.FC<TextPressureProps> = ({
       if (e.touches && e.touches.length > 0) {
         cursorTarget.current.x = e.touches[0].clientX
         cursorTarget.current.y = e.touches[0].clientY
+        hasInteracted.current = true
       }
+    }
+
+    const handleTouchEnd = () => {
+      // Gracefully let cursor fade out on touch release
+      setTimeout(() => {
+        cursorTarget.current = { x: -1000, y: -1000 }
+      }, 800)
     }
 
     const resetToCenter = () => {
-      if (containerRef.current) {
-        const { left, top, width: w, height: h } = containerRef.current.getBoundingClientRect()
-        cursorTarget.current.x = left + w / 2
-        cursorTarget.current.y = top + h / 2
-      }
+      cursorTarget.current = { x: -1000, y: -1000 }
     }
 
-    window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('mousemove', handleMouseMove, { passive: true })
     window.addEventListener('touchstart', handleTouchStart, { passive: true })
     window.addEventListener('touchmove', handleTouchMove, { passive: true })
-    window.addEventListener('touchend', resetToCenter, { passive: true })
-    window.addEventListener('touchcancel', resetToCenter, { passive: true })
+    window.addEventListener('touchend', handleTouchEnd, { passive: true })
+    window.addEventListener('touchcancel', handleTouchEnd, { passive: true })
     document.addEventListener('mouseleave', resetToCenter)
-
-    if (containerRef.current) {
-      const { left, top, width: w, height: h } = containerRef.current.getBoundingClientRect()
-      mousePos.current.x = left + w / 2
-      mousePos.current.y = top + h / 2
-      cursorTarget.current.x = mousePos.current.x
-      cursorTarget.current.y = mousePos.current.y
-    }
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
       window.removeEventListener('touchstart', handleTouchStart)
       window.removeEventListener('touchmove', handleTouchMove)
-      window.removeEventListener('touchend', resetToCenter)
-      window.removeEventListener('touchcancel', resetToCenter)
+      window.removeEventListener('touchend', handleTouchEnd)
+      window.removeEventListener('touchcancel', handleTouchEnd)
       document.removeEventListener('mouseleave', resetToCenter)
     }
   }, [])
 
-  // Proportional font sizing: guarantees text fills container without overflowing vertically or horizontally
+  // Proportional font sizing: text dynamically occupies container across all viewports
   const handleResize = useCallback(() => {
     if (!containerRef.current || !titleRef.current) return
     const { width: containerW, height: containerH } = containerRef.current.getBoundingClientRect()
@@ -111,11 +107,11 @@ export const TextPressure: React.FC<TextPressureProps> = ({
     const effectiveChars = Math.max(letterCount + 1, 8)
     let calcFontSize =
       containerW < 640
-        ? containerW / (0.58 * effectiveChars)
-        : containerW / (effectiveChars / 1.75)
+        ? (containerW * 0.95) / (effectiveChars * 0.58)
+        : (containerW * 0.92) / (effectiveChars * 0.56)
 
     // Never exceed container height
-    calcFontSize = Math.min(calcFontSize, containerH * 0.88)
+    calcFontSize = Math.min(calcFontSize, containerH * 0.94)
     calcFontSize = Math.max(calcFontSize, minFontSize)
 
     setFontSize(calcFontSize)
@@ -139,7 +135,7 @@ export const TextPressure: React.FC<TextPressureProps> = ({
       clearTimeout(timeoutId)
       timeoutId = setTimeout(() => {
         handleResize()
-      }, 100)
+      }, 80)
     }
 
     handleResize()
@@ -147,58 +143,53 @@ export const TextPressure: React.FC<TextPressureProps> = ({
     return () => window.removeEventListener('resize', debouncedResize)
   }, [handleResize])
 
-  // Continuous animation loop using Roboto Flex axis limits (wdth 25..151, wght 100..1000)
+  // Continuous animation loop: High-contrast bold typography with ambient harmonic wave & kinetic pressure
   useEffect(() => {
     let rafId: number
-    const animate = () => {
-      mousePos.current.x += (cursorTarget.current.x - mousePos.current.x) / 15
-      mousePos.current.y += (cursorTarget.current.y - mousePos.current.y) / 15
+    const animate = (timestamp: number) => {
+      // Smooth interpolation toward target cursor
+      mousePos.current.x += (cursorTarget.current.x - mousePos.current.x) * 0.12
+      mousePos.current.y += (cursorTarget.current.y - mousePos.current.y) * 0.12
 
       if (titleRef.current) {
-        const titleRect = titleRef.current.getBoundingClientRect()
         const isMobile = window.innerWidth < 768
+        const titleRect = titleRef.current.getBoundingClientRect()
         const radius = isMobile
-          ? Math.max(0.85 * titleRect.width, 0.45 * window.innerHeight)
-          : Math.max(titleRect.width / 2, 350)
+          ? Math.max(0.7 * titleRect.width, 220)
+          : Math.max(titleRect.width * 0.45, 340)
 
-        // Roboto Flex safe range: wdth 25 to 145, wght 100 to 850
-        const minWdth = isMobile ? 35 : 28
-        const maxRangeWdth = isMobile ? 95 : 115 // Max wdth = minWdth + maxRangeWdth <= 145
+        const time = timestamp * 0.0022
 
-        const minWght = 100
-        const maxRangeWght = 750 // Max wght = 100 + 750 = 850
-
-        spansRef.current.forEach((el) => {
+        spansRef.current.forEach((el, idx) => {
           if (!el) return
           const u = el.getBoundingClientRect()
           const charCenter = {
-            x: (u.left ?? (u as unknown as { x?: number }).x ?? 0) + u.width / 2,
-            y: (u.top ?? (u as unknown as { y?: number }).y ?? 0) + u.height / 2
+            x: u.left + u.width / 2,
+            y: u.top + u.height / 2
           }
-          const dist = Math.sqrt(
-            (charCenter.x - mousePos.current.x) ** 2 +
-            (charCenter.y - mousePos.current.y) ** 2
-          )
 
-          const p = width
-            ? Math.floor(distCalc(dist, radius, minWdth, maxRangeWdth))
-            : 100
+          const dist = Math.hypot(charCenter.x - mousePos.current.x, charCenter.y - mousePos.current.y)
+          const cursorInfluence = Math.max(0, 1 - dist / radius)
+
+          // Living harmonic wave when idle or on touch devices
+          const waveWght = Math.sin(time + idx * 0.55) * 65
+          const waveWdth = Math.cos(time * 0.9 + idx * 0.55) * 14
+
+          // High baseline weight: 740 base, flexing up to 1000 (Black) on hover, never below 650
           const f = weight
-            ? Math.floor(distCalc(dist, radius, minWght, maxRangeWght))
-            : 400
-          const m = italic
-            ? Math.min(1, Math.max(0, distCalc(dist, radius, 0, 1))).toFixed(2)
-            : '0'
-          const g = alpha
-            ? Math.min(1, Math.max(0, distCalc(dist, radius, 0, 1))).toFixed(2)
-            : '1'
+            ? Math.round(750 + cursorInfluence * 240 + (1 - cursorInfluence) * waveWght)
+            : 800
 
-          const fontVar = `'wght' ${f}, 'wdth' ${p}, 'ital' ${m}`
+          // Generous expansive width: 112 base, stretching up to 148 on hover, never below 96
+          const p = width
+            ? Math.round(112 + cursorInfluence * 34 + (1 - cursorInfluence) * waveWdth)
+            : 110
+
+          const m = italic ? (cursorInfluence * 0.75).toFixed(2) : '0'
+
+          const fontVar = `'wght' ${Math.min(1000, Math.max(620, f))}, 'wdth' ${Math.min(151, Math.max(92, p))}, 'ital' ${m}`
           if (el.style.fontVariationSettings !== fontVar) {
             el.style.fontVariationSettings = fontVar
-          }
-          if (alpha && el.style.opacity !== g) {
-            el.style.opacity = g
           }
         })
       }
@@ -206,9 +197,9 @@ export const TextPressure: React.FC<TextPressureProps> = ({
       rafId = requestAnimationFrame(animate)
     }
 
-    animate()
+    rafId = requestAnimationFrame(animate)
     return () => cancelAnimationFrame(rafId)
-  }, [width, weight, italic, alpha])
+  }, [width, weight, italic])
 
   const styleTag = useMemo(
     () => (
@@ -238,6 +229,13 @@ export const TextPressure: React.FC<TextPressureProps> = ({
 
         .text-pressure-title {
           color: ${textColor};
+          font-weight: 850;
+        }
+
+        .text-pressure-title span {
+          display: inline-block;
+          font-weight: 850;
+          will-change: font-variation-settings, transform;
         }
       `}</style>
     ),
@@ -265,7 +263,7 @@ export const TextPressure: React.FC<TextPressureProps> = ({
           textAlign: 'center',
           userSelect: 'none',
           whiteSpace: 'nowrap',
-          fontWeight: 100,
+          fontWeight: 850,
           width: '100%',
           display: 'flex',
           alignItems: 'center',
@@ -303,7 +301,7 @@ export const TextPressure: React.FC<TextPressureProps> = ({
                 display: 'inline-block',
                 flexShrink: 0,
                 textAlign: 'center',
-                minWidth: '0.26em',
+                minWidth: '0.28em',
                 color: stroke ? undefined : textColor
               }}
             >

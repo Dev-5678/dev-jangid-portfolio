@@ -80,13 +80,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         aria-hidden="true"
       />
 
-      {/* 2. Ambient Ember Glow Orb behind Title */}
+      {/* 2. Ambient Radiant Ember Glow Orb behind Title */}
       <div
         ref={glowRef}
-        className="absolute left-1/2 top-[44%] -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] sm:w-[550px] sm:h-[550px] md:w-[700px] md:h-[700px] pointer-events-none opacity-0 z-[6]"
+        className="absolute left-1/2 top-[44%] -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] sm:w-[580px] sm:h-[580px] md:w-[750px] md:h-[750px] pointer-events-none opacity-0 z-[6]"
         style={{
-          background: 'radial-gradient(circle, rgba(252,107,47,0.12) 0%, rgba(252,107,47,0.03) 45%, transparent 70%)',
-          filter: 'blur(40px)'
+          background: 'radial-gradient(circle, rgba(252,107,47,0.18) 0%, rgba(160,42,34,0.08) 45%, transparent 70%)',
+          filter: 'blur(50px)'
         }}
         aria-hidden="true"
       />
@@ -113,72 +113,72 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
       {/* 4. Top-Left Status Pill Badge */}
       <div
         ref={tagRef}
-        className="absolute top-12 sm:top-20 md:top-24 left-4 sm:left-6 md:left-14 lg:left-20 z-[40] opacity-0 flex items-center gap-2 sm:gap-2.5 max-w-[calc(100vw-5rem)]"
+        className="absolute top-16 sm:top-20 md:top-24 left-4 sm:left-6 md:left-14 lg:left-20 z-[40] opacity-0 flex items-center gap-2 sm:gap-2.5 max-w-[calc(100vw-5rem)]"
       >
-        <span className="w-[7px] h-[7px] shrink-0 rounded-full bg-ember animate-pulse" />
+        <span className="w-[7px] h-[7px] shrink-0 rounded-full bg-ember animate-pulse shadow-[0_0_10px_#A02A22]" />
         <span
-          className="text-[10px] sm:text-[11px] text-[#B5B5B5] tracking-[0.15em] sm:tracking-[0.2em] uppercase font-medium truncate"
+          className="text-[10px] sm:text-[11px] text-[#B5B5B5] tracking-[0.16em] sm:tracking-[0.22em] uppercase font-semibold truncate"
           style={{ fontFamily: 'var(--font-display)' }}
         >
           Shipping Ideas Into Reality.
         </span>
       </div>
 
-      {/* 5. Bottom-Left Engineering Subtitle */}
+      {/* 5. Engineering Subtitle (Adaptive: centered on mobile, pinned bottom-left on desktop) */}
       <div
         ref={descRef}
-        className="absolute bottom-[20%] sm:bottom-[18%] md:top-[74%] md:bottom-auto left-4 sm:left-6 md:left-14 lg:left-20 z-[40] max-w-[calc(100vw-2rem)] sm:max-w-[320px] md:max-w-[380px] lg:max-w-[420px] opacity-0"
+        className="absolute bottom-[16%] sm:bottom-[15%] md:bottom-[11%] lg:bottom-[13%] left-4 right-4 sm:left-6 sm:right-6 md:left-14 md:right-auto lg:left-20 z-[40] max-w-[92vw] sm:max-w-[360px] md:max-w-[400px] lg:max-w-[440px] opacity-0 text-center md:text-left mx-auto md:mx-0"
       >
         <p
-          className="text-[11.5px] sm:text-[13px] md:text-[14px] text-[#B5B5B5] leading-[1.6] sm:leading-[1.8] font-normal tracking-wide"
+          className="text-[11.5px] sm:text-[13px] md:text-[14px] text-[#B5B5B5] leading-[1.6] sm:leading-[1.75] font-normal tracking-wide"
           style={{ fontFamily: 'var(--font-poppins), sans-serif' }}
         >
           Full-Stack Developer &amp; Computer Science Engineer crafting fast, resilient, and motion-driven digital products.
         </p>
       </div>
 
-      {/* 6. Bottom-Right Magnetic Action Buttons (Exact 2-button layout from Reel) */}
+      {/* 6. Magnetic Action Buttons (Adaptive: side-by-side on mobile, stacked on desktop) */}
       <div
         ref={ctaRef}
-        className="absolute bottom-6 sm:bottom-[8%] md:bottom-[12%] left-4 right-4 sm:left-auto sm:right-6 md:right-14 lg:right-20 z-[40] opacity-0 flex flex-row sm:flex-col justify-between sm:justify-end items-center sm:items-end gap-2.5 sm:gap-3.5"
+        className="absolute bottom-11 sm:bottom-12 md:bottom-[10%] lg:bottom-[12%] left-4 right-4 sm:left-auto sm:right-6 md:right-14 lg:right-20 z-[40] opacity-0 flex flex-row md:flex-col justify-center sm:justify-end items-center md:items-end gap-2.5 sm:gap-3.5 max-w-sm sm:max-w-none mx-auto sm:mx-0"
       >
         <a
           href="#projects"
-          className="relative inline-flex items-center justify-center gap-2.5 px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full font-semibold text-[11px] sm:text-[13px] tracking-wide transition-all duration-300 overflow-hidden cursor-pointer bg-ember hover:bg-ember-bright text-white border border-ember/60 shadow-[0_0_25px_rgba(160,42,34,0.5)] hover:shadow-[0_0_40px_rgba(252,107,47,0.7)] hover:scale-105 active:scale-95 group touch-manipulation"
+          className="relative inline-flex items-center justify-center gap-2 sm:gap-2.5 px-4 sm:px-7 py-2.5 sm:py-3.5 rounded-full font-semibold text-[11px] sm:text-[13px] tracking-wide transition-all duration-300 overflow-hidden cursor-pointer bg-ember hover:bg-ember-bright text-white border border-ember/70 shadow-[0_0_25px_rgba(160,42,34,0.55)] hover:shadow-[0_0_40px_rgba(252,107,47,0.75)] hover:scale-105 active:scale-95 group touch-manipulation flex-1 sm:flex-initial"
           title="Explore Engineering Highlights"
         >
           <span className="relative z-10 flex items-center gap-2 sm:gap-3">
-            <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-black/30 border border-white/30 flex items-center justify-center transition-transform duration-500 group-hover:rotate-45 group-hover:bg-white group-hover:text-ember">
+            <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-black/30 border border-white/30 flex items-center justify-center transition-transform duration-500 group-hover:rotate-45 group-hover:bg-white group-hover:text-ember shrink-0">
               <svg width="10" height="10" viewBox="0 0 12 12" fill="none" className="sm:w-[11px] sm:h-[11px]">
                 <path d="M1 11L11 1M11 1H3M11 1V9" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </span>
-            <span>Explore More</span>
+            <span className="whitespace-nowrap">Explore More</span>
           </span>
         </a>
 
         <a
           href="#contact"
-          className="relative inline-flex items-center justify-center gap-2.5 px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full font-semibold text-[11px] sm:text-[13px] tracking-wide transition-all duration-300 overflow-hidden cursor-pointer bg-white/10 hover:bg-white text-white hover:text-black border border-white/20 hover:border-white shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:shadow-[0_0_35px_rgba(255,255,255,0.5)] hover:scale-105 active:scale-95 group touch-manipulation backdrop-blur-md"
+          className="relative inline-flex items-center justify-center gap-2 sm:gap-2.5 px-4 sm:px-7 py-2.5 sm:py-3.5 rounded-full font-semibold text-[11px] sm:text-[13px] tracking-wide transition-all duration-300 overflow-hidden cursor-pointer bg-white/10 hover:bg-white text-white hover:text-black border border-white/20 hover:border-white shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:shadow-[0_0_35px_rgba(255,255,255,0.5)] hover:scale-105 active:scale-95 group touch-manipulation backdrop-blur-md flex-1 sm:flex-initial"
           title="Direct Contact Transmission"
         >
           <span className="relative z-10 flex items-center gap-2 sm:gap-3">
-            <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/10 border border-white/20 flex items-center justify-center transition-transform duration-500 group-hover:rotate-45 group-hover:bg-ember group-hover:text-white group-hover:border-ember">
+            <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/10 border border-white/20 flex items-center justify-center transition-transform duration-500 group-hover:rotate-45 group-hover:bg-ember group-hover:text-white group-hover:border-ember shrink-0">
               <svg width="10" height="10" viewBox="0 0 12 12" fill="none" className="sm:w-[11px] sm:h-[11px]">
                 <path d="M1 11L11 1M11 1H3M11 1V9" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </span>
-            <span>Let's Talk</span>
+            <span className="whitespace-nowrap">Let's Talk</span>
           </span>
         </a>
       </div>
 
-      {/* 7. Center Kinetic Variable Typography with Ember Stroke & Drop Shadow */}
+      {/* 7. Center Kinetic Bold Variable Typography with Radiant Ember Backlight */}
       <div
-        className="absolute top-[40%] sm:top-[42%] md:top-[44%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-[15] pointer-events-none select-none w-full flex flex-col items-center justify-center px-4"
+        className="absolute top-[38%] sm:top-[42%] md:top-[44%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-[15] pointer-events-none select-none w-full flex flex-col items-center justify-center px-3 sm:px-4"
         aria-hidden="true"
       >
-        <div className="w-full max-w-[700px] md:max-w-[850px] h-[52px] sm:h-[80px] md:h-[135px] relative flex items-center justify-center scale-y-[1.15] transform-gpu drop-shadow-[0_0_35px_rgba(252,107,47,0.3)]">
+        <div className="w-full max-w-[94vw] sm:max-w-[720px] md:max-w-[900px] lg:max-w-[1100px] h-[68px] sm:h-[95px] md:h-[135px] lg:h-[165px] relative flex items-center justify-center transform-gpu drop-shadow-[0_0_40px_rgba(252,107,47,0.35)]">
           <div style={{ position: 'relative', width: '100%', height: '100%', background: 'transparent' }}>
             <TextPressure
               text="DEV JANGID"
@@ -189,17 +189,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
               weight={true}
               italic={true}
               alpha={false}
-              textColor={theme === 'dark' ? 'rgba(255, 255, 255, 0.88)' : 'rgba(24, 24, 27, 0.95)'}
-              minFontSize={16}
+              textColor={theme === 'dark' ? '#ffffff' : '#111116'}
+              minFontSize={28}
               className="text-pressure-title tp-flex"
             />
           </div>
         </div>
 
         {/* Cinematic Sub-headline */}
-        <div className="mt-8 sm:mt-12 md:mt-16 text-center z-[20] px-2">
+        <div className="mt-4 sm:mt-8 md:mt-12 text-center z-[20] px-2">
           <p
-            className="hero-line text-[clamp(0.55rem,2.2vw,0.88rem)] md:text-[clamp(0.72rem,1.08vw,0.88rem)] font-extrabold tracking-[0.12em] sm:tracking-[0.25em] uppercase text-ember drop-shadow-[0_0_20px_rgba(252,107,47,0.7)]"
+            className="hero-line text-[clamp(0.64rem,2.4vw,0.88rem)] md:text-[clamp(0.74rem,1.1vw,0.92rem)] font-extrabold tracking-[0.15em] sm:tracking-[0.26em] uppercase text-ember drop-shadow-[0_0_20px_rgba(252,107,47,0.7)]"
             style={{ fontFamily: 'var(--font-poppins), sans-serif' }}
           >
             Crafting Interfaces That People Remember.
@@ -207,11 +207,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         </div>
       </div>
 
-      {/* 8. Center Animated Kinetic Scroll Indicator */}
+      {/* 8. Center Animated Kinetic Scroll Indicator (Positioned with safe clearance) */}
       <a
         href="#introduction"
         ref={scrollHintRef}
-        className="hero-scroll-indicator absolute bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-[45] flex flex-col items-center gap-1.5 sm:gap-2 opacity-0 cursor-pointer group select-none transition-transform duration-300 hover:scale-105"
+        className="hero-scroll-indicator absolute bottom-2 sm:bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 z-[45] flex flex-col items-center gap-1 sm:gap-1.5 opacity-0 cursor-pointer group select-none transition-transform duration-300 hover:scale-105"
         aria-label="Scroll to Philosophy section"
       >
         <span
@@ -220,7 +220,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         >
           Scroll
         </span>
-        <div className="scroll-pill-track w-[18px] h-[30px] rounded-full border border-white/20 group-hover:border-ember/60 transition-colors flex items-start justify-center p-1 relative overflow-hidden bg-white/5 backdrop-blur-sm">
+        <div className="scroll-pill-track w-[18px] h-[28px] sm:h-[30px] rounded-full border border-white/20 group-hover:border-ember/60 transition-colors flex items-start justify-center p-1 relative overflow-hidden bg-white/5 backdrop-blur-sm">
           <div className="scroll-pill-dot w-1.5 h-1.5 rounded-full bg-ember shadow-[0_0_8px_#A02A22]" />
         </div>
       </a>

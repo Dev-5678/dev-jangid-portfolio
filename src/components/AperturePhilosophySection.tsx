@@ -39,11 +39,15 @@ export const AperturePhilosophySection: React.FC<AperturePhilosophySectionProps>
         }
       })
 
-      // Frame clip-path expands from circle(120px at 50% 50%) to full screen (0 -> 0.52)
+      // Responsive aperture radius: 85px on mobile, 125px on desktop
+      const isMobile = window.innerWidth < 640
+      const startCircle = isMobile ? 'circle(85px at 50% 50%)' : 'circle(125px at 50% 50%)'
+
+      // Frame clip-path expands from circular aperture to full screen (0 -> 0.55)
       tl.fromTo(
         frameRef.current,
         {
-          clipPath: 'circle(120px at 50% 50%)'
+          clipPath: startCircle
         },
         {
           clipPath: 'circle(145% at 50% 50%)',
