@@ -2,11 +2,16 @@ import React, { useState, useEffect, useRef } from 'react'
 import { personalInfo } from '../data/portfolio'
 import { SpotlightCard } from '../components/reactbits/SpotlightCard'
 import { Magnet } from '../components/reactbits/Magnet'
-import { Mail, Phone, MapPin, Send, CheckCircle2, AlertTriangle, Loader2, Terminal } from 'lucide-react'
+import { Mail, Phone, MapPin, Send, CheckCircle2, AlertTriangle, Loader2, Terminal, Copy, Download } from 'lucide-react'
+import { downloadVCard } from '../utils/vCard'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
+
+interface ContactSectionProps {
+  onCopyText?: (text: string, label: string) => void
+}
 
 interface FormData {
   name: string
@@ -23,7 +28,7 @@ interface FormErrors {
   message?: string
 }
 
-export const ContactSection: React.FC = () => {
+export const ContactSection: React.FC<ContactSectionProps> = ({ onCopyText }) => {
   const sectionRef = useRef<HTMLElement>(null)
   const formId = import.meta.env.VITE_FORMSPREE_FORM_ID || ''
 
@@ -195,13 +200,26 @@ export const ContactSection: React.FC = () => {
               <span className="text-[11px] font-mono text-gray-500 dark:text-gray-400 block mb-1">
                 PRIMARY EMAIL
               </span>
-              <a
-                href={`mailto:${personalInfo.email}`}
-                className="font-mono text-sm sm:text-base font-bold text-[#111317] dark:text-[#F4F7FB] hover:text-[#CCFF00] dark:hover:text-[#CCFF00] flex items-center gap-2 transition-colors break-all"
-              >
-                <Mail className="w-4 h-4 text-[#00E5FF] flex-shrink-0" />
-                <span>{personalInfo.email}</span>
-              </a>
+              <div className="flex items-center justify-between gap-2">
+                <a
+                  href={`mailto:${personalInfo.email}`}
+                  className="font-mono text-sm sm:text-base font-bold text-[#111317] dark:text-[#F4F7FB] hover:text-[#CCFF00] dark:hover:text-[#CCFF00] flex items-center gap-2 transition-colors break-all"
+                >
+                  <Mail className="w-4 h-4 text-[#00E5FF] flex-shrink-0" />
+                  <span>{personalInfo.email}</span>
+                </a>
+                {onCopyText && (
+                  <button
+                    onClick={() => onCopyText(personalInfo.email, personalInfo.email)}
+                    className="p-1.5 text-gray-400 hover:text-[#111317] dark:hover:text-[#CCFF00] border border-gray-300 dark:border-gray-700 hover:border-[#111317] dark:hover:border-[#CCFF00] transition-colors cursor-pointer text-[10px] font-mono flex items-center gap-1"
+                    title="Copy Email to Clipboard"
+                    aria-label="Copy Email"
+                  >
+                    <Copy className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">COPY</span>
+                  </button>
+                )}
+              </div>
             </div>
 
             {/* Phone */}
@@ -209,17 +227,30 @@ export const ContactSection: React.FC = () => {
               <span className="text-[11px] font-mono text-gray-500 dark:text-gray-400 block mb-1">
                 TELEPHONE (CALL / SMS)
               </span>
-              <a
-                href={`tel:${personalInfo.phone}`}
-                className="font-mono text-sm sm:text-base font-bold text-[#111317] dark:text-[#F4F7FB] hover:text-[#CCFF00] dark:hover:text-[#CCFF00] flex items-center gap-2 transition-colors"
-              >
-                <Phone className="w-4 h-4 text-[#CCFF00] flex-shrink-0" />
-                <span>{personalInfo.displayPhone}</span>
-              </a>
+              <div className="flex items-center justify-between gap-2">
+                <a
+                  href={`tel:${personalInfo.phone}`}
+                  className="font-mono text-sm sm:text-base font-bold text-[#111317] dark:text-[#F4F7FB] hover:text-[#CCFF00] dark:hover:text-[#CCFF00] flex items-center gap-2 transition-colors"
+                >
+                  <Phone className="w-4 h-4 text-[#CCFF00] flex-shrink-0" />
+                  <span>{personalInfo.displayPhone}</span>
+                </a>
+                {onCopyText && (
+                  <button
+                    onClick={() => onCopyText(personalInfo.phone, personalInfo.phone)}
+                    className="p-1.5 text-gray-400 hover:text-[#111317] dark:hover:text-[#CCFF00] border border-gray-300 dark:border-gray-700 hover:border-[#111317] dark:hover:border-[#CCFF00] transition-colors cursor-pointer text-[10px] font-mono flex items-center gap-1"
+                    title="Copy Phone to Clipboard"
+                    aria-label="Copy Phone"
+                  >
+                    <Copy className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">COPY</span>
+                  </button>
+                )}
+              </div>
             </div>
 
             {/* Location */}
-            <div>
+            <div className="mb-6">
               <span className="text-[11px] font-mono text-gray-500 dark:text-gray-400 block mb-1">
                 GEOGRAPHIC LOCATION
               </span>
@@ -227,6 +258,18 @@ export const ContactSection: React.FC = () => {
                 <MapPin className="w-4 h-4 text-[#FF5500] flex-shrink-0" />
                 <span>{personalInfo.location}</span>
               </div>
+            </div>
+
+            {/* Feature 4: Download vCard Button */}
+            <div className="pt-4 border-t border-gray-200 dark:border-gray-800">
+              <button
+                onClick={downloadVCard}
+                className="w-full brutal-btn py-2.5 bg-white dark:bg-[#1E293B] text-[#111317] dark:text-[#CCFF00] font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-[#CCFF00] hover:text-[#111317] dark:hover:bg-[#CCFF00] dark:hover:text-[#111317]"
+                title="Download vCard contact file (.vcf) for instant contact import"
+              >
+                <Download className="w-4 h-4 text-[#FF5500]" />
+                <span>Download vCard Contact (.vcf)</span>
+              </button>
             </div>
           </SpotlightCard>
 

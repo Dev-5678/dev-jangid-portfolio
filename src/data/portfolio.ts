@@ -10,6 +10,8 @@ export interface PersonalInfo {
   monogram: string
   status: string
   educationSummary?: string
+  github?: string
+  linkedin?: string
 }
 
 export interface ExperienceItem {
@@ -78,7 +80,9 @@ export const personalInfo: PersonalInfo = {
   roleSummary: "Specializing in System Maintenance, Network Security Compliance, Data Structures, and Generative AI Solutions.",
   monogram: "DJ",
   status: "OPEN FOR OPPORTUNITIES",
-  educationSummary: "B.Tech CSE (Expected 2027)"
+  educationSummary: "B.Tech CSE (Expected 2027)",
+  github: "https://github.com/devjangid911",
+  linkedin: "https://www.linkedin.com/in/devjangid911/"
 }
 
 export const experiences: ExperienceItem[] = [
