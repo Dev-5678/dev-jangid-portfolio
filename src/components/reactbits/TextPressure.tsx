@@ -17,8 +17,8 @@ export interface TextPressureProps {
   minFontSize?: number
 }
 
-const distCalc = (dist: number, radius: number, minVal: number, maxVal: number) =>
-  Math.max(minVal, maxVal - Math.abs((maxVal * dist) / radius) + minVal)
+const distCalc = (dist: number, radius: number, minVal: number, maxRange: number) =>
+  Math.max(minVal, maxRange - Math.abs((maxRange * dist) / radius) + minVal)
 
 export const TextPressure: React.FC<TextPressureProps> = ({
   text = 'DEV JANGID',
@@ -46,10 +46,10 @@ export const TextPressure: React.FC<TextPressureProps> = ({
   const [scaleY, setScaleY] = useState<number>(1)
   const [lineHeight, setLineHeight] = useState<number>(1)
 
-  const words = useMemo(() => text.split(' '), [text])
-  const totalLetters = useMemo(() => words.reduce((acc, w) => acc + w.length, 0), [words])
+  const chars = useMemo(() => text.split(''), [text])
+  const letterCount = useMemo(() => chars.filter((c) => c !== ' ').length, [chars])
 
-  // Mouse & touch tracking with smooth lag interpolation
+  // Mouse & touch tracking with fluid 15-factor lag
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       cursorTarget.current.x = e.clientX
@@ -103,15 +103,21 @@ export const TextPressure: React.FC<TextPressureProps> = ({
     }
   }, [])
 
-  // Font size calculation (exact from reel)
+  // Proportional font sizing: guarantees text fills container without overflowing vertically or horizontally
   const handleResize = useCallback(() => {
     if (!containerRef.current || !titleRef.current) return
     const { width: containerW, height: containerH } = containerRef.current.getBoundingClientRect()
+
+    const effectiveChars = Math.max(letterCount + 1, 8)
     let calcFontSize =
       containerW < 640
-        ? containerW / (0.72 * totalLetters)
-        : containerW / (totalLetters / 2)
+        ? containerW / (0.58 * effectiveChars)
+        : containerW / (effectiveChars / 1.75)
+
+    // Never exceed container height
+    calcFontSize = Math.min(calcFontSize, containerH * 0.88)
     calcFontSize = Math.max(calcFontSize, minFontSize)
+
     setFontSize(calcFontSize)
     setScaleY(1)
     setLineHeight(1)
@@ -125,7 +131,7 @@ export const TextPressure: React.FC<TextPressureProps> = ({
         setLineHeight(ratio)
       }
     })
-  }, [totalLetters, minFontSize, scale])
+  }, [letterCount, minFontSize, scale])
 
   useEffect(() => {
     let timeoutId: ReturnType<typeof setTimeout>
@@ -141,7 +147,7 @@ export const TextPressure: React.FC<TextPressureProps> = ({
     return () => window.removeEventListener('resize', debouncedResize)
   }, [handleResize])
 
-  // Continuous animation RAF loop (exact from reel)
+  // Continuous animation loop using Roboto Flex axis limits (wdth 25..151, wght 100..1000)
   useEffect(() => {
     let rafId: number
     const animate = () => {
@@ -154,6 +160,13 @@ export const TextPressure: React.FC<TextPressureProps> = ({
         const radius = isMobile
           ? Math.max(0.85 * titleRect.width, 0.45 * window.innerHeight)
           : Math.max(titleRect.width / 2, 350)
+
+        // Roboto Flex safe range: wdth 25 to 145, wght 100 to 850
+        const minWdth = isMobile ? 35 : 28
+        const maxRangeWdth = isMobile ? 95 : 115 // Max wdth = minWdth + maxRangeWdth <= 145
+
+        const minWght = 100
+        const maxRangeWght = 750 // Max wght = 100 + 750 = 850
 
         spansRef.current.forEach((el) => {
           if (!el) return
@@ -168,16 +181,16 @@ export const TextPressure: React.FC<TextPressureProps> = ({
           )
 
           const p = width
-            ? Math.floor(distCalc(dist, radius, isMobile ? 25 : 5, isMobile ? 165 : 200))
+            ? Math.floor(distCalc(dist, radius, minWdth, maxRangeWdth))
             : 100
           const f = weight
-            ? Math.floor(distCalc(dist, radius, 100, 900))
+            ? Math.floor(distCalc(dist, radius, minWght, maxRangeWght))
             : 400
           const m = italic
-            ? distCalc(dist, radius, 0, 1).toFixed(2)
+            ? Math.min(1, Math.max(0, distCalc(dist, radius, 0, 1))).toFixed(2)
             : '0'
           const g = alpha
-            ? distCalc(dist, radius, 0, 1).toFixed(2)
+            ? Math.min(1, Math.max(0, distCalc(dist, radius, 0, 1))).toFixed(2)
             : '1'
 
           const fontVar = `'wght' ${f}, 'wdth' ${p}, 'ital' ${m}`
@@ -204,7 +217,8 @@ export const TextPressure: React.FC<TextPressureProps> = ({
 
         .tp-flex {
           display: flex;
-          justify-content: space-between;
+          align-items: center;
+          justify-content: center;
         }
 
         .tp-stroke span {
@@ -232,7 +246,7 @@ export const TextPressure: React.FC<TextPressureProps> = ({
 
   const classNames = [className, flex ? 'tp-flex' : '', stroke ? 'tp-stroke' : ''].filter(Boolean).join(' ')
 
-  let globalCharIndex = 0
+  let letterIndex = 0
 
   return (
     <div ref={containerRef} style={{ position: 'relative', width: '100%', height: '100%', background: 'transparent' }}>
@@ -256,39 +270,47 @@ export const TextPressure: React.FC<TextPressureProps> = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: '0.35em'
+          gap: '0.04em'
         }}
       >
-        {words.map((word, wIdx) => (
-          <span
-            key={wIdx}
-            style={{
-              display: 'inline-flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              flex: word.length
-            }}
-          >
-            {word.split('').map((char) => {
-              const charIdx = globalCharIndex++
-              return (
-                <span
-                  key={charIdx}
-                  ref={(el) => {
-                    spansRef.current[charIdx] = el
-                  }}
-                  data-char={char}
-                  style={{
-                    display: 'inline-block',
-                    color: stroke ? undefined : textColor
-                  }}
-                >
-                  {char}
-                </span>
-              )
-            })}
-          </span>
-        ))}
+        {chars.map((char, idx) => {
+          if (char === ' ') {
+            return (
+              <span
+                key={idx}
+                aria-hidden="true"
+                style={{
+                  display: 'inline-block',
+                  width: '0.45em',
+                  minWidth: '0.3em',
+                  flexShrink: 0
+                }}
+              >
+                &nbsp;
+              </span>
+            )
+          }
+
+          const charIdx = letterIndex++
+          return (
+            <span
+              key={idx}
+              ref={(el) => {
+                spansRef.current[charIdx] = el
+              }}
+              data-char={char}
+              style={{
+                display: 'inline-block',
+                flexShrink: 0,
+                textAlign: 'center',
+                minWidth: '0.26em',
+                color: stroke ? undefined : textColor
+              }}
+            >
+              {char}
+            </span>
+          )
+        })}
       </h1>
     </div>
   )

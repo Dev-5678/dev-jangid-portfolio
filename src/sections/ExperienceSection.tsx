@@ -39,7 +39,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ isTLDR: _i
           <div className="exp-item group pb-8 sm:pb-12 border-b border-white/10 last:border-b-0 flex flex-col md:flex-row md:items-start justify-between gap-4 sm:gap-6 md:gap-12 transition-colors duration-300">
             <div className="md:w-1/3 flex-shrink-0">
               <span className="text-xs font-mono font-medium text-ash tracking-wider block mb-1">
-                2024 — Present
+                14 August 2026 — 25 Sept 2026
               </span>
               <span className="text-xs sm:text-sm font-semibold tracking-wider uppercase block font-mono text-ember">
                 Airports Authority of India
@@ -50,7 +50,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ isTLDR: _i
                 Network Security &amp; IT Intern
               </h3>
               <p className="text-xs sm:text-sm md:text-base text-ash leading-relaxed mb-4 sm:mb-6 font-normal">
-                Assisting Northern Region HQ IT division in managing enterprise network segmentation and daily system diagnostics.
+                Northern Region HQ IT division. Supported enterprise network monitoring, system diagnostics, and operational compliance.
               </p>
               <ul className="space-y-2.5">
                 <li className="flex items-start gap-3 text-sm text-silver font-normal">
@@ -73,7 +73,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ isTLDR: _i
           <div className="exp-item group pb-8 sm:pb-12 border-b border-white/10 last:border-b-0 flex flex-col md:flex-row md:items-start justify-between gap-4 sm:gap-6 md:gap-12 transition-colors duration-300">
             <div className="md:w-1/3 flex-shrink-0">
               <span className="text-xs font-mono font-medium text-ash tracking-wider block mb-1">
-                2024
+                15 July 2025 — 31 July 2025
               </span>
               <span className="text-xs sm:text-sm font-semibold tracking-wider uppercase block font-mono text-ember">
                 India Space Lab
@@ -107,15 +107,15 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ isTLDR: _i
           <div className="exp-item group pb-8 sm:pb-12 border-b border-white/10 last:border-b-0 flex flex-col md:flex-row md:items-start justify-between gap-4 sm:gap-6 md:gap-12 transition-colors duration-300">
             <div className="md:w-1/3 flex-shrink-0">
               <span className="text-xs font-mono font-medium text-ash tracking-wider block mb-1">
-                2024
+                June 2024 (1 Month)
               </span>
               <span className="text-xs sm:text-sm font-semibold tracking-wider uppercase block font-mono text-ember">
-                Generative AI Traineeship
+                Gen AI Academy Program
               </span>
             </div>
             <div className="md:w-2/3">
               <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2 sm:mb-3 tracking-tight group-hover:text-cloud transition-colors">
-                AI / RAG Solutions Trainee
+                Generative AI &amp; Multimodal RAG Scholar
               </h3>
               <p className="text-xs sm:text-sm md:text-base text-ash leading-relaxed mb-4 sm:mb-6 font-normal">
                 Specialized curriculum exploring Google Cloud GenAI SDKs, vector embeddings, and retrieval-augmented pipelines.

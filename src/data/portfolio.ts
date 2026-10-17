@@ -88,74 +88,108 @@ export const personalInfo: PersonalInfo = {
 export const experiences: ExperienceItem[] = [
   {
     id: "aai-it-intern",
-    role: "IT Intern",
+    role: "Network Security & IT Intern",
     organization: "Airports Authority of India (AAI)",
     location: "New Delhi, India",
-    dates: "July 2026 – August 2026",
+    dates: "14 August 2026 – 25 September 2026",
     type: "Internship",
     responsibilities: [
-      "Supported senior engineers in the IT department with system maintenance, network monitoring, and technical troubleshooting to help keep operational systems running smoothly.",
-      "Assisted with database management, software updates, and IT infrastructure administration within the Northern Region headquarters.",
-      "Diagnosed system issues, resolved internal technical tickets, and documented software workflows to improve team knowledge and processes.",
-      "Evaluated network security compliance and helped streamline internal IT processes using computer science principles."
+      "Supported Northern Region HQ IT division with enterprise network monitoring, system diagnostics, and operational troubleshooting.",
+      "Assisted with database replication, server routine maintenance, and critical IT infrastructure administration.",
+      "Diagnosed operational system tickets and verified network security compliance across internal administrative subnets.",
+      "Documented technical standard operating procedures (SOPs) to enhance operational continuity and reliability."
     ],
-    skillsApplied: ["Network Security", "IT Infrastructure", "System Troubleshooting", "Database Management", "Workflow Documentation"]
+    skillsApplied: ["Network Security Compliance", "VLAN Segregation", "Database Replication", "System Diagnostics", "ITIL Workflows"]
   },
   {
     id: "isl-space-tech-intern",
-    role: "Space Technology Intern",
+    role: "Space Systems & CanSat Trainee",
     organization: "India Space Lab (ISL)",
     location: "Haryana, India",
-    dates: "June 2025 – July 2025",
+    dates: "15 July 2025 – 31 July 2025",
     type: "Internship",
     responsibilities: [
-      "Gained hands-on experience in CanSat and CubeSat payload design, telemetry tracking, and satellite communication systems.",
-      "Completed technical training in space science and technology, focusing on satellite architectures and embedded software/hardware integration.",
-      "Assessed remote technology data, rocketry dynamics, and astronomical telemetry tools to support aerospace engineering solutions.",
-      "Studied advanced drone technology, including navigation protocols, sensor integration, and spatial control systems."
+      "Gained hands-on experience in 1U CanSat payload design, telemetry tracking, and aerospace communication systems.",
+      "Integrated barometric pressure and temperature sensors with embedded C/C++ microcontrollers.",
+      "Calibrated 433 MHz UHF radio frequency telemetry downlink transceiver for live ground station packet decoding.",
+      "Studied autonomous drone navigation protocols, sensor integration, and parachute recovery systems."
     ],
-    skillsApplied: ["Telemetry Tracking", "CanSat / CubeSat Payloads", "Satellite Architectures", "Hardware/Software Integration", "Drone Navigation Protocols"]
+    skillsApplied: ["CanSat & CubeSat Payloads", "433 MHz UHF Telemetry", "Embedded C/C++", "Drone Navigation Protocols", "Sensor Telemetry"]
   },
   {
     id: "genai-trainee",
-    role: "Generative AI Trainee",
-    organization: "Specialized Training Program",
-    dates: "April 2025 – June 2025",
+    role: "Generative AI & Multimodal RAG Scholar",
+    organization: "Gen AI Academy Program",
+    location: "Remote / Hybrid",
+    dates: "June 2024 (1 Month)",
     type: "Training",
     responsibilities: [
-      "Developed hands-on experience with generative AI workflows, Gemini, Streamlit, and multimodal retrieval-augmented generation (RAG).",
-      "Assisted in deploying cloud solutions to improve team efficiency and project delivery.",
-      "Supported troubleshooting of client cloud-infrastructure issues.",
-      "Contributed to documentation of processes and best practices for team knowledge sharing."
+      "Completed intensive hands-on curriculum in Generative AI architectures, Gemini 1.5 Pro APIs, and Vertex AI.",
+      "Engineered retrieval-augmented generation (RAG) pipelines incorporating high-dimensional vector embeddings and cosine similarity search.",
+      "Built and deployed interactive Python Streamlit prototypes for real-time document reasoning and multimodal synthesis.",
+      "Formulated prompt engineering workflows and grounded context retrieval to minimize hallucinations in technical query parsing."
     ],
-    skillsApplied: ["Generative AI", "Gemini APIs", "Streamlit", "Multimodal RAG", "Cloud Infrastructure"]
+    skillsApplied: ["Gemini 1.5 Pro", "Vertex AI", "Multimodal RAG", "Vector Embeddings", "Python & Streamlit", "Prompt Engineering"]
   }
 ]
 
 export const skillCategories: SkillCategory[] = [
   {
     title: "Programming Languages",
-    description: "Core languages for algorithmic implementation, database queries, and systems development.",
+    description: "Production and algorithmic languages used for high-performance systems, database operations, and software development.",
     badge: "LANGUAGES",
-    skills: ["C", "C++", "Java", "SQL"]
+    skills: ["C++", "Java", "Python", "TypeScript", "JavaScript (ESNext)", "SQL", "C", "HTML5 & Modern CSS"]
   },
   {
-    title: "Core Computer Science",
-    description: "Algorithmic thinking, time/space complexity optimization, and software architecture.",
+    title: "Core Computer Science & Systems",
+    description: "Deep computational foundations, algorithmic complexity optimization, and enterprise infrastructure.",
     badge: "CORE_CS",
-    skills: ["Data Structures and Algorithms (DSA)", "Object-Oriented Programming (OOP)"]
+    skills: [
+      "Data Structures & Algorithms (DSA)",
+      "Object-Oriented Programming (OOP)",
+      "Network Security & Compliance",
+      "VLAN & Subnet Segregation",
+      "Linux & POSIX Shell",
+      "Database Administration"
+    ]
   },
   {
-    title: "Web and AI Development",
-    description: "Modern full-stack interfaces, multimodal intelligence, and conversational agent workflows.",
-    badge: "AI_WEB",
-    skills: ["Full-Stack Web Development", "Generative AI", "Gemini APIs", "Vertex AI", "Multimodal RAG", "Streamlit"]
+    title: "Artificial Intelligence & Cloud",
+    description: "Next-generation generative intelligence, semantic retrieval architectures, and rapid cloud deployment.",
+    badge: "AI_CLOUD",
+    skills: [
+      "Multimodal Generative AI",
+      "Gemini 1.5 Pro & Vertex AI",
+      "Retrieval-Augmented Generation (RAG)",
+      "High-Dimensional Vector Embeddings",
+      "Streamlit Application Engine",
+      "Prompt Optimization & Context Grounding"
+    ]
   },
   {
-    title: "Tools and Systems",
-    description: "Operational tools for version control, infrastructure stability, and network troubleshooting.",
-    badge: "OPS_SYSTEMS",
-    skills: ["Git", "Database Management", "IT Infrastructure", "Network Troubleshooting"]
+    title: "Modern Web & Frontend Engineering",
+    description: "Interactive, motion-driven user interfaces built with modern reactive component patterns and build pipelines.",
+    badge: "FRONTEND_UI",
+    skills: [
+      "React 19 & Next.js Paradigms",
+      "GSAP Motion & Kinetic Typography",
+      "Tailwind CSS 4",
+      "Vite & Rollup Bundling",
+      "WebSockets & RESTful APIs",
+      "Vitest & Accessibility (WCAG 2.4.1)"
+    ]
+  },
+  {
+    title: "Aerospace & Embedded Telemetry",
+    description: "Mission-critical hardware/software communication and remote sensing protocols.",
+    badge: "TELEMETRY",
+    skills: [
+      "1U CanSat Payload Architecture",
+      "433 MHz UHF Radio Telemetry",
+      "FSK Packet Decoding",
+      "Sensor Telemetry Pipelines",
+      "Drone Navigation Protocols"
+    ]
   }
 ]
 

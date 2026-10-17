@@ -1,27 +1,37 @@
 import React from 'react'
 import { personalInfo } from '../data/portfolio'
-import { Code2, Database, Network, Sparkles, MapPin, Terminal } from 'lucide-react'
+import { Code2, Database, Network, Sparkles, MapPin, Terminal, Radio, Layers } from 'lucide-react'
 
 const STRENGTHS = [
   {
     icon: Network,
     title: "IT Systems & Network Security",
-    desc: "Hands-on experience monitoring enterprise networks, diagnosing server tickets, and evaluating network security compliance at Airports Authority of India."
+    desc: "Hands-on experience monitoring enterprise networks, diagnosing server tickets, and evaluating network security compliance at Airports Authority of India (Northern Region HQ)."
   },
   {
     icon: Sparkles,
     title: "Generative AI & Multimodal RAG",
-    desc: "Practical workflow implementation with Gemini APIs, Vertex AI, Streamlit, and retrieval-augmented generation for intelligent data processing."
+    desc: "Production workflow implementation with Gemini 1.5 Pro, Vertex AI, Streamlit, and retrieval-augmented generation pipelines using high-dimensional vector embeddings."
   },
   {
     icon: Code2,
-    title: "Software Fundamentals & Algorithms",
-    desc: "Strong foundation in Data Structures and Algorithms (DSA), Object-Oriented Programming (OOP), C, C++, and Java for robust computational logic."
+    title: "Software Engineering & Algorithms",
+    desc: "Rigorous foundation in Data Structures and Algorithms (DSA), Object-Oriented Programming (OOP), C, C++, and Java for deterministic microsecond execution."
+  },
+  {
+    icon: Radio,
+    title: "Aerospace Telemetry & Embedded Systems",
+    desc: "Hands-on payload engineering at India Space Lab, calibrating 433 MHz UHF radio frequency telemetry transceivers, CanSat sensors, and drone protocols."
   },
   {
     icon: Database,
     title: "Database Administration & SQL",
-    desc: "Managing relational schemas, writing structured SQL queries, and assisting with database updates and documentation in production settings."
+    desc: "Managing relational schemas, writing optimized SQL queries, transaction isolation, and assisting with live database replication in enterprise operations."
+  },
+  {
+    icon: Layers,
+    title: "Modern Type-Safe Web Architecture",
+    desc: "Building fast, reactive user interfaces with TypeScript, React 19, Tailwind CSS 4, and GSAP kinetic physics for motion-driven digital products."
   }
 ]
 
