@@ -40,7 +40,7 @@ export function App() {
   return (
     <div className="min-h-screen flex flex-col bg-[#FAF8F5] dark:bg-[#0A0D12] text-[#111317] dark:text-[#F4F7FB] selection:bg-[#CCFF00] selection:text-[#111317] relative">
       {/* React Bits Ambient Background: Micro Slats (Rolling Sea in Perspective) */}
-      <MicroSlatsBg />
+      <MicroSlatsBg theme={theme} />
 
       {/* React Bits Click Effects: Neon Spark Particle Bursts */}
       <ClickSpark sparkColor={['#CCFF00', '#00E5FF', '#FF5500', '#FFFFFF']} sparkCount={14} sparkSize={3} />

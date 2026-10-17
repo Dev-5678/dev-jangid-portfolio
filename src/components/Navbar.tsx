@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { personalInfo, navItems } from '../data/portfolio'
 import { Sun, Moon, Menu, X, Orbit } from 'lucide-react'
+import { SlingButton } from './reactbits/SlingButton'
 
 interface NavbarProps {
   theme: 'light' | 'dark'
@@ -70,19 +71,31 @@ export const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme, onOpenPort
             <span>PORTAL</span>
           </button>
 
-          {/* Theme Toggle */}
-          <button
-            onClick={onToggleTheme}
-            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-            aria-pressed={theme === 'dark'}
-            className="w-10 h-10 flex items-center justify-center bg-white dark:bg-[#141820] text-[#111317] dark:text-[#CCFF00] border-2 border-[#111317] dark:border-[#334155] shadow-[2px_2px_0px_#111317] dark:shadow-[2px_2px_0px_#CCFF00] hover:bg-[#CCFF00] hover:text-[#111317] dark:hover:bg-[#CCFF00] dark:hover:text-[#111317] transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#CCFF00]"
-          >
-            {theme === 'dark' ? (
-              <Sun className="w-5 h-5 stroke-[2.5]" />
-            ) : (
-              <Moon className="w-5 h-5 stroke-[2.5]" />
-            )}
-          </button>
+          {/* Sling Button Theme Switch (React Bits Slingshot Micro-interaction) */}
+          <div className="flex items-center" title="Slingshot pull-back or click to toggle theme">
+            <SlingButton
+              size={42}
+              onSend={onToggleTheme}
+              padColor={theme === 'dark' ? '#141820' : '#FFFFFF'}
+              iconColor={theme === 'dark' ? '#CCFF00' : '#111317'}
+              accentColor={theme === 'dark' ? '#CCFF00' : '#FF5500'}
+              wellColor={theme === 'dark' ? '#1E293B' : '#E2E8F0'}
+              bandColor={theme === 'dark' ? '#475569' : '#94A3B8'}
+              strokeWidth={2.5}
+              maxPull={70}
+              armAt={30}
+              particles={12}
+              ariaLabel={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+              ariaPressed={theme === 'dark'}
+              className="border-2 border-[#111317] dark:border-[#334155] rounded-full shadow-[2px_2px_0px_#111317] dark:shadow-[2px_2px_0px_#CCFF00]"
+            >
+              {theme === 'dark' ? (
+                <Sun className="w-4 h-4 text-[#CCFF00] stroke-[2.5]" />
+              ) : (
+                <Moon className="w-4 h-4 text-[#111317] stroke-[2.5]" />
+              )}
+            </SlingButton>
+          </div>
 
           {/* Mobile Menu Button */}
           <button

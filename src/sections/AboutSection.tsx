@@ -102,16 +102,16 @@ export const AboutSection: React.FC = () => {
         </blockquote>
 
         <div className="mt-8 pt-6 border-t-2 border-dashed border-gray-300 dark:border-gray-700 grid grid-cols-1 sm:grid-cols-3 gap-4 font-mono text-xs">
-          <div className="p-3 bg-gray-50 dark:bg-[#1A202C] border border-[#111317] dark:border-[#334155]">
-            <span className="text-gray-500 dark:text-gray-400 block text-[10px] font-bold">CURRENT ACADEMICS</span>
+          <div className="p-3 bg-[#FAF8F5] dark:bg-[#1A202C] border-2 border-[#111317] dark:border-[#334155] shadow-[2px_2px_0px_#111317] dark:shadow-[2px_2px_0px_#334155]">
+            <span className="text-gray-600 dark:text-gray-400 block text-[10px] font-bold">CURRENT ACADEMICS</span>
             <strong className="text-[#111317] dark:text-[#F4F7FB]">{personalInfo.educationSummary || "B.Tech CSE (Expected 2027)"}</strong>
           </div>
-          <div className="p-3 bg-gray-50 dark:bg-[#1A202C] border border-[#111317] dark:border-[#334155]">
-            <span className="text-gray-500 dark:text-gray-400 block text-[10px] font-bold">CORE EMPHASIS</span>
+          <div className="p-3 bg-[#FAF8F5] dark:bg-[#1A202C] border-2 border-[#111317] dark:border-[#334155] shadow-[2px_2px_0px_#111317] dark:shadow-[2px_2px_0px_#334155]">
+            <span className="text-gray-600 dark:text-gray-400 block text-[10px] font-bold">CORE EMPHASIS</span>
             <strong className="text-[#111317] dark:text-[#F4F7FB]">Network Security &amp; GenAI</strong>
           </div>
-          <div className="p-3 bg-gray-50 dark:bg-[#1A202C] border border-[#111317] dark:border-[#334155]">
-            <span className="text-gray-500 dark:text-gray-400 block text-[10px] font-bold">OPERATIONAL STATUS</span>
+          <div className="p-3 bg-[#FAF8F5] dark:bg-[#1A202C] border-2 border-[#111317] dark:border-[#334155] shadow-[2px_2px_0px_#111317] dark:shadow-[2px_2px_0px_#334155]">
+            <span className="text-gray-600 dark:text-gray-400 block text-[10px] font-bold">OPERATIONAL STATUS</span>
             <strong className="text-[#111317] dark:text-[#CCFF00] font-black">{personalInfo.status}</strong>
           </div>
         </div>

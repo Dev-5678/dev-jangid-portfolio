@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { personalInfo } from '../data/portfolio'
 import { CrystalizedBall } from '../components/reactbits/CrystalizedBall'
+import { TextPressure } from '../components/reactbits/TextPressure'
 import { ShinyText } from '../components/reactbits/ShinyText'
 import { Magnet } from '../components/reactbits/Magnet'
 import { ArrowDown, Mail, MapPin } from 'lucide-react'
@@ -8,7 +9,7 @@ import gsap from 'gsap'
 
 export const HeroSection: React.FC = () => {
   const heroRef = useRef<HTMLElement>(null)
-  const titleRef = useRef<HTMLHeadingElement>(null)
+  const titleWrapRef = useRef<HTMLDivElement>(null)
   const badgeRef = useRef<HTMLDivElement>(null)
   const ctaRef = useRef<HTMLDivElement>(null)
 
@@ -25,11 +26,10 @@ export const HeroSection: React.FC = () => {
         duration: 0.6,
         delay: 0.1
       })
-      .from(titleRef.current?.querySelectorAll('.hero-anim-text') || [], {
-        y: 40,
+      .from(titleWrapRef.current, {
+        y: 30,
         opacity: 0,
-        duration: 0.8,
-        stagger: 0.15
+        duration: 0.8
       }, "-=0.3")
       .from(ctaRef.current, {
         y: 20,
@@ -54,30 +54,40 @@ export const HeroSection: React.FC = () => {
           {/* Status Badge */}
           <div
             ref={badgeRef}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#FAF8F5] dark:bg-[#131720] border-2 border-[#111317] dark:border-[#334155] shadow-[3px_3px_0px_#111317] dark:shadow-[3px_3px_0px_#CCFF00] font-mono text-xs font-bold text-[#111317] dark:text-[#F4F7FB] mb-6"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white dark:bg-[#131720] border-3 border-[#111317] dark:border-[#334155] shadow-[3px_3px_0px_#111317] dark:shadow-[3px_3px_0px_#CCFF00] font-mono text-xs font-black text-[#111317] dark:text-[#F4F7FB] mb-6"
           >
-            <span className="w-2.5 h-2.5 rounded-full bg-[#CCFF00] border border-[#111317] animate-pulse" />
-            <ShinyText text="SYS://ACTIVE" speed={3} className="text-[#FF5500] dark:text-[#CCFF00] font-black uppercase" />
-            <span className="text-gray-400 dark:text-gray-500">|</span>
-            <span className="flex items-center gap-1 text-[#111317] dark:text-[#F4F7FB]">
-              <MapPin className="w-3 h-3 text-[#FF5500]" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#CCFF00] border-2 border-[#111317] animate-pulse" />
+            <ShinyText text="SYS://ACTIVE" speed={3} className="text-[#FF5500] dark:text-[#CCFF00] font-black uppercase tracking-wider" />
+            <span className="text-gray-400 dark:text-gray-500 font-bold">|</span>
+            <span className="flex items-center gap-1 text-[#111317] dark:text-[#F4F7FB] font-bold">
+              <MapPin className="w-3.5 h-3.5 text-[#FF5500]" />
               {personalInfo.location}
             </span>
           </div>
 
-          {/* Main Oversized Typography (Rock-solid, crisp, 100% readable) */}
-          <h1
-            ref={titleRef}
-            className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight leading-[0.95] uppercase text-[#111317] dark:text-[#F4F7FB]"
-          >
-            <span className="hero-anim-text block">DEV</span>
-            <span className="hero-anim-text block text-transparent bg-clip-text bg-gradient-to-r from-[#111317] via-[#4B5563] to-[#111317] dark:from-[#F4F7FB] dark:via-[#CCFF00] dark:to-[#F4F7FB]">
-              JANGID
-            </span>
-          </h1>
+          {/* Main Name Typography powered by React Bits TextPressure */}
+          <div ref={titleWrapRef} className="w-full max-w-xl h-24 sm:h-32 mb-2 flex items-center">
+            <TextPressure
+              text="DEV JANGID"
+              fontFamily="Roboto Flex, Space Grotesk, sans-serif"
+              flex={true}
+              width={true}
+              weight={true}
+              italic={true}
+              alpha={false}
+              radius={0.6}
+              smoothing={0.35}
+              idle="wave"
+              idleSpeed={1.2}
+              clickRipple={true}
+              textColor="currentColor"
+              pressureColor="#CCFF00"
+              className="text-[#111317] dark:text-[#F4F7FB] font-black tracking-tight"
+            />
+          </div>
 
           {/* Subtitle / Professional Title */}
-          <div className="mt-4 px-3 py-1 bg-[#CCFF00] text-[#111317] font-mono font-black text-sm sm:text-lg uppercase tracking-wider border-2 border-[#111317] shadow-[2px_2px_0px_#111317]">
+          <div className="mt-3 px-3.5 py-1.5 bg-[#CCFF00] text-[#111317] font-mono font-black text-sm sm:text-lg uppercase tracking-wider border-3 border-[#111317] shadow-[3px_3px_0px_#111317]">
             {personalInfo.title}
           </div>
 
