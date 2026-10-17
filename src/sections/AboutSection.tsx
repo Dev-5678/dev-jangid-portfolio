@@ -1,10 +1,6 @@
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import { personalInfo } from '../data/portfolio'
 import { Code2, Database, Network, Sparkles, MapPin, Terminal } from 'lucide-react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
 
 const STRENGTHS = [
   {
@@ -30,33 +26,8 @@ const STRENGTHS = [
 ]
 
 export const AboutSection: React.FC = () => {
-  const sectionRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (isReduced) return
-
-    const ctx = gsap.context(() => {
-      gsap.from('.about-card', {
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 80%',
-          toggleActions: 'play none none none'
-        },
-        y: 30,
-        opacity: 0,
-        duration: 0.6,
-        stagger: 0.12,
-        ease: 'power2.out'
-      })
-    }, sectionRef)
-
-    return () => ctx.revert()
-  }, [])
-
   return (
     <section
-      ref={sectionRef}
       id="about"
       aria-label="About Dev Jangid"
       className="relative py-16 sm:py-24 md:py-36 overflow-hidden"
