@@ -47,16 +47,16 @@ export const ScrollProgressHUD: React.FC = () => {
       {/* Top Progress Bar */}
       <div className="w-full h-1 bg-black/10 dark:bg-white/10 overflow-hidden">
         <div
-          className="h-full bg-[var(--accent,#CCFF00)] transition-all duration-75"
+          className="h-full bg-ember transition-all duration-75"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
 
       {/* Floating HUD Indicator (Desktop only) */}
-      <div className="hidden lg:flex items-center gap-2 absolute top-3 right-6 px-2.5 py-1 bg-[#111317]/85 backdrop-blur-md text-[#FAF8F5] border border-[#334155] shadow-[2px_2px_0px_#111317] font-mono text-[10px] font-bold">
-        <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent,#CCFF00)] animate-pulse" />
+      <div className="hidden lg:flex items-center gap-2 absolute top-3 right-6 px-3 py-1 bg-[#0a0a0d]/90 backdrop-blur-md text-[#e8e8ea] border border-white/10 rounded-full font-mono text-[10px] font-bold shadow-lg">
+        <span className="w-1.5 h-1.5 rounded-full bg-ember animate-pulse" />
         <span className="text-gray-300">{activeSection}</span>
-        <span className="text-[var(--accent,#CCFF00)] font-black">[{scrollProgress}%]</span>
+        <span className="text-ember font-black">[{scrollProgress}%]</span>
       </div>
     </aside>
   )

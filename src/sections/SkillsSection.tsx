@@ -70,13 +70,13 @@ export const SkillsSection: React.FC = () => {
                 </div>
 
                 {/* Skills Badges */}
-                <div className="flex flex-wrap gap-2.5 pt-2">
+                <div className="flex flex-wrap gap-2 sm:gap-2.5 pt-3 mt-auto">
                   {cat.skills.map((skill) => (
                     <span
                       key={skill}
-                      className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-white text-xs sm:text-sm font-medium hover:bg-white/10 hover:border-ember/40 transition-all cursor-default"
+                      className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-3.5 sm:py-1.5 rounded-full bg-white/5 border border-white/10 text-white text-xs sm:text-[13px] font-medium leading-normal hover:bg-white/10 hover:border-ember/40 transition-all cursor-default"
                     >
-                      <span className="w-1.5 h-1.5 rounded-full bg-ember" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-ember shrink-0" />
                       <span>{skill}</span>
                     </span>
                   ))}

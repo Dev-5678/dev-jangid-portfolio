@@ -235,17 +235,17 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
       role="dialog"
       aria-modal="true"
       aria-label="Command Palette"
-      className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-150"
+      className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-black/75 backdrop-blur-md animate-in fade-in duration-150"
       onClick={onClose}
     >
       <div
-        className="w-full max-w-2xl bg-white dark:bg-[#131720] border-4 border-[#111317] dark:border-[#334155] shadow-[8px_8px_0px_#111317] dark:shadow-[8px_8px_0px_var(--accent,#CCFF00)] overflow-hidden font-mono"
+        className="w-full max-w-2xl bg-white/95 dark:bg-[#0e0e12]/95 text-[#141418] dark:text-[#f0f0f4] border border-black/10 dark:border-white/15 shadow-[0_25px_70px_rgba(0,0,0,0.25)] dark:shadow-[0_25px_70px_rgba(0,0,0,0.85),0_0_35px_rgba(160,42,34,0.25)] rounded-2xl overflow-hidden font-mono backdrop-blur-2xl"
         onClick={(e) => e.stopPropagation()}
         onKeyDown={handleKeyDown}
       >
         {/* Search Input Bar */}
-        <div className="flex items-center gap-3 px-4 py-3.5 border-b-3 border-[#111317] dark:border-[#334155] bg-[#FAF8F5] dark:bg-[#0A0D12]">
-          <Search className="w-5 h-5 text-gray-500" />
+        <div className="flex items-center gap-3 px-5 py-4 border-b border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.02]">
+          <Search className="w-5 h-5 text-ember shrink-0" />
           <input
             ref={inputRef}
             type="text"
@@ -255,17 +255,17 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
               setSelectedIndex(0)
             }}
             placeholder="Type a command or jump to section... (Esc to close)"
-            className="flex-1 bg-transparent text-[#111317] dark:text-[#F4F7FB] font-mono text-sm placeholder:text-gray-400 focus:outline-none"
+            className="flex-1 bg-transparent text-[#141418] dark:text-[#f0f0f4] font-mono text-sm placeholder:text-gray-400 dark:placeholder:text-ash/60 focus:outline-none"
           />
-          <span className="text-[10px] bg-gray-200 dark:bg-[#1E293B] text-gray-700 dark:text-gray-300 px-2 py-0.5 border border-[#111317] dark:border-[#334155]">
+          <span className="text-[10px] font-mono bg-black/5 dark:bg-white/10 text-gray-600 dark:text-silver px-2 py-0.5 rounded-md border border-black/10 dark:border-white/15">
             ESC
           </span>
         </div>
 
         {/* Results List */}
-        <div className="max-h-80 overflow-y-auto p-2 divide-y divide-gray-100 dark:divide-[#1E293B]">
+        <div className="max-h-80 overflow-y-auto p-2.5 space-y-1">
           {filtered.length === 0 ? (
-            <div className="py-8 text-center text-xs text-gray-400">
+            <div className="py-8 text-center text-xs text-ash">
               No matching commands or destinations found.
             </div>
           ) : (
@@ -278,29 +278,35 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                   key={action.id}
                   onClick={action.run}
                   onMouseEnter={() => setSelectedIndex(idx)}
-                  className={`w-full flex items-center justify-between px-3 py-2.5 text-left text-xs transition-colors ${
+                  className={`w-full flex items-center justify-between px-3.5 py-2.5 text-left text-xs rounded-xl transition-all ${
                     isSelected
-                      ? 'bg-[var(--accent,#CCFF00)] text-[#111317] font-bold'
-                      : 'text-[#111317] dark:text-[#F4F7FB] hover:bg-gray-100 dark:hover:bg-[#1A202C]'
+                      ? 'bg-ember text-white shadow-[0_0_20px_rgba(160,42,34,0.4)] font-medium'
+                      : 'text-[#141418] dark:text-[#e8e8ea] hover:bg-black/5 dark:hover:bg-white/5'
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <Icon className="w-4 h-4" />
+                    <Icon className={`w-4 h-4 ${isSelected ? 'text-white' : 'text-ember'}`} />
                     <span>{action.title}</span>
                   </div>
 
                   <div className="flex items-center gap-2">
                     <span
-                      className={`text-[9px] uppercase px-1.5 py-0.5 border ${
+                      className={`text-[9px] uppercase px-2 py-0.5 rounded-full border ${
                         isSelected
-                          ? 'border-[#111317] text-[#111317]'
-                          : 'border-gray-300 dark:border-gray-700 text-gray-500'
+                          ? 'border-white/30 text-white'
+                          : 'border-black/10 dark:border-white/10 text-gray-500 dark:text-ash'
                       }`}
                     >
                       {action.category}
                     </span>
                     {action.shortcut && (
-                      <span className="text-[10px] font-bold px-1.5 py-0.5 bg-black/10 dark:bg-white/10">
+                      <span
+                        className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-md border ${
+                          isSelected
+                            ? 'bg-white/20 border-white/30 text-white'
+                            : 'bg-black/5 dark:bg-white/10 border-black/10 dark:border-white/15 text-gray-600 dark:text-silver'
+                        }`}
+                      >
                         {action.shortcut}
                       </span>
                     )}
@@ -312,9 +318,12 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         </div>
 
         {/* Footer Info */}
-        <div className="flex items-center justify-between px-4 py-2 border-t-2 border-[#111317] dark:border-[#334155] bg-[#FAF8F5] dark:bg-[#0A0D12] text-[10px] text-gray-500">
-          <span>Navigate with [↑] [↓], Execute with [↵]</span>
-          <span className="text-[var(--accent,#CCFF00)] font-bold">DEV_JANGID // CMD_PALETTE</span>
+        <div className="flex items-center justify-between px-5 py-3 border-t border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-black/20 text-[11px] text-gray-500 dark:text-ash">
+          <span>Navigate with [↑] [↓] • Execute with [↵]</span>
+          <span className="text-ember font-bold flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-ember inline-block animate-pulse" />
+            DEV_JANGID // CMD
+          </span>
         </div>
       </div>
     </div>
