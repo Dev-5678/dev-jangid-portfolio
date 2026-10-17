@@ -23,9 +23,8 @@ export const CustomCursor: React.FC = () => {
   const [sparks, setSparks] = useState<ClickSpark[]>([])
   const [ripples, setRipples] = useState<{ id: number; x: number; y: number }[]>([])
 
-  // Target mouse coordinates
+  const lastTargetRef = useRef<EventTarget | null>(null)
   const mousePos = useRef({ x: -100, y: -100 })
-  // Lerped follower coordinates
   const followerPos = useRef({ x: -100, y: -100 })
   const dotRef = useRef<HTMLDivElement>(null)
   const ringRef = useRef<HTMLDivElement>(null)
@@ -36,31 +35,31 @@ export const CustomCursor: React.FC = () => {
   // Trigger cute sparkling star burst & expanding ripple
   const triggerSparks = useCallback((clientX: number, clientY: number) => {
     const rippleId = Date.now() + Math.random()
-    setRipples((prev) => [...prev.slice(-4), { id: rippleId, x: clientX, y: clientY }])
+    setRipples((prev) => [...prev.slice(-3), { id: rippleId, x: clientX, y: clientY }])
     setTimeout(() => {
       setRipples((prev) => prev.filter((r) => r.id !== rippleId))
-    }, 650)
+    }, 600)
 
     const newSparks: ClickSpark[] = []
-    const count = 7
+    const count = 6
     for (let i = 0; i < count; i++) {
-      const angle = (i * (360 / count) + Math.random() * 20) * (Math.PI / 180)
+      const angle = (i * (360 / count) + Math.random() * 15) * (Math.PI / 180)
       newSparks.push({
         id: ++sparkIdCounter.current,
         x: clientX,
         y: clientY,
         angle,
-        distance: 28 + Math.random() * 26,
+        distance: 24 + Math.random() * 22,
         color: CUTE_COLORS[Math.floor(Math.random() * CUTE_COLORS.length)],
-        size: 11 + Math.random() * 6,
+        size: 11 + Math.random() * 5,
         icon: CUTE_ICONS[Math.floor(Math.random() * CUTE_ICONS.length)]
       })
     }
 
-    setSparks((prev) => [...prev.slice(-15), ...newSparks])
+    setSparks((prev) => [...prev.slice(-12), ...newSparks])
     setTimeout(() => {
       setSparks((prev) => prev.filter((s) => !newSparks.includes(s)))
-    }, 550)
+    }, 500)
   }, [])
 
   useEffect(() => {
@@ -75,30 +74,34 @@ export const CustomCursor: React.FC = () => {
     fineQuery.addEventListener('change', handlePointerChange)
 
     const handleMouseMove = (e: MouseEvent) => {
-      mousePos.current = { x: e.clientX, y: e.clientY }
+      mousePos.current.x = e.clientX
+      mousePos.current.y = e.clientY
       if (!visible) setVisible(true)
 
+      // Direct GPU transform update for center dot
       if (dotRef.current) {
         dotRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`
       }
+
+      // Fast GPU transform for spotlight (Zero repaint!)
       if (spotlightRef.current) {
-        const isDark = document.documentElement.classList.contains('dark')
-        const glowColor = isDark
-          ? 'rgba(252, 107, 47, 0.12)'
-          : 'rgba(160, 42, 34, 0.15)'
-        spotlightRef.current.style.background = `radial-gradient(550px circle at ${e.clientX}px ${e.clientY}px, ${glowColor}, transparent 70%)`
+        spotlightRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`
       }
 
-      const target = e.target as HTMLElement | null
-      if (target) {
-        const interactive = target.closest('a, button, input, select, textarea, [role="button"], .cursor-pointer, [data-cursor-hover]')
-        if (interactive) {
-          setIsHovering(true)
-          const customLabel = interactive.getAttribute('data-cursor-label')
-          setHoverLabel(customLabel || null)
-        } else {
-          setIsHovering(false)
-          setHoverLabel(null)
+      // Memoized interactive target check (only runs when hovering over a new element)
+      if (e.target !== lastTargetRef.current) {
+        lastTargetRef.current = e.target
+        const target = e.target as HTMLElement | null
+        if (target) {
+          const interactive = target.closest('a, button, input, select, textarea, [role="button"], .cursor-pointer, [data-cursor-hover]')
+          if (interactive) {
+            setIsHovering(true)
+            const customLabel = interactive.getAttribute('data-cursor-label')
+            setHoverLabel(customLabel || null)
+          } else {
+            setIsHovering(false)
+            setHoverLabel(null)
+          }
         }
       }
     }
@@ -108,7 +111,6 @@ export const CustomCursor: React.FC = () => {
       triggerSparks(e.clientX, e.clientY)
     }
 
-    // Touch support: Tap creates sparkles on mobile phones & tablets too!
     const handleTouchStart = (e: TouchEvent) => {
       if (e.touches && e.touches.length > 0) {
         const touch = e.touches[0]
@@ -129,7 +131,7 @@ export const CustomCursor: React.FC = () => {
 
     // Smooth linear interpolation animation loop for follower ring
     const renderLoop = () => {
-      const lerpFactor = 0.2
+      const lerpFactor = 0.22
       followerPos.current.x += (mousePos.current.x - followerPos.current.x) * lerpFactor
       followerPos.current.y += (mousePos.current.y - followerPos.current.y) * lerpFactor
 
@@ -156,17 +158,21 @@ export const CustomCursor: React.FC = () => {
 
   return (
     <>
-      {/* 1. Full-viewport ambient dynamic torchlight following cursor (fine pointers) */}
+      {/* 1. Fast GPU-composited ambient dynamic torchlight following cursor */}
       {hasFinePointer && (
         <div
           ref={spotlightRef}
-          className="pointer-events-none fixed inset-0 z-30 transition-opacity duration-300"
-          style={{ opacity: visible ? 1 : 0 }}
+          className="pointer-events-none fixed top-0 left-0 w-[450px] h-[450px] -translate-x-1/2 -translate-y-1/2 rounded-full z-20 transition-opacity duration-300 transform-gpu"
+          style={{
+            opacity: visible ? 1 : 0,
+            background: 'radial-gradient(circle, rgba(252, 107, 47, 0.12) 0%, transparent 70%)',
+            willChange: 'transform'
+          }}
           aria-hidden="true"
         />
       )}
 
-      {/* 2. Cute Sparkling Star Particles Burst (works on desktop mouse & mobile touch) */}
+      {/* 2. Cute Sparkling Star Particles Burst (works on desktop click & mobile tap) */}
       {sparks.map((spark) => {
         const targetX = Math.cos(spark.angle) * spark.distance
         const targetY = Math.sin(spark.angle) * spark.distance

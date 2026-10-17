@@ -15,8 +15,10 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ isTLDR: _i
       
       {/* Ambient Ember Glow Pool */}
       <div
-        className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[90vw] max-w-[600px] h-[300px] rounded-full opacity-15 pointer-events-none blur-[150px]"
-        style={{ backgroundColor: 'var(--ember)' }}
+        className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[90vw] max-w-[600px] h-[300px] rounded-full pointer-events-none transform-gpu"
+        style={{
+          background: 'radial-gradient(ellipse, rgba(160, 42, 34, 0.12) 0%, transparent 70%)'
+        }}
         aria-hidden="true"
       />
 

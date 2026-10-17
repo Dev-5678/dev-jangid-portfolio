@@ -83,10 +83,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onCopyText }) =>
       
       {/* Ambient Bottom Ember Glow Pool */}
       <div
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[90vw] max-w-[800px] h-[350px] sm:h-[400px] pointer-events-none"
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[90vw] max-w-[800px] h-[350px] sm:h-[400px] pointer-events-none transform-gpu"
         style={{
-          background: 'radial-gradient(ellipse, rgba(252,107,47,0.12) 0%, transparent 70%)',
-          filter: 'blur(80px)'
+          background: 'radial-gradient(ellipse, rgba(252,107,47,0.12) 0%, transparent 70%)'
         }}
         aria-hidden="true"
       />

@@ -48,8 +48,10 @@ export const AboutSection: React.FC = () => {
 
       {/* Ambient Ember Glow Pool */}
       <div
-        className="absolute top-1/4 right-0 w-[500px] h-[300px] rounded-full opacity-10 pointer-events-none blur-[140px]"
-        style={{ backgroundColor: 'var(--ember)' }}
+        className="absolute top-1/4 right-0 w-[500px] h-[300px] rounded-full pointer-events-none transform-gpu"
+        style={{
+          background: 'radial-gradient(ellipse, rgba(160, 42, 34, 0.10) 0%, transparent 70%)'
+        }}
         aria-hidden="true"
       />
 
@@ -76,7 +78,7 @@ export const AboutSection: React.FC = () => {
         {/* Executive Statement Glass Card */}
         <div className="about-card glass-card p-6 sm:p-10 mb-8 sm:mb-12 relative overflow-hidden group">
           {/* Subtle ember radial accent in background */}
-          <div className="absolute top-0 right-0 w-80 h-80 bg-ember/5 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute top-0 right-0 w-80 h-80 rounded-full pointer-events-none transform-gpu" style={{ background: 'radial-gradient(circle, rgba(160, 42, 34, 0.08) 0%, transparent 70%)' }} />
 
           <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-ember/10 border border-ember/25 text-ember text-xs font-mono font-medium">

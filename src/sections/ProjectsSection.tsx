@@ -146,12 +146,8 @@ export const ProjectsSection: React.FC = () => {
             return (
               <div
                 key={p.id}
-                className="relative rounded-2xl sm:rounded-[32px] bg-white/[0.04] border border-white/20 backdrop-blur-3xl overflow-hidden px-4 py-6 sm:px-10 sm:py-10 lg:px-14 lg:py-14 min-h-[380px] sm:min-h-[480px] lg:min-h-[530px] flex flex-col justify-center shadow-[0_20px_60px_rgba(0,0,0,0.8),inset_0_1px_1px_rgba(255,255,255,0.25),inset_0_0_24px_rgba(255,255,255,0.03)] transform-gpu transition-all hover:border-ember/50"
+                className="relative rounded-2xl sm:rounded-[32px] bg-white/[0.04] bg-[radial-gradient(ellipse_at_top_left,rgba(160,42,34,0.14),transparent_50%),radial-gradient(ellipse_at_bottom_right,rgba(6,182,212,0.12),transparent_50%)] border border-white/20 backdrop-blur-2xl overflow-hidden px-4 py-6 sm:px-10 sm:py-10 lg:px-14 lg:py-14 min-h-[380px] sm:min-h-[480px] lg:min-h-[530px] flex flex-col justify-center shadow-[0_20px_60px_rgba(0,0,0,0.8),inset_0_1px_1px_rgba(255,255,255,0.25),inset_0_0_24px_rgba(255,255,255,0.03)] transform-gpu transition-all hover:border-ember/50"
               >
-                {/* Dual Corner Ambient Aurora Glows */}
-                <div className="absolute -top-24 -left-24 w-80 h-80 bg-ember/10 rounded-full blur-3xl pointer-events-none" />
-                <div className="absolute -bottom-24 -right-24 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
-
                 {/* Top Hairline Gradient Highlight */}
                 <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
 

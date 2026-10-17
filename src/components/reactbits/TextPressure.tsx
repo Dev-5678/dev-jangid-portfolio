@@ -36,9 +36,15 @@ export const TextPressure: React.FC<TextPressureProps> = ({
   const containerRef = useRef<HTMLDivElement | null>(null)
   const titleRef = useRef<HTMLHeadingElement | null>(null)
   const spansRef = useRef<(HTMLSpanElement | null)[]>([])
-  const mousePos = useRef({ x: -1000, y: -1000 })
-  const cursorTarget = useRef({ x: -1000, y: -1000 })
-  const hasInteracted = useRef(false)
+  const prevSettingsRef = useRef<string[]>([])
+
+  // In-memory cache for character centers (Zero getBoundingClientRect in rAF!)
+  const charCentersRef = useRef<{ x: number; y: number }[]>([])
+  const containerRectRef = useRef<{ left: number; top: number; width: number; height: number }>({ left: 0, top: 0, width: 0, height: 0 })
+
+  const mousePos = useRef({ x: -2000, y: -2000 })
+  const cursorTarget = useRef({ x: -2000, y: -2000 })
+  const isVisibleRef = useRef(true)
 
   const [fontSize, setFontSize] = useState<number>(minFontSize)
   const [scaleY, setScaleY] = useState<number>(1)
@@ -47,19 +53,17 @@ export const TextPressure: React.FC<TextPressureProps> = ({
   const chars = useMemo(() => text.split(''), [text])
   const letterCount = useMemo(() => chars.filter((c) => c !== ' ').length, [chars])
 
-  // Mouse & touch tracking with smooth lag interpolation
+  // Mouse & touch tracking with passive listeners
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       cursorTarget.current.x = e.clientX
       cursorTarget.current.y = e.clientY
-      hasInteracted.current = true
     }
 
     const handleTouchStart = (e: TouchEvent) => {
       if (e.touches && e.touches.length > 0) {
         cursorTarget.current.x = e.touches[0].clientX
         cursorTarget.current.y = e.touches[0].clientY
-        hasInteracted.current = true
       }
     }
 
@@ -67,65 +71,86 @@ export const TextPressure: React.FC<TextPressureProps> = ({
       if (e.touches && e.touches.length > 0) {
         cursorTarget.current.x = e.touches[0].clientX
         cursorTarget.current.y = e.touches[0].clientY
-        hasInteracted.current = true
       }
     }
 
-    const handleTouchEnd = () => {
-      // Gracefully let cursor fade out on touch release
-      setTimeout(() => {
-        cursorTarget.current = { x: -1000, y: -1000 }
-      }, 800)
-    }
-
-    const resetToCenter = () => {
-      cursorTarget.current = { x: -1000, y: -1000 }
+    const resetToOffscreen = () => {
+      cursorTarget.current = { x: -2000, y: -2000 }
     }
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true })
     window.addEventListener('touchstart', handleTouchStart, { passive: true })
     window.addEventListener('touchmove', handleTouchMove, { passive: true })
-    window.addEventListener('touchend', handleTouchEnd, { passive: true })
-    window.addEventListener('touchcancel', handleTouchEnd, { passive: true })
-    document.addEventListener('mouseleave', resetToCenter)
+    window.addEventListener('touchend', resetToOffscreen, { passive: true })
+    window.addEventListener('touchcancel', resetToOffscreen, { passive: true })
+    document.addEventListener('mouseleave', resetToOffscreen)
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
       window.removeEventListener('touchstart', handleTouchStart)
       window.removeEventListener('touchmove', handleTouchMove)
-      window.removeEventListener('touchend', handleTouchEnd)
-      window.removeEventListener('touchcancel', handleTouchEnd)
-      document.removeEventListener('mouseleave', resetToCenter)
+      window.removeEventListener('touchend', resetToOffscreen)
+      window.removeEventListener('touchcancel', resetToOffscreen)
+      document.removeEventListener('mouseleave', resetToOffscreen)
     }
   }, [])
 
-  // Proportional font sizing: text dynamically occupies container across all viewports
-  const handleResize = useCallback(() => {
+  // Viewport visibility observer: pause animation when hero is off-screen
+  useEffect(() => {
+    if (!containerRef.current || typeof IntersectionObserver === 'undefined') return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisibleRef.current = entry.isIntersecting
+      },
+      { threshold: 0.05 }
+    )
+    observer.observe(containerRef.current)
+    return () => observer.disconnect()
+  }, [])
+
+  // Proportional font sizing: measures and caches geometry ONCE on resize/mount
+  const updateGeometry = useCallback(() => {
     if (!containerRef.current || !titleRef.current) return
-    const { width: containerW, height: containerH } = containerRef.current.getBoundingClientRect()
+    const rect = containerRef.current.getBoundingClientRect()
+    containerRectRef.current = {
+      left: rect.left,
+      top: rect.top,
+      width: rect.width,
+      height: rect.height
+    }
 
     const effectiveChars = Math.max(letterCount + 1, 8)
     let calcFontSize =
-      containerW < 640
-        ? (containerW * 0.95) / (effectiveChars * 0.58)
-        : (containerW * 0.92) / (effectiveChars * 0.56)
+      rect.width < 640
+        ? (rect.width * 0.95) / (effectiveChars * 0.58)
+        : (rect.width * 0.92) / (effectiveChars * 0.56)
 
-    // Never exceed container height
-    calcFontSize = Math.min(calcFontSize, containerH * 0.94)
+    calcFontSize = Math.min(calcFontSize, rect.height * 0.94)
     calcFontSize = Math.max(calcFontSize, minFontSize)
 
     setFontSize(calcFontSize)
     setScaleY(1)
     setLineHeight(1)
 
+    // Pre-measure character positions in the next frame so layout has settled
     requestAnimationFrame(() => {
       if (!titleRef.current) return
       const titleRect = titleRef.current.getBoundingClientRect()
       if (scale && titleRect.height > 0) {
-        const ratio = containerH / titleRect.height
+        const ratio = rect.height / titleRect.height
         setScaleY(ratio)
         setLineHeight(ratio)
       }
+
+      // Cache all letter center coordinates once (avoids any getBoundingClientRect during rAF)
+      charCentersRef.current = spansRef.current.map((el) => {
+        if (!el) return { x: 0, y: 0 }
+        const u = el.getBoundingClientRect()
+        return {
+          x: u.left + u.width / 2,
+          y: u.top + u.height / 2
+        }
+      })
     })
   }, [letterCount, minFontSize, scale])
 
@@ -133,68 +158,81 @@ export const TextPressure: React.FC<TextPressureProps> = ({
     let timeoutId: ReturnType<typeof setTimeout>
     const debouncedResize = () => {
       clearTimeout(timeoutId)
-      timeoutId = setTimeout(() => {
-        handleResize()
-      }, 80)
+      timeoutId = setTimeout(updateGeometry, 60)
     }
 
-    handleResize()
+    updateGeometry()
     window.addEventListener('resize', debouncedResize)
     return () => window.removeEventListener('resize', debouncedResize)
-  }, [handleResize])
+  }, [updateGeometry])
 
-  // Continuous animation loop: High-contrast bold typography with ambient harmonic wave & kinetic pressure
+  // High-performance 120 FPS animation loop (ZERO layout thrashing, pure mathematical calculations)
   useEffect(() => {
     let rafId: number
+    let lastTime = 0
+
     const animate = (timestamp: number) => {
-      // Smooth interpolation toward target cursor
-      mousePos.current.x += (cursorTarget.current.x - mousePos.current.x) * 0.12
-      mousePos.current.y += (cursorTarget.current.y - mousePos.current.y) * 0.12
-
-      if (titleRef.current) {
-        const isMobile = window.innerWidth < 768
-        const titleRect = titleRef.current.getBoundingClientRect()
-        const radius = isMobile
-          ? Math.max(0.7 * titleRect.width, 220)
-          : Math.max(titleRect.width * 0.45, 340)
-
-        const time = timestamp * 0.0022
-
-        spansRef.current.forEach((el, idx) => {
-          if (!el) return
-          const u = el.getBoundingClientRect()
-          const charCenter = {
-            x: u.left + u.width / 2,
-            y: u.top + u.height / 2
-          }
-
-          const dist = Math.hypot(charCenter.x - mousePos.current.x, charCenter.y - mousePos.current.y)
-          const cursorInfluence = Math.max(0, 1 - dist / radius)
-
-          // Living harmonic wave when idle or on touch devices
-          const waveWght = Math.sin(time + idx * 0.55) * 65
-          const waveWdth = Math.cos(time * 0.9 + idx * 0.55) * 14
-
-          // High baseline weight: 740 base, flexing up to 1000 (Black) on hover, never below 650
-          const f = weight
-            ? Math.round(750 + cursorInfluence * 240 + (1 - cursorInfluence) * waveWght)
-            : 800
-
-          // Generous expansive width: 112 base, stretching up to 148 on hover, never below 96
-          const p = width
-            ? Math.round(112 + cursorInfluence * 34 + (1 - cursorInfluence) * waveWdth)
-            : 110
-
-          const m = italic ? (cursorInfluence * 0.75).toFixed(2) : '0'
-
-          const fontVar = `'wght' ${Math.min(1000, Math.max(620, f))}, 'wdth' ${Math.min(151, Math.max(92, p))}, 'ital' ${m}`
-          if (el.style.fontVariationSettings !== fontVar) {
-            el.style.fontVariationSettings = fontVar
-          }
-        })
-      }
-
       rafId = requestAnimationFrame(animate)
+
+      // Skip processing when scrolled out of view
+      if (!isVisibleRef.current) return
+
+      // Throttle to ~60-120fps max, avoid redundant sub-millisecond computations
+      if (timestamp - lastTime < 14) return
+      lastTime = timestamp
+
+      // Smooth cursor lerp
+      mousePos.current.x += (cursorTarget.current.x - mousePos.current.x) * 0.15
+      mousePos.current.y += (cursorTarget.current.y - mousePos.current.y) * 0.15
+
+      const containerW = containerRectRef.current.width || 800
+      const isMobile = containerW < 768
+      const radius = isMobile ? Math.max(0.6 * containerW, 200) : Math.max(containerW * 0.42, 320)
+      const time = timestamp * 0.0022
+
+      const centers = charCentersRef.current
+      const spans = spansRef.current
+
+      for (let idx = 0; idx < spans.length; idx++) {
+        const el = spans[idx]
+        if (!el) continue
+
+        const center = centers[idx]
+        const charX = center ? center.x : 0
+        const charY = center ? center.y : 0
+
+        const dx = charX - mousePos.current.x
+        const dy = charY - mousePos.current.y
+        const dist = Math.sqrt(dx * dx + dy * dy)
+        const cursorInfluence = Math.max(0, 1 - dist / radius)
+
+        // Harmonic organic breathing wave
+        const waveWght = Math.sin(time + idx * 0.55) * 65
+        const waveWdth = Math.cos(time * 0.9 + idx * 0.55) * 14
+
+        // Bold baseline: 750 weight, surging to 1000 Black under cursor
+        const f = weight
+          ? Math.round(750 + cursorInfluence * 240 + (1 - cursorInfluence) * waveWght)
+          : 800
+
+        // Wide baseline: 112 width, stretching to 148 on hover
+        const p = width
+          ? Math.round(112 + cursorInfluence * 34 + (1 - cursorInfluence) * waveWdth)
+          : 110
+
+        const m = italic ? (cursorInfluence * 0.75).toFixed(2) : '0'
+
+        const clampedWght = Math.min(1000, Math.max(620, f))
+        const clampedWdth = Math.min(151, Math.max(92, p))
+
+        const fontVar = `'wght' ${clampedWght}, 'wdth' ${clampedWdth}, 'ital' ${m}`
+
+        // Write to DOM ONLY if value actually changed (avoids useless style recalculations)
+        if (prevSettingsRef.current[idx] !== fontVar) {
+          prevSettingsRef.current[idx] = fontVar
+          el.style.fontVariationSettings = fontVar
+        }
+      }
     }
 
     rafId = requestAnimationFrame(animate)
@@ -235,7 +273,7 @@ export const TextPressure: React.FC<TextPressureProps> = ({
         .text-pressure-title span {
           display: inline-block;
           font-weight: 850;
-          will-change: font-variation-settings, transform;
+          will-change: font-variation-settings;
         }
       `}</style>
     ),

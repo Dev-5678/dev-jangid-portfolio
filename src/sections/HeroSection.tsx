@@ -7,27 +7,6 @@ interface HeroSectionProps {
   theme?: 'light' | 'dark'
 }
 
-const DUST_PARTICLES = [
-  { size: 2.1, color: 'rgba(252,107,47,0.5)', top: '12%', left: '8%', duration: 6.2, delay: 0 },
-  { size: 1.5, color: 'rgba(255,255,255,0.2)', top: '25%', left: '82%', duration: 7.4, delay: 0.6 },
-  { size: 2.8, color: 'rgba(255,255,255,0.2)', top: '40%', left: '15%', duration: 5.8, delay: 1.2 },
-  { size: 1.2, color: 'rgba(252,107,47,0.5)', top: '58%', left: '91%', duration: 8.1, delay: 1.8 },
-  { size: 2.4, color: 'rgba(255,255,255,0.2)', top: '72%', left: '24%', duration: 6.9, delay: 2.4 },
-  { size: 1.8, color: 'rgba(255,255,255,0.2)', top: '18%', left: '64%', duration: 5.5, delay: 3 },
-  { size: 2.6, color: 'rgba(252,107,47,0.5)', top: '84%', left: '45%', duration: 7.8, delay: 3.6 },
-  { size: 1.4, color: 'rgba(255,255,255,0.2)', top: '33%', left: '37%', duration: 6.1, delay: 4.2 },
-  { size: 2.2, color: 'rgba(255,255,255,0.2)', top: '67%', left: '78%', duration: 8.5, delay: 4.8 },
-  { size: 1.6, color: 'rgba(252,107,47,0.5)', top: '50%', left: '6%', duration: 5.2, delay: 5.4 },
-  { size: 2.5, color: 'rgba(255,255,255,0.2)', top: '28%', left: '95%', duration: 7.1, delay: 6 },
-  { size: 1.3, color: 'rgba(255,255,255,0.2)', top: '88%', left: '12%', duration: 6.6, delay: 6.6 },
-  { size: 2.0, color: 'rgba(252,107,47,0.5)', top: '15%', left: '48%', duration: 8.0, delay: 7.2 },
-  { size: 1.7, color: 'rgba(255,255,255,0.2)', top: '44%', left: '71%', duration: 5.9, delay: 7.8 },
-  { size: 2.3, color: 'rgba(255,255,255,0.2)', top: '79%', left: '58%', duration: 7.3, delay: 8.4 },
-  { size: 1.1, color: 'rgba(252,107,47,0.5)', top: '62%', left: '31%', duration: 6.4, delay: 9 },
-  { size: 2.7, color: 'rgba(255,255,255,0.2)', top: '92%', left: '84%', duration: 8.3, delay: 9.6 },
-  { size: 1.9, color: 'rgba(255,255,255,0.2)', top: '38%', left: '52%', duration: 5.6, delay: 10.2 }
-]
-
 export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenResume, theme = 'dark' }) => {
   const heroRef = useRef<HTMLElement>(null)
   const tagRef = useRef<HTMLDivElement>(null)
@@ -83,32 +62,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
       {/* 2. Ambient Radiant Ember Glow Orb behind Title */}
       <div
         ref={glowRef}
-        className="absolute left-1/2 top-[44%] -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] sm:w-[580px] sm:h-[580px] md:w-[750px] md:h-[750px] pointer-events-none opacity-0 z-[6]"
+        className="absolute left-1/2 top-[44%] -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] sm:w-[580px] sm:h-[580px] md:w-[750px] md:h-[750px] pointer-events-none opacity-0 z-[6] transform-gpu"
         style={{
-          background: 'radial-gradient(circle, rgba(252,107,47,0.18) 0%, rgba(160,42,34,0.08) 45%, transparent 70%)',
-          filter: 'blur(50px)'
+          background: 'radial-gradient(circle, rgba(252,107,47,0.18) 0%, rgba(160,42,34,0.08) 40%, transparent 68%)'
         }}
         aria-hidden="true"
       />
 
-      {/* 3. Floating Ambient Micro-Dust Particles */}
-      <div className="absolute inset-0 pointer-events-none z-[8]" aria-hidden="true">
-        {DUST_PARTICLES.map((d, i) => (
-          <div
-            key={i}
-            className="dust absolute rounded-full"
-            style={{
-              width: `${d.size}px`,
-              height: `${d.size}px`,
-              backgroundColor: d.color,
-              top: d.top,
-              left: d.left,
-              animationDuration: `${d.duration}s`,
-              animationDelay: `${d.delay}s`
-            }}
-          />
-        ))}
-      </div>
+
 
       {/* 4. Top-Left Status Pill Badge */}
       <div

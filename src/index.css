@@ -68,7 +68,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    text-rendering: optimizeLegibility;
   }
 
   body {
@@ -76,7 +76,6 @@
     color: var(--text-main);
     min-height: 100vh;
     overflow-x: hidden;
-    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   ::selection {
