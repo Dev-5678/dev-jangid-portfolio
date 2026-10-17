@@ -171,23 +171,32 @@ export const ProjectsSection: React.FC = () => {
                 <div className={`grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-14 items-center ${isEven ? 'lg:flex-row-reverse' : ''}`}>
                   {/* Text Column */}
                   <div className={`lg:col-span-6 flex flex-col justify-between h-full space-y-4 sm:space-y-6 ${isEven ? 'lg:order-2' : 'lg:order-1'}`}>
-                    <div className="flex items-center gap-2.5 sm:gap-3.5">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                      <a
+                        href={`#/project/${p.id}`}
+                        className="inline-flex items-center gap-1.5 sm:gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full bg-white text-black font-semibold text-[11px] sm:text-xs tracking-wider uppercase hover:scale-105 transition-all shadow-[0_4px_25px_rgba(255,255,255,0.3)] group touch-manipulation cursor-pointer"
+                        title="Visit Standalone Showcase Website"
+                      >
+                        <span>Visit Live Website</span>
+                        <ExternalLink className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-black stroke-[2.5] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
+                      </a>
+
                       <button
                         onClick={() => handleOpenApparatus(p)}
-                        className="inline-flex items-center gap-1.5 sm:gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full bg-white text-black font-semibold text-[11px] sm:text-xs tracking-wider uppercase hover:scale-105 transition-all shadow-[0_4px_20px_rgba(255,255,255,0.25)] group touch-manipulation cursor-pointer"
-                        title="Launch Interactive Simulator"
+                        className="px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 font-semibold text-[11px] sm:text-xs tracking-wider uppercase transition-all backdrop-blur-md cursor-pointer flex items-center gap-1.5"
+                        title="Quick Modal View"
                       >
-                        <Play className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-black group-hover:scale-110 transition-transform shrink-0" />
-                        <span>Interactive Apparatus</span>
-                        <ExternalLink className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-black stroke-[2.5] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
+                        <Play className="w-3 h-3 text-ember fill-ember" />
+                        <span>Quick View Modal</span>
                       </button>
 
                       <button
                         onClick={() => handleOpenBlueprint(p)}
-                        className="px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 font-semibold text-[11px] sm:text-xs tracking-wider uppercase transition-all backdrop-blur-md cursor-pointer flex items-center gap-1.5"
+                        className="px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-full bg-white/5 hover:bg-white/15 text-zinc-300 border border-white/10 font-semibold text-[11px] sm:text-xs tracking-wider uppercase transition-all backdrop-blur-md cursor-pointer flex items-center gap-1"
+                        title="Blueprint Specifications"
                       >
-                        <Layers className="w-3.5 h-3.5 text-ember" />
-                        <span>Blueprint Spec</span>
+                        <Layers className="w-3 h-3 text-ember" />
+                        <span>Blueprint</span>
                       </button>
 
                       <span className="ml-auto text-[11px] sm:text-xs font-mono text-zinc-400 font-bold tracking-widest uppercase">
@@ -227,8 +236,11 @@ export const ProjectsSection: React.FC = () => {
                   {/* Interactive Live Mini-HUD Preview Column */}
                   <div className={`lg:col-span-6 flex items-center justify-center ${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
                     <div
-                      onClick={() => handleOpenApparatus(p)}
+                      onClick={() => {
+                        window.location.hash = `#/project/${p.id}`
+                      }}
                       className="relative w-full max-w-xl rounded-xl sm:rounded-2xl overflow-hidden border border-white/20 bg-[#090a0f] backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.2)] p-2 sm:p-4 group cursor-pointer transition-all hover:border-ember/60 hover:shadow-[0_20px_60px_rgba(160,42,34,0.3)]"
+                      title="1-Click: Open full showcase website"
                     >
                       {/* Terminal Chrome Window Bar */}
                       <div className="flex items-center justify-between px-2.5 py-1.5 sm:px-3 sm:py-2 bg-white/[0.05] border-b border-white/10 rounded-t-lg sm:rounded-t-xl mb-3">
@@ -333,10 +345,11 @@ export const ProjectsSection: React.FC = () => {
                         <div className="pt-2 border-t border-white/10 flex items-center justify-between text-[10px] text-zinc-400 group-hover:text-white transition-colors">
                           <span className="flex items-center gap-1">
                             <Terminal className="w-3 h-3 text-ember" />
-                            <span>Click to launch full interactive apparatus</span>
+                            <span>1-Click: Open full showcase website</span>
                           </span>
-                          <span className="px-2 py-0.5 rounded bg-white/10 text-white font-bold group-hover:bg-ember transition-colors">
-                            OPEN ↗
+                          <span className="px-2 py-0.5 rounded bg-white/10 text-white font-bold group-hover:bg-ember transition-colors flex items-center gap-1">
+                            <span>VISIT SITE</span>
+                            <ExternalLink className="w-3 h-3" />
                           </span>
                         </div>
                       </div>

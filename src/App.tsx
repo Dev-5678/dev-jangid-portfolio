@@ -23,6 +23,10 @@ import { OfflineBanner } from './components/OfflineBanner'
 import { CopyToast } from './components/CopyToast'
 import { personalInfo } from './data/portfolio'
 import { Zap, X } from 'lucide-react'
+import { AAIProjectWebsite } from './pages/AAIProjectWebsite'
+import { CanSatProjectWebsite } from './pages/CanSatProjectWebsite'
+import { GeminiRAGProjectWebsite } from './pages/GeminiRAGProjectWebsite'
+import { SystemsEngineProjectWebsite } from './pages/SystemsEngineProjectWebsite'
 
 export function App() {
   const { theme, toggleTheme } = useTheme()
@@ -35,6 +39,32 @@ export function App() {
   const [isConsoleOpen, setIsConsoleOpen] = useState(false)
   const [isResumeOpen, setIsResumeOpen] = useState(false)
   const [isPaletteOpen, setIsPaletteOpen] = useState(false)
+
+  // Dedicated Project Showcase Route Listener
+  const getProjectRoute = () => {
+    const hash = window.location.hash.toLowerCase()
+    const path = window.location.pathname.toLowerCase()
+    if (hash.includes('project/aai') || path.includes('/project/aai')) return 'aai'
+    if (hash.includes('project/cansat') || path.includes('/project/cansat')) return 'cansat'
+    if (hash.includes('project/gemini') || hash.includes('project/rag') || path.includes('/project/gemini') || path.includes('/project/rag')) return 'rag'
+    if (hash.includes('project/systems') || hash.includes('project/high-throughput') || path.includes('/project/systems')) return 'systems'
+    return null
+  }
+
+  const [projectRoute, setProjectRoute] = useState<string | null>(getProjectRoute())
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      setProjectRoute(getProjectRoute())
+      window.scrollTo(0, 0)
+    }
+    window.addEventListener('hashchange', handleHashChange)
+    window.addEventListener('popstate', handleHashChange)
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange)
+      window.removeEventListener('popstate', handleHashChange)
+    }
+  }, [])
 
   // Global hotkeys: backtick (`) for CLI terminal, Ctrl+K / Cmd+K for Command Palette
   useEffect(() => {
@@ -61,6 +91,59 @@ export function App() {
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [playClick])
+
+  // Direct Standalone Project Website Rendering
+  if (projectRoute === 'aai') {
+    return (
+      <AAIProjectWebsite
+        onBack={() => {
+          window.location.hash = '#projects'
+          setProjectRoute(null)
+        }}
+        theme={theme}
+        onToggleTheme={toggleTheme}
+      />
+    )
+  }
+
+  if (projectRoute === 'cansat') {
+    return (
+      <CanSatProjectWebsite
+        onBack={() => {
+          window.location.hash = '#projects'
+          setProjectRoute(null)
+        }}
+        theme={theme}
+        onToggleTheme={toggleTheme}
+      />
+    )
+  }
+
+  if (projectRoute === 'rag') {
+    return (
+      <GeminiRAGProjectWebsite
+        onBack={() => {
+          window.location.hash = '#projects'
+          setProjectRoute(null)
+        }}
+        theme={theme}
+        onToggleTheme={toggleTheme}
+      />
+    )
+  }
+
+  if (projectRoute === 'systems') {
+    return (
+      <SystemsEngineProjectWebsite
+        onBack={() => {
+          window.location.hash = '#projects'
+          setProjectRoute(null)
+        }}
+        theme={theme}
+        onToggleTheme={toggleTheme}
+      />
+    )
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-[var(--bg-main)] text-[var(--text-main)] selection:bg-ember selection:text-white relative transition-colors duration-300">
