@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { InteractiveSkillsKeyboard, KEYBOARD_SKILLS } from '../components/InteractiveSkillsKeyboard'
 
@@ -6,8 +6,9 @@ describe('InteractiveSkillsKeyboard Component', () => {
   it('renders the hardware macropad title, status indicators, and 28 keys', () => {
     render(<InteractiveSkillsKeyboard />)
 
-    expect(screen.getByText(/Dev-MK64 Mechanical Core/i)).toBeInTheDocument()
-    expect(screen.getByText(/28 Switches/i)).toBeInTheDocument()
+    expect(screen.getByText(/Interactive Tech Stack/i)).toBeInTheDocument()
+    expect(screen.getByText(/Tactile Stack \/\/ Interactive Hardware/i)).toBeInTheDocument()
+    expect(screen.getAllByText(/28 Switches/i).length).toBeGreaterThanOrEqual(1)
     expect(KEYBOARD_SKILLS.length).toBe(28)
   })
 
@@ -23,52 +24,24 @@ describe('InteractiveSkillsKeyboard Component', () => {
     expect(screen.getByText('5')).toBeInTheDocument()
   })
 
-  it('updates telemetry HUD and increments actuation counter when clicking keycaps', () => {
+  it('updates inspection legend when clicking keycaps', () => {
     render(<InteractiveSkillsKeyboard />)
-
-    expect(screen.getByText('ACTUATIONS:')).toBeInTheDocument()
-    expect(screen.getByText('0')).toBeInTheDocument()
 
     const pyKeyButton = screen.getByLabelText(/Python 3 keycap/i)
     fireEvent.click(pyKeyButton)
 
     expect(screen.getByText('Python 3')).toBeInTheDocument()
-    expect(screen.getAllByText(/AI & Data Pipelines/i).length).toBeGreaterThanOrEqual(1)
-    expect(screen.getByText('1')).toBeInTheDocument()
+    expect(screen.getAllByText(/Multimodal AI, semantic vector search backends/i).length).toBeGreaterThanOrEqual(1)
   })
 
-  it('renders realistic switch specs in the hardware OLED bar', () => {
-    render(<InteractiveSkillsKeyboard />)
-
-    expect(screen.getByText(/SWITCH STEM:/i)).toBeInTheDocument()
-    expect(screen.getByText(/ACTUATION FORCE:/i)).toBeInTheDocument()
-    expect(screen.getByText(/TRAVEL:/i)).toBeInTheDocument()
-  })
-
-  it('cross-links keycap to portfolio project and triggers smooth scroll', () => {
-    const targetDiv = document.createElement('div')
-    targetDiv.id = 'high-throughput-systems'
-    const scrollMock = vi.fn()
-    targetDiv.scrollIntoView = scrollMock
-    document.body.appendChild(targetDiv)
-
-    render(<InteractiveSkillsKeyboard />)
-
-    const projectJumpBtn = screen.getByTitle(/Jump to/i)
-    fireEvent.click(projectJumpBtn)
-
-    expect(scrollMock).toHaveBeenCalled()
-    document.body.removeChild(targetDiv)
-  })
-
-  it('updates telemetry HUD when hovering a keycap', () => {
+  it('updates inspection legend when hovering a keycap', () => {
     render(<InteractiveSkillsKeyboard />)
 
     const reactKeyButton = screen.getByLabelText(/React 19 keycap/i)
     fireEvent.pointerEnter(reactKeyButton)
 
     expect(screen.getByText('React 19')).toBeInTheDocument()
-    expect(screen.getAllByText(/State & Motion Physics/i).length).toBeGreaterThanOrEqual(1)
+    expect(screen.getAllByText(/Concurrent hooks, state compiler/i).length).toBeGreaterThanOrEqual(1)
   })
 
   it('toggles audio on/off when clicking audio button', () => {
@@ -89,14 +62,5 @@ describe('InteractiveSkillsKeyboard Component', () => {
 
     fireEvent.click(viewButton)
     expect(viewButton).toHaveTextContent(/2D STUDIO/i)
-  })
-
-  it('filters keycaps when selecting a category layer', () => {
-    render(<InteractiveSkillsKeyboard />)
-
-    const languagesTab = screen.getByText('Languages')
-    fireEvent.click(languagesTab)
-
-    expect(languagesTab).toHaveClass('bg-ember')
   })
 })

@@ -1,21 +1,12 @@
 import React, { useState, useMemo, useCallback } from 'react'
-import { Volume2, VolumeX, Eye, Sparkles, Layers, ArrowUpRight, Cpu, Activity } from 'lucide-react'
-
-export type KeyboardCategory =
-  | 'LANGUAGES'
-  | 'FULL_STACK'
-  | 'AI_CLOUD'
-  | 'CORE_CS'
-  | 'TELEMETRY'
-  | 'DEVOPS'
+import { Volume2, VolumeX, Eye, Sparkles } from 'lucide-react'
 
 export interface KeySkill {
   id: string
   label: string
   subLabel?: string
   name: string
-  category: KeyboardCategory
-  categoryLabel: string
+  category: string
   color: {
     base: string
     light: string
@@ -26,19 +17,8 @@ export interface KeySkill {
     glow: string
     text: string
   }
-  proficiency: string
-  experience: string
-  highlight: string
-  switchSpecs: {
-    force: string
-    preTravel: string
-    bottomOut: string
-    stemType: string
-  }
-  linkedProject: {
-    id: string
-    title: string
-  }
+  description: string
+  iconType: string
 }
 
 export const KEYBOARD_SKILLS: KeySkill[] = [
@@ -48,8 +28,7 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     label: 'TS',
     subLabel: '5.x',
     name: 'TypeScript',
-    category: 'LANGUAGES',
-    categoryLabel: 'Programming Languages',
+    category: 'Language',
     color: {
       base: '#007acc',
       light: '#3192e0',
@@ -60,19 +39,15 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
       glow: 'rgba(0, 122, 204, 0.75)',
       text: '#ffffff'
     },
-    proficiency: '98% // Master',
-    experience: 'Production & Full-Stack',
-    highlight: 'Strict compile-time type safety, interfaces, generic constraints, zero runtime type errors.',
-    switchSpecs: { force: '45gf Tactile', preTravel: '2.0mm', bottomOut: '4.0mm', stemType: 'Cherry MX Blue Stem' },
-    linkedProject: { id: 'high-throughput-systems', title: 'High-Throughput Systems & TypeScript Stacks' }
+    description: 'Strict static type safety, generics, and enterprise architecture.',
+    iconType: 'ts'
   },
   {
     id: 'js',
     label: 'JS',
     subLabel: 'ES24',
     name: 'JavaScript',
-    category: 'LANGUAGES',
-    categoryLabel: 'Programming Languages',
+    category: 'Language',
     color: {
       base: '#f7df1e',
       light: '#fae852',
@@ -83,42 +58,34 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
       glow: 'rgba(247, 223, 30, 0.7)',
       text: '#111111'
     },
-    proficiency: '96% // Expert',
-    experience: 'Asynchronous Core',
-    highlight: 'Event loop mastery, non-blocking I/O, V8 microtask scheduling, closures & prototypes.',
-    switchSpecs: { force: '45gf Tactile', preTravel: '2.0mm', bottomOut: '4.0mm', stemType: 'Cherry MX Red Stem' },
-    linkedProject: { id: 'gemini-rag', title: 'Multimodal Generative AI Web Platform' }
+    description: 'Modern ECMAScript, event loop, asynchronous promises, and V8 runtime.',
+    iconType: 'js'
   },
   {
     id: 'py',
     label: 'PY',
     subLabel: '3.12',
     name: 'Python 3',
-    category: 'LANGUAGES',
-    categoryLabel: 'Programming Languages',
+    category: 'Language',
     color: {
-      base: '#3776ab',
-      light: '#4d8fc4',
-      dark: '#275780',
-      sideDark: '#1e4463',
-      sideDarker: '#16334a',
-      sideDeep: '#0d2030',
+      base: '#2b5b84',
+      light: '#3c79ad',
+      dark: '#1e415e',
+      sideDark: '#17334a',
+      sideDarker: '#102436',
+      sideDeep: '#0a1621',
       glow: 'rgba(55, 118, 171, 0.75)',
       text: '#ffd43b'
     },
-    proficiency: '95% // Expert',
-    experience: 'AI & Data Pipelines',
-    highlight: 'Multimodal RAG backends, NumPy vector calculations, Streamlit engines, high-speed scripting.',
-    switchSpecs: { force: '50gf Linear', preTravel: '1.9mm', bottomOut: '4.0mm', stemType: 'Gateron Yellow Stem' },
-    linkedProject: { id: 'gemini-rag', title: 'Multimodal Generative AI & RAG Engine' }
+    description: 'Multimodal AI, semantic vector search backends, and data science.',
+    iconType: 'py'
   },
   {
     id: 'cpp',
     label: 'C++',
     subLabel: 'C++20',
     name: 'Modern C++',
-    category: 'LANGUAGES',
-    categoryLabel: 'Programming Languages',
+    category: 'Language',
     color: {
       base: '#00599c',
       light: '#1f7ec7',
@@ -129,19 +96,15 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
       glow: 'rgba(0, 89, 156, 0.75)',
       text: '#ffffff'
     },
-    proficiency: '90% // Advanced',
-    experience: 'Low-Latency & Firmware',
-    highlight: 'Deterministic manual memory management, RAII, STL algorithms, embedded aerospace controllers.',
-    switchSpecs: { force: '55gf Tactile', preTravel: '2.0mm', bottomOut: '4.0mm', stemType: 'Holy Panda MX Stem' },
-    linkedProject: { id: 'cansat-telemetry', title: 'CanSat & CubeSat Space Telemetry System' }
+    description: 'Low-latency algorithms, deterministic memory management, and firmware.',
+    iconType: 'cpp'
   },
   {
     id: 'c',
     label: 'C',
     subLabel: 'POSIX',
     name: 'C Language',
-    category: 'LANGUAGES',
-    categoryLabel: 'Programming Languages',
+    category: 'Language',
     color: {
       base: '#4a5568',
       light: '#718096',
@@ -152,19 +115,15 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
       glow: 'rgba(160, 174, 192, 0.65)',
       text: '#e2e8f0'
     },
-    proficiency: '88% // Systems Ready',
-    experience: 'Bare-Metal Systems',
-    highlight: 'Direct memory pointers, register-level manipulation, hardware interrupts, bitwise packet masking.',
-    switchSpecs: { force: '60gf Heavy', preTravel: '2.2mm', bottomOut: '4.0mm', stemType: 'Cherry MX Black Stem' },
-    linkedProject: { id: 'aai-netsec', title: 'AAI Network Security & IT Infrastructure' }
+    description: 'Bare-metal register manipulation, microcontrollers, and hardware interrupts.',
+    iconType: 'c'
   },
   {
     id: 'java',
     label: 'JAVA',
     subLabel: '21',
     name: 'Java LTS',
-    category: 'LANGUAGES',
-    categoryLabel: 'Programming Languages',
+    category: 'Language',
     color: {
       base: '#e76f51',
       light: '#f4a261',
@@ -175,34 +134,27 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
       glow: 'rgba(231, 111, 81, 0.7)',
       text: '#ffffff'
     },
-    proficiency: '86% // Proficient',
-    experience: 'OOP & Algorithms',
-    highlight: 'Object-oriented class structures, JVM garbage collection internals, threading concurrency.',
-    switchSpecs: { force: '45gf Tactile', preTravel: '2.0mm', bottomOut: '4.0mm', stemType: 'Cherry MX Brown Stem' },
-    linkedProject: { id: 'high-throughput-systems', title: 'High-Throughput Systems Engine' }
+    description: 'Object-oriented programming, JVM memory architecture, and concurrency.',
+    iconType: 'java'
   },
   {
     id: 'html5',
     label: '5',
     subLabel: 'CSS3',
     name: 'HTML5 & CSS3',
-    category: 'LANGUAGES',
-    categoryLabel: 'Programming Languages',
+    category: 'Web',
     color: {
       base: '#e34f26',
       light: '#f0653f',
       dark: '#ba3c18',
-      sideDark: '#9f2f11',
+      sideDark: '#942f11',
       sideDarker: '#73230b',
       sideDeep: '#4d1606',
       glow: 'rgba(227, 79, 38, 0.75)',
       text: '#ffffff'
     },
-    proficiency: '98% // Expert',
-    experience: 'Semantic Web & 3D UI',
-    highlight: 'Semantic DOM accessibility, CSS 3D matrix transforms, responsive fluid layouts, OKLCH color science.',
-    switchSpecs: { force: '45gf Tactile', preTravel: '2.0mm', bottomOut: '4.0mm', stemType: 'Cherry MX Red Stem' },
-    linkedProject: { id: 'gemini-rag', title: 'Interactive AI Interface Engineering' }
+    description: 'Semantic DOM architecture, 3D matrix transforms, and responsive design.',
+    iconType: 'html5'
   },
 
   // --- ROW 2: Full Stack Web Engineering ---
@@ -211,8 +163,7 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     label: 'N',
     subLabel: '15',
     name: 'Next.js 15',
-    category: 'FULL_STACK',
-    categoryLabel: 'Full Stack Web',
+    category: 'Framework',
     color: {
       base: '#18181b',
       light: '#27272a',
@@ -223,19 +174,15 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
       glow: 'rgba(255, 255, 255, 0.5)',
       text: '#fafafa'
     },
-    proficiency: '95% // Production Master',
-    experience: 'App Router & Edge',
-    highlight: 'React Server Components (RSC), dynamic streaming SSR, incremental static regeneration (ISR).',
-    switchSpecs: { force: '45gf Speed', preTravel: '1.2mm', bottomOut: '3.4mm', stemType: 'Silver Speed MX Stem' },
-    linkedProject: { id: 'gemini-rag', title: 'Next.js 15 App Router Architecture' }
+    description: 'React Server Components (RSC), App Router, streaming SSR, and Edge APIs.',
+    iconType: 'next'
   },
   {
     id: 'tailwind',
     label: '≈',
     subLabel: 'v4',
     name: 'Tailwind CSS 4',
-    category: 'FULL_STACK',
-    categoryLabel: 'Full Stack Web',
+    category: 'Framework',
     color: {
       base: '#06b6d4',
       light: '#22d3ee',
@@ -246,19 +193,15 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
       glow: 'rgba(6, 182, 212, 0.75)',
       text: '#ffffff'
     },
-    proficiency: '98% // Expert',
-    experience: 'Modern UI Architecture',
-    highlight: 'Zero-runtime utility styling, custom theme tokens, glassmorphism filters, sub-millisecond build time.',
-    switchSpecs: { force: '45gf Linear', preTravel: '2.0mm', bottomOut: '4.0mm', stemType: 'Tealios V2 MX Stem' },
-    linkedProject: { id: 'gemini-rag', title: 'Responsive UI Design System' }
+    description: 'Zero-runtime utility styling, custom design tokens, and fluid typography.',
+    iconType: 'tailwind'
   },
   {
     id: 'node',
     label: '⬢',
     subLabel: 'Node',
     name: 'Node.js',
-    category: 'FULL_STACK',
-    categoryLabel: 'Full Stack Web',
+    category: 'Runtime',
     color: {
       base: '#22c55e',
       light: '#4ade80',
@@ -269,19 +212,15 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
       glow: 'rgba(34, 197, 94, 0.75)',
       text: '#ffffff'
     },
-    proficiency: '94% // Expert',
-    experience: 'High-Concurrency Runtime',
-    highlight: 'Asynchronous event stream processing, microservice orchestrations, worker threads, native buffer I/O.',
-    switchSpecs: { force: '50gf Linear', preTravel: '2.0mm', bottomOut: '4.0mm', stemType: 'Gateron Green Stem' },
-    linkedProject: { id: 'gemini-rag', title: 'Node.js Microservices Engine' }
+    description: 'Event-driven high-concurrency backend services, streams, and worker threads.',
+    iconType: 'node'
   },
   {
     id: 'express',
     label: 'ex',
     subLabel: 'API',
     name: 'Express.js',
-    category: 'FULL_STACK',
-    categoryLabel: 'Full Stack Web',
+    category: 'Framework',
     color: {
       base: '#3f3f46',
       light: '#52525b',
@@ -292,19 +231,15 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
       glow: 'rgba(161, 161, 170, 0.65)',
       text: '#ffffff'
     },
-    proficiency: '92% // Advanced',
-    experience: 'RESTful Middleware',
-    highlight: 'JWT authentication pipelines, rate-limiting middleware, CORS policies, modular routing architectures.',
-    switchSpecs: { force: '45gf Tactile', preTravel: '2.0mm', bottomOut: '4.0mm', stemType: 'Cherry MX Red Stem' },
-    linkedProject: { id: 'aai-netsec', title: 'Express REST & Auth Pipelines' }
+    description: 'RESTful API routing, JWT authentication, and security middleware pipelines.',
+    iconType: 'express'
   },
   {
     id: 'react',
     label: '⚛',
     subLabel: '19',
     name: 'React 19',
-    category: 'FULL_STACK',
-    categoryLabel: 'Full Stack Web',
+    category: 'Framework',
     color: {
       base: '#00b4d8',
       light: '#48cae4',
@@ -315,19 +250,15 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
       glow: 'rgba(0, 180, 216, 0.85)',
       text: '#ffffff'
     },
-    proficiency: '98% // Core Specialist',
-    experience: 'State & Motion Physics',
-    highlight: 'Concurrent hooks, compiler optimization, custom state machines, virtual DOM reconciliation.',
-    switchSpecs: { force: '45gf Tactile', preTravel: '1.8mm', bottomOut: '3.8mm', stemType: 'Boba U4T Tactile Stem' },
-    linkedProject: { id: 'gemini-rag', title: 'Interactive React 19 Frontend' }
+    description: 'Concurrent hooks, state compiler, optimistic UI, and virtual DOM reconciliation.',
+    iconType: 'react'
   },
   {
     id: 'postgres',
     label: 'PG',
     subLabel: 'SQL',
     name: 'PostgreSQL',
-    category: 'FULL_STACK',
-    categoryLabel: 'Full Stack Web',
+    category: 'Database',
     color: {
       base: '#336791',
       light: '#4b7ea8',
@@ -338,19 +269,15 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
       glow: 'rgba(51, 103, 145, 0.75)',
       text: '#ffffff'
     },
-    proficiency: '90% // Proficient',
-    experience: 'Relational Database',
-    highlight: 'ACID transactional integrity, B-Tree indexes, JSONB semi-structured storage, connection pooling.',
-    switchSpecs: { force: '55gf Heavy', preTravel: '2.0mm', bottomOut: '4.0mm', stemType: 'Zealio V2 MX Stem' },
-    linkedProject: { id: 'aai-netsec', title: 'Enterprise Relational Database' }
+    description: 'Relational ACID schema design, B-Tree indexing, and connection pooling.',
+    iconType: 'postgres'
   },
   {
     id: 'mongo',
     label: '🍃',
     subLabel: 'NoSQL',
     name: 'MongoDB',
-    category: 'FULL_STACK',
-    categoryLabel: 'Full Stack Web',
+    category: 'Database',
     color: {
       base: '#10b981',
       light: '#34d399',
@@ -361,11 +288,8 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
       glow: 'rgba(16, 185, 129, 0.75)',
       text: '#ffffff'
     },
-    proficiency: '89% // Proficient',
-    experience: 'Document Modeling',
-    highlight: 'BSON document modeling, aggregation pipelines, replica set failover, dynamic horizontal sharding.',
-    switchSpecs: { force: '50gf Linear', preTravel: '2.0mm', bottomOut: '4.0mm', stemType: 'Gateron Green Stem' },
-    linkedProject: { id: 'gemini-rag', title: 'NoSQL Document Datastore' }
+    description: 'Document modeling, aggregation pipelines, and high-volume collections.',
+    iconType: 'mongo'
   },
 
   // --- ROW 3: AI, Cloud & DevOps ---
@@ -374,8 +298,7 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     label: '⑂',
     subLabel: 'Git',
     name: 'Git VCS',
-    category: 'DEVOPS',
-    categoryLabel: 'DevOps & Tooling',
+    category: 'DevOps',
     color: {
       base: '#f05032',
       light: '#f5745d',
@@ -386,19 +309,15 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
       glow: 'rgba(240, 80, 50, 0.75)',
       text: '#ffffff'
     },
-    proficiency: '96% // Expert',
-    experience: 'Source Control & Hygiene',
-    highlight: 'Feature branching, interactive rebasing, bisecting regressions, atomic commits, submodule management.',
-    switchSpecs: { force: '50gf Clicky', preTravel: '2.2mm', bottomOut: '4.0mm', stemType: 'Kailh Box White Stem' },
-    linkedProject: { id: 'aai-netsec', title: 'Git Version Control & Branching Hygiene' }
+    description: 'Branching strategies, interactive rebasing, bisecting, and commit hygiene.',
+    iconType: 'git'
   },
   {
     id: 'github',
     label: '🐙',
     subLabel: 'CI/CD',
     name: 'GitHub Actions',
-    category: 'DEVOPS',
-    categoryLabel: 'DevOps & Tooling',
+    category: 'DevOps',
     color: {
       base: '#24292e',
       light: '#3f4448',
@@ -409,19 +328,15 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
       glow: 'rgba(255, 255, 255, 0.45)',
       text: '#ffffff'
     },
-    proficiency: '94% // Expert',
-    experience: 'Automated CI/CD',
-    highlight: 'Automated test matrices, Docker multi-platform builds, semantic versioning, secret injection.',
-    switchSpecs: { force: '45gf Tactile', preTravel: '2.0mm', bottomOut: '4.0mm', stemType: 'Cherry MX Black Stem' },
-    linkedProject: { id: 'aai-netsec', title: 'GitHub CI/CD Automation Matrix' }
+    description: 'Automated CI/CD test workflows, linting matrices, and container deployment.',
+    iconType: 'github'
   },
   {
     id: 'gemini',
     label: '✦',
     subLabel: 'Pro',
     name: 'Gemini 1.5 Pro',
-    category: 'AI_CLOUD',
-    categoryLabel: 'AI & Cloud',
+    category: 'AI & Cloud',
     color: {
       base: '#6366f1',
       light: '#818cf8',
@@ -432,19 +347,15 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
       glow: 'rgba(99, 102, 241, 0.85)',
       text: '#ffffff'
     },
-    proficiency: '95% // AI Scholar',
-    experience: 'Multimodal Intelligence',
-    highlight: '2,000,000-token context processing, structured schema generation, tool-calling agents, vision analysis.',
-    switchSpecs: { force: '45gf Tactile', preTravel: '1.9mm', bottomOut: '3.8mm', stemType: 'Gateron Optical Stem' },
-    linkedProject: { id: 'gemini-rag', title: 'Multimodal Generative AI & RAG Engine' }
+    description: 'Long-context multimodal reasoning (2M tokens), vision analysis, and tool calling.',
+    iconType: 'gemini'
   },
   {
     id: 'rag',
     label: 'RAG',
     subLabel: 'Embed',
     name: 'Multimodal RAG',
-    category: 'AI_CLOUD',
-    categoryLabel: 'AI & Cloud',
+    category: 'AI & Cloud',
     color: {
       base: '#fc6b2f',
       light: '#fd8c5a',
@@ -455,19 +366,15 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
       glow: 'rgba(252, 107, 47, 0.85)',
       text: '#ffffff'
     },
-    proficiency: '93% // Production Grade',
-    experience: 'Vector Semantic Search',
-    highlight: 'High-dimensional embeddings, ChromaDB vector indexing, cosine ranking, hallucination suppression.',
-    switchSpecs: { force: '50gf Tactile', preTravel: '2.0mm', bottomOut: '4.0mm', stemType: 'Holy Panda MX Stem' },
-    linkedProject: { id: 'gemini-rag', title: 'Multimodal Generative AI & RAG Engine' }
+    description: 'High-dimensional embeddings, ChromaDB vector search, and grounded citations.',
+    iconType: 'rag'
   },
   {
     id: 'vertex',
     label: '☁',
     subLabel: 'GCP',
-    name: 'Vertex AI & Cloud',
-    category: 'AI_CLOUD',
-    categoryLabel: 'AI & Cloud',
+    name: 'Google Cloud & Vertex AI',
+    category: 'Cloud',
     color: {
       base: '#4285f4',
       light: '#6ba3f7',
@@ -478,19 +385,15 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
       glow: 'rgba(66, 133, 244, 0.75)',
       text: '#ffffff'
     },
-    proficiency: '90% // Certified',
-    experience: 'Managed Cloud ML',
-    highlight: 'Model deployment endpoints, Cloud Storage buckets, serverless Cloud Functions, IAM least-privilege.',
-    switchSpecs: { force: '45gf Linear', preTravel: '2.0mm', bottomOut: '4.0mm', stemType: 'Gateron Blue Stem' },
-    linkedProject: { id: 'gemini-rag', title: 'Google Cloud Vertex AI Platform' }
+    description: 'Managed model endpoints, serverless functions, and cloud infrastructure.',
+    iconType: 'vertex'
   },
   {
     id: 'docker',
     label: '🐳',
     subLabel: 'Box',
     name: 'Docker Containers',
-    category: 'DEVOPS',
-    categoryLabel: 'DevOps & Tooling',
+    category: 'DevOps',
     color: {
       base: '#0284c7',
       light: '#38bdf8',
@@ -501,19 +404,15 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
       glow: 'rgba(2, 132, 199, 0.75)',
       text: '#ffffff'
     },
-    proficiency: '92% // Advanced',
-    experience: 'Container Orchestration',
-    highlight: 'Multi-stage lean Dockerfiles, Compose network bridges, alpine base images, container isolation.',
-    switchSpecs: { force: '50gf Linear', preTravel: '2.0mm', bottomOut: '4.0mm', stemType: 'Cherry MX Blue Stem' },
-    linkedProject: { id: 'gemini-rag', title: 'Docker Multi-Stage Containers' }
+    description: 'Multi-stage lean Dockerfiles, container isolation, and Compose network bridges.',
+    iconType: 'docker'
   },
   {
     id: 'linux',
     label: '🐧',
     subLabel: 'POSIX',
-    name: 'Linux System Admin',
-    category: 'DEVOPS',
-    categoryLabel: 'DevOps & Tooling',
+    name: 'Linux System Administration',
+    category: 'Systems',
     color: {
       base: '#1c1917',
       light: '#292524',
@@ -524,21 +423,17 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
       glow: 'rgba(250, 204, 21, 0.6)',
       text: '#facc15'
     },
-    proficiency: '94% // Advanced',
-    experience: 'POSIX & Shell Internals',
-    highlight: 'Systemd service daemons, SSH hardened tunnels, process signals, bash automation, permission models.',
-    switchSpecs: { force: '60gf Heavy', preTravel: '2.2mm', bottomOut: '4.0mm', stemType: 'Cherry MX Black Stem' },
-    linkedProject: { id: 'aai-netsec', title: 'AAI Linux POSIX Systems Admin' }
+    description: 'Systemd daemons, SSH tunnels, shell automation, and POSIX permissions.',
+    iconType: 'linux'
   },
 
-  // --- ROW 4: Aerospace, Telemetry & Core Systems ---
+  // --- ROW 4: Aerospace, Telemetry & Systems ---
   {
     id: 'cansat',
     label: '🛰',
     subLabel: '1U',
     name: '1U CanSat Payload',
-    category: 'TELEMETRY',
-    categoryLabel: 'Aerospace & Telemetry',
+    category: 'Aerospace',
     color: {
       base: '#eab308',
       light: '#fde047',
@@ -549,19 +444,15 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
       glow: 'rgba(234, 179, 8, 0.8)',
       text: '#18181b'
     },
-    proficiency: '95% // Flight Proven',
-    experience: 'Aerospace Payload Eng.',
-    highlight: '1U CubeSat payload architecture, barometric pressure calibration, parachute descent recovery.',
-    switchSpecs: { force: '55gf Tactile', preTravel: '2.0mm', bottomOut: '4.0mm', stemType: 'Aerospace Gold MX' },
-    linkedProject: { id: 'cansat-telemetry', title: 'CanSat & CubeSat Space Telemetry System' }
+    description: 'Miniature space payload architecture, barometric calibration, and descent telemetry.',
+    iconType: 'cansat'
   },
   {
     id: 'uhf',
     label: '📡',
     subLabel: '433M',
     name: '433 MHz RF Telemetry',
-    category: 'TELEMETRY',
-    categoryLabel: 'Aerospace & Telemetry',
+    category: 'Aerospace',
     color: {
       base: '#0284c7',
       light: '#38bdf8',
@@ -572,19 +463,15 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
       glow: 'rgba(2, 132, 199, 0.75)',
       text: '#ffffff'
     },
-    proficiency: '92% // Field Tested',
-    experience: 'Radio Frequency Downlink',
-    highlight: 'FSK radio packet decoding, ground station live telemetry streams, RF antenna matching & link budget.',
-    switchSpecs: { force: '45gf Speed', preTravel: '1.4mm', bottomOut: '3.6mm', stemType: 'Cyan Speed MX Stem' },
-    linkedProject: { id: 'cansat-telemetry', title: 'CanSat 433 MHz UHF Radio Link' }
+    description: 'FSK radio frequency packet decoding, RF link budgets, and live telemetry.',
+    iconType: 'uhf'
   },
   {
     id: 'esp32',
     label: '⚡',
     subLabel: 'MCU',
-    name: 'ESP32 Embedded C++',
-    category: 'TELEMETRY',
-    categoryLabel: 'Aerospace & Telemetry',
+    name: 'ESP32 & Embedded C++',
+    category: 'Embedded',
     color: {
       base: '#e11d48',
       light: '#fb7185',
@@ -595,19 +482,15 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
       glow: 'rgba(225, 29, 72, 0.75)',
       text: '#ffffff'
     },
-    proficiency: '93% // Embedded Grade',
-    experience: 'Sensor Fusion & Hardware',
-    highlight: 'I2C/SPI sensor fusion buses, hardware timer ISR interrupts, UART serial decoding, low-power modes.',
-    switchSpecs: { force: '50gf Linear', preTravel: '2.0mm', bottomOut: '4.0mm', stemType: 'Cherry MX Red Stem' },
-    linkedProject: { id: 'cansat-telemetry', title: 'CanSat ESP32 Embedded Microcontroller' }
+    description: 'I2C/SPI sensor fusion, hardware timers, interrupts, and serial UART streams.',
+    iconType: 'esp32'
   },
   {
     id: 'sec',
     label: '🛡',
     subLabel: 'VLAN',
-    name: 'Network Security (AAI)',
-    category: 'CORE_CS',
-    categoryLabel: 'Core CS & Systems',
+    name: 'Network Security & VLANs',
+    category: 'Security',
     color: {
       base: '#0284c7',
       light: '#0ea5e9',
@@ -618,19 +501,15 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
       glow: 'rgba(14, 165, 233, 0.75)',
       text: '#ffffff'
     },
-    proficiency: '91% // Airport Standard',
-    experience: 'Civil Aviation Cybersec',
-    highlight: 'Airports Authority of India (AAI) network defense, VLAN isolation, firewall ACLs, zero-trust policies.',
-    switchSpecs: { force: '55gf Tactile', preTravel: '2.0mm', bottomOut: '4.0mm', stemType: 'Shield Blue MX Stem' },
-    linkedProject: { id: 'aai-netsec', title: 'AAI Network Security & IT Infrastructure' }
+    description: 'VLAN network segregation, firewall packet inspection, and civil aviation IT compliance.',
+    iconType: 'sec'
   },
   {
     id: 'wireshark',
     label: '🦈',
     subLabel: 'PCAP',
-    name: 'Wireshark Analysis',
-    category: 'CORE_CS',
-    categoryLabel: 'Core CS & Systems',
+    name: 'Wireshark Packet Analysis',
+    category: 'Security',
     color: {
       base: '#1d4ed8',
       light: '#3b82f6',
@@ -641,19 +520,15 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
       glow: 'rgba(29, 78, 216, 0.75)',
       text: '#ffffff'
     },
-    proficiency: '89% // Advanced',
-    experience: 'Deep Packet Inspection',
-    highlight: 'TCP/IP packet frame capture, protocol dissection, anomalous beacon detection, latency diagnostics.',
-    switchSpecs: { force: '50gf Linear', preTravel: '2.0mm', bottomOut: '4.0mm', stemType: 'Cobalt Deep MX' },
-    linkedProject: { id: 'aai-netsec', title: 'AAI Deep Packet Inspection' }
+    description: 'Deep TCP/IP packet capture, frame dissection, and latency diagnostics.',
+    iconType: 'wireshark'
   },
   {
     id: 'dsa',
     label: '∿',
     subLabel: 'BigO',
     name: 'Data Structures & Algorithms',
-    category: 'CORE_CS',
-    categoryLabel: 'Core CS & Systems',
+    category: 'Core CS',
     color: {
       base: '#10b981',
       light: '#34d399',
@@ -661,22 +536,18 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
       sideDark: '#047857',
       sideDarker: '#065f46',
       sideDeep: '#064e3b',
-      glow: 'rgba(16, 185, 129, 0.75)',
+      glow: 'rgba(160, 174, 192, 0.75)',
       text: '#ffffff'
     },
-    proficiency: '96% // Foundational',
-    experience: 'Algorithmic Optimization',
-    highlight: 'Asymptotic complexity minimization, cache line locality, trees, graphs, dynamic programming.',
-    switchSpecs: { force: '45gf Tactile', preTravel: '1.9mm', bottomOut: '3.9mm', stemType: 'Emerald Tactile Stem' },
-    linkedProject: { id: 'high-throughput-systems', title: 'High-Throughput Low-Latency Systems Engine' }
+    description: 'Asymptotic complexity optimization, trees, graphs, and dynamic programming.',
+    iconType: 'dsa'
   },
   {
     id: 'vite',
     label: '⚡V',
     subLabel: 'HMR',
-    name: 'Vite & Build Tooling',
-    category: 'FULL_STACK',
-    categoryLabel: 'Full Stack Web',
+    name: 'Vite & Tooling',
+    category: 'Tooling',
     color: {
       base: '#8b5cf6',
       light: '#a78bfa',
@@ -687,26 +558,13 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
       glow: 'rgba(139, 92, 246, 0.8)',
       text: '#ffffff'
     },
-    proficiency: '95% // Production Master',
-    experience: 'High-Speed Bundler',
-    highlight: 'ESM hot module replacement (HMR), Rollup tree-shaking plugins, sub-second deployment bundles.',
-    switchSpecs: { force: '40gf Ultra-Speed', preTravel: '1.1mm', bottomOut: '3.4mm', stemType: 'Speed Purple MX' },
-    linkedProject: { id: 'high-throughput-systems', title: 'Vite ESM Fast Build Engine' }
+    description: 'ESM hot module replacement (HMR), Rollup tree shaking, and fast builds.',
+    iconType: 'vite'
   }
 ]
 
-export const CATEGORY_FILTERS = [
-  { id: 'ALL', label: 'All Switches (28)' },
-  { id: 'LANGUAGES', label: 'Languages' },
-  { id: 'FULL_STACK', label: 'Full Stack' },
-  { id: 'AI_CLOUD', label: 'AI & Cloud' },
-  { id: 'CORE_CS', label: 'Systems & Security' },
-  { id: 'TELEMETRY', label: 'Aerospace & IoT' },
-  { id: 'DEVOPS', label: 'DevOps' }
-] as const
-
-// --- Two-Stage Mechanical Switch Acoustic Engine (Downstroke + Spring Rebound) ---
-class TwoStageAcousticEngine {
+// --- Realistic Mechanical Audio Synthesizer ---
+class RealisticAudioEngine {
   private ctx: AudioContext | null = null
 
   private getCtx() {
@@ -720,37 +578,12 @@ class TwoStageAcousticEngine {
     return this.ctx
   }
 
-  // 1. Soft hover elevation blip
-  playHoverBlip(pitch: number = 1.0) {
-    try {
-      const ctx = this.getCtx()
-      if (!ctx) return
-      const osc = ctx.createOscillator()
-      const gain = ctx.createGain()
-      osc.type = 'sine'
-      const freq = 360 * pitch
-      osc.frequency.setValueAtTime(freq, ctx.currentTime)
-      osc.frequency.exponentialRampToValueAtTime(freq * 1.35, ctx.currentTime + 0.03)
-
-      gain.gain.setValueAtTime(0.02, ctx.currentTime)
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.035)
-
-      osc.connect(gain)
-      gain.connect(ctx.destination)
-      osc.start()
-      osc.stop(ctx.currentTime + 0.04)
-    } catch {
-      // AudioContext unavailable
-    }
-  }
-
-  // 2. Downstroke Bottom-Out Mechanical "Thock"
   playDownstroke(pitch: number = 1.0) {
     try {
       const ctx = this.getCtx()
       if (!ctx) return
 
-      // Heavy bottom housing impact
+      // Downstroke mechanical bottom-out thock
       const osc = ctx.createOscillator()
       const gain = ctx.createGain()
       osc.type = 'triangle'
@@ -765,7 +598,7 @@ class TwoStageAcousticEngine {
       osc.start()
       osc.stop(ctx.currentTime + 0.08)
 
-      // Clack noise snap
+      // Snap burst
       const bufferSize = Math.floor(ctx.sampleRate * 0.015)
       const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate)
       const data = buffer.getChannelData(0)
@@ -774,61 +607,66 @@ class TwoStageAcousticEngine {
       }
       const noise = ctx.createBufferSource()
       noise.buffer = buffer
-
       const filter = ctx.createBiquadFilter()
       filter.type = 'bandpass'
       filter.frequency.setValueAtTime(1400 * pitch, ctx.currentTime)
-
       const noiseGain = ctx.createGain()
       noiseGain.gain.setValueAtTime(0.09, ctx.currentTime)
       noiseGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.02)
-
       noise.connect(filter)
       filter.connect(noiseGain)
       noiseGain.connect(ctx.destination)
       noise.start()
       noise.stop(ctx.currentTime + 0.025)
-    } catch {
-      // AudioContext unavailable
-    }
+    } catch {}
   }
 
-  // 3. Upstroke Rebound Spring Release Clack
-  playUpstrokeRebound(pitch: number = 1.0) {
+  playUpstroke(pitch: number = 1.0) {
     try {
       const ctx = this.getCtx()
       if (!ctx) return
-
-      // Lighter, higher-pitched spring return snap
       const osc = ctx.createOscillator()
       const gain = ctx.createGain()
       osc.type = 'sine'
       osc.frequency.setValueAtTime(540 * pitch, ctx.currentTime)
       osc.frequency.exponentialRampToValueAtTime(780 * pitch, ctx.currentTime + 0.025)
-
       gain.gain.setValueAtTime(0.04, ctx.currentTime)
       gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.03)
-
       osc.connect(gain)
       gain.connect(ctx.destination)
       osc.start()
       osc.stop(ctx.currentTime + 0.035)
-    } catch {
-      // AudioContext unavailable
-    }
+    } catch {}
+  }
+
+  playHover(pitch: number = 1.0) {
+    try {
+      const ctx = this.getCtx()
+      if (!ctx) return
+      const osc = ctx.createOscillator()
+      const gain = ctx.createGain()
+      osc.type = 'sine'
+      const freq = 360 * pitch
+      osc.frequency.setValueAtTime(freq, ctx.currentTime)
+      osc.frequency.exponentialRampToValueAtTime(freq * 1.3, ctx.currentTime + 0.025)
+      gain.gain.setValueAtTime(0.02, ctx.currentTime)
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.03)
+      osc.connect(gain)
+      gain.connect(ctx.destination)
+      osc.start()
+      osc.stop(ctx.currentTime + 0.035)
+    } catch {}
   }
 }
 
-const acousticEngine = new TwoStageAcousticEngine()
+const audioEngine = new RealisticAudioEngine()
 
 export const InteractiveSkillsKeyboard: React.FC = () => {
   const [hoveredKeyId, setHoveredKeyId] = useState<string | null>(null)
   const [activeKeyId, setActiveKeyId] = useState<string>('ts')
   const [pressedKeyId, setPressedKeyId] = useState<string | null>(null)
-  const [activeCategory, setActiveCategory] = useState<string>('ALL')
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true)
   const [view3D, setView3D] = useState<boolean>(true)
-  const [actuationCount, setActuationCount] = useState<number>(0)
 
   // Currently inspected key
   const inspectedKey = useMemo(() => {
@@ -842,69 +680,49 @@ export const InteractiveSkillsKeyboard: React.FC = () => {
       setHoveredKeyId(key.id)
       if (soundEnabled) {
         const pitch = 0.88 + (idx % 7) * 0.04
-        acousticEngine.playHoverBlip(pitch)
+        audioEngine.playHover(pitch)
       }
     },
     [soundEnabled]
   )
 
-  // Key Press Handler with Realistic Two-Stage Spring Mechanics
+  // Key Click Handler with Real Spring Plunge & Return
   const handleKeyClick = useCallback(
     (key: KeySkill, idx: number) => {
       setActiveKeyId(key.id)
       setHoveredKeyId(key.id)
       setPressedKeyId(key.id)
-      setActuationCount((prev) => prev + 1)
 
       const pitch = 0.88 + (idx % 7) * 0.05
+      if (soundEnabled) audioEngine.playDownstroke(pitch)
 
-      // Stage 1: Downstroke mechanical "thock"
-      if (soundEnabled) {
-        acousticEngine.playDownstroke(pitch)
-      }
-
-      // Stage 2: Upstroke spring release rebound (130ms later)
       setTimeout(() => {
         setPressedKeyId(null)
-        if (soundEnabled) {
-          acousticEngine.playUpstrokeRebound(pitch)
-        }
-      }, 130)
+        if (soundEnabled) audioEngine.playUpstroke(pitch)
+      }, 125)
     },
     [soundEnabled]
   )
 
-  // Smooth scroll and pulse-highlight to matching portfolio project
-  const handleJumpToProject = (projectId: string) => {
-    const targetEl = document.getElementById(projectId) || document.getElementById('projects')
-    if (targetEl) {
-      targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' })
-      targetEl.classList.add('ring-2', 'ring-ember', 'shadow-[0_0_30px_rgba(252,107,47,0.5)]')
-      setTimeout(() => {
-        targetEl.classList.remove('ring-2', 'ring-ember', 'shadow-[0_0_30px_rgba(252,107,47,0.5)]')
-      }, 2400)
-    }
-  }
-
   return (
     <div className="w-full mt-14 sm:mt-20 select-none">
-      {/* Header Eyebrow & Plagiarism-Proof Callsign */}
+      {/* Header Eyebrow & Themed Title */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 sm:mb-8 border-b border-white/10 pb-5">
         <div>
           <div className="flex items-center gap-2 mb-2">
             <span className="w-2 h-2 rounded-full bg-ember animate-pulse" />
             <span className="text-ember text-xs font-mono font-bold tracking-[0.2em] uppercase">
-              Bespoke Hardware Macropad // Capabilities
+              Tactile Stack // Interactive Hardware
             </span>
           </div>
           <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight flex items-center gap-2.5">
-            <span>Dev-MK64 Mechanical Core</span>
+            <span>Interactive Tech Stack</span>
             <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-white/10 text-ash border border-white/10 uppercase tracking-widest hidden sm:inline-block">
               28 Switches
             </span>
           </h3>
           <p className="text-xs sm:text-sm text-ash mt-1 max-w-xl">
-            Hover to elevate keycaps in 3D. Click to experience two-stage spring travel and cross-link to matching projects.
+            A sculpted 3D mechanical macropad showcasing core programming languages and engineering tools. Hover or click any switch.
           </p>
         </div>
 
@@ -942,137 +760,54 @@ export const InteractiveSkillsKeyboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Layer / Category Filter Buttons */}
-      <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-3 mb-6 scrollbar-none">
-        <span className="text-[10px] font-mono uppercase tracking-wider text-ash/70 flex items-center gap-1 shrink-0 mr-1">
-          <Layers className="w-3 h-3 text-ember" />
-          <span>Layer:</span>
-        </span>
-        {CATEGORY_FILTERS.map((cat) => {
-          const isActive = activeCategory === cat.id
-          return (
-            <button
-              key={cat.id}
-              type="button"
-              onClick={() => setActiveCategory(cat.id)}
-              className={`px-2.5 py-1 rounded-md text-[11px] font-mono tracking-wide transition-all whitespace-nowrap cursor-pointer border ${
-                isActive
-                  ? 'bg-ember text-white font-bold border-ember shadow-[0_0_12px_rgba(252,107,47,0.4)]'
-                  : 'bg-white/5 text-ash border-white/10 hover:border-white/20 hover:text-white'
-              }`}
-            >
-              {cat.label}
-            </button>
-          )
-        })}
-      </div>
-
-      {/* Integrated Hardware OLED Screen & Telemetry HUD */}
-      <div className="mb-6 p-4 sm:p-5 rounded-2xl bg-[#0c0d12] border border-white/10 relative overflow-hidden shadow-2xl">
-        {/* Phosphor dot grid texture */}
-        <div
-          className="absolute inset-0 opacity-15 pointer-events-none"
-          style={{
-            backgroundImage: 'radial-gradient(circle at 1px 1px, #ffffff 1px, transparent 0)',
-            backgroundSize: '12px 12px'
-          }}
-        />
-        {/* Dynamic laser top border matching inspected key */}
+      {/* Clean, Realistic Minimal Legend (No Cheesy RPG Stats or Confusing Percentages) */}
+      <div className="mb-6 p-4 rounded-xl bg-[#0c0d12] border border-white/10 relative overflow-hidden shadow-xl">
         <div
           className="absolute top-0 left-0 right-0 h-[2px] transition-colors duration-300"
           style={{
             background: `linear-gradient(90deg, transparent, ${inspectedKey.color.base}, transparent)`,
-            boxShadow: `0 0 20px ${inspectedKey.color.glow}`
+            boxShadow: `0 0 16px ${inspectedKey.color.glow}`
           }}
         />
 
-        <div className="relative z-10 flex flex-col gap-4">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
-            <div className="flex items-start sm:items-center gap-3">
-              {/* Miniature Keycap Preview Indicator */}
-              <div
-                className="w-11 h-11 rounded-xl flex items-center justify-center font-black text-lg shrink-0 shadow-lg border border-white/20 transition-all duration-300"
-                style={{
-                  background: `linear-gradient(135deg, ${inspectedKey.color.light}, ${inspectedKey.color.base})`,
-                  color: inspectedKey.color.text,
-                  boxShadow: `0 4px 16px ${inspectedKey.color.glow}`
-                }}
-              >
-                {inspectedKey.label}
-              </div>
-
-              <div>
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-white font-extrabold text-lg tracking-tight font-sans">
-                    {inspectedKey.name}
-                  </span>
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-white/10 text-cloud border border-white/10">
-                    {inspectedKey.categoryLabel}
-                  </span>
-                  <span
-                    className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold"
-                    style={{
-                      backgroundColor: `${inspectedKey.color.base}22`,
-                      color: inspectedKey.color.light,
-                      border: `1px solid ${inspectedKey.color.base}55`
-                    }}
-                  >
-                    {inspectedKey.proficiency}
-                  </span>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-white/5 text-cloud border border-white/10 font-medium">
-                    {inspectedKey.experience}
-                  </span>
-                </div>
-                <p className="text-xs text-ash mt-0.5 font-normal leading-relaxed">
-                  {inspectedKey.highlight}
-                </p>
-              </div>
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            {/* Color Accent Indicator */}
+            <div
+              className="w-9 h-9 rounded-lg flex items-center justify-center font-black text-sm shrink-0 shadow-md border border-white/20 transition-all duration-300"
+              style={{
+                background: `linear-gradient(135deg, ${inspectedKey.color.light}, ${inspectedKey.color.base})`,
+                color: inspectedKey.color.text,
+                boxShadow: `0 2px 10px ${inspectedKey.color.glow}`
+              }}
+            >
+              {inspectedKey.label}
             </div>
 
-            {/* Jump to matching portfolio project button */}
-            <div className="self-end md:self-auto shrink-0">
-              <button
-                type="button"
-                onClick={() => handleJumpToProject(inspectedKey.linkedProject.id)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-ember/20 hover:bg-ember/30 border border-ember/40 text-ember text-xs font-mono font-semibold transition-all cursor-pointer shadow-sm active:scale-95"
-                title={`Jump to ${inspectedKey.linkedProject.title} in Projects`}
-              >
-                <span>PROJECT: {inspectedKey.linkedProject.title.slice(0, 24)}...</span>
-                <ArrowUpRight className="w-3.5 h-3.5" />
-              </button>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-white font-bold text-base tracking-tight">
+                  {inspectedKey.name}
+                </span>
+                <span className="px-2 py-0.5 rounded text-[10px] font-mono font-medium bg-white/5 text-cloud border border-white/10">
+                  {inspectedKey.category}
+                </span>
+              </div>
+              <p className="text-xs text-ash mt-0.5 font-normal leading-relaxed">
+                {inspectedKey.description}
+              </p>
             </div>
           </div>
 
-          {/* Hardware OLED Real-Time Actuation & Switch Specs Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-white/10 text-[11px] font-mono text-ash/90">
-            <div className="flex flex-wrap items-center gap-3 sm:gap-5">
-              <div className="flex items-center gap-1.5">
-                <Cpu className="w-3.5 h-3.5 text-ember" />
-                <span className="text-ash/60">SWITCH STEM:</span>
-                <span className="text-white font-semibold">{inspectedKey.switchSpecs.stemType}</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-ash/60">ACTUATION FORCE:</span>
-                <span className="text-emerald-400 font-semibold">{inspectedKey.switchSpecs.force}</span>
-              </div>
-              <div className="flex items-center gap-1.5 hidden sm:flex">
-                <span className="text-ash/60">TRAVEL:</span>
-                <span className="text-cyan-400 font-semibold">{inspectedKey.switchSpecs.preTravel} / {inspectedKey.switchSpecs.bottomOut}</span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2 text-[10px] font-mono bg-white/5 px-2.5 py-1 rounded-md border border-white/10">
-              <Activity className="w-3 h-3 text-ember animate-pulse" />
-              <span className="text-ash/70">ACTUATIONS:</span>
-              <span className="text-white font-bold">{actuationCount}</span>
-            </div>
+          <div className="text-[11px] font-mono text-ash/60 shrink-0 self-end sm:self-auto">
+            <span>SWITCH // CHERRY MX</span>
           </div>
         </div>
       </div>
 
-      {/* 3D Hardware Keyboard Stage - Rock-Solid Preserved 3D Context */}
+      {/* 3D Hardware Keyboard Stage - Realistic Mechanical Macropad */}
       <div
-        className="w-full flex items-center justify-center py-6 sm:py-10 md:py-14 overflow-visible"
+        className="w-full flex items-center justify-center py-6 sm:py-10 md:py-12 overflow-visible"
         style={{
           perspective: view3D ? '1300px' : 'none',
           perspectiveOrigin: '50% 35%'
@@ -1102,12 +837,12 @@ export const InteractiveSkillsKeyboard: React.FC = () => {
                   0 14px 0 #0d0e14,
                   0 20px 0 #07070a,
                   0 30px 45px rgba(0, 0, 0, 0.85),
-                  0 0 60px rgba(252, 107, 47, 0.12)
+                  0 0 60px rgba(252, 107, 47, 0.10)
                 `
                 : '0 20px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255,255,255,0.08)'
             }}
           >
-            {/* CNC Brass Corner Screws */}
+            {/* CNC Corner Screws */}
             <div className="absolute top-2.5 left-2.5 w-2 h-2 rounded-full bg-[#52525b] border border-[#27272a] flex items-center justify-center shadow-inner">
               <div className="w-1 h-[0.5px] bg-[#18181b]" />
             </div>
@@ -1139,7 +874,6 @@ export const InteractiveSkillsKeyboard: React.FC = () => {
                   const isHovered = hoveredKeyId === skill.id
                   const isSelected = activeKeyId === skill.id
                   const isPressed = pressedKeyId === skill.id
-                  const matchesFilter = activeCategory === 'ALL' || skill.category === activeCategory
 
                   return (
                     <div
@@ -1163,16 +897,13 @@ export const InteractiveSkillsKeyboard: React.FC = () => {
                         }
                       }}
                     >
-                      {/* 1. Underlying Switch Bed & Dynamic Mechanical Stem (Compresses & Extends) */}
+                      {/* 1. Underlying Switch Bed & Red Cross Stem */}
                       <div
                         className="absolute inset-1 rounded-md bg-[#07080c] border border-white/5 flex items-center justify-center pointer-events-none"
-                        style={{
-                          transform: 'translateZ(0px)'
-                        }}
+                        style={{ transform: 'translateZ(0px)' }}
                       >
-                        {/* Red mechanical switch housing */}
                         <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-[3px] bg-[#991b1b] border border-[#7f1d1d] flex items-center justify-center shadow-inner">
-                          {/* Cross stem with real physical travel compression */}
+                          {/* Cross stem */}
                           <div 
                             className="relative w-2 h-2 sm:w-2.5 sm:h-2.5 transition-transform duration-100 ease-out"
                             style={{
@@ -1184,24 +915,22 @@ export const InteractiveSkillsKeyboard: React.FC = () => {
                           </div>
                         </div>
 
-                        {/* Underglow RGB LED projection onto plate */}
+                        {/* Underglow LED projection */}
                         <div
                           className="absolute inset-0 rounded-md transition-opacity duration-300 pointer-events-none"
                           style={{
                             background: `radial-gradient(circle, ${skill.color.glow} 0%, transparent 75%)`,
-                            opacity: isHovered || isSelected ? 0.95 : matchesFilter ? 0.25 : 0.05
+                            opacity: isHovered || isSelected ? 0.95 : 0.08
                           }}
                         />
                       </div>
 
-                      {/* 2. The 3D Sculpted Mechanical Keycap Body with Spring Travel Physics */}
+                      {/* 2. Sculpted High-Profile 3D Keycap Body */}
                       <div
-                        className={`absolute inset-0 rounded-[7px] sm:rounded-[9px] transition-all duration-150 transform-gpu flex flex-col items-center justify-center pointer-events-none ${
-                          !matchesFilter ? 'opacity-35 grayscale contrast-75' : 'opacity-100'
-                        }`}
+                        className="absolute inset-0 rounded-[7px] sm:rounded-[9px] transition-all duration-150 transform-gpu flex flex-col items-center justify-center pointer-events-none"
                         style={{
                           transformStyle: 'preserve-3d',
-                          // Dynamic Spring Plunge on Press vs. Pop-Up on Hover!
+                          // Dynamic Spring Plunge vs Elevation
                           transform: view3D
                             ? isPressed
                               ? 'translateZ(2px) translateY(3px) scale(0.96)'
@@ -1248,7 +977,7 @@ export const InteractiveSkillsKeyboard: React.FC = () => {
                           zIndex: isHovered ? 50 : isSelected ? 30 : 10
                         }}
                       >
-                        {/* Keycap Ergonomic Concave Dish with Specular Sheen Reflection */}
+                        {/* Concave Dish with Specular Sheen */}
                         <div
                           className="absolute inset-[2.5px] sm:inset-[3.5px] rounded-[5px] sm:rounded-[7px] flex flex-col items-center justify-center p-0.5 overflow-hidden pointer-events-none"
                           style={{
@@ -1298,20 +1027,17 @@ export const InteractiveSkillsKeyboard: React.FC = () => {
               </div>
             </div>
 
-            {/* Bottom Keyboard Lip / Custom Engraving */}
+            {/* Bottom Keyboard Lip / Custom Callsign */}
             <div className="mt-3.5 sm:mt-4 flex items-center justify-between px-1 text-[10px] font-mono text-ash/60">
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block shadow-[0_0_6px_#34d399]" />
                 <span className="uppercase tracking-widest text-[9px] text-ash/80">
-                  DEV JANGID // CUSTOM FR4 TACTILE STACK
+                  TACTILE STACK // 28 SWITCHES
                 </span>
               </div>
               <div className="flex items-center gap-3">
-                <span className="hidden sm:inline-block uppercase tracking-wider text-[9px] text-ash/60">
-                  HOT-SWAP 5-PIN RGB
-                </span>
                 <span className="px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-ember font-bold text-[9px]">
-                  DEV-MK64
+                  DEV JANGID
                 </span>
               </div>
             </div>
@@ -1319,16 +1045,11 @@ export const InteractiveSkillsKeyboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Helpful Interactive Legend Hint below the keyboard */}
+      {/* Helpful Interactive Legend Hint */}
       <div className="mt-4 flex flex-wrap items-center justify-center gap-4 text-xs font-mono text-ash/70 text-center">
         <span className="inline-flex items-center gap-1.5">
           <Sparkles className="w-3.5 h-3.5 text-ember" />
-          <span>Interactive 3D elevation active on hover and tap</span>
-        </span>
-        <span className="hidden sm:inline text-white/20">•</span>
-        <span className="inline-flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-cyan-400" />
-          <span>Click any keycap to feel two-stage tactile travel & jump to project</span>
+          <span>Interactive 3D elevation active on hover and click</span>
         </span>
       </div>
     </div>
