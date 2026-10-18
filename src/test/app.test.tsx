@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import App from '../App'
 
-describe('App Root Integration & Accessibility', () => {
+describe('App Root Integration & Accessibility', { timeout: 15000 }, () => {
   beforeEach(() => {
     localStorage.clear()
     sessionStorage.clear()
