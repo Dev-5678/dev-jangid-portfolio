@@ -299,8 +299,9 @@
   }
 }
 
-.scroll-pill-dot {
-  animation: scrollDotGlide 2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+.scroll-pill-dot,
+.animate-scroll-glide {
+  animation: scrollDotGlide 1.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
 }
 
 /* Hero Scroll Capsule Indicator — Precision Contrast */

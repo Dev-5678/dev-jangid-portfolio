@@ -59,7 +59,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         .to(tagRef.current, { opacity: 1, y: 0, duration: 0.8 }, 0.2)
         .to(descRef.current, { opacity: 1, y: 0, duration: 0.8 }, 0.4)
         .to(ctaRef.current, { opacity: 1, y: 0, duration: 0.8 }, 0.5)
-        .to(scrollHintRef.current, { opacity: 1, duration: 0.8 }, 0.6)
+        .fromTo(scrollHintRef.current, { opacity: 0, y: -24 }, { opacity: 1, y: 0, duration: 1.0, ease: 'back.out(2)' }, 0.65)
     }, heroRef)
 
     return () => ctx.revert()
@@ -191,31 +191,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         </span>
       </div>
 
-      {/* 5. Engineering Subtitle & Capability Chips */}
+      {/* 5. Engineering Subtitle (Clean & sleek without the 4 chips) */}
       <div
         ref={descRef}
-        className="absolute bottom-[28%] sm:bottom-[25%] md:top-[72%] md:bottom-auto left-4 sm:left-6 md:left-14 lg:left-20 z-[40] max-w-[calc(100vw-2rem)] sm:max-w-[340px] md:max-w-[400px] lg:max-w-[440px] opacity-0 text-center md:text-left mx-auto md:mx-0"
+        className="absolute bottom-[24%] sm:bottom-[22%] md:top-[72%] md:bottom-auto left-4 sm:left-6 md:left-14 lg:left-20 z-[40] max-w-[calc(100vw-2rem)] sm:max-w-[340px] md:max-w-[420px] lg:max-w-[460px] opacity-0 text-center md:text-left mx-auto md:mx-0"
       >
         <p
-          className="text-[11.5px] sm:text-[13px] md:text-[14px] text-[#B5B5B5] leading-[1.6] sm:leading-[1.8] font-normal tracking-wide"
+          className="text-[12px] sm:text-[13.5px] md:text-[14.5px] text-[#C4C4C8] dark:text-[#B5B5B5] leading-[1.65] sm:leading-[1.8] font-normal tracking-wide"
           style={{ fontFamily: 'var(--font-poppins), sans-serif' }}
         >
           Full-Stack Developer &amp; Computer Science Engineer crafting fast, resilient, and motion-driven digital products.
         </p>
-        <div className="mt-2 sm:mt-2.5 flex flex-wrap gap-1.5 sm:gap-2 justify-center md:justify-start">
-          <span className="px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-[9.5px] sm:text-[10px] font-mono text-zinc-300 tracking-wider">
-            AAI NetSec
-          </span>
-          <span className="px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-[9.5px] sm:text-[10px] font-mono text-zinc-300 tracking-wider">
-            CanSat UHF
-          </span>
-          <span className="px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-[9.5px] sm:text-[10px] font-mono text-zinc-300 tracking-wider">
-            Gemini RAG
-          </span>
-          <span className="px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-[9.5px] sm:text-[10px] font-mono text-zinc-300 tracking-wider">
-            C++ Systems
-          </span>
-        </div>
       </div>
 
       {/* 6. Magnetic Action Buttons (Reel style) */}
@@ -247,13 +233,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         </a>
       </div>
 
-      {/* 7. Center Kinetic Bold Variable Typography matching Instagram Reel */}
+      {/* 7. Center Kinetic Bold Variable Typography matching Instagram Reel (Scaled 85% to fit seamlessly on 100% zoom!) */}
       <div
         ref={titleContainerRef}
-        className="absolute top-[26%] sm:top-[28%] md:top-[38%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-[15] select-none w-full flex flex-col items-center justify-center px-3 sm:px-4"
+        className="absolute top-[28%] sm:top-[30%] md:top-[38%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-[15] select-none w-full flex flex-col items-center justify-center px-4"
         aria-hidden="true"
       >
-        <div className="w-full max-w-[700px] md:max-w-[850px] h-[54px] sm:h-[88px] md:h-[142px] relative flex items-center justify-center scale-y-[1.15] transform-gpu drop-shadow-[0_0_35px_rgba(252,107,47,0.3)]">
+        <div className="w-full max-w-[580px] sm:max-w-[680px] md:max-w-[760px] h-[48px] sm:h-[72px] md:h-[105px] relative flex items-center justify-center transform-gpu drop-shadow-[0_0_30px_rgba(252,107,47,0.3)]">
           <div style={{ position: 'relative', width: '100%', height: '100%', background: 'transparent' }} className="cursor-default pointer-events-auto">
             <TextPressure
               text="DEV JANGID"
@@ -266,16 +252,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
               alpha={false}
               stroke={false}
               textColor={theme === 'dark' ? 'rgba(255, 255, 255, 0.88)' : '#111116'}
-              minFontSize={16}
+              minFontSize={14}
               className="text-pressure-title"
             />
           </div>
         </div>
 
-        {/* Cinematic Sub-headline (Slid down with generous breathing space to prevent any overlap!) */}
-        <div className="mt-7 sm:mt-10 md:mt-14 lg:mt-16 text-center z-[20] px-2">
+        {/* Cinematic Sub-headline */}
+        <div className="mt-5 sm:mt-7 md:mt-10 lg:mt-12 text-center z-[20] px-2">
           <p
-            className="hero-line text-[clamp(0.55rem,2.2vw,0.88rem)] md:text-[clamp(0.72rem,1.08vw,0.88rem)] font-extrabold tracking-[0.12em] sm:tracking-[0.25em] uppercase text-ember drop-shadow-[0_0_20px_rgba(252,107,47,0.7)]"
+            className="hero-line text-[clamp(0.55rem,2vw,0.85rem)] md:text-[clamp(0.7rem,1vw,0.85rem)] font-extrabold tracking-[0.12em] sm:tracking-[0.24em] uppercase text-ember drop-shadow-[0_0_20px_rgba(252,107,47,0.7)]"
             style={{ fontFamily: 'var(--font-poppins), sans-serif' }}
           >
             Crafting Interfaces That People Remember.
@@ -283,21 +269,29 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         </div>
       </div>
 
-      {/* 8. Center Animated Kinetic Scroll Indicator (Positioned with clear clearance below CTAs) */}
+      {/* 8. Center Animated Kinetic Scroll Indicator (Streaming downwards animation to guide user smoothly down!) */}
       <a
         href="#introduction"
         ref={scrollHintRef}
-        className="hero-scroll-indicator absolute bottom-2.5 sm:bottom-4 md:bottom-7 left-1/2 -translate-x-1/2 z-[45] flex flex-col items-center gap-1 sm:gap-1.5 opacity-0 cursor-pointer group select-none transition-all duration-300 hover:scale-110 touch-manipulation"
+        onClick={(e) => {
+          e.preventDefault()
+          const target = document.querySelector('#introduction')
+          if (target) target.scrollIntoView({ behavior: 'smooth' })
+        }}
+        className="hero-scroll-indicator absolute bottom-2.5 sm:bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 z-[45] flex flex-col items-center gap-1 opacity-0 cursor-pointer group select-none transition-all duration-300 hover:scale-110 active:scale-95 touch-manipulation"
         aria-label="Scroll down to The Philosophy section"
       >
         <span
-          className="text-[9px] sm:text-[9.5px] tracking-[0.32em] uppercase font-mono font-bold transition-colors text-[#B5B5B5] group-hover:text-ember drop-shadow-sm"
+          className="text-[9px] sm:text-[9.5px] tracking-[0.3em] uppercase font-mono font-bold transition-colors text-[#B5B5B5] group-hover:text-ember flex items-center gap-1 drop-shadow-sm"
           style={{ fontFamily: 'var(--font-display)' }}
         >
-          Scroll
+          <span>Scroll</span>
         </span>
-        <div className="w-[18px] h-[28px] sm:w-[22px] sm:h-[36px] rounded-full border-2 border-white/40 dark:border-white/40 light:border-zinc-800/60 group-hover:border-ember transition-colors flex items-start justify-center p-1 relative overflow-hidden bg-white/5 dark:bg-white/5 light:bg-black/5 backdrop-blur-md shadow-[0_0_15px_rgba(252,107,47,0.3)]">
-          <div className="w-1.5 h-2 rounded-full bg-ember shadow-[0_0_10px_#fc6b2f] animate-bounce" />
+        <div className="w-[18px] h-[30px] sm:w-[20px] sm:h-[34px] rounded-full border-2 border-white/40 dark:border-white/40 light:border-zinc-800/60 group-hover:border-ember transition-colors flex items-start justify-center p-1 relative overflow-hidden bg-white/5 dark:bg-white/5 light:bg-black/5 backdrop-blur-md shadow-[0_0_15px_rgba(252,107,47,0.3)]">
+          <div className="w-1.5 h-2.5 rounded-full bg-ember shadow-[0_0_10px_#fc6b2f] animate-scroll-glide" />
+        </div>
+        <div className="flex flex-col items-center -space-y-1 text-ember font-bold text-[10px] animate-bounce">
+          <span>↓</span>
         </div>
       </a>
     </section>

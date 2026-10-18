@@ -125,14 +125,14 @@ export const TextPressure: React.FC<TextPressureProps> = ({
     return () => observer.disconnect()
   }, [])
 
-  // Font size calculation from the reel:
+  // Font size calculation adapted to 85% scale (preventing stretch and screen overflow at 100% zoom!)
   const updateGeometry = useCallback(() => {
     if (!containerRef.current || !titleRef.current) return
     const { width: containerW, height: containerH } = containerRef.current.getBoundingClientRect()
     let nextFontSize =
       containerW < 640
-        ? containerW / (0.72 * totalLetters)
-        : containerW / (totalLetters / 1.7)
+        ? (containerW * 0.85) / (0.74 * totalLetters)
+        : (containerW * 0.85) / (totalLetters / 1.55)
     nextFontSize = Math.max(nextFontSize, minFontSize)
     setFontSize(nextFontSize)
     setScaleY(1)
@@ -204,8 +204,8 @@ export const TextPressure: React.FC<TextPressureProps> = ({
           const dy = cy - mousePos.current.y
           const d = Math.sqrt(dx * dx + dy * dy)
 
-          // The exact reel formula:
-          const wdth = width ? Math.floor(distMap(d, maxDist, isMobile ? 25 : 5, isMobile ? 165 : 200)) : 100
+          // Calibrated variable font axes (151 max width standard prevents text blow-out):
+          const wdth = width ? Math.floor(distMap(d, maxDist, isMobile ? 35 : 25, isMobile ? 135 : 151)) : 100
           const wght = weight ? Math.floor(distMap(d, maxDist, 100, 900)) : 400
           const ital = italic ? distMap(d, maxDist, 0, 1).toFixed(2) : '0'
           const alphaVal = alpha ? distMap(d, maxDist, 0, 1).toFixed(2) : '1'
