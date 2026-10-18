@@ -1,0 +1,99 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R /F2 5 0 R /F3 6 0 R >> >> /Contents 7 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+6 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Oblique >>
+endobj
+7 0 obj
+<< /Length 6159 >>
+stream
+BT /F2 22 Tf 1 0 0 1 50 745 Tm (DEV JANGID) Tj ET
+BT /F2 9 Tf 1 0 0 1 50 730 Tm (COMPUTER SCIENCE ENGINEER  |  B.TECH CSE \(EXPECTED JUNE 2027\)) Tj ET
+BT /F1 8.5 Tf 1 0 0 1 50 717 Tm (Faridabad, Haryana, India 121005  |  +91 92125 53300  |  jangid.dev20@gmail.com) Tj ET
+BT /F1 8.5 Tf 1 0 0 1 50 706 Tm (LinkedIn: linkedin.com/in/devjangid911  |  GitHub: github.com/devjangid911  |  dev-jangid-portfolio.vercel.app) Tj ET
+0.2 G 1.0 w 50 700 m 562 700 l S
+BT /F2 10 Tf 1 0 0 1 50 685 Tm (PROFESSIONAL SUMMARY) Tj ET
+0.7 G 0.5 w 50 681 m 562 681 l S
+BT /F1 8.5 Tf 1 0 0 1 50 670 Tm (Computer Science Engineering undergraduate with hands-on technical experience at Airports Authority of India \(AAI\) and India) Tj ET
+BT /F1 8.5 Tf 1 0 0 1 50 660 Tm (Space Lab \(ISL\). Specialized in high-throughput backend architecture, enterprise network security compliance, low-latency system) Tj ET
+BT /F1 8.5 Tf 1 0 0 1 50 650 Tm (design, and production-grade multimodal Generative AI / RAG pipelines. Strong foundation in data structures and algorithmic mastery.) Tj ET
+BT /F2 10 Tf 1 0 0 1 50 634 Tm (TECHNICAL SKILLS) Tj ET
+0.7 G 0.5 w 50 630 m 562 630 l S
+BT /F2 8.5 Tf 1 0 0 1 50 619 Tm (* Programming Languages:) Tj ET
+BT /F1 8.5 Tf 1 0 0 1 175 619 Tm (TypeScript, Python 3, Modern C++, Java, JavaScript \(ES6+\), SQL \(PostgreSQL, MySQL\), C, Bash/Shell) Tj ET
+BT /F2 8.5 Tf 1 0 0 1 50 609 Tm (* Full Stack Web Dev:) Tj ET
+BT /F1 8.5 Tf 1 0 0 1 175 609 Tm (React 19, Next.js 15, Node.js, Express, Tailwind CSS 4, REST APIs, WebSockets, MongoDB, Vite, Vitest) Tj ET
+BT /F2 8.5 Tf 1 0 0 1 50 599 Tm (* Generative AI & Systems:) Tj ET
+BT /F1 8.5 Tf 1 0 0 1 175 599 Tm (Gemini 1.5 Pro, Vertex AI, Multimodal RAG, Vector Embeddings \(Pinecone, ChromaDB\), LangChain, Agents) Tj ET
+BT /F2 8.5 Tf 1 0 0 1 50 589 Tm (* Core CS & Systems:) Tj ET
+BT /F1 8.5 Tf 1 0 0 1 175 589 Tm (Data Structures & Algorithms \(DSA\), OOP, Operating Systems, Computer Networks & TCP/IP, Linux POSIX) Tj ET
+BT /F2 8.5 Tf 1 0 0 1 50 579 Tm (* Aerospace & Telemetry:) Tj ET
+BT /F1 8.5 Tf 1 0 0 1 175 579 Tm (1U CanSat Architecture, 433 MHz UHF Radio Telemetry, Microcontrollers \(ESP32, Arduino\), Sensor Fusion) Tj ET
+BT /F2 8.5 Tf 1 0 0 1 50 569 Tm (* DevOps & Security:) Tj ET
+BT /F1 8.5 Tf 1 0 0 1 175 569 Tm (Git, GitHub Actions CI/CD, Docker, Google Cloud Platform \(GCP\), Network Security Compliance, VLANs) Tj ET
+BT /F2 10 Tf 1 0 0 1 50 553 Tm (PRACTICAL EXPERIENCE & INTERNSHIPS) Tj ET
+0.7 G 0.5 w 50 549 m 562 549 l S
+BT /F2 9 Tf 1 0 0 1 50 537 Tm (Airports Authority of India \(AAI\)) Tj ET
+BT /F3 9 Tf 1 0 0 1 215 537 Tm (-- Network Security & IT Intern) Tj ET
+BT /F1 8.5 Tf 1 0 0 1 410 537 Tm (August 14, 2026 - September 25, 2026 | New Delhi) Tj ET
+BT /F1 8.5 Tf 1 0 0 1 60 527 Tm (* Supported Northern Region HQ IT division with network monitoring, diagnostics, and operational troubleshooting for aviation IT systems.) Tj ET
+BT /F1 8.5 Tf 1 0 0 1 60 517 Tm (* Assisted with database replication audits, routine server maintenance, and critical administrative infrastructure preservation.) Tj ET
+BT /F1 8.5 Tf 1 0 0 1 60 507 Tm (* Diagnosed operational system tickets and verified network security compliance across internal administrative subnets and isolated VLANs.) Tj ET
+BT /F1 8.5 Tf 1 0 0 1 60 497 Tm (* Authored technical standard operating procedures \(SOPs\) adopted by IT personnel to accelerate incident response and operational continuity.) Tj ET
+BT /F2 9 Tf 1 0 0 1 50 484 Tm (India Space Lab \(ISL\)) Tj ET
+BT /F3 9 Tf 1 0 0 1 160 484 Tm (-- Space Systems & CanSat Telemetry Trainee) Tj ET
+BT /F1 8.5 Tf 1 0 0 1 420 484 Tm (July 15, 2025 - July 31, 2025 | Faridabad, India) Tj ET
+BT /F1 8.5 Tf 1 0 0 1 60 474 Tm (* Engineered 1U CanSat payload architecture, telemetry tracking systems, and aerospace radio communication hardware.) Tj ET
+BT /F1 8.5 Tf 1 0 0 1 60 464 Tm (* Programmed embedded microcontrollers in C/C++ to interface barometric pressure, IMU, and temperature sensors via low-latency buses.) Tj ET
+BT /F1 8.5 Tf 1 0 0 1 60 454 Tm (* Calibrated 433 MHz UHF radio frequency telemetry downlink transceiver for live telemetry decoding at ground station receiver.) Tj ET
+BT /F1 8.5 Tf 1 0 0 1 60 444 Tm (* Analyzed autonomous drone flight navigation protocols, sensor fusion telemetry, and parachute recovery deployment mechanisms.) Tj ET
+BT /F2 9 Tf 1 0 0 1 50 431 Tm (Google Gen AI Academy) Tj ET
+BT /F3 9 Tf 1 0 0 1 175 431 Tm (-- Generative AI & Multimodal RAG Scholar) Tj ET
+BT /F1 8.5 Tf 1 0 0 1 470 431 Tm (June 2024 \(1 Month\)) Tj ET
+BT /F1 8.5 Tf 1 0 0 1 60 421 Tm (* Completed intensive curriculum in generative AI architectures, Gemini 1.5 Pro APIs, and Google Cloud Vertex AI infrastructure.) Tj ET
+BT /F1 8.5 Tf 1 0 0 1 60 411 Tm (* Developed production-grade retrieval-augmented generation \(RAG\) pipelines incorporating high-dimensional vector embeddings.) Tj ET
+BT /F1 8.5 Tf 1 0 0 1 60 401 Tm (* Deployed interactive Python Streamlit prototypes for real-time document reasoning, multimodal synthesis, and context-grounded retrieval.) Tj ET
+BT /F2 10 Tf 1 0 0 1 50 385 Tm (EDUCATION & CREDENTIALS) Tj ET
+0.7 G 0.5 w 50 381 m 562 381 l S
+BT /F2 9 Tf 1 0 0 1 50 369 Tm (Jagannath University) Tj ET
+BT /F1 8.5 Tf 1 0 0 1 165 369 Tm (-- Bachelor of Technology \(B.Tech\) in Computer Science & Engineering) Tj ET
+BT /F1 8.5 Tf 1 0 0 1 460 369 Tm (Expected June 2027) Tj ET
+BT /F1 8 Tf 1 0 0 1 60 359 Tm (Coursework: Data Structures & Algorithms, Operating Systems, DBMS, Computer Networks, Software Engineering, Network Security.) Tj ET
+BT /F2 9 Tf 1 0 0 1 50 347 Tm (Jiva Public School) Tj ET
+BT /F1 8.5 Tf 1 0 0 1 155 347 Tm (-- Senior Secondary School Certificate \(Class XII - PCM & Computer Science\)) Tj ET
+BT /F1 8.5 Tf 1 0 0 1 480 347 Tm (Completed April 2022) Tj ET
+BT /F1 8 Tf 1 0 0 1 60 337 Tm (Focus Areas: Physics, Chemistry, Mathematics, Object-Oriented Programming with C++.) Tj ET
+0.4 G 0.5 w 50 36 m 562 36 l S
+BT /F3 7.5 Tf 1 0 0 1 50 26 Tm (VERIFIED ATS-COMPLIANT CURRICULUM VITAE  *  DEV JANGID  *  FARIDABAD, HARYANA, INDIA 121005) Tj ET
+BT /F1 7.5 Tf 1 0 0 1 455 26 Tm (PORTFOLIO: dev-jangid-portfolio.vercel.app) Tj ET
+endstream
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000121 00000 n 
+0000000267 00000 n 
+0000000337 00000 n 
+0000000412 00000 n 
+0000000490 00000 n 
+trailer
+<< /Size 8 /Root 1 0 R >>
+startxref
+6701
+%%EOF
