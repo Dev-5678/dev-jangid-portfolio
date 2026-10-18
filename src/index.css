@@ -105,6 +105,13 @@
     background: var(--ember);
     color: #ffffff;
   }
+
+  /* Globally hide default browser cursor on desktop pointer devices, keeping the custom reactive cursor */
+  @media (pointer: fine) {
+    *, *::before, *::after, html, body, a, button, input, select, textarea, [role="button"], .cursor-pointer, .cursor-default {
+      cursor: none !important;
+    }
+  }
 }
 
 /* Custom Palette Utilities */
