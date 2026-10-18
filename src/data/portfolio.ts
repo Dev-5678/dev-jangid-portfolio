@@ -81,7 +81,7 @@ export const personalInfo: PersonalInfo = {
   monogram: "DJ",
   status: "OPEN FOR OPPORTUNITIES",
   educationSummary: "B.Tech CSE (Expected 2027)",
-  github: "https://github.com/devjangid911",
+  github: "https://github.com/Dev-5678",
   linkedin: "https://www.linkedin.com/in/devjangid911/"
 }
 

@@ -30,7 +30,7 @@ export const GitHubStatsCard: React.FC = () => {
           rel="noopener noreferrer"
           className="brutal-btn px-4 py-2 bg-[#111317] text-[#CCFF00] font-mono font-bold text-xs uppercase flex items-center gap-1.5 hover:bg-[#CCFF00] hover:text-[#111317]"
         >
-          <span>@devjangid911</span>
+          <span>@Dev-5678</span>
           <ExternalLink className="w-3.5 h-3.5" />
         </a>
       </div>
