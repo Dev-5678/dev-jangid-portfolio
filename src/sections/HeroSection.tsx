@@ -241,7 +241,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         className="absolute top-[28%] sm:top-[30%] md:top-[38%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-[15] select-none w-full flex flex-col items-center justify-center px-4"
         aria-hidden="true"
       >
-        <div className="w-full max-w-[580px] sm:max-w-[680px] md:max-w-[760px] h-[48px] sm:h-[72px] md:h-[105px] relative flex items-center justify-center transform-gpu drop-shadow-[0_0_35px_rgba(252,107,47,0.4)]">
+        <div className="w-full max-w-[480px] sm:max-w-[580px] md:max-w-[660px] h-[44px] sm:h-[66px] md:h-[92px] relative flex items-center justify-center transform-gpu drop-shadow-[0_0_35px_rgba(252,107,47,0.4)]">
           <div style={{ position: 'relative', width: '100%', height: '100%', background: 'transparent' }} className="cursor-default pointer-events-auto">
             <TextPressure
               text="DEV JANGID"
