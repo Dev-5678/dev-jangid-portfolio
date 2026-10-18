@@ -1,10 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
-  <!-- Neo-Brutalist Shadow -->
-  <rect x="8" y="8" width="88" height="88" rx="8" fill="#111317" />
-  <!-- Main Badge Box -->
-  <rect x="4" y="4" width="88" height="88" rx="8" fill="#CCFF00" stroke="#111317" stroke-width="6" />
-  <!-- Monogram DJ -->
-  <text x="48" y="66" font-family="'Space Grotesk', system-ui, -apple-system, sans-serif" font-size="52" font-weight="900" fill="#111317" text-anchor="middle" letter-spacing="-3">DJ</text>
-  <!-- Technical corner dot -->
-  <circle cx="80" cy="18" r="4" fill="#111317" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141418" />
+      <stop offset="100%" stop-color="#050505" />
+    </linearGradient>
+    <linearGradient id="emberGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fc6b2f" />
+      <stop offset="100%" stop-color="#a02a22" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Outer Rounded Chassis -->
+  <rect x="4" y="4" width="120" height="120" rx="28" fill="url(#bg)" stroke="rgba(255,255,255,0.14)" stroke-width="3" />
+  
+  <!-- Subtle Internal Glow Ring -->
+  <rect x="7" y="7" width="114" height="114" rx="25" fill="none" stroke="rgba(252,107,47,0.2)" stroke-width="2" />
+  
+  <!-- DJ Monogram -->
+  <g font-family="'Space Grotesk', system-ui, -apple-system, sans-serif" font-weight="900" font-size="62" letter-spacing="-2">
+    <!-- Ember D -->
+    <text x="32" y="85" fill="url(#emberGrad)">D</text>
+    <!-- White J -->
+    <text x="70" y="85" fill="#ffffff">J</text>
+  </g>
+  
+  <!-- Ember Accent Dot -->
+  <circle cx="103" cy="80" r="5.5" fill="#fc6b2f" />
 </svg>

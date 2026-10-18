@@ -1,47 +1,78 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
   <defs>
-    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#22262F" stroke-width="1" stroke-opacity="0.4" />
+    <radialGradient id="aurora" cx="20%" cy="25%" r="75%">
+      <stop offset="0%" stop-color="#a02a22" stop-opacity="0.35" />
+      <stop offset="50%" stop-color="#fc6b2f" stop-opacity="0.12" />
+      <stop offset="100%" stop-color="#050505" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="auroraCyan" cx="85%" cy="75%" r="60%">
+      <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.16" />
+      <stop offset="100%" stop-color="#050505" stop-opacity="0" />
+    </radialGradient>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#ffffff" stroke-width="1" stroke-opacity="0.04" />
     </pattern>
+    <linearGradient id="emberGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fc6b2f" />
+      <stop offset="100%" stop-color="#a02a22" />
+    </linearGradient>
   </defs>
-  <!-- Background -->
-  <rect width="1200" height="630" fill="#0C0E14" />
-  <rect width="1200" height="630" fill="url(#grid)" />
-  
-  <!-- Outer Frame -->
-  <rect x="40" y="40" width="1120" height="550" fill="#141820" stroke="#CCFF00" stroke-width="4" rx="8" />
-  
-  <!-- Offset Accent Shadow -->
-  <rect x="52" y="52" width="1120" height="550" fill="none" stroke="#111317" stroke-width="2" rx="8" />
 
-  <!-- Badge -->
-  <rect x="80" y="80" width="220" height="42" fill="#CCFF00" rx="4" />
-  <text x="190" y="107" font-family="'Courier New', monospace" font-size="16" font-weight="900" fill="#0C0E14" text-anchor="middle" letter-spacing="2">SYSTEM://PORTFOLIO</text>
+  <!-- Deep Obsidian Void Background -->
+  <rect width="1200" height="630" fill="#050505" />
+  <rect width="1200" height="630" fill="url(#aurora)" />
+  <rect width="1200" height="630" fill="url(#auroraCyan)" />
+  <rect width="1200" height="630" fill="url(#grid)" />
+
+  <!-- Outer Glass Frame -->
+  <rect x="40" y="40" width="1120" height="550" rx="24" fill="#0c0d12" fill-opacity="0.7" stroke="rgba(255,255,255,0.12)" stroke-width="2" />
+  <rect x="42" y="42" width="1116" height="546" rx="22" fill="none" stroke="url(#emberGrad)" stroke-width="1.5" stroke-opacity="0.3" />
+
+  <!-- Status Pill -->
+  <g transform="translate(80, 80)">
+    <rect width="260" height="36" rx="18" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)" stroke-width="1" />
+    <circle cx="18" cy="18" r="4.5" fill="#fc6b2f" />
+    <text x="32" y="23" font-family="'Space Grotesk', system-ui, sans-serif" font-size="12" font-weight="700" fill="#e8e8ea" letter-spacing="2">SHIPPING IDEAS INTO REALITY</text>
+  </g>
 
   <!-- Main Headline -->
-  <text x="80" y="220" font-family="'Space Grotesk', system-ui, sans-serif" font-size="76" font-weight="900" fill="#F4F7FB" letter-spacing="-1">DEV JANGID</text>
-  
+  <text x="80" y="225" font-family="'Space Grotesk', system-ui, sans-serif" font-size="84" font-weight="900" fill="#ffffff" letter-spacing="-1">
+    DEV JANGID
+  </text>
+
   <!-- Subtitle -->
-  <text x="80" y="285" font-family="'Space Grotesk', system-ui, sans-serif" font-size="36" font-weight="700" fill="#CCFF00">COMPUTER SCIENCE ENGINEER</text>
+  <text x="80" y="285" font-family="'Space Grotesk', system-ui, sans-serif" font-size="32" font-weight="700" fill="url(#emberGrad)" letter-spacing="1">
+    COMPUTER SCIENCE ENGINEER
+  </text>
 
   <!-- Summary statement -->
-  <text x="80" y="360" font-family="system-ui, sans-serif" font-size="22" fill="#94A3B8" width="700">
-    Airports Authority of India (IT) • India Space Lab • Generative AI &amp; Full-Stack Systems
+  <text x="80" y="355" font-family="'Inter', system-ui, sans-serif" font-size="22" font-weight="400" fill="#b0b0b3">
+    Airports Authority of India (AAI) • India Space Lab (ISL) • Multimodal GenAI
   </text>
-  <text x="80" y="395" font-family="system-ui, sans-serif" font-size="20" fill="#64748B">
-    Faridabad, India • jangid.dev20@gmail.com
+  <text x="80" y="395" font-family="'JetBrains Mono', monospace" font-size="18" fill="#8a8a8d">
+    Faridabad, India • jangid.dev20@gmail.com • dev-jangid-portfolio.vercel.app
   </text>
 
-  <!-- Monogram Box Right Side -->
-  <g transform="translate(860, 160)">
-    <rect x="16" y="16" width="220" height="220" rx="12" fill="#CCFF00" />
-    <rect x="0" y="0" width="220" height="220" rx="12" fill="#141820" stroke="#F4F7FB" stroke-width="6" />
-    <text x="110" y="145" font-family="'Space Grotesk', sans-serif" font-size="110" font-weight="900" fill="#CCFF00" text-anchor="middle">DJ</text>
-    <circle cx="180" cy="40" r="8" fill="#CCFF00" />
+  <!-- Verified Badges -->
+  <g transform="translate(80, 460)">
+    <rect width="140" height="32" rx="16" fill="rgba(160,42,34,0.2)" stroke="rgba(252,107,47,0.4)" stroke-width="1" />
+    <text x="70" y="21" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#fc6b2f" text-anchor="middle">AAI VERIFIED</text>
   </g>
-  
-  <!-- Status footer bar -->
-  <rect x="80" y="490" width="1040" height="54" fill="#1A202C" stroke="#334155" stroke-width="2" rx="4" />
-  <circle cx="110" cy="517" r="6" fill="#10B981" />
-  <text x="130" y="522" font-family="'Courier New', monospace" font-size="16" fill="#F4F7FB">STATUS: ACTIVE // OPEN TO OPPORTUNITIES // NEO-BRUTALIST ARCHITECTURE</text>
+  <g transform="translate(235, 460)">
+    <rect width="150" height="32" rx="16" fill="rgba(34,211,238,0.15)" stroke="rgba(34,211,238,0.35)" stroke-width="1" />
+    <text x="75" y="21" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#38bdf8" text-anchor="middle">CANSAT TELEMETRY</text>
+  </g>
+  <g transform="translate(400, 460)">
+    <rect width="145" height="32" rx="16" fill="rgba(245,158,11,0.15)" stroke="rgba(245,158,11,0.35)" stroke-width="1" />
+    <text x="72.5" y="21" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#fbbf24" text-anchor="middle">GEMINI RAG AI</text>
+  </g>
+
+  <!-- Brand Monogram Box on Right Side -->
+  <g transform="translate(860, 150)">
+    <rect width="220" height="220" rx="36" fill="#12131a" stroke="rgba(255,255,255,0.14)" stroke-width="3" />
+    <rect x="4" y="4" width="212" height="212" rx="32" fill="none" stroke="rgba(252,107,47,0.25)" stroke-width="2" />
+    <text x="70" y="145" font-family="'Space Grotesk', system-ui, sans-serif" font-size="105" font-weight="900" fill="url(#emberGrad)" letter-spacing="-4">D</text>
+    <text x="135" y="145" font-family="'Space Grotesk', system-ui, sans-serif" font-size="105" font-weight="900" fill="#ffffff" letter-spacing="-4">J</text>
+    <circle cx="185" cy="138" r="9" fill="#fc6b2f" />
+  </g>
 </svg>

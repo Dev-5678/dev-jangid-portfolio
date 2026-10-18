@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { personalInfo, experiences, skillCategories, educationHistory } from '../data/portfolio'
-import { FileText, Printer, X, ShieldCheck, MapPin, Mail, Phone, Copy, Check, ExternalLink } from 'lucide-react'
+import { FileText, Printer, X, ShieldCheck, MapPin, Mail, Phone, Copy, Check, ExternalLink, Download } from 'lucide-react'
 
 interface ResumeModalProps {
   isOpen: boolean
@@ -17,7 +17,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
   }
 
   const plainTextResume = `DEV JANGID
-Faridabad, Haryana, India 121005 | +91 88820 40562 | devjangid911@gmail.com
+Faridabad, Haryana, India 121005 | ${personalInfo.displayPhone} | ${personalInfo.email}
 LinkedIn: https://www.linkedin.com/in/devjangid911/ | GitHub: https://github.com/devjangid911
 
 ================================================================================
@@ -124,12 +124,22 @@ Generative AI & Multimodal RAG Scholar | June 2024 (1 Month)
               )}
             </button>
 
+            <a
+              href="/Dev_Jangid_Resume.pdf"
+              download="Dev_Jangid_Resume.pdf"
+              className="px-3 sm:px-3.5 py-1.5 bg-ember/15 border border-ember/40 hover:bg-ember text-white font-mono font-semibold text-xs rounded-full shadow-[0_0_12px_rgba(160,42,34,0.3)] transition-all flex items-center gap-1.5 cursor-pointer group"
+              title="Download Dev_Jangid_Resume.pdf directly"
+            >
+              <Download className="w-3.5 h-3.5 text-ember group-hover:text-white transition-colors" />
+              <span>DOWNLOAD PDF</span>
+            </a>
+
             <button
               onClick={handlePrint}
               className="px-3.5 sm:px-4 py-1.5 bg-ember hover:bg-ember-bright text-white font-mono font-semibold text-xs rounded-full shadow-[0_0_15px_rgba(160,42,34,0.4)] transition-all flex items-center gap-1.5 cursor-pointer"
             >
               <Printer className="w-3.5 h-3.5" />
-              <span>PRINT / PDF</span>
+              <span>PRINT</span>
             </button>
 
             <button
