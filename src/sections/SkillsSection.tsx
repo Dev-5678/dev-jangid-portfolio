@@ -1,6 +1,7 @@
 import React from 'react'
 import { skillCategories } from '../data/portfolio'
 import { Code, Cpu, Sparkles, Layers, Radio, ShieldCheck } from 'lucide-react'
+import { InteractiveSkillsKeyboard } from '../components/InteractiveSkillsKeyboard'
 
 const ICONS = [Code, Cpu, Sparkles, Layers, Radio, ShieldCheck]
 
@@ -87,6 +88,9 @@ export const SkillsSection: React.FC = () => {
             )
           })}
         </div>
+
+        {/* 3D Interactive Mechanical Skills Keyboard */}
+        <InteractiveSkillsKeyboard />
       </div>
     </section>
   )
