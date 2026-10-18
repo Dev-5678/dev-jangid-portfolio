@@ -226,9 +226,15 @@ export const TextPressure: React.FC<TextPressureProps> = ({
 
           // Bold, punchy kinetic variable typography (clearly visible at rest & dynamically expands on hover!)
           const wdth = width ? Math.floor(distMap(d, maxDist, isMobile ? 85 : 92, isMobile ? 130 : 144)) : 100
-          const wght = weight ? Math.floor(distMap(d, maxDist, 550, 900)) : 700
+          const wght = weight ? Math.floor(distMap(d, maxDist, 550, 950)) : 700
           const ital = italic ? distMap(d, maxDist, 0, 1).toFixed(2) : '0'
           const alphaVal = alpha ? distMap(d, maxDist, 0.4, 1).toFixed(2) : '1'
+
+          // Proximity-based kinetic lift and glowing flare on hover
+          const hoverRadius = maxDist * 0.42
+          const prox = Math.max(0, 1 - d / hoverRadius)
+          const liftY = -12 * (prox * prox)
+          const scaleChar = 1 + 0.1 * prox
 
           const fontVar = `'wght' ${wght}, 'wdth' ${wdth}, 'ital' ${ital}`
 
@@ -236,6 +242,15 @@ export const TextPressure: React.FC<TextPressureProps> = ({
             prevSettingsRef.current[idx] = fontVar
             span.style.fontVariationSettings = fontVar
           }
+
+          if (prox > 0.05) {
+            span.style.transform = `translate3d(0, ${liftY.toFixed(1)}px, 0) scale(${scaleChar.toFixed(2)})`
+            span.style.textShadow = `0 0 ${Math.round(16 * prox)}px rgba(252, 107, 47, ${(prox * 0.95).toFixed(2)}), 0 0 ${Math.round(32 * prox)}px rgba(252, 107, 47, ${(prox * 0.6).toFixed(2)})`
+          } else {
+            span.style.transform = 'translate3d(0, 0, 0) scale(1)'
+            span.style.textShadow = 'none'
+          }
+
           if (alpha && span.style.opacity !== alphaVal) {
             span.style.opacity = alphaVal
           }
@@ -283,8 +298,15 @@ export const TextPressure: React.FC<TextPressureProps> = ({
 
         .text-pressure-title span {
           display: inline-block;
-          will-change: font-variation-settings;
+          will-change: font-variation-settings, transform, text-shadow;
           user-select: none;
+          cursor: pointer;
+          transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), text-shadow 0.25s ease-out;
+        }
+
+        .text-pressure-title span:hover {
+          transform: translateY(-8px) scale(1.1) !important;
+          text-shadow: 0 0 20px rgba(252, 107, 47, 1), 0 0 35px rgba(252, 107, 47, 0.75) !important;
         }
       `}</style>
     ),

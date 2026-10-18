@@ -176,10 +176,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         aria-hidden="true"
       />
 
-      {/* 4. Top-Left Status Pill Badge */}
+      {/* 4. Top-Left Status Pill Badge (Aligned in corner directly below DJ.) */}
       <div
         ref={tagRef}
-        className="absolute top-14 sm:top-20 md:top-24 left-4 sm:left-6 md:left-14 lg:left-20 z-[40] opacity-0 flex items-center gap-2 sm:gap-2.5 max-w-[calc(100vw-5.5rem)] px-3 sm:px-4 py-1.5 rounded-full bg-white/[0.05] border border-white/10 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.25)]"
+        className="absolute top-16 sm:top-[72px] md:top-[76px] left-3 sm:left-5 md:left-6 lg:left-8 z-[40] opacity-0 flex items-center gap-2 sm:gap-2.5 max-w-[calc(100vw-5.5rem)] px-3 sm:px-4 py-1.5 rounded-full bg-white/[0.05] border border-white/10 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.25)]"
       >
         <span className="relative flex h-2 w-2 shrink-0">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-ember opacity-75" />
