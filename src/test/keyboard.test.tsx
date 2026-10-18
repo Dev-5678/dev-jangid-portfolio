@@ -12,36 +12,47 @@ describe('InteractiveSkillsKeyboard Component', () => {
     expect(KEYBOARD_SKILLS.length).toBe(28)
   })
 
-  it('renders keycaps for core programming languages (TS, JS, PY, C++, C, Java, HTML5)', () => {
+  it('renders keycaps for core programming languages (C, C++, Java, Python, TS, JS, SQL, Git)', () => {
     render(<InteractiveSkillsKeyboard />)
 
-    expect(screen.getAllByText('TS').length).toBeGreaterThanOrEqual(1)
-    expect(screen.getByText('JS')).toBeInTheDocument()
-    expect(screen.getByText('PY')).toBeInTheDocument()
+    expect(screen.getAllByText('C').length).toBeGreaterThanOrEqual(1)
     expect(screen.getByText('C++')).toBeInTheDocument()
-    expect(screen.getByText('C')).toBeInTheDocument()
-    expect(screen.getByText('JAVA')).toBeInTheDocument()
-    expect(screen.getByText('5')).toBeInTheDocument()
+    expect(screen.getAllByText('Java').length).toBeGreaterThanOrEqual(1)
+    expect(screen.getAllByText('Python').length).toBeGreaterThanOrEqual(1)
+    expect(screen.getByText('TS')).toBeInTheDocument()
+    expect(screen.getByText('JS')).toBeInTheDocument()
+    expect(screen.getByText('SQL')).toBeInTheDocument()
+    expect(screen.getByText('Git')).toBeInTheDocument()
   })
 
-  it('updates inspection legend when clicking keycaps', () => {
+  it('updates inspection legend when clicking keycaps (clean names without cheesy versions)', () => {
     render(<InteractiveSkillsKeyboard />)
 
-    const pyKeyButton = screen.getByLabelText(/Python 3 keycap/i)
+    const pyKeyButton = screen.getByLabelText(/Python keycap/i)
     fireEvent.click(pyKeyButton)
 
-    expect(screen.getByText('Python 3')).toBeInTheDocument()
-    expect(screen.getAllByText(/Multimodal AI, semantic vector search backends/i).length).toBeGreaterThanOrEqual(1)
+    // Name is clean "Python" (both on keycap and in inspection legend)
+    expect(screen.getAllByText('Python').length).toBeGreaterThanOrEqual(2)
+    expect(screen.getAllByText(/AI model orchestration, data pipelines/i).length).toBeGreaterThanOrEqual(1)
+
+    // Git key click
+    const gitKeyButton = screen.getByLabelText(/Git keycap/i)
+    fireEvent.click(gitKeyButton)
+
+    // Name is clean "Git" (both on keycap and in inspection legend)
+    expect(screen.getAllByText('Git').length).toBeGreaterThanOrEqual(2)
+    expect(screen.getAllByText(/Distributed version control, branching strategies/i).length).toBeGreaterThanOrEqual(1)
   })
 
   it('updates inspection legend when hovering a keycap', () => {
     render(<InteractiveSkillsKeyboard />)
 
-    const reactKeyButton = screen.getByLabelText(/React 19 keycap/i)
+    const reactKeyButton = screen.getByLabelText(/React keycap/i)
     fireEvent.pointerEnter(reactKeyButton)
 
-    expect(screen.getByText('React 19')).toBeInTheDocument()
-    expect(screen.getAllByText(/Concurrent hooks, state compiler/i).length).toBeGreaterThanOrEqual(1)
+    // Name is clean "React" (both on keycap and in inspection legend)
+    expect(screen.getAllByText('React').length).toBeGreaterThanOrEqual(2)
+    expect(screen.getAllByText(/Component lifecycles, custom hooks/i).length).toBeGreaterThanOrEqual(1)
   })
 
   it('toggles audio on/off when clicking audio button', () => {
