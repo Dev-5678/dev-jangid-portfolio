@@ -125,6 +125,9 @@ export const TextPressure: React.FC<TextPressureProps> = ({
     return () => observer.disconnect()
   }, [])
 
+  const maxDistRef = useRef<number>(350)
+  const isSettledRef = useRef<boolean>(false)
+
   // Font size calculation adapted to 85% scale (preventing stretch and screen overflow at 100% zoom!)
   const updateGeometry = useCallback(() => {
     if (!containerRef.current || !titleRef.current) return
@@ -138,7 +141,13 @@ export const TextPressure: React.FC<TextPressureProps> = ({
     setScaleY(1)
     setLineHeight(1)
 
+    const isMobile = containerW < 768
+    maxDistRef.current = isMobile
+      ? Math.max(0.85 * containerW, 0.45 * window.innerHeight)
+      : Math.max(containerW / 2, 350)
+
     centerTarget()
+    isSettledRef.current = false
 
     requestAnimationFrame(() => {
       if (!titleRef.current) return
@@ -173,22 +182,33 @@ export const TextPressure: React.FC<TextPressureProps> = ({
     return () => window.removeEventListener('resize', debouncedResize)
   }, [updateGeometry])
 
-  // The exact animation loop from the Instagram reel:
+  // The exact animation loop from the Instagram reel (optimized for locked 120 FPS):
   useEffect(() => {
     let rafId: number
 
     const tick = () => {
+      const diffX = targetPos.current.x - mousePos.current.x
+      const diffY = targetPos.current.y - mousePos.current.y
+      const isMoving = Math.abs(diffX) > 0.08 || Math.abs(diffY) > 0.08
+
+      if (!isMoving && isSettledRef.current) {
+        rafId = requestAnimationFrame(tick)
+        return
+      }
+
       // Smooth inertia interpolation (/ 15 as in the reel)
-      mousePos.current.x += (targetPos.current.x - mousePos.current.x) / 15
-      mousePos.current.y += (targetPos.current.y - mousePos.current.y) / 15
+      mousePos.current.x += diffX / 15
+      mousePos.current.y += diffY / 15
+
+      if (!isMoving) {
+        isSettledRef.current = true
+      } else {
+        isSettledRef.current = false
+      }
 
       if (containerRef.current && isVisibleRef.current) {
-        const rect = containerRef.current.getBoundingClientRect()
+        const maxDist = maxDistRef.current
         const isMobile = window.innerWidth < 768
-        const maxDist = isMobile
-          ? Math.max(0.85 * rect.width, 0.45 * window.innerHeight)
-          : Math.max(rect.width / 2, 350)
-
         const spans = spansRef.current
         const centers = cachedCentersRef.current
 
