@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { InteractiveSkillsKeyboard, KEYBOARD_SKILLS } from '../components/InteractiveSkillsKeyboard'
 
@@ -23,14 +23,42 @@ describe('InteractiveSkillsKeyboard Component', () => {
     expect(screen.getByText('5')).toBeInTheDocument()
   })
 
-  it('updates telemetry HUD when clicking a keycap via pointerdown/click', () => {
+  it('updates telemetry HUD and increments actuation counter when clicking keycaps', () => {
     render(<InteractiveSkillsKeyboard />)
+
+    expect(screen.getByText('ACTUATIONS:')).toBeInTheDocument()
+    expect(screen.getByText('0')).toBeInTheDocument()
 
     const pyKeyButton = screen.getByLabelText(/Python 3 keycap/i)
     fireEvent.click(pyKeyButton)
 
     expect(screen.getByText('Python 3')).toBeInTheDocument()
     expect(screen.getAllByText(/AI & Data Pipelines/i).length).toBeGreaterThanOrEqual(1)
+    expect(screen.getByText('1')).toBeInTheDocument()
+  })
+
+  it('renders realistic switch specs in the hardware OLED bar', () => {
+    render(<InteractiveSkillsKeyboard />)
+
+    expect(screen.getByText(/SWITCH STEM:/i)).toBeInTheDocument()
+    expect(screen.getByText(/ACTUATION FORCE:/i)).toBeInTheDocument()
+    expect(screen.getByText(/TRAVEL:/i)).toBeInTheDocument()
+  })
+
+  it('cross-links keycap to portfolio project and triggers smooth scroll', () => {
+    const targetDiv = document.createElement('div')
+    targetDiv.id = 'high-throughput-systems'
+    const scrollMock = vi.fn()
+    targetDiv.scrollIntoView = scrollMock
+    document.body.appendChild(targetDiv)
+
+    render(<InteractiveSkillsKeyboard />)
+
+    const projectJumpBtn = screen.getByTitle(/Jump to/i)
+    fireEvent.click(projectJumpBtn)
+
+    expect(scrollMock).toHaveBeenCalled()
+    document.body.removeChild(targetDiv)
   })
 
   it('updates telemetry HUD when hovering a keycap', () => {
