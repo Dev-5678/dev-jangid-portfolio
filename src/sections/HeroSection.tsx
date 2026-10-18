@@ -177,14 +177,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
       {/* 4. Top-Left Status Pill Badge */}
       <div
         ref={tagRef}
-        className="absolute top-12 sm:top-20 md:top-24 left-4 sm:left-6 md:left-14 lg:left-20 z-[40] opacity-0 flex items-center gap-2 sm:gap-2.5 max-w-[calc(100vw-5rem)] px-3 sm:px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.25)]"
+        className="absolute top-14 sm:top-20 md:top-24 left-4 sm:left-6 md:left-14 lg:left-20 z-[40] opacity-0 flex items-center gap-2 sm:gap-2.5 max-w-[calc(100vw-5.5rem)] px-3 sm:px-4 py-1.5 rounded-full bg-white/[0.05] border border-white/10 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.25)]"
       >
         <span className="relative flex h-2 w-2 shrink-0">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-ember opacity-75" />
           <span className="relative inline-flex rounded-full h-2 w-2 bg-ember shadow-[0_0_8px_#fc6b2f]" />
         </span>
         <span
-          className="text-[10px] sm:text-[11px] text-[#B5B5B5] tracking-[0.15em] sm:tracking-[0.2em] uppercase font-semibold truncate"
+          className="text-[10px] sm:text-[11px] text-[#B5B5B5] tracking-[0.14em] sm:tracking-[0.2em] uppercase font-semibold truncate"
           style={{ fontFamily: 'var(--font-display)' }}
         >
           Shipping Ideas Into Reality.
@@ -194,7 +194,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
       {/* 5. Engineering Subtitle & Capability Chips */}
       <div
         ref={descRef}
-        className="absolute bottom-[20%] sm:bottom-[18%] md:top-[72%] md:bottom-auto left-4 sm:left-6 md:left-14 lg:left-20 z-[40] max-w-[calc(100vw-2rem)] sm:max-w-[340px] md:max-w-[400px] lg:max-w-[440px] opacity-0 text-center md:text-left mx-auto md:mx-0"
+        className="absolute bottom-[28%] sm:bottom-[25%] md:top-[72%] md:bottom-auto left-4 sm:left-6 md:left-14 lg:left-20 z-[40] max-w-[calc(100vw-2rem)] sm:max-w-[340px] md:max-w-[400px] lg:max-w-[440px] opacity-0 text-center md:text-left mx-auto md:mx-0"
       >
         <p
           className="text-[11.5px] sm:text-[13px] md:text-[14px] text-[#B5B5B5] leading-[1.6] sm:leading-[1.8] font-normal tracking-wide"
@@ -202,17 +202,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         >
           Full-Stack Developer &amp; Computer Science Engineer crafting fast, resilient, and motion-driven digital products.
         </p>
-        <div className="mt-2.5 sm:mt-3 flex flex-wrap gap-1.5 sm:gap-2 justify-center md:justify-start">
-          <span className="px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-[10px] font-mono text-zinc-300 tracking-wider">
+        <div className="mt-2 sm:mt-2.5 flex flex-wrap gap-1.5 sm:gap-2 justify-center md:justify-start">
+          <span className="px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-[9.5px] sm:text-[10px] font-mono text-zinc-300 tracking-wider">
             AAI NetSec
           </span>
-          <span className="px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-[10px] font-mono text-zinc-300 tracking-wider">
+          <span className="px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-[9.5px] sm:text-[10px] font-mono text-zinc-300 tracking-wider">
             CanSat UHF
           </span>
-          <span className="px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-[10px] font-mono text-zinc-300 tracking-wider">
+          <span className="px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-[9.5px] sm:text-[10px] font-mono text-zinc-300 tracking-wider">
             Gemini RAG
           </span>
-          <span className="px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-[10px] font-mono text-zinc-300 tracking-wider">
+          <span className="px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-[9.5px] sm:text-[10px] font-mono text-zinc-300 tracking-wider">
             C++ Systems
           </span>
         </div>
@@ -221,14 +221,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
       {/* 6. Magnetic Action Buttons (Reel style) */}
       <div
         ref={ctaRef}
-        className="absolute bottom-6 sm:bottom-[8%] md:bottom-[12%] left-4 right-4 sm:left-auto sm:right-6 md:right-14 lg:right-20 z-[40] opacity-0 flex flex-row sm:flex-col justify-between sm:justify-end items-center sm:items-end gap-2.5 sm:gap-3.5"
+        className="hero-cta-group absolute bottom-14 sm:bottom-16 md:bottom-[12%] left-4 right-4 sm:left-auto sm:right-6 md:right-14 lg:right-20 z-[40] opacity-0 flex flex-row sm:flex-col justify-center sm:justify-end items-center sm:items-end gap-2.5 sm:gap-3.5"
       >
         <a
           href="#projects"
-          className="relative inline-flex items-center justify-center gap-2 sm:gap-2.5 px-4 sm:px-7 py-2.5 sm:py-3.5 rounded-full font-bold text-[11px] sm:text-[13px] tracking-wide transition-all duration-300 overflow-hidden cursor-pointer bg-ember hover:bg-ember-bright text-white border border-transparent shadow-[0_0_25px_rgba(160,42,34,0.4)] hover:shadow-[0_0_40px_rgba(252,107,47,0.7)] hover:scale-105 active:scale-95 group touch-manipulation flex-1 sm:flex-initial"
+          className="relative inline-flex items-center justify-center gap-2 sm:gap-2.5 px-4 sm:px-7 py-2.5 sm:py-3.5 rounded-full font-bold text-[11px] sm:text-[13px] tracking-wide transition-all duration-300 overflow-hidden cursor-pointer bg-ember hover:bg-ember-bright text-white border border-transparent shadow-[0_0_25px_rgba(160,42,34,0.4)] hover:shadow-[0_0_40px_rgba(252,107,47,0.7)] hover:scale-105 active:scale-95 group touch-manipulation flex-1 sm:flex-initial text-center"
           title="Explore Engineering Highlights"
         >
-          <span className="relative z-10 flex items-center gap-2 sm:gap-2.5">
+          <span className="relative z-10 flex items-center justify-center gap-2 sm:gap-2.5">
             <span className="w-5 h-5 sm:w-7 sm:h-7 rounded-full border border-white/30 flex items-center justify-center transition-transform duration-500 group-hover:rotate-45 shrink-0">
               <ArrowUpRight className="w-3.5 h-3.5 text-white stroke-[2.5]" />
             </span>
@@ -238,10 +238,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
 
         <a
           href="#contact"
-          className="relative inline-flex items-center justify-center gap-2 sm:gap-2.5 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full font-bold text-[11px] sm:text-[12px] tracking-wide transition-all duration-300 overflow-hidden cursor-pointer bg-transparent text-white border border-white/20 hover:border-ember/50 hover:text-ember hover:shadow-[0_0_25px_rgba(255,255,255,0.2)] hover:scale-105 active:scale-95 group touch-manipulation backdrop-blur-md flex-1 sm:flex-initial"
+          className="relative inline-flex items-center justify-center gap-2 sm:gap-2.5 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full font-bold text-[11px] sm:text-[12px] tracking-wide transition-all duration-300 overflow-hidden cursor-pointer bg-white/[0.04] text-white border border-white/20 hover:border-ember/50 hover:text-ember hover:shadow-[0_0_25px_rgba(255,255,255,0.2)] hover:scale-105 active:scale-95 group touch-manipulation backdrop-blur-md flex-1 sm:flex-initial text-center"
           title="Direct Contact Transmission"
         >
-          <span className="relative z-10 flex items-center gap-2">
+          <span className="relative z-10 flex items-center justify-center gap-2">
             <span className="whitespace-nowrap">Let's Talk →</span>
           </span>
         </a>
@@ -250,10 +250,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
       {/* 7. Center Kinetic Bold Variable Typography matching Instagram Reel */}
       <div
         ref={titleContainerRef}
-        className="absolute top-[25%] sm:top-[28%] md:top-[38%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-[15] select-none w-full flex flex-col items-center justify-center px-4"
+        className="absolute top-[26%] sm:top-[28%] md:top-[38%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-[15] select-none w-full flex flex-col items-center justify-center px-3 sm:px-4"
         aria-hidden="true"
       >
-        <div className="w-full max-w-[700px] md:max-w-[850px] h-[58px] sm:h-[88px] md:h-[142px] relative flex items-center justify-center scale-y-[1.15] transform-gpu drop-shadow-[0_0_35px_rgba(252,107,47,0.3)]">
+        <div className="w-full max-w-[700px] md:max-w-[850px] h-[54px] sm:h-[88px] md:h-[142px] relative flex items-center justify-center scale-y-[1.15] transform-gpu drop-shadow-[0_0_35px_rgba(252,107,47,0.3)]">
           <div style={{ position: 'relative', width: '100%', height: '100%', background: 'transparent' }} className="cursor-default pointer-events-auto">
             <TextPressure
               text="DEV JANGID"
@@ -273,7 +273,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         </div>
 
         {/* Cinematic Sub-headline (Slid down with generous breathing space to prevent any overlap!) */}
-        <div className="mt-8 sm:mt-10 md:mt-14 lg:mt-16 text-center z-[20] px-2">
+        <div className="mt-7 sm:mt-10 md:mt-14 lg:mt-16 text-center z-[20] px-2">
           <p
             className="hero-line text-[clamp(0.55rem,2.2vw,0.88rem)] md:text-[clamp(0.72rem,1.08vw,0.88rem)] font-extrabold tracking-[0.12em] sm:tracking-[0.25em] uppercase text-ember drop-shadow-[0_0_20px_rgba(252,107,47,0.7)]"
             style={{ fontFamily: 'var(--font-poppins), sans-serif' }}
@@ -283,21 +283,21 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         </div>
       </div>
 
-      {/* 8. Center Animated Kinetic Scroll Indicator (Clearly visible with glowing bouncing pill) */}
+      {/* 8. Center Animated Kinetic Scroll Indicator (Positioned with clear clearance below CTAs) */}
       <a
         href="#introduction"
         ref={scrollHintRef}
-        className="hero-scroll-indicator absolute bottom-3 sm:bottom-5 md:bottom-7 left-1/2 -translate-x-1/2 z-[45] flex flex-col items-center gap-1.5 sm:gap-2 opacity-0 cursor-pointer group select-none transition-all duration-300 hover:scale-110 touch-manipulation"
+        className="hero-scroll-indicator absolute bottom-2.5 sm:bottom-4 md:bottom-7 left-1/2 -translate-x-1/2 z-[45] flex flex-col items-center gap-1 sm:gap-1.5 opacity-0 cursor-pointer group select-none transition-all duration-300 hover:scale-110 touch-manipulation"
         aria-label="Scroll down to The Philosophy section"
       >
         <span
-          className="text-[9.5px] tracking-[0.32em] uppercase font-mono font-bold transition-colors text-[#B5B5B5] group-hover:text-ember drop-shadow-sm"
+          className="text-[9px] sm:text-[9.5px] tracking-[0.32em] uppercase font-mono font-bold transition-colors text-[#B5B5B5] group-hover:text-ember drop-shadow-sm"
           style={{ fontFamily: 'var(--font-display)' }}
         >
           Scroll
         </span>
-        <div className="w-[20px] h-[32px] sm:w-[22px] sm:h-[36px] rounded-full border-2 border-white/40 dark:border-white/40 light:border-zinc-800/60 group-hover:border-ember transition-colors flex items-start justify-center p-1.5 relative overflow-hidden bg-white/5 dark:bg-white/5 light:bg-black/5 backdrop-blur-md shadow-[0_0_15px_rgba(252,107,47,0.3)]">
-          <div className="w-1.5 h-2.5 rounded-full bg-ember shadow-[0_0_10px_#fc6b2f] animate-bounce" />
+        <div className="w-[18px] h-[28px] sm:w-[22px] sm:h-[36px] rounded-full border-2 border-white/40 dark:border-white/40 light:border-zinc-800/60 group-hover:border-ember transition-colors flex items-start justify-center p-1 relative overflow-hidden bg-white/5 dark:bg-white/5 light:bg-black/5 backdrop-blur-md shadow-[0_0_15px_rgba(252,107,47,0.3)]">
+          <div className="w-1.5 h-2 rounded-full bg-ember shadow-[0_0_10px_#fc6b2f] animate-bounce" />
         </div>
       </a>
     </section>

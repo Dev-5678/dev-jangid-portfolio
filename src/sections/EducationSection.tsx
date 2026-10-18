@@ -42,13 +42,13 @@ export const EducationSection: React.FC = () => {
           {educationHistory.map((edu, idx) => (
             <div
               key={edu.id}
-              className="edu-card glass-card p-6 sm:p-8 flex flex-col justify-between hover:border-white/20 transition-all duration-300 relative overflow-hidden group"
+              className="edu-card glass-card p-5 sm:p-7 flex flex-col justify-between hover:border-ember/40 transition-all duration-300 relative overflow-hidden group"
             >
               <div>
                 {/* Top Badges */}
-                <div className="flex items-center justify-between pb-4 mb-4 border-b border-white/10">
+                <div className="flex flex-wrap items-center justify-between gap-2 pb-3.5 mb-3.5 border-b border-white/10">
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-medium border font-mono ${
+                    className={`px-2.5 py-1 sm:px-3 sm:py-1 rounded-full text-[11px] sm:text-xs font-medium border font-mono ${
                       edu.isExpected
                         ? 'bg-ember/10 border-ember/30 text-ember'
                         : 'bg-white/5 border-white/10 text-white'
@@ -56,26 +56,26 @@ export const EducationSection: React.FC = () => {
                   >
                     {edu.isExpected ? 'In Progress' : 'Completed'}
                   </span>
-                  <span className="flex items-center gap-1.5 text-xs font-mono text-ash font-medium">
+                  <span className="flex items-center gap-1.5 text-[11px] sm:text-xs font-mono text-ash font-medium">
                     <Calendar className="w-3.5 h-3.5 text-ember" />
                     <span>{edu.date}</span>
                   </span>
                 </div>
 
                 {/* Degree */}
-                <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight mt-2 mb-3 group-hover:text-cloud transition-colors">
+                <h3 className="text-lg sm:text-2xl font-bold text-white tracking-tight mt-1 mb-2.5 group-hover:text-cloud transition-colors">
                   {edu.degree}
                 </h3>
 
                 {/* Institution */}
-                <div className="flex items-center gap-2.5 text-sm sm:text-base text-silver font-medium">
+                <div className="flex items-center gap-2.5 text-xs sm:text-base text-silver font-medium">
                   <GraduationCap className="w-4 h-4 text-ember shrink-0" />
                   <span>{edu.institution}</span>
                 </div>
               </div>
 
               {/* Location footer */}
-              <div className="mt-8 pt-5 border-t border-white/10 flex items-center justify-between text-xs text-ash">
+              <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-ash">
                 <span className="flex items-center gap-1.5">
                   <MapPin className="w-3.5 h-3.5 text-ember shrink-0" />
                   <span>{edu.location}</span>

@@ -175,33 +175,36 @@ export const ProjectsSection: React.FC = () => {
                 {/* Top Hairline Gradient Highlight */}
                 <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
 
-                <div className={`grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-14 items-center ${isEven ? 'lg:flex-row-reverse' : ''}`}>
+                <div className={`grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center ${isEven ? 'lg:flex-row-reverse' : ''}`}>
                   {/* Text Column */}
                   <div className={`lg:col-span-6 flex flex-col justify-between h-full space-y-4 sm:space-y-6 ${isEven ? 'lg:order-2' : 'lg:order-1'}`}>
-                    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                      <a
-                        href={`#/project/${p.id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-black font-bold text-xs tracking-wider uppercase hover:scale-105 transition-all shadow-[0_4px_25px_rgba(255,255,255,0.4)] group touch-manipulation cursor-pointer"
-                        title="Launch Dedicated Full-Stack Webpage in New Tab"
-                      >
-                        <span>Launch Live Webpage</span>
-                        <ArrowUpRight className="w-3.5 h-3.5 text-black stroke-[2.5] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
-                      </a>
+                    {/* Top Row: Meta & Launch Actions */}
+                    <div className="flex flex-wrap items-center justify-between gap-2.5 sm:gap-3">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <a
+                          href={`#/project/${p.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-white text-black font-extrabold text-[11px] sm:text-xs tracking-wider uppercase hover:scale-105 active:scale-95 transition-all shadow-[0_4px_25px_rgba(255,255,255,0.4)] group touch-manipulation cursor-pointer"
+                          title="Launch Dedicated Full-Stack Webpage in New Tab"
+                        >
+                          <span>Launch Live App</span>
+                          <ArrowUpRight className="w-3.5 h-3.5 text-black stroke-[2.5] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
+                        </a>
 
-                      <button
-                        onClick={() => {
-                          window.location.hash = `#/project/${p.id}`
-                          window.scrollTo(0, 0)
-                        }}
-                        className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 font-semibold text-xs tracking-wider uppercase transition-all backdrop-blur-md cursor-pointer"
-                        title="Open in Current Window"
-                      >
-                        <span>Open In Tab</span>
-                      </button>
+                        <button
+                          onClick={() => {
+                            window.location.hash = `#/project/${p.id}`
+                            window.scrollTo(0, 0)
+                          }}
+                          className="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 font-semibold text-[11px] sm:text-xs tracking-wider uppercase transition-all backdrop-blur-md cursor-pointer active:scale-95"
+                          title="Open in Current Window"
+                        >
+                          <span>Open In Tab</span>
+                        </button>
+                      </div>
 
-                      <span className="ml-auto text-[11px] sm:text-xs font-mono text-zinc-400 font-bold tracking-widest uppercase">
+                      <span className="text-[11px] sm:text-xs font-mono text-zinc-400 font-bold tracking-widest uppercase">
                         {p.number}
                       </span>
                     </div>
@@ -211,7 +214,7 @@ export const ProjectsSection: React.FC = () => {
                         {p.domain}
                       </span>
                       <h3
-                        className="text-2xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight"
+                        className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-[1.15]"
                         style={{ fontFamily: "var(--font-josefin), 'Josefin Sans', sans-serif" }}
                       >
                         {p.title}
@@ -222,11 +225,11 @@ export const ProjectsSection: React.FC = () => {
                       {p.description}
                     </p>
 
-                    <div className="flex flex-wrap gap-1.5 sm:gap-2.5 pt-2 sm:pt-4">
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-1 sm:pt-2">
                       {p.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-bold tracking-wider text-white uppercase bg-white/[0.06] border border-white/15 backdrop-blur-lg shadow-sm"
+                          className="px-2.5 py-1 sm:px-3 sm:py-1 rounded-full text-[9.5px] sm:text-[11px] font-bold tracking-wider text-white uppercase bg-white/[0.06] border border-white/15 backdrop-blur-lg shadow-sm"
                           style={{ fontFamily: "var(--font-josefin), 'Josefin Sans', sans-serif" }}
                         >
                           {tag}
@@ -276,11 +279,11 @@ export const ProjectsSection: React.FC = () => {
                         </div>
 
                         {/* Floating Telemetry Metric Badges */}
-                        <div className="absolute bottom-3 left-3 right-3 flex flex-wrap items-center gap-1.5 sm:gap-2 z-10">
+                        <div className="absolute bottom-2.5 sm:bottom-3 left-2.5 sm:left-3 right-2.5 sm:right-3 flex flex-wrap items-center gap-1 sm:gap-2 z-10">
                           {p.liveMetrics?.map((m) => (
                             <div
                               key={m.label}
-                              className="px-2.5 py-1 rounded-lg bg-black/80 border border-white/20 backdrop-blur-md flex items-center gap-1.5 text-[10px] font-mono shadow-md"
+                              className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md sm:rounded-lg bg-black/85 border border-white/20 backdrop-blur-md flex items-center gap-1 sm:gap-1.5 text-[9px] sm:text-[10px] font-mono shadow-md"
                             >
                               <span className="text-zinc-400">{m.label}:</span>
                               <span className="text-white font-bold">{m.value}</span>

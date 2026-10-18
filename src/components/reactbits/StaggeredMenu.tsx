@@ -1,6 +1,7 @@
 import React, { useState, useRef, useLayoutEffect, useCallback, useEffect } from 'react'
 import gsap from 'gsap'
-import { Sun, Moon, FileText, Search, Terminal, Zap } from 'lucide-react'
+import { FileText, Search, Terminal, Zap } from 'lucide-react'
+import { BalloonThemeToggle } from '../BalloonThemeToggle'
 
 export interface MenuItem {
   label: string
@@ -348,22 +349,11 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
         </div>
 
         {/* Header Action Controls */}
-        <div className="flex items-center gap-2.5 sm:gap-3">
-          {/* Quick 1-Click Theme Toggle Button */}
-          <button
-            onClick={onToggleTheme}
-            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-            aria-pressed={theme === 'dark'}
-            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-            className="sm-theme-toggle flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-full border transition-all duration-300 cursor-pointer shadow-sm hover:scale-105"
-            type="button"
-          >
-            {theme === 'dark' ? (
-              <Sun className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-amber-300 transition-transform duration-300 hover:rotate-45" />
-            ) : (
-              <Moon className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-zinc-700 transition-transform duration-300 hover:-rotate-12" />
-            )}
-          </button>
+        <div className="flex items-center gap-2 sm:gap-3">
+          {/* Interactive Balloon Theme Toggle with High-Visibility Rope */}
+          <div className="flex items-center justify-center -my-2.5 px-0.5">
+            <BalloonThemeToggle theme={theme} onToggleTheme={onToggleTheme} />
+          </div>
 
           {/* Floating Toggle on Right (Strict Reel Replica: Menu +) */}
           <button
@@ -457,23 +447,16 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
               </button>
             )}
 
-            {/* Light / Dark Mode Toggle */}
-            <button
-              onClick={onToggleTheme}
-              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-              aria-pressed={theme === 'dark'}
-              className="flex items-center justify-between px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs font-mono transition-colors text-left cursor-pointer"
-            >
+            {/* Light / Dark Mode Balloon Toggle */}
+            <div className="flex items-center justify-between px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs font-mono">
               <div className="flex items-center gap-2">
-                {theme === 'dark' ? (
-                  <Sun className="w-3.5 h-3.5 text-amber-400" />
-                ) : (
-                  <Moon className="w-3.5 h-3.5 text-silver" />
-                )}
-                <span>Theme Mode</span>
+                <span className="text-ember font-bold">●</span>
+                <span>Theme: {theme === 'dark' ? 'Dark Mode' : 'Light Mode'}</span>
               </div>
-              <span className="text-[10px] uppercase text-ash">{theme === 'dark' ? 'Dark' : 'Light'}</span>
-            </button>
+              <div className="scale-90 origin-right -my-1">
+                <BalloonThemeToggle theme={theme} onToggleTheme={onToggleTheme} />
+              </div>
+            </div>
 
             {/* Recruiter TL;DR Summary Toggle */}
             {onToggleTLDR && (
