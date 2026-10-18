@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { describe, it, expect, vi } from 'vitest'
+import { render, screen, fireEvent, act } from '@testing-library/react'
 import { InteractiveSkillsKeyboard, KEYBOARD_SKILLS } from '../components/InteractiveSkillsKeyboard'
 
 describe('InteractiveSkillsKeyboard Component', () => {
@@ -7,7 +7,7 @@ describe('InteractiveSkillsKeyboard Component', () => {
     render(<InteractiveSkillsKeyboard />)
 
     expect(screen.getByText(/Dev-MK64 Mechanical Core/i)).toBeInTheDocument()
-    expect(screen.getByText(/28 Switches/i)).toBeInTheDocument()
+    expect(screen.getByText(/28 Hot-Swap Switches/i)).toBeInTheDocument()
     expect(KEYBOARD_SKILLS.length).toBe(28)
   })
 
@@ -23,16 +23,66 @@ describe('InteractiveSkillsKeyboard Component', () => {
     expect(screen.getByText('5')).toBeInTheDocument()
   })
 
-  it('updates telemetry HUD when clicking a keycap', () => {
+  it('updates telemetry HUD when clicking a keycap via pointerdown', () => {
     render(<InteractiveSkillsKeyboard />)
 
-    // Click on Python key
-    const pyKey = screen.getByText('PY')
-    fireEvent.click(pyKey)
+    const pyKeyButton = screen.getByLabelText(/Python 3 mechanical keycap/i)
+    fireEvent.pointerDown(pyKeyButton)
 
-    // The HUD should display Python 3
     expect(screen.getByText('Python 3')).toBeInTheDocument()
     expect(screen.getByText(/AI & Data Pipelines/i)).toBeInTheDocument()
+  })
+
+  it('actuates key when typing on physical keyboard', () => {
+    render(<InteractiveSkillsKeyboard />)
+
+    act(() => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: 'r' }))
+    })
+
+    // React 19 should be actuated
+    expect(screen.getByText('React 19')).toBeInTheDocument()
+    expect(screen.getByText(/State & Motion Physics/i)).toBeInTheDocument()
+  })
+
+  it('cycles switch acoustic sound profiles', () => {
+    render(<InteractiveSkillsKeyboard />)
+
+    const switchBtn = screen.getByTitle(/Cycle switch sound acoustics/i)
+    expect(switchBtn).toHaveTextContent(/THOCK SWITCH/i)
+
+    fireEvent.click(switchBtn)
+    expect(switchBtn).toHaveTextContent(/CLICKY SWITCH/i)
+
+    fireEvent.click(switchBtn)
+    expect(switchBtn).toHaveTextContent(/LINEAR SWITCH/i)
+  })
+
+  it('cycles RGB matrix lighting modes', () => {
+    render(<InteractiveSkillsKeyboard />)
+
+    const rgbBtn = screen.getByTitle(/Cycle RGB Backlight Animation Mode/i)
+    expect(rgbBtn).toHaveTextContent(/RGB: STATIC/i)
+
+    fireEvent.click(rgbBtn)
+    expect(rgbBtn).toHaveTextContent(/RGB: RIPPLE/i)
+  })
+
+  it('simulates code execution in the micro-terminal when RUN CODE is clicked', async () => {
+    vi.useFakeTimers()
+    render(<InteractiveSkillsKeyboard />)
+
+    const runBtn = screen.getByText('RUN CODE')
+    fireEvent.click(runBtn)
+
+    expect(screen.getByText(/Compiling & running execution pipeline/i)).toBeInTheDocument()
+
+    act(() => {
+      vi.advanceTimersByTime(500)
+    })
+
+    expect(screen.getByText(/TypeScript compiler: 0 errors/i)).toBeInTheDocument()
+    vi.useRealTimers()
   })
 
   it('toggles audio on/off when clicking audio button', () => {

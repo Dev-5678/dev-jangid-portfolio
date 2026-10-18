@@ -1,12 +1,35 @@
-import React, { useState, useRef, useMemo, useCallback } from 'react'
-import { Volume2, VolumeX, Eye, Sparkles, Terminal, Layers } from 'lucide-react'
+import React, { useState, useRef, useMemo, useCallback, useEffect } from 'react'
+import {
+  Volume2,
+  VolumeX,
+  Eye,
+  Sparkles,
+  Terminal,
+  Layers,
+  Play,
+  CheckCircle2,
+  Sliders,
+  Keyboard as KeyboardIcon
+} from 'lucide-react'
+
+export type KeyboardCategory =
+  | 'LANGUAGES'
+  | 'FULL_STACK'
+  | 'AI_CLOUD'
+  | 'CORE_CS'
+  | 'TELEMETRY'
+  | 'DEVOPS'
+
+export type SoundProfile = 'thock' | 'clicky' | 'linear'
+export type RgbMode = 'static' | 'ripple' | 'rainbow' | 'matrix' | 'ember'
 
 export interface KeySkill {
   id: string
   label: string
   subLabel?: string
+  shortcutKey: string
   name: string
-  category: 'LANGUAGES' | 'FULL_STACK' | 'AI_CLOUD' | 'CORE_CS' | 'TELEMETRY' | 'DEVOPS'
+  category: KeyboardCategory
   categoryLabel: string
   color: {
     base: string
@@ -21,44 +44,17 @@ export interface KeySkill {
   proficiency: string
   experience: string
   highlight: string
-  iconType:
-    | 'ts'
-    | 'js'
-    | 'py'
-    | 'cpp'
-    | 'c'
-    | 'java'
-    | 'html5'
-    | 'next'
-    | 'tailwind'
-    | 'node'
-    | 'express'
-    | 'react'
-    | 'postgres'
-    | 'mongo'
-    | 'git'
-    | 'github'
-    | 'gemini'
-    | 'rag'
-    | 'vertex'
-    | 'docker'
-    | 'linux'
-    | 'cansat'
-    | 'uhf'
-    | 'esp32'
-    | 'sec'
-    | 'wireshark'
-    | 'dsa'
-    | 'vite'
+  codeSnippet: string
+  codeOutput: string
 }
 
-// 28 Mechanical Switches across 4 rows of 7 keys
 export const KEYBOARD_SKILLS: KeySkill[] = [
   // --- ROW 1: Programming Languages ---
   {
     id: 'ts',
     label: 'TS',
     subLabel: '5.x',
+    shortcutKey: 'T',
     name: 'TypeScript',
     category: 'LANGUAGES',
     categoryLabel: 'Programming Languages',
@@ -75,12 +71,14 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     proficiency: '98% // Master',
     experience: 'Production & Full-Stack',
     highlight: 'Strict compile-time type safety, interfaces, generic constraints, zero runtime type errors.',
-    iconType: 'ts'
+    codeSnippet: 'type SafePayload<T> = { status: 200; data: Readonly<T>; timestamp: number };',
+    codeOutput: '✓ TypeScript compiler: 0 errors in 1,420 modules. Strict null checks passed.'
   },
   {
     id: 'js',
     label: 'JS',
     subLabel: 'ES24',
+    shortcutKey: 'J',
     name: 'JavaScript',
     category: 'LANGUAGES',
     categoryLabel: 'Programming Languages',
@@ -97,12 +95,14 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     proficiency: '96% // Expert',
     experience: 'Asynchronous Core',
     highlight: 'Event loop mastery, non-blocking I/O, V8 microtask scheduling, closures & prototypes.',
-    iconType: 'js'
+    codeSnippet: 'const pipeline = async (req) => await Promise.allSettled(microservices.map(fn => fn(req)));',
+    codeOutput: '✓ Event loop: 0 latency drift. Microtasks drained in 0.8ms.'
   },
   {
     id: 'py',
     label: 'PY',
     subLabel: '3.12',
+    shortcutKey: 'P',
     name: 'Python 3',
     category: 'LANGUAGES',
     categoryLabel: 'Programming Languages',
@@ -119,12 +119,14 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     proficiency: '95% // Expert',
     experience: 'AI & Data Pipelines',
     highlight: 'Multimodal RAG backends, NumPy vector calculations, Streamlit engines, high-speed scripting.',
-    iconType: 'py'
+    codeSnippet: 'scores = cosine_similarity(query_emb, vector_db.embeddings); return top_k(scores, 5)',
+    codeOutput: '✓ Vector similarity: Top 5 contexts retrieved in 14.2ms. Cosine: 0.942.'
   },
   {
     id: 'cpp',
     label: 'C++',
     subLabel: 'C++20',
+    shortcutKey: '4',
     name: 'Modern C++',
     category: 'LANGUAGES',
     categoryLabel: 'Programming Languages',
@@ -141,12 +143,14 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     proficiency: '90% // Advanced',
     experience: 'Low-Latency & Firmware',
     highlight: 'Deterministic manual memory management, RAII, STL algorithms, embedded aerospace controllers.',
-    iconType: 'cpp'
+    codeSnippet: 'template <std::integral T> constexpr auto bit_pack(T reg, uint8_t mask) noexcept;',
+    codeOutput: '✓ GCC -O3 optimized: Zero allocation overhead. Cache-line aligned (64B).'
   },
   {
     id: 'c',
     label: 'C',
     subLabel: 'POSIX',
+    shortcutKey: 'C',
     name: 'C Language',
     category: 'LANGUAGES',
     categoryLabel: 'Programming Languages',
@@ -163,12 +167,14 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     proficiency: '88% // Systems Ready',
     experience: 'Bare-Metal Systems',
     highlight: 'Direct memory pointers, register-level manipulation, hardware interrupts, bitwise packet masking.',
-    iconType: 'c'
+    codeSnippet: 'inline void ISR_TIMER0_vect(void) { PORTB ^= (1 << PB5); TIFR0 |= (1 << OCF0A); }',
+    codeOutput: '✓ Interrupt service completed in 1.4µs. Bare-metal hardware state nominal.'
   },
   {
     id: 'java',
     label: 'JAVA',
     subLabel: '21',
+    shortcutKey: '6',
     name: 'Java LTS',
     category: 'LANGUAGES',
     categoryLabel: 'Programming Languages',
@@ -185,12 +191,14 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     proficiency: '86% // Proficient',
     experience: 'OOP & Algorithms',
     highlight: 'Object-oriented class structures, JVM garbage collection internals, threading concurrency.',
-    iconType: 'java'
+    codeSnippet: 'record TelemetryPacket(UUID id, double altitude, Instant recordedAt) {}',
+    codeOutput: '✓ JVM HotSpot: JIT compiled tier-4 native assembly. 0 GC pauses.'
   },
   {
     id: 'html5',
     label: '5',
     subLabel: 'CSS3',
+    shortcutKey: 'H',
     name: 'HTML5 & CSS3',
     category: 'LANGUAGES',
     categoryLabel: 'Programming Languages',
@@ -207,7 +215,8 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     proficiency: '98% // Expert',
     experience: 'Semantic Web & 3D UI',
     highlight: 'Semantic DOM accessibility, CSS 3D matrix transforms, responsive fluid layouts, OKLCH color science.',
-    iconType: 'html5'
+    codeSnippet: 'transform: perspective(1400px) rotateX(var(--tilt-x)) preserve-3d;',
+    codeOutput: '✓ Hardware GPU composition: 120 FPS render thread. W3C Validated.'
   },
 
   // --- ROW 2: Full Stack Web Engineering ---
@@ -215,6 +224,7 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     id: 'next',
     label: 'N',
     subLabel: '15',
+    shortcutKey: 'N',
     name: 'Next.js 15',
     category: 'FULL_STACK',
     categoryLabel: 'Full Stack Web',
@@ -231,12 +241,14 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     proficiency: '95% // Production Master',
     experience: 'App Router & Edge',
     highlight: 'React Server Components (RSC), dynamic streaming SSR, incremental static regeneration (ISR).',
-    iconType: 'next'
+    codeSnippet: 'export default async function Page() { const data = await fetchCached(); return <View />; }',
+    codeOutput: '✓ Server Component streamed: TTFB 18ms. Zero client JavaScript footprint.'
   },
   {
     id: 'tailwind',
     label: '≈',
     subLabel: 'v4',
+    shortcutKey: 'W',
     name: 'Tailwind CSS 4',
     category: 'FULL_STACK',
     categoryLabel: 'Full Stack Web',
@@ -252,13 +264,15 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     },
     proficiency: '98% // Expert',
     experience: 'Modern UI Architecture',
-    highlight: 'Zero-runtime utility styling, custom theme tokens, glassmorphism filters, sub-millisecond Vite build time.',
-    iconType: 'tailwind'
+    highlight: 'Zero-runtime utility styling, custom theme tokens, glassmorphism filters, sub-millisecond build time.',
+    codeSnippet: '@theme { --color-ember: oklch(0.68 0.22 35); --font-brand: var(--font-poppins); }',
+    codeOutput: '✓ Vite CSS pipeline compiled in 4ms. Purged unused tokens: 99.2%.'
   },
   {
     id: 'node',
     label: '⬢',
     subLabel: 'Node',
+    shortcutKey: 'E',
     name: 'Node.js',
     category: 'FULL_STACK',
     categoryLabel: 'Full Stack Web',
@@ -275,12 +289,14 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     proficiency: '94% // Expert',
     experience: 'High-Concurrency Runtime',
     highlight: 'Asynchronous event stream processing, microservice orchestrations, worker threads, native buffer I/O.',
-    iconType: 'node'
+    codeSnippet: 'pipeline(readableStream, zlib.createGzip(), responseStream, (err) => {});',
+    codeOutput: '✓ Backpressure handled: High-throughput 45,000 req/sec streamed.'
   },
   {
     id: 'express',
     label: 'ex',
     subLabel: 'API',
+    shortcutKey: 'X',
     name: 'Express.js',
     category: 'FULL_STACK',
     categoryLabel: 'Full Stack Web',
@@ -297,12 +313,14 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     proficiency: '92% // Advanced',
     experience: 'RESTful Middleware',
     highlight: 'JWT authentication pipelines, rate-limiting middleware, CORS policies, modular routing architectures.',
-    iconType: 'express'
+    codeSnippet: 'app.use(rateLimiter({ windowMs: 60_000, max: 120 })); app.post("/api/auth", authenticate);',
+    codeOutput: '✓ Middleware chain mounted: IP token bucket verified. Status: 200 OK.'
   },
   {
     id: 'react',
     label: '⚛',
     subLabel: '19',
+    shortcutKey: 'R',
     name: 'React 19',
     category: 'FULL_STACK',
     categoryLabel: 'Full Stack Web',
@@ -319,12 +337,14 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     proficiency: '98% // Core Specialist',
     experience: 'State & Motion Physics',
     highlight: 'Concurrent hooks, compiler optimization, custom state machines, virtual DOM reconciliation.',
-    iconType: 'react'
+    codeSnippet: 'const [state, update] = useOptimistic(feed, (curr, update) => [...curr, update]);',
+    codeOutput: '✓ React Concurrent Fiber: Reconciled with zero layout thrashing in 1.1ms.'
   },
   {
     id: 'postgres',
     label: 'PG',
     subLabel: 'SQL',
+    shortcutKey: 'S',
     name: 'PostgreSQL',
     category: 'FULL_STACK',
     categoryLabel: 'Full Stack Web',
@@ -341,12 +361,14 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     proficiency: '90% // Proficient',
     experience: 'Relational Database',
     highlight: 'ACID transactional integrity, B-Tree indexes, JSONB semi-structured storage, connection pooling.',
-    iconType: 'postgres'
+    codeSnippet: 'CREATE INDEX CONCURRENTLY idx_users_email ON users USING btree (email);',
+    codeOutput: '✓ EXPLAIN ANALYZE: Index Scan on users. Execution Time: 0.142 ms.'
   },
   {
     id: 'mongo',
     label: '🍃',
     subLabel: 'NoSQL',
+    shortcutKey: 'M',
     name: 'MongoDB',
     category: 'FULL_STACK',
     categoryLabel: 'Full Stack Web',
@@ -363,7 +385,8 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     proficiency: '89% // Proficient',
     experience: 'Document Modeling',
     highlight: 'BSON document modeling, aggregation pipelines, replica set failover, dynamic horizontal sharding.',
-    iconType: 'mongo'
+    codeSnippet: 'collection.aggregate([{ $match: { active: true } }, { $group: { _id: "$tag" } }]);',
+    codeOutput: '✓ WiredTiger cache: Pipeline executed in 3.6ms across 50,000 documents.'
   },
 
   // --- ROW 3: AI, Cloud & DevOps ---
@@ -371,6 +394,7 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     id: 'git',
     label: '⑂',
     subLabel: 'Git',
+    shortcutKey: 'G',
     name: 'Git VCS',
     category: 'DEVOPS',
     categoryLabel: 'DevOps & Tooling',
@@ -387,12 +411,14 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     proficiency: '96% // Expert',
     experience: 'Source Control & Hygiene',
     highlight: 'Feature branching, interactive rebasing, bisecting regressions, atomic commits, submodule management.',
-    iconType: 'git'
+    codeSnippet: 'git rebase -i HEAD~5 --autosquash && git push origin feature --force-with-lease',
+    codeOutput: '✓ Fast-forward rebase clean. Linear commit tree maintained.'
   },
   {
     id: 'github',
     label: '🐙',
     subLabel: 'CI/CD',
+    shortcutKey: 'A',
     name: 'GitHub Actions',
     category: 'DEVOPS',
     categoryLabel: 'DevOps & Tooling',
@@ -409,12 +435,14 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     proficiency: '94% // Expert',
     experience: 'Automated CI/CD',
     highlight: 'Automated test matrices, Docker multi-platform builds, semantic versioning, secret injection.',
-    iconType: 'github'
+    codeSnippet: 'jobs: test: runs-on: ubuntu-latest steps: - run: npm test && npm run build',
+    codeOutput: '✓ Workflow run: 25/25 tests passing in 14.1s. Deployment authorized.'
   },
   {
     id: 'gemini',
     label: '✦',
     subLabel: 'Pro',
+    shortcutKey: 'D',
     name: 'Gemini 1.5 Pro',
     category: 'AI_CLOUD',
     categoryLabel: 'AI & Cloud',
@@ -431,12 +459,14 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     proficiency: '95% // AI Scholar',
     experience: 'Multimodal Intelligence',
     highlight: '2,000,000-token context processing, structured schema generation, tool-calling agents, vision analysis.',
-    iconType: 'gemini'
+    codeSnippet: 'const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro", tools: [searchTool] });',
+    codeOutput: '✓ 1.2M tokens ingested: Multimodal reasoning output parsed into strict JSON.'
   },
   {
     id: 'rag',
     label: 'RAG',
     subLabel: 'Embed',
+    shortcutKey: 'F',
     name: 'Multimodal RAG',
     category: 'AI_CLOUD',
     categoryLabel: 'AI & Cloud',
@@ -453,12 +483,14 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     proficiency: '93% // Production Grade',
     experience: 'Vector Semantic Search',
     highlight: 'High-dimensional embeddings, ChromaDB vector indexing, cosine ranking, hallucination suppression.',
-    iconType: 'rag'
+    codeSnippet: 'rag_query = vector_db.similarity_search_with_score(prompt_embedding, k=4)',
+    codeOutput: '✓ Context grounding injected: Ground truth citation verified with 0 hallucinations.'
   },
   {
     id: 'vertex',
     label: '☁',
     subLabel: 'GCP',
+    shortcutKey: 'V',
     name: 'Vertex AI & Cloud',
     category: 'AI_CLOUD',
     categoryLabel: 'AI & Cloud',
@@ -475,12 +507,14 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     proficiency: '90% // Certified',
     experience: 'Managed Cloud ML',
     highlight: 'Model deployment endpoints, Cloud Storage buckets, serverless Cloud Functions, IAM least-privilege.',
-    iconType: 'vertex'
+    codeSnippet: 'aiplatform.init(project="dev-aerospace", location="us-central1")',
+    codeOutput: '✓ Cloud endpoint healthy: Autoscaling 1..8 instances. Latency p95: 42ms.'
   },
   {
     id: 'docker',
     label: '🐳',
     subLabel: 'Box',
+    shortcutKey: 'K',
     name: 'Docker Containers',
     category: 'DEVOPS',
     categoryLabel: 'DevOps & Tooling',
@@ -497,12 +531,14 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     proficiency: '92% // Advanced',
     experience: 'Container Orchestration',
     highlight: 'Multi-stage lean Dockerfiles, Compose network bridges, alpine base images, container isolation.',
-    iconType: 'docker'
+    codeSnippet: 'FROM node:22-alpine AS build ... FROM nginx:alpine COPY --from=build /dist /usr/share/nginx/html',
+    codeOutput: '✓ Multi-stage image size: 28MB. Security scan: 0 vulnerabilities (CVE-free).'
   },
   {
     id: 'linux',
     label: '🐧',
     subLabel: 'POSIX',
+    shortcutKey: 'L',
     name: 'Linux System Admin',
     category: 'DEVOPS',
     categoryLabel: 'DevOps & Tooling',
@@ -519,7 +555,8 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     proficiency: '94% // Advanced',
     experience: 'POSIX & Shell Internals',
     highlight: 'Systemd service daemons, SSH hardened tunnels, process signals, bash automation, permission models.',
-    iconType: 'linux'
+    codeSnippet: 'sudo systemctl daemon-reload && sudo systemctl restart portfolio-daemon.service',
+    codeOutput: '✓ systemd [PID 1]: service active (running) with uptime 99.98%.'
   },
 
   // --- ROW 4: Aerospace, Telemetry & Core Systems ---
@@ -527,6 +564,7 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     id: 'cansat',
     label: '🛰',
     subLabel: '1U',
+    shortcutKey: 'Z',
     name: '1U CanSat Payload',
     category: 'TELEMETRY',
     categoryLabel: 'Aerospace & Telemetry',
@@ -543,12 +581,14 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     proficiency: '95% // Flight Proven',
     experience: 'Aerospace Payload Eng.',
     highlight: '1U CubeSat payload architecture, barometric pressure calibration, parachute descent recovery.',
-    iconType: 'cansat'
+    codeSnippet: 'float altitude = 44330.0 * (1.0 - pow(bmp280.readPressure() / 101325.0, 0.1903));',
+    codeOutput: '✓ CanSat apogee: 1,024 meters detected. Parachute ejection squib fired.'
   },
   {
     id: 'uhf',
     label: '📡',
     subLabel: '433M',
+    shortcutKey: 'U',
     name: '433 MHz RF Telemetry',
     category: 'TELEMETRY',
     categoryLabel: 'Aerospace & Telemetry',
@@ -565,12 +605,14 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     proficiency: '92% // Field Tested',
     experience: 'Radio Frequency Downlink',
     highlight: 'FSK radio packet decoding, ground station live telemetry streams, RF antenna matching & link budget.',
-    iconType: 'uhf'
+    codeSnippet: 'rf_transceiver.transmitPacket((uint8_t*)&telemetry_frame, sizeof(telemetry_frame));',
+    codeOutput: '✓ Telemetry packet locked: RSSI -68 dBm | SNR 11.4 dB. Zero packet drops.'
   },
   {
     id: 'esp32',
     label: '⚡',
     subLabel: 'MCU',
+    shortcutKey: '3',
     name: 'ESP32 Embedded C++',
     category: 'TELEMETRY',
     categoryLabel: 'Aerospace & Telemetry',
@@ -587,12 +629,14 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     proficiency: '93% // Embedded Grade',
     experience: 'Sensor Fusion & Hardware',
     highlight: 'I2C/SPI sensor fusion buses, hardware timer ISR interrupts, UART serial decoding, low-power modes.',
-    iconType: 'esp32'
+    codeSnippet: 'xTaskCreatePinnedToCore(telemetry_task, "RF_TASK", 4096, NULL, 1, &Task1, 0);',
+    codeOutput: '✓ FreeRTOS Dual-Core scheduler: Core 0 dedicated to 433MHz RF transceiver.'
   },
   {
     id: 'sec',
     label: '🛡',
     subLabel: 'VLAN',
+    shortcutKey: '8',
     name: 'Network Security (AAI)',
     category: 'CORE_CS',
     categoryLabel: 'Core CS & Systems',
@@ -609,12 +653,14 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     proficiency: '91% // Airport Standard',
     experience: 'Civil Aviation Cybersec',
     highlight: 'Airports Authority of India (AAI) network defense, VLAN isolation, firewall ACLs, zero-trust policies.',
-    iconType: 'sec'
+    codeSnippet: 'vlan 10 name ATC_SECURE; vlan 20 name RADAR_DATA; switchport access vlan 10;',
+    codeOutput: '✓ AAI Civil Aviation VLAN Segregation verified: 0 inter-VLAN leakage.'
   },
   {
     id: 'wireshark',
     label: '🦈',
     subLabel: 'PCAP',
+    shortcutKey: 'B',
     name: 'Wireshark Analysis',
     category: 'CORE_CS',
     categoryLabel: 'Core CS & Systems',
@@ -630,13 +676,15 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     },
     proficiency: '89% // Advanced',
     experience: 'Deep Packet Inspection',
-    highlight: 'TCP/IP packet frame capture, protocol dissection, anomalous beacon detection, latency bottleneck diagnostics.',
-    iconType: 'wireshark'
+    highlight: 'TCP/IP packet frame capture, protocol dissection, anomalous beacon detection, latency diagnostics.',
+    codeSnippet: 'tshark -i eth0 -f "tcp port 443" -Y "ssl.handshake.type == 1" -T fields -e ip.src',
+    codeOutput: '✓ Deep Packet Inspection: TLS 1.3 handshake validated. Zero MITM anomalies.'
   },
   {
     id: 'dsa',
     label: '∿',
     subLabel: 'BigO',
+    shortcutKey: 'O',
     name: 'Data Structures & Algorithms',
     category: 'CORE_CS',
     categoryLabel: 'Core CS & Systems',
@@ -653,12 +701,14 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     proficiency: '96% // Foundational',
     experience: 'Algorithmic Optimization',
     highlight: 'Asymptotic complexity minimization, cache line locality, trees, graphs, dynamic programming.',
-    iconType: 'dsa'
+    codeSnippet: 'int memo[N]; int dp(int i) { if (i <= 0) return 0; return memo[i] ??= dp(i-1) + dp(i-2); }',
+    codeOutput: '✓ Asymptotic complexity: O(N) linear time, O(1) auxiliary cache space.'
   },
   {
     id: 'vite',
     label: '⚡V',
     subLabel: 'HMR',
+    shortcutKey: 'I',
     name: 'Vite & Build Tooling',
     category: 'FULL_STACK',
     categoryLabel: 'Full Stack Web',
@@ -675,12 +725,13 @@ export const KEYBOARD_SKILLS: KeySkill[] = [
     proficiency: '95% // Production Master',
     experience: 'High-Speed Bundler',
     highlight: 'ESM hot module replacement (HMR), Rollup tree-shaking plugins, sub-second deployment bundles.',
-    iconType: 'vite'
+    codeSnippet: 'export default defineConfig({ plugins: [react(), tailwindcss()], build: { target: "esnext" } });',
+    codeOutput: '✓ Vite HMR update: src/App.tsx changed (1 module). Updated in 24ms.'
   }
 ]
 
 export const CATEGORY_FILTERS = [
-  { id: 'ALL', label: 'All Keys (28)' },
+  { id: 'ALL', label: 'All Switches (28)' },
   { id: 'LANGUAGES', label: 'Languages' },
   { id: 'FULL_STACK', label: 'Full Stack' },
   { id: 'AI_CLOUD', label: 'AI & Cloud' },
@@ -689,8 +740,8 @@ export const CATEGORY_FILTERS = [
   { id: 'DEVOPS', label: 'DevOps' }
 ] as const
 
-// --- Mechanical Audio Synthesizer (Web Audio API) ---
-class MechanicalAudioEngine {
+// --- Mechanical Audio Synthesizer with 3 Distinct Sound Profiles ---
+class AdvancedAudioEngine {
   private ctx: AudioContext | null = null
 
   private initCtx() {
@@ -706,21 +757,21 @@ class MechanicalAudioEngine {
     return this.ctx
   }
 
-  playSwitchSound(pitch: number = 1.0, isHover: boolean = false) {
+  playSwitchSound(pitch: number = 1.0, isHover: boolean = false, profile: SoundProfile = 'thock') {
     try {
       const ctx = this.initCtx()
       if (!ctx) return
 
       if (isHover) {
-        // Soft tactile blip on key hover elevation
+        // Soft tactile elevation blip
         const osc = ctx.createOscillator()
         const gain = ctx.createGain()
         osc.type = 'sine'
-        const baseFreq = 340 * pitch
+        const baseFreq = (profile === 'clicky' ? 440 : 320) * pitch
         osc.frequency.setValueAtTime(baseFreq, ctx.currentTime)
-        osc.frequency.exponentialRampToValueAtTime(baseFreq * 1.5, ctx.currentTime + 0.035)
+        osc.frequency.exponentialRampToValueAtTime(baseFreq * 1.4, ctx.currentTime + 0.035)
 
-        gain.gain.setValueAtTime(0.035, ctx.currentTime)
+        gain.gain.setValueAtTime(0.03, ctx.currentTime)
         gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04)
 
         osc.connect(gain)
@@ -728,138 +779,256 @@ class MechanicalAudioEngine {
         osc.start()
         osc.stop(ctx.currentTime + 0.045)
       } else {
-        // Deep tactile mechanical "thock" + switch clack on press
-        // 1. Bottom-out thock oscillator
-        const osc = ctx.createOscillator()
-        const gain = ctx.createGain()
-        osc.type = 'triangle'
-        osc.frequency.setValueAtTime(175 * pitch, ctx.currentTime)
-        osc.frequency.exponentialRampToValueAtTime(55 * pitch, ctx.currentTime + 0.07)
+        // Actuation profiles:
+        if (profile === 'thock') {
+          // Holy Panda / Boba U4T deep thock
+          const osc = ctx.createOscillator()
+          const gain = ctx.createGain()
+          osc.type = 'triangle'
+          osc.frequency.setValueAtTime(160 * pitch, ctx.currentTime)
+          osc.frequency.exponentialRampToValueAtTime(45 * pitch, ctx.currentTime + 0.08)
 
-        gain.gain.setValueAtTime(0.18, ctx.currentTime)
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08)
+          gain.gain.setValueAtTime(0.22, ctx.currentTime)
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.09)
 
-        osc.connect(gain)
-        gain.connect(ctx.destination)
-        osc.start()
-        osc.stop(ctx.currentTime + 0.085)
+          osc.connect(gain)
+          gain.connect(ctx.destination)
+          osc.start()
+          osc.stop(ctx.currentTime + 0.095)
 
-        // 2. High-frequency tactile switch clack burst
-        const bufferSize = Math.floor(ctx.sampleRate * 0.025)
-        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate)
-        const data = buffer.getChannelData(0)
-        for (let i = 0; i < bufferSize; i++) {
-          data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.18))
+          // Sub-bass wood plate resonance
+          const sub = ctx.createOscillator()
+          const subGain = ctx.createGain()
+          sub.type = 'sine'
+          sub.frequency.setValueAtTime(90 * pitch, ctx.currentTime)
+          sub.frequency.exponentialRampToValueAtTime(30 * pitch, ctx.currentTime + 0.06)
+          subGain.gain.setValueAtTime(0.15, ctx.currentTime)
+          subGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.07)
+          sub.connect(subGain)
+          subGain.connect(ctx.destination)
+          sub.start()
+          sub.stop(ctx.currentTime + 0.075)
+        } else if (profile === 'clicky') {
+          // Cherry MX Blue sharp metallic click
+          const osc = ctx.createOscillator()
+          const gain = ctx.createGain()
+          osc.type = 'sawtooth'
+          osc.frequency.setValueAtTime(1800 * pitch, ctx.currentTime)
+          osc.frequency.exponentialRampToValueAtTime(400 * pitch, ctx.currentTime + 0.02)
+          gain.gain.setValueAtTime(0.18, ctx.currentTime)
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.025)
+          osc.connect(gain)
+          gain.connect(ctx.destination)
+          osc.start()
+          osc.stop(ctx.currentTime + 0.03)
+
+          const noiseBuff = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.02), ctx.sampleRate)
+          const data = noiseBuff.getChannelData(0)
+          for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * Math.exp(-i / 80)
+          const noise = ctx.createBufferSource()
+          noise.buffer = noiseBuff
+          const filter = ctx.createBiquadFilter()
+          filter.type = 'highpass'
+          filter.frequency.setValueAtTime(3000 * pitch, ctx.currentTime)
+          const noiseGain = ctx.createGain()
+          noiseGain.gain.setValueAtTime(0.15, ctx.currentTime)
+          noise.connect(filter)
+          filter.connect(noiseGain)
+          noiseGain.connect(ctx.destination)
+          noise.start()
+          noise.stop(ctx.currentTime + 0.025)
+        } else {
+          // Gateron Oil King creamy linear
+          const osc = ctx.createOscillator()
+          const gain = ctx.createGain()
+          osc.type = 'sine'
+          osc.frequency.setValueAtTime(220 * pitch, ctx.currentTime)
+          osc.frequency.exponentialRampToValueAtTime(80 * pitch, ctx.currentTime + 0.05)
+          gain.gain.setValueAtTime(0.12, ctx.currentTime)
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.06)
+          osc.connect(gain)
+          gain.connect(ctx.destination)
+          osc.start()
+          osc.stop(ctx.currentTime + 0.065)
         }
-
-        const noise = ctx.createBufferSource()
-        noise.buffer = buffer
-
-        const filter = ctx.createBiquadFilter()
-        filter.type = 'bandpass'
-        filter.frequency.setValueAtTime(1450 * pitch, ctx.currentTime)
-        filter.Q.setValueAtTime(2.8, ctx.currentTime)
-
-        const noiseGain = ctx.createGain()
-        noiseGain.gain.setValueAtTime(0.12, ctx.currentTime)
-        noiseGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.03)
-
-        noise.connect(filter)
-        filter.connect(noiseGain)
-        noiseGain.connect(ctx.destination)
-
-        noise.start()
-        noise.stop(ctx.currentTime + 0.035)
       }
     } catch {
-      // AudioContext unavailable or autoplay prevented
+      // AudioContext unavailable
     }
   }
 }
 
-const audioEngine = new MechanicalAudioEngine()
+const audioEngine = new AdvancedAudioEngine()
 
 export const InteractiveSkillsKeyboard: React.FC = () => {
-  const [hoveredKeyId, setHoveredKeyId] = useState<string | null>('ts')
+  const [hoveredKeyId, setHoveredKeyId] = useState<string | null>(null)
   const [activeKeyId, setActiveKeyId] = useState<string>('ts')
+  const [pressedKeyId, setPressedKeyId] = useState<string | null>(null)
   const [activeCategory, setActiveCategory] = useState<string>('ALL')
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true)
+  const [soundProfile, setSoundProfile] = useState<SoundProfile>('thock')
+  const [rgbMode, setRgbMode] = useState<RgbMode>('static')
   const [view3D, setView3D] = useState<boolean>(true)
+  const [isExecuting, setIsExecuting] = useState<boolean>(false)
+  const [terminalOutput, setTerminalOutput] = useState<string | null>(null)
+  const [lastTypedKey, setLastTypedKey] = useState<string | null>(null)
 
-  // Subtle interactive parallax mouse tilt
+  // 3D Mouse Parallax tilt state
   const [mouseTilt, setMouseTilt] = useState<{ x: number; y: number }>({ x: 0, y: 0 })
   const containerRef = useRef<HTMLDivElement>(null)
 
-  // Currently inspected key
+  // Active or hovered key
   const inspectedKey = useMemo(() => {
     const targetId = hoveredKeyId || activeKeyId
     return KEYBOARD_SKILLS.find((k) => k.id === targetId) || KEYBOARD_SKILLS[0]
   }, [hoveredKeyId, activeKeyId])
 
+  // Actuation action for any key
+  const actuateKey = useCallback(
+    (key: KeySkill, idx: number, source: 'click' | 'keyboard' | 'hover') => {
+      if (source === 'hover') {
+        setHoveredKeyId(key.id)
+        if (soundEnabled) {
+          const pitch = 0.88 + (idx % 7) * 0.04
+          audioEngine.playSwitchSound(pitch, true, soundProfile)
+        }
+      } else {
+        // Press action
+        setActiveKeyId(key.id)
+        setHoveredKeyId(key.id)
+        setPressedKeyId(key.id)
+        setTerminalOutput(null)
+        setTimeout(() => setPressedKeyId(null), 200)
+
+        if (soundEnabled) {
+          const pitch = 0.88 + (idx % 7) * 0.05
+          audioEngine.playSwitchSound(pitch, false, soundProfile)
+        }
+      }
+    },
+    [soundEnabled, soundProfile]
+  )
+
+  // Physical Keyboard Listener: Allows typing from the real keyboard!
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't intercept if user is typing in an input or textarea elsewhere
+      const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
+      if (tag === 'input' || tag === 'textarea') return
+
+      const pressedChar = e.key.toUpperCase()
+      const foundIdx = KEYBOARD_SKILLS.findIndex(
+        (k) => k.shortcutKey.toUpperCase() === pressedChar || k.label.toUpperCase() === pressedChar
+      )
+
+      if (foundIdx !== -1) {
+        const foundKey = KEYBOARD_SKILLS[foundIdx]
+        setLastTypedKey(pressedChar)
+        actuateKey(foundKey, foundIdx, 'keyboard')
+      } else if (e.key === ' ' || e.code === 'Space') {
+        // Spacebar cycles RGB mode!
+        e.preventDefault()
+        const modes: RgbMode[] = ['static', 'ripple', 'rainbow', 'matrix', 'ember']
+        setRgbMode((curr) => modes[(modes.indexOf(curr) + 1) % modes.length])
+        if (soundEnabled) audioEngine.playSwitchSound(0.75, false, soundProfile)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [actuateKey, soundEnabled, soundProfile])
+
   // Mouse Parallax movement handler
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current || !view3D) return
     const rect = containerRef.current.getBoundingClientRect()
-    const xRatio = (e.clientX - rect.left) / rect.width - 0.5 // -0.5 to +0.5
-    const yRatio = (e.clientY - rect.top) / rect.height - 0.5 // -0.5 to +0.5
+    const xRatio = (e.clientX - rect.left) / rect.width - 0.5
+    const yRatio = (e.clientY - rect.top) / rect.height - 0.5
     setMouseTilt({
-      x: xRatio * 10, // +/- 5 deg tilt
-      y: yRatio * -8
+      x: xRatio * 12,
+      y: yRatio * -9
     })
   }, [view3D])
 
   const handleMouseLeaveContainer = useCallback(() => {
     setMouseTilt({ x: 0, y: 0 })
+    setHoveredKeyId(null)
   }, [])
 
-  const handleKeyHover = useCallback(
-    (key: KeySkill, idx: number) => {
-      setHoveredKeyId(key.id)
-      if (soundEnabled) {
-        const pitch = 0.85 + (idx % 7) * 0.05
-        audioEngine.playSwitchSound(pitch, true)
-      }
-    },
-    [soundEnabled]
-  )
+  // Simulate executing code in the OLED Micro-Terminal
+  const handleRunCode = () => {
+    setIsExecuting(true)
+    setTerminalOutput('Compiling & running execution pipeline...')
+    setTimeout(() => {
+      setIsExecuting(false)
+      setTerminalOutput(inspectedKey.codeOutput)
+      if (soundEnabled) audioEngine.playSwitchSound(1.2, false, 'thock')
+    }, 450)
+  }
 
-  const handleKeyClick = useCallback(
-    (key: KeySkill, idx: number) => {
-      setActiveKeyId(key.id)
-      setHoveredKeyId(key.id)
-      if (soundEnabled) {
-        const pitch = 0.85 + (idx % 7) * 0.06
-        audioEngine.playSwitchSound(pitch, false)
-      }
-    },
-    [soundEnabled]
-  )
+  // Smooth scroll to projects section
+  const handleScrollToProjects = () => {
+    const projectsSec = document.getElementById('projects')
+    if (projectsSec) {
+      projectsSec.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
 
   return (
     <div className="w-full mt-14 sm:mt-20 select-none">
-      {/* Header Eyebrow & Title for the Hardware Keyboard Showcase */}
+      {/* Header Eyebrow & Hardware Badge */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 sm:mb-8 border-b border-white/10 pb-5">
         <div>
           <div className="flex items-center gap-2 mb-2">
             <span className="w-2 h-2 rounded-full bg-ember animate-pulse" />
             <span className="text-ember text-xs font-mono font-bold tracking-[0.2em] uppercase">
-              Tactile Hardware Macropad // Stack Visualizer
+              Tactile Hardware Macropad // Interactive Stack
             </span>
           </div>
           <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight flex items-center gap-2.5">
             <span>Dev-MK64 Mechanical Core</span>
             <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-white/10 text-ash border border-white/10 uppercase tracking-widest hidden sm:inline-block">
-              28 Switches
+              28 Hot-Swap Switches
             </span>
           </h3>
           <p className="text-xs sm:text-sm text-ash mt-1 max-w-xl">
-            Hover or click any sculpted keycap to experience tactile spring elevation, mechanical switch stems, and live architectural specs.
+            Click any sculpted keycap or <strong className="text-cloud">press the corresponding key on your physical keyboard</strong> to actuate.
           </p>
         </div>
 
-        {/* Global Controls: Sound Toggle & Perspective View Toggle */}
-        <div className="flex items-center gap-2 self-start md:self-auto shrink-0">
-          {/* Sound FX Toggle */}
+        {/* Global Hardware Controls */}
+        <div className="flex flex-wrap items-center gap-2 self-start md:self-auto shrink-0">
+          {/* Switch Sound Profile Selector */}
+          <button
+            type="button"
+            onClick={() => {
+              const profiles: SoundProfile[] = ['thock', 'clicky', 'linear']
+              const next = profiles[(profiles.indexOf(soundProfile) + 1) % profiles.length]
+              setSoundProfile(next)
+              audioEngine.playSwitchSound(1.0, false, next)
+            }}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all cursor-pointer border bg-white/5 border-white/10 text-cloud hover:border-ember/40 hover:text-white"
+            title="Cycle switch sound acoustics (Holy Panda Thock, Cherry Clicky, Gateron Linear)"
+          >
+            <Sliders className="w-3.5 h-3.5 text-ember" />
+            <span className="text-[11px] uppercase">{soundProfile} SWITCH</span>
+          </button>
+
+          {/* RGB Matrix Mode Switcher */}
+          <button
+            type="button"
+            onClick={() => {
+              const modes: RgbMode[] = ['static', 'ripple', 'rainbow', 'matrix', 'ember']
+              setRgbMode((curr) => modes[(modes.indexOf(curr) + 1) % modes.length])
+            }}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all cursor-pointer border bg-white/5 border-white/10 text-cloud hover:border-cyan-400/40 hover:text-white"
+            title="Cycle RGB Backlight Animation Mode"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+            <span className="text-[11px] uppercase">RGB: {rgbMode}</span>
+          </button>
+
+          {/* Audio Mute/Unmute */}
           <button
             type="button"
             onClick={() => setSoundEnabled((prev) => !prev)}
@@ -895,7 +1064,7 @@ export const InteractiveSkillsKeyboard: React.FC = () => {
       <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-3 mb-6 scrollbar-none">
         <span className="text-[10px] font-mono uppercase tracking-wider text-ash/70 flex items-center gap-1 shrink-0 mr-1">
           <Layers className="w-3 h-3 text-ember" />
-          <span>Layer:</span>
+          <span>Filter Layer:</span>
         </span>
         {CATEGORY_FILTERS.map((cat) => {
           const isActive = activeCategory === cat.id
@@ -916,9 +1085,9 @@ export const InteractiveSkillsKeyboard: React.FC = () => {
         })}
       </div>
 
-      {/* Active Key Telemetry LCD Display (Chassis Top HUD) */}
-      <div className="mb-6 p-4 rounded-xl bg-[#0c0d12] border border-white/10 relative overflow-hidden shadow-2xl">
-        {/* Subtle dot grid & scanline texture */}
+      {/* Active Key OLED Telemetry HUD & Interactive Micro-Terminal */}
+      <div className="mb-6 p-4 sm:p-5 rounded-2xl bg-[#0c0d12] border border-white/10 relative overflow-hidden shadow-2xl">
+        {/* Scanlines & phosphor dot texture */}
         <div
           className="absolute inset-0 opacity-15 pointer-events-none"
           style={{
@@ -926,66 +1095,111 @@ export const InteractiveSkillsKeyboard: React.FC = () => {
             backgroundSize: '12px 12px'
           }}
         />
-        {/* Glowing top line matching inspected key color */}
+        {/* Dynamic laser top border matching inspected key */}
         <div
           className="absolute top-0 left-0 right-0 h-[2px] transition-colors duration-300"
           style={{
             background: `linear-gradient(90deg, transparent, ${inspectedKey.color.base}, transparent)`,
-            boxShadow: `0 0 16px ${inspectedKey.color.glow}`
+            boxShadow: `0 0 20px ${inspectedKey.color.glow}`
           }}
         />
 
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-3">
-          <div className="flex items-start sm:items-center gap-3">
-            {/* Miniature Keycap Preview Indicator */}
-            <div
-              className="w-10 h-10 rounded-lg flex items-center justify-center font-bold text-base shrink-0 shadow-lg border border-white/20 transition-all duration-300"
-              style={{
-                background: `linear-gradient(135deg, ${inspectedKey.color.light}, ${inspectedKey.color.base})`,
-                color: inspectedKey.color.text,
-                boxShadow: `0 4px 14px ${inspectedKey.color.glow}`
-              }}
-            >
-              {inspectedKey.label}
+        <div className="relative z-10 flex flex-col gap-4">
+          {/* Top Row: Key Identifiers + Status Flags */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div className="flex items-start sm:items-center gap-3">
+              {/* Miniature Keycap Preview Indicator */}
+              <div
+                className="w-11 h-11 rounded-xl flex items-center justify-center font-black text-lg shrink-0 shadow-lg border border-white/20 transition-all duration-300"
+                style={{
+                  background: `linear-gradient(135deg, ${inspectedKey.color.light}, ${inspectedKey.color.base})`,
+                  color: inspectedKey.color.text,
+                  boxShadow: `0 4px 16px ${inspectedKey.color.glow}`
+                }}
+              >
+                {inspectedKey.label}
+              </div>
+
+              <div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-white font-extrabold text-lg tracking-tight font-sans">
+                    {inspectedKey.name}
+                  </span>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-white/10 text-cloud border border-white/10">
+                    {inspectedKey.categoryLabel}
+                  </span>
+                  <span
+                    className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold"
+                    style={{
+                      backgroundColor: `${inspectedKey.color.base}22`,
+                      color: inspectedKey.color.light,
+                      border: `1px solid ${inspectedKey.color.base}55`
+                    }}
+                  >
+                    {inspectedKey.proficiency}
+                  </span>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-ember/20 text-ember border border-ember/30 font-bold">
+                    [KEY: {inspectedKey.shortcutKey}]
+                  </span>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-white/5 text-cloud border border-white/10 font-medium">
+                    {inspectedKey.experience}
+                  </span>
+                </div>
+                <p className="text-xs text-ash mt-0.5 font-normal leading-relaxed">
+                  {inspectedKey.highlight}
+                </p>
+              </div>
             </div>
 
-            <div>
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="text-white font-bold text-base tracking-tight font-sans">
-                  {inspectedKey.name}
-                </span>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-white/10 text-cloud border border-white/10">
-                  {inspectedKey.categoryLabel}
-                </span>
-                <span
-                  className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold"
-                  style={{
-                    backgroundColor: `${inspectedKey.color.base}22`,
-                    color: inspectedKey.color.light,
-                    border: `1px solid ${inspectedKey.color.base}55`
-                  }}
-                >
-                  {inspectedKey.proficiency}
-                </span>
-              </div>
-              <p className="text-xs text-ash mt-0.5 font-normal leading-relaxed">
-                {inspectedKey.highlight}
-              </p>
+            <div className="flex items-center gap-3 self-end md:self-auto shrink-0">
+              <button
+                type="button"
+                onClick={handleRunCode}
+                disabled={isExecuting}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-ember/20 hover:bg-ember/30 border border-ember/40 text-ember text-xs font-mono font-semibold transition-all cursor-pointer shadow-sm active:scale-95 disabled:opacity-50"
+              >
+                <Play className="w-3.5 h-3.5 fill-current" />
+                <span>{isExecuting ? 'RUNNING...' : 'RUN CODE'}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleScrollToProjects}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-cloud text-xs font-mono font-semibold transition-all cursor-pointer active:scale-95"
+              >
+                <span>VIEW PROJECTS</span>
+              </button>
             </div>
           </div>
 
-          <div className="flex items-center gap-4 text-[11px] font-mono text-ash/80 border-t md:border-t-0 md:border-l border-white/10 pt-2 md:pt-0 md:pl-4 shrink-0">
-            <div>
-              <span className="text-ash/50 block text-[9px] uppercase tracking-wider">DOMAIN</span>
-              <span className="text-white font-medium">{inspectedKey.experience}</span>
+          {/* Micro Terminal Display: Real executable code and live terminal response */}
+          <div className="rounded-xl bg-[#08080c] border border-white/10 p-3 font-mono text-xs overflow-hidden">
+            <div className="flex items-center justify-between pb-2 border-b border-white/10 mb-2 text-[10px] text-ash/60">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-red-500/80 inline-block" />
+                <span className="w-2 h-2 rounded-full bg-yellow-500/80 inline-block" />
+                <span className="w-2 h-2 rounded-full bg-emerald-500/80 inline-block" />
+                <span className="ml-1 text-ash/80">DEV-TERMINAL // {inspectedKey.id}.spec</span>
+              </div>
+              <div className="text-ash/60 flex items-center gap-1">
+                <KeyboardIcon className="w-3 h-3 text-ember" />
+                <span>HOTKEY: [{inspectedKey.shortcutKey}]</span>
+              </div>
             </div>
-            <div>
-              <span className="text-ash/50 block text-[9px] uppercase tracking-wider">ACTUATION</span>
-              <span className="text-emerald-400 font-semibold flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping inline-block" />
-                POPPED UP
-              </span>
+
+            {/* Code Snippet */}
+            <div className="text-cloud/90 overflow-x-auto whitespace-pre font-mono text-[11px] sm:text-xs py-1">
+              <span className="text-ember font-bold select-none">&gt;&nbsp;</span>
+              <span>{inspectedKey.codeSnippet}</span>
             </div>
+
+            {/* Terminal Execution Result */}
+            {terminalOutput && (
+              <div className="mt-2 pt-2 border-t border-white/10 text-emerald-400 font-mono text-[11px] flex items-center gap-2 animate-fadeIn">
+                <CheckCircle2 className="w-3.5 h-3.5 shrink-0 text-emerald-400" />
+                <span>{terminalOutput}</span>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -1011,14 +1225,12 @@ export const InteractiveSkillsKeyboard: React.FC = () => {
               : 'none'
           }}
         >
-          {/* Top Aviator Cable Accent (Cyberpunk / Enthusiast coiled cable) */}
+          {/* Top Aviator Cable Accent */}
           <div
             className="absolute -top-12 left-10 pointer-events-none hidden sm:flex items-center gap-2 opacity-80"
             style={{ transform: view3D ? 'translateZ(-10px)' : 'none' }}
           >
-            {/* USB-C braided cable heading off */}
             <div className="w-32 h-2.5 rounded-full bg-gradient-to-r from-transparent via-[#2b2d38] to-[#1e2029] shadow-inner" />
-            {/* Aviator quick-disconnect silver connector */}
             <div className="w-5 h-4 rounded-sm bg-gradient-to-b from-[#94a3b8] via-[#64748b] to-[#475569] border border-white/20 shadow-md flex items-center justify-center">
               <div className="w-1.5 h-2.5 bg-[#334155] rounded-[1px]" />
             </div>
@@ -1043,7 +1255,7 @@ export const InteractiveSkillsKeyboard: React.FC = () => {
                 : '0 20px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255,255,255,0.08)'
             }}
           >
-            {/* Brass Corner Hex Screws for Realistic CNC Mechanical Aesthetics */}
+            {/* CNC Brass Corner Torx Screws */}
             <div className="absolute top-2.5 left-2.5 w-2 h-2 rounded-full bg-[#52525b] border border-[#27272a] flex items-center justify-center shadow-inner">
               <div className="w-1 h-[0.5px] bg-[#18181b]" />
             </div>
@@ -1057,7 +1269,7 @@ export const InteractiveSkillsKeyboard: React.FC = () => {
               <div className="w-1 h-[0.5px] bg-[#18181b]" />
             </div>
 
-            {/* Recessed Switch Plate (Sunk bed with subtle red/brass switch accent underneath) */}
+            {/* Recessed Switch Plate */}
             <div
               className="relative p-2.5 sm:p-3.5 rounded-xl border border-black/80 shadow-inner"
               style={{
@@ -1070,27 +1282,41 @@ export const InteractiveSkillsKeyboard: React.FC = () => {
                 {KEYBOARD_SKILLS.map((skill, idx) => {
                   const isHovered = hoveredKeyId === skill.id
                   const isSelected = activeKeyId === skill.id
+                  const isPressed = pressedKeyId === skill.id
                   const matchesFilter = activeCategory === 'ALL' || skill.category === activeCategory
 
+                  // Dynamic RGB glow calculation based on chosen RGB mode
+                  let activeGlow = skill.color.glow
+                  if (rgbMode === 'rainbow') {
+                    const hue = (idx * 28 + Date.now() / 80) % 360
+                    activeGlow = `hsla(${hue}, 90%, 55%, 0.85)`
+                  } else if (rgbMode === 'matrix') {
+                    activeGlow = 'rgba(34, 197, 94, 0.85)'
+                  } else if (rgbMode === 'ember') {
+                    activeGlow = 'rgba(252, 107, 47, 0.85)'
+                  }
+
                   return (
-                    <div
+                    <button
                       key={skill.id}
-                      className="relative w-11 h-11 sm:w-14 sm:h-14 md:w-16 md:h-16"
+                      type="button"
+                      aria-label={`${skill.name} mechanical keycap. Hotkey: ${skill.shortcutKey}`}
+                      className="group relative w-11 h-11 sm:w-14 sm:h-14 md:w-16 md:h-16 p-0 border-0 bg-transparent cursor-pointer focus:outline-none"
                       style={{
-                        transformStyle: view3D ? 'preserve-3d' : 'flat'
+                        transformStyle: view3D ? 'preserve-3d' : 'flat',
+                        touchAction: 'manipulation'
                       }}
-                      onMouseEnter={() => handleKeyHover(skill, idx)}
-                      onMouseLeave={() => setHoveredKeyId(null)}
-                      onClick={() => handleKeyClick(skill, idx)}
+                      onPointerEnter={() => actuateKey(skill, idx, 'hover')}
+                      onPointerDown={() => actuateKey(skill, idx, 'click')}
                     >
-                      {/* 1. Underlying Switch Bed & Stem (Revealed when key pops up!) */}
+                      {/* 1. Underlying Switch Bed & Cherry Stem (Revealed when key pops up!) */}
                       <div
                         className="absolute inset-1 rounded-md bg-[#07080c] border border-white/5 flex items-center justify-center pointer-events-none"
                         style={{
                           transform: view3D ? 'translateZ(0px)' : 'none'
                         }}
                       >
-                        {/* Cherry MX Red / Gateron style switch housing */}
+                        {/* Red mechanical switch housing */}
                         <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-[3px] bg-[#991b1b] border border-[#7f1d1d] flex items-center justify-center shadow-inner">
                           {/* Cross stem */}
                           <div className="relative w-2 h-2 sm:w-2.5 sm:h-2.5">
@@ -1103,40 +1329,48 @@ export const InteractiveSkillsKeyboard: React.FC = () => {
                         <div
                           className="absolute inset-0 rounded-md transition-opacity duration-300 pointer-events-none"
                           style={{
-                            background: `radial-gradient(circle, ${skill.color.glow} 0%, transparent 75%)`,
-                            opacity: isHovered || isSelected ? 0.95 : matchesFilter ? 0.25 : 0.05
+                            background: `radial-gradient(circle, ${activeGlow} 0%, transparent 75%)`,
+                            opacity: isHovered || isSelected ? 0.95 : matchesFilter ? 0.3 : 0.05
                           }}
                         />
                       </div>
 
                       {/* 2. The 3D Sculpted Mechanical Keycap Body */}
                       <div
-                        className={`absolute inset-0 rounded-[7px] sm:rounded-[9px] cursor-pointer transition-all duration-200 transform-gpu flex flex-col items-center justify-center ${
+                        className={`absolute inset-0 rounded-[7px] sm:rounded-[9px] transition-all duration-200 transform-gpu flex flex-col items-center justify-center pointer-events-none ${
                           !matchesFilter ? 'opacity-35 grayscale contrast-75' : 'opacity-100'
                         }`}
                         style={{
                           transformStyle: view3D ? 'preserve-3d' : 'flat',
-                          // Dynamic 3D Pop-Up Elevation on Hover or Selected!
+                          // Dynamic 3D Pop-Up Elevation on Hover or Pressed!
                           transform: view3D
-                            ? isHovered
+                            ? isPressed
+                              ? 'translateZ(4px) translateY(2px) scale(0.96)'
+                              : isHovered
                               ? 'translateZ(38px) translateY(-14px) scale(1.08)'
                               : isSelected
                               ? 'translateZ(24px) translateY(-8px) scale(1.04)'
                               : 'translateZ(8px) translateY(0px) scale(1.0)'
+                            : isPressed
+                            ? 'translateY(2px) scale(0.96)'
                             : isHovered
                             ? 'translateY(-10px) scale(1.06)'
                             : isSelected
                             ? 'translateY(-5px) scale(1.03)'
                             : 'translateY(0px)',
                           background: `linear-gradient(180deg, ${skill.color.light} 0%, ${skill.color.base} 55%, ${skill.color.dark} 100%)`,
-                          // Physical 3D keycap side bevels and dynamic shadows
-                          boxShadow: isHovered
+                          boxShadow: isPressed
+                            ? `
+                              0 1px 0 ${skill.color.sideDark},
+                              0 2px 4px rgba(0, 0, 0, 0.4)
+                            `
+                            : isHovered
                             ? `
                               0 2px 0 ${skill.color.sideDark},
                               0 5px 0 ${skill.color.sideDarker},
                               0 10px 0 ${skill.color.sideDeep},
                               0 18px 24px rgba(0, 0, 0, 0.75),
-                              0 0 28px ${skill.color.glow}
+                              0 0 28px ${activeGlow}
                             `
                             : isSelected
                             ? `
@@ -1144,7 +1378,7 @@ export const InteractiveSkillsKeyboard: React.FC = () => {
                               0 4px 0 ${skill.color.sideDarker},
                               0 7px 0 ${skill.color.sideDeep},
                               0 12px 16px rgba(0, 0, 0, 0.65),
-                              0 0 18px ${skill.color.glow}
+                              0 0 18px ${activeGlow}
                             `
                             : `
                               0 1.5px 0 ${skill.color.sideDark},
@@ -1155,7 +1389,7 @@ export const InteractiveSkillsKeyboard: React.FC = () => {
                           zIndex: isHovered ? 50 : isSelected ? 30 : 10
                         }}
                       >
-                        {/* Keycap Ergonomic Spherical Dish (Indentation with specular reflection) */}
+                        {/* Keycap Ergonomic Concave Dish */}
                         <div
                           className="absolute inset-[2.5px] sm:inset-[3.5px] rounded-[5px] sm:rounded-[7px] flex flex-col items-center justify-center p-0.5 overflow-hidden pointer-events-none"
                           style={{
@@ -1166,7 +1400,7 @@ export const InteractiveSkillsKeyboard: React.FC = () => {
                             `
                           }}
                         >
-                          {/* Key Monogram / Icon Symbol */}
+                          {/* Monogram / Icon Symbol */}
                           <div
                             className="font-black leading-none tracking-tight flex items-center justify-center text-center select-none"
                             style={{
@@ -1185,10 +1419,10 @@ export const InteractiveSkillsKeyboard: React.FC = () => {
                             {skill.label}
                           </div>
 
-                          {/* Subtle Sub-label (like key profile or framework version) */}
+                          {/* Subtle Sub-label */}
                           {skill.subLabel && (
                             <span
-                              className="text-[7px] sm:text-[8px] font-mono font-bold leading-none tracking-tight mt-0.5 opacity-80"
+                              className="text-[7px] sm:text-[8px] font-mono font-bold leading-none tracking-tight mt-0.5 opacity-85"
                               style={{ color: skill.color.text }}
                             >
                               {skill.subLabel}
@@ -1199,7 +1433,7 @@ export const InteractiveSkillsKeyboard: React.FC = () => {
                         {/* Top specular highlight rim */}
                         <div className="absolute top-1 inset-x-2 h-[1px] bg-white/40 rounded-full pointer-events-none" />
                       </div>
-                    </div>
+                    </button>
                   )
                 })}
               </div>
@@ -1212,6 +1446,11 @@ export const InteractiveSkillsKeyboard: React.FC = () => {
                 <span className="uppercase tracking-widest text-[9px] text-ash/80">
                   CHOPPER-64 // CUSTOM FR4 SWITCH PLATE
                 </span>
+                {lastTypedKey && (
+                  <span className="px-1.5 py-0.2 rounded bg-cyan-500/20 text-cyan-300 text-[8px] font-bold">
+                    TYPED: [{lastTypedKey}]
+                  </span>
+                )}
               </div>
               <div className="flex items-center gap-3">
                 <span className="hidden sm:inline-block uppercase tracking-wider text-[9px] text-ash/60">
@@ -1235,7 +1474,7 @@ export const InteractiveSkillsKeyboard: React.FC = () => {
         <span className="hidden sm:inline text-white/20">•</span>
         <span className="inline-flex items-center gap-1.5">
           <Terminal className="w-3.5 h-3.5 text-cyan-400" />
-          <span>Click any key to lock telemetry in the HUD</span>
+          <span>Press real keys (T, P, R, G, D, etc.) or Spacebar for RGB wave</span>
         </span>
         <span className="hidden sm:inline text-white/20">•</span>
         <span className="inline-flex items-center gap-1.5">
