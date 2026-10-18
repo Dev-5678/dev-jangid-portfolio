@@ -2,6 +2,7 @@ import React, { useState, useRef, useLayoutEffect, useCallback, useEffect } from
 import gsap from 'gsap'
 import { FileText, Search, Terminal, Zap } from 'lucide-react'
 import { BalloonThemeToggle } from '../BalloonThemeToggle'
+import { ActionBalloon } from '../ActionBalloon'
 
 export interface MenuItem {
   label: string
@@ -429,71 +430,114 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
               </button>
             )}
 
-            {/* Quick Command Palette Button */}
+            {/* Quick Command Palette with Balloon Trigger */}
             {onOpenCommandPalette && (
-              <button
-                onClick={() => {
-                  handleDismiss()
-                  onOpenCommandPalette()
-                }}
-                aria-label="Open Command Palette"
-                className="flex items-center justify-between px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs font-mono transition-colors text-left cursor-pointer"
-              >
-                <div className="flex items-center gap-2">
-                  <Search className="w-3.5 h-3.5 text-ember" />
+              <div className="flex items-center justify-between px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-mono transition-colors group">
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleDismiss()
+                    onOpenCommandPalette()
+                  }}
+                  className="flex items-center gap-2 text-left flex-1 cursor-pointer focus:outline-none"
+                  aria-label="Open Command Palette (⌘K)"
+                >
+                  <Search className="w-3.5 h-3.5 text-ember group-hover:scale-110 transition-transform" />
                   <span>Command Palette</span>
+                </button>
+                <div className="scale-90 origin-right -my-1">
+                  <ActionBalloon
+                    theme={theme}
+                    label="⌘K"
+                    ariaLabel="Open Command Palette"
+                    glowColor="cyan"
+                    animationDelay={-0.8}
+                    onAction={() => {
+                      handleDismiss()
+                      onOpenCommandPalette()
+                    }}
+                  />
                 </div>
-                <span className="text-[10px] bg-white/10 px-1.5 py-0.5 rounded text-silver">⌘K</span>
-              </button>
+              </div>
             )}
 
             {/* Light / Dark Mode Balloon Toggle */}
             <div className="flex items-center justify-between px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs font-mono">
-              <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={onToggleTheme}
+                className="flex items-center gap-2 text-left flex-1 cursor-pointer focus:outline-none"
+                aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+              >
                 <span className="text-ember font-bold">●</span>
                 <span>Theme: {theme === 'dark' ? 'Dark Mode' : 'Light Mode'}</span>
-              </div>
+              </button>
               <div className="scale-90 origin-right -my-1">
                 <BalloonThemeToggle theme={theme} onToggleTheme={onToggleTheme} />
               </div>
             </div>
 
-            {/* Recruiter TL;DR Summary Toggle */}
+            {/* Recruiter TL;DR Summary Balloon Toggle */}
             {onToggleTLDR && (
-              <button
-                onClick={onToggleTLDR}
-                aria-label="Toggle Recruiter 30-Second Executive TL;DR Mode"
-                className={`flex items-center justify-between px-4 py-2 rounded-xl border text-xs font-mono transition-colors text-left cursor-pointer ${
+              <div
+                className={`flex items-center justify-between px-4 py-2.5 rounded-xl border text-xs font-mono transition-colors group ${
                   isTLDR
-                    ? 'bg-ember/20 text-white border-ember/40'
-                    : 'bg-white/5 hover:bg-white/10 text-white border-transparent'
+                    ? 'bg-amber-500/15 text-white border-amber-500/40 shadow-[0_0_15px_rgba(245,158,11,0.15)]'
+                    : 'bg-white/5 hover:bg-white/10 text-white border-white/10'
                 }`}
               >
-                <div className="flex items-center gap-2">
-                  <Zap className={`w-3.5 h-3.5 ${isTLDR ? 'text-amber-400 fill-current' : 'text-ash'}`} />
+                <button
+                  type="button"
+                  onClick={onToggleTLDR}
+                  className="flex items-center gap-2 text-left flex-1 cursor-pointer focus:outline-none"
+                  aria-label="Toggle Recruiter 30-Second Executive TL;DR Mode"
+                >
+                  <Zap className={`w-3.5 h-3.5 transition-transform group-hover:scale-110 ${isTLDR ? 'text-amber-400 fill-current' : 'text-ash'}`} />
                   <span>30s Recruiter TL;DR</span>
+                </button>
+                <div className="scale-90 origin-right -my-1">
+                  <ActionBalloon
+                    theme={theme}
+                    label={isTLDR ? 'ON' : 'OFF'}
+                    ariaLabel="Toggle Recruiter TL;DR Mode"
+                    glowColor="amber"
+                    isActive={isTLDR}
+                    animationDelay={-1.6}
+                    onAction={onToggleTLDR}
+                  />
                 </div>
-                <span className={`text-[10px] px-1.5 py-0.5 rounded ${isTLDR ? 'bg-ember text-white' : 'bg-white/10 text-ash'}`}>
-                  {isTLDR ? 'ON' : 'OFF'}
-                </span>
-              </button>
+              </div>
             )}
 
-            {/* Hacker CLI Terminal */}
+            {/* Hacker CLI Terminal Balloon Trigger */}
             {onOpenConsole && (
-              <button
-                onClick={() => {
-                  handleDismiss()
-                  onOpenConsole()
-                }}
-                className="flex items-center justify-between px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs font-mono transition-colors text-left cursor-pointer"
-              >
-                <div className="flex items-center gap-2">
-                  <Terminal className="w-3.5 h-3.5 text-ember" />
+              <div className="flex items-center justify-between px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-mono transition-colors group">
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleDismiss()
+                    onOpenConsole()
+                  }}
+                  className="flex items-center gap-2 text-left flex-1 cursor-pointer focus:outline-none"
+                  aria-label="Open Hacker CLI Console"
+                >
+                  <Terminal className="w-3.5 h-3.5 text-ember group-hover:scale-110 transition-transform" />
                   <span>Hacker CLI Console</span>
+                </button>
+                <div className="scale-90 origin-right -my-1">
+                  <ActionBalloon
+                    theme={theme}
+                    label="[~]"
+                    ariaLabel="Open Hacker CLI Console"
+                    glowColor="green"
+                    animationDelay={-2.4}
+                    onAction={() => {
+                      handleDismiss()
+                      onOpenConsole()
+                    }}
+                  />
                 </div>
-                <span className="text-[10px] bg-white/10 px-1.5 py-0.5 rounded text-silver">[~]</span>
-              </button>
+              </div>
             )}
           </div>
 
