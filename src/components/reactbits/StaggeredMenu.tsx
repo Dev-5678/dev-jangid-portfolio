@@ -2,7 +2,10 @@ import React, { useState, useRef, useLayoutEffect, useCallback, useEffect } from
 import gsap from 'gsap'
 import { FileText, Search, Terminal, Zap } from 'lucide-react'
 import { BalloonThemeToggle } from '../BalloonThemeToggle'
-import { ActionBalloon } from '../ActionBalloon'
+import { ResumeLanyardWidget } from '../ResumeLanyardWidget'
+import { KeycapWidget } from '../KeycapWidget'
+import { PowerSwitchWidget } from '../PowerSwitchWidget'
+import { CrtTerminalWidget } from '../CrtTerminalWidget'
 
 export interface MenuItem {
   label: string
@@ -412,25 +415,37 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 
           {/* Quick Tools & Utilities Drawer inside Panel */}
           <div className="pt-4 border-t border-white/10 flex flex-col gap-2">
-            {/* Quick Resume Button */}
+            {/* Quick Resume Button with Lanyard ID Badge */}
             {onOpenResume && (
-              <button
-                onClick={() => {
-                  handleDismiss()
-                  onOpenResume()
-                }}
-                aria-label="Inspect Verified Resume PDF"
-                className="flex items-center justify-between px-4 py-2.5 rounded-xl bg-ember/15 border border-ember/30 hover:bg-ember text-white text-xs font-semibold tracking-wide transition-all duration-300 text-left group cursor-pointer"
-              >
-                <div className="flex items-center gap-2.5">
+              <div className="flex items-center justify-between px-4 py-2.5 rounded-xl bg-ember/15 border border-ember/30 hover:bg-ember/25 transition-all duration-300 group">
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleDismiss()
+                    onOpenResume()
+                  }}
+                  aria-label="Inspect Verified Resume PDF"
+                  className="flex items-center gap-2.5 text-left flex-1 cursor-pointer focus:outline-none"
+                >
                   <FileText className="w-4 h-4 text-white transition-transform group-hover:scale-110" />
-                  <span>Inspect Resume PDF</span>
+                  <div className="flex flex-col">
+                    <span className="text-white text-xs font-semibold tracking-wide">Inspect Resume PDF</span>
+                    <span className="text-[10px] text-silver font-mono">Official Engineer Dossier</span>
+                  </div>
+                </button>
+                <div className="scale-90 origin-right -my-1">
+                  <ResumeLanyardWidget
+                    theme={theme}
+                    onOpenResume={() => {
+                      handleDismiss()
+                      onOpenResume()
+                    }}
+                  />
                 </div>
-                <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-white/20 text-white">Verified</span>
-              </button>
+              </div>
             )}
 
-            {/* Quick Command Palette with Balloon Trigger */}
+            {/* Quick Command Palette with Mechanical Keycap Trigger */}
             {onOpenCommandPalette && (
               <div className="flex items-center justify-between px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-mono transition-colors group">
                 <button
@@ -442,17 +457,13 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                   className="flex items-center gap-2 text-left flex-1 cursor-pointer focus:outline-none"
                   aria-label="Open Command Palette (⌘K)"
                 >
-                  <Search className="w-3.5 h-3.5 text-ember group-hover:scale-110 transition-transform" />
+                  <Search className="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform" />
                   <span>Command Palette</span>
                 </button>
                 <div className="scale-90 origin-right -my-1">
-                  <ActionBalloon
+                  <KeycapWidget
                     theme={theme}
-                    label="⌘K"
-                    ariaLabel="Open Command Palette"
-                    glowColor="cyan"
-                    animationDelay={-0.8}
-                    onAction={() => {
+                    onOpenCommandPalette={() => {
                       handleDismiss()
                       onOpenCommandPalette()
                     }}
@@ -461,7 +472,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
               </div>
             )}
 
-            {/* Light / Dark Mode Balloon Toggle */}
+            {/* Light / Dark Mode Balloon Toggle (Exclusive to Theme) */}
             <div className="flex items-center justify-between px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs font-mono">
               <button
                 type="button"
@@ -477,7 +488,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
               </div>
             </div>
 
-            {/* Recruiter TL;DR Summary Balloon Toggle */}
+            {/* Recruiter TL;DR Summary Cyberpunk Power Switch */}
             {onToggleTLDR && (
               <div
                 className={`flex items-center justify-between px-4 py-2.5 rounded-xl border text-xs font-mono transition-colors group ${
@@ -496,20 +507,16 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                   <span>30s Recruiter TL;DR</span>
                 </button>
                 <div className="scale-90 origin-right -my-1">
-                  <ActionBalloon
+                  <PowerSwitchWidget
                     theme={theme}
-                    label={isTLDR ? 'ON' : 'OFF'}
-                    ariaLabel="Toggle Recruiter TL;DR Mode"
-                    glowColor="amber"
-                    isActive={isTLDR}
-                    animationDelay={-1.6}
-                    onAction={onToggleTLDR}
+                    isTLDR={isTLDR}
+                    onToggleTLDR={onToggleTLDR}
                   />
                 </div>
               </div>
             )}
 
-            {/* Hacker CLI Terminal Balloon Trigger */}
+            {/* Hacker CLI Terminal with Retro CRT Display */}
             {onOpenConsole && (
               <div className="flex items-center justify-between px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-mono transition-colors group">
                 <button
@@ -521,17 +528,13 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                   className="flex items-center gap-2 text-left flex-1 cursor-pointer focus:outline-none"
                   aria-label="Open Hacker CLI Console"
                 >
-                  <Terminal className="w-3.5 h-3.5 text-ember group-hover:scale-110 transition-transform" />
+                  <Terminal className="w-3.5 h-3.5 text-emerald-400 group-hover:scale-110 transition-transform" />
                   <span>Hacker CLI Console</span>
                 </button>
                 <div className="scale-90 origin-right -my-1">
-                  <ActionBalloon
+                  <CrtTerminalWidget
                     theme={theme}
-                    label="[~]"
-                    ariaLabel="Open Hacker CLI Console"
-                    glowColor="green"
-                    animationDelay={-2.4}
-                    onAction={() => {
+                    onOpenConsole={() => {
                       handleDismiss()
                       onOpenConsole()
                     }}
