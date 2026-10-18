@@ -193,31 +193,31 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         </span>
       </div>
 
-      {/* 5. Engineering Subtitle (Clean & sleek without the 4 chips) */}
+      {/* 5. Engineering Subtitle (Anchored to Left Corner) */}
       <div
         ref={descRef}
-        className="absolute bottom-[24%] sm:bottom-[22%] md:top-[72%] md:bottom-auto left-4 sm:left-6 md:left-14 lg:left-20 z-[40] max-w-[calc(100vw-2rem)] sm:max-w-[340px] md:max-w-[420px] lg:max-w-[460px] opacity-0 text-center md:text-left mx-auto md:mx-0"
+        className="absolute bottom-5 sm:bottom-6 md:bottom-8 left-3 sm:left-5 md:left-6 lg:left-8 z-[40] max-w-[280px] sm:max-w-[340px] md:max-w-[380px] opacity-0 text-left"
       >
         <p
-          className="text-[12px] sm:text-[13.5px] md:text-[14.5px] text-[#C4C4C8] dark:text-[#B5B5B5] leading-[1.65] sm:leading-[1.8] font-normal tracking-wide"
+          className="text-[11.5px] sm:text-[13px] md:text-[14px] text-[#C4C4C8] dark:text-[#E2E2E6] leading-[1.6] sm:leading-[1.75] font-normal tracking-wide drop-shadow-sm"
           style={{ fontFamily: 'var(--font-poppins), sans-serif' }}
         >
           Full-Stack Developer &amp; Computer Science Engineer crafting fast, resilient, and motion-driven digital products.
         </p>
       </div>
 
-      {/* 6. Magnetic Action Buttons (Reel style) */}
+      {/* 6. Magnetic Action Buttons (Anchored to Right Corner) */}
       <div
         ref={ctaRef}
-        className="hero-cta-group absolute bottom-14 sm:bottom-16 md:bottom-[12%] left-4 right-4 sm:left-auto sm:right-6 md:right-14 lg:right-20 z-[40] opacity-0 flex flex-row sm:flex-col justify-center sm:justify-end items-center sm:items-end gap-2.5 sm:gap-3.5"
+        className="hero-cta-group absolute bottom-5 sm:bottom-6 md:bottom-8 right-3 sm:right-5 md:right-6 lg:right-8 z-[40] opacity-0 flex flex-col justify-end items-end gap-2 sm:gap-2.5"
       >
         <a
           href="#projects"
-          className="relative inline-flex items-center justify-center gap-2 sm:gap-2.5 px-4 sm:px-7 py-2.5 sm:py-3.5 rounded-full font-bold text-[11px] sm:text-[13px] tracking-wide transition-all duration-300 overflow-hidden cursor-pointer bg-ember hover:bg-ember-bright text-white border border-transparent shadow-[0_0_25px_rgba(160,42,34,0.4)] hover:shadow-[0_0_40px_rgba(252,107,47,0.7)] hover:scale-105 active:scale-95 group touch-manipulation flex-1 sm:flex-initial text-center"
+          className="relative inline-flex items-center justify-center gap-2 sm:gap-2.5 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full font-bold text-[11px] sm:text-[12.5px] tracking-wide transition-all duration-300 overflow-hidden cursor-pointer bg-ember hover:bg-ember-bright text-white border border-transparent shadow-[0_0_25px_rgba(160,42,34,0.5)] hover:shadow-[0_0_35px_rgba(252,107,47,0.8)] hover:scale-105 active:scale-95 group touch-manipulation text-center"
           title="Explore Engineering Highlights"
         >
           <span className="relative z-10 flex items-center justify-center gap-2 sm:gap-2.5">
-            <span className="w-5 h-5 sm:w-7 sm:h-7 rounded-full border border-white/30 flex items-center justify-center transition-transform duration-500 group-hover:rotate-45 shrink-0">
+            <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border border-white/30 flex items-center justify-center transition-transform duration-500 group-hover:rotate-45 shrink-0">
               <ArrowUpRight className="w-3.5 h-3.5 text-white stroke-[2.5]" />
             </span>
             <span className="whitespace-nowrap">Explore Work →</span>
@@ -226,7 +226,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
 
         <a
           href="#contact"
-          className="relative inline-flex items-center justify-center gap-2 sm:gap-2.5 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full font-bold text-[11px] sm:text-[12px] tracking-wide transition-all duration-300 overflow-hidden cursor-pointer bg-white/[0.04] text-white border border-white/20 hover:border-ember/50 hover:text-ember hover:shadow-[0_0_25px_rgba(255,255,255,0.2)] hover:scale-105 active:scale-95 group touch-manipulation backdrop-blur-md flex-1 sm:flex-initial text-center"
+          className="relative inline-flex items-center justify-center gap-2 sm:gap-2.5 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-bold text-[10.5px] sm:text-[11.5px] tracking-wide transition-all duration-300 overflow-hidden cursor-pointer bg-white/[0.06] text-white border border-white/20 hover:border-ember/50 hover:text-ember hover:shadow-[0_0_20px_rgba(255,255,255,0.25)] hover:scale-105 active:scale-95 group touch-manipulation backdrop-blur-md text-center"
           title="Direct Contact Transmission"
         >
           <span className="relative z-10 flex items-center justify-center gap-2">
@@ -241,7 +241,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
         className="absolute top-[28%] sm:top-[30%] md:top-[38%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-[15] select-none w-full flex flex-col items-center justify-center px-4"
         aria-hidden="true"
       >
-        <div className="w-full max-w-[580px] sm:max-w-[680px] md:max-w-[760px] h-[48px] sm:h-[72px] md:h-[105px] relative flex items-center justify-center transform-gpu drop-shadow-[0_0_30px_rgba(252,107,47,0.3)]">
+        <div className="w-full max-w-[580px] sm:max-w-[680px] md:max-w-[760px] h-[48px] sm:h-[72px] md:h-[105px] relative flex items-center justify-center transform-gpu drop-shadow-[0_0_35px_rgba(252,107,47,0.4)]">
           <div style={{ position: 'relative', width: '100%', height: '100%', background: 'transparent' }} className="cursor-default pointer-events-auto">
             <TextPressure
               text="DEV JANGID"
@@ -253,7 +253,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
               italic={true}
               alpha={false}
               stroke={false}
-              textColor={theme === 'dark' ? 'rgba(255, 255, 255, 0.88)' : '#111116'}
+              textColor={theme === 'dark' ? '#FFFFFF' : '#111116'}
               minFontSize={14}
               className="text-pressure-title"
             />

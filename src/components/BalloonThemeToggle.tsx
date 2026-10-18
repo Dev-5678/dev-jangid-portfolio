@@ -12,141 +12,124 @@ export const BalloonThemeToggle: React.FC<BalloonThemeToggleProps> = ({
   className = ''
 }) => {
   const [isPulling, setIsPulling] = useState(false)
+  const [isSpinning, setIsSpinning] = useState(false)
+  const [isNear, setIsNear] = useState(false)
+
   const isDark = theme === 'dark'
 
-  const handlePull = () => {
-    onToggleTheme()
+  const handleToggle = () => {
     setIsPulling(true)
+    setIsSpinning(true)
+    onToggleTheme()
 
-    // Snappy elastic spring recoil
+    // Elastic snap recoil
     setTimeout(() => {
       setIsPulling(false)
     }, 280)
+
+    setTimeout(() => {
+      setIsSpinning(false)
+    }, 600)
   }
 
   return (
     <div
       className={`relative inline-flex flex-col items-center select-none ${className}`}
       style={{ touchAction: 'manipulation' }}
+      onMouseEnter={() => setIsNear(true)}
+      onMouseLeave={() => setIsNear(false)}
+      onMouseMove={() => {
+        if (!isNear) setIsNear(true)
+      }}
     >
-      {/* 1. Interactive 3D Realistic Glowing Balloon Button */}
+      {/* Interactive Balloon Button */}
       <button
-        onClick={handlePull}
+        onClick={handleToggle}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault()
-            handlePull()
+            handleToggle()
           }
         }}
         aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
         aria-pressed={isDark}
-        title={`Pull string to switch to ${isDark ? 'light' : 'dark'} mode`}
+        title={`Toggle to ${isDark ? 'light' : 'dark'} mode`}
         className="group relative cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-ember rounded-full flex flex-col items-center touch-manipulation"
       >
-        {/* Floating Helium Balloon Assembly */}
+        {/* Floating Helium Balloon Assembly matching user's reference image */}
         <div
           className="relative flex flex-col items-center transform-gpu"
           style={{
-            transform: isPulling
+            transform: isSpinning
+              ? 'rotateY(360deg) scale(1.12)'
+              : isPulling
               ? 'translateY(8px) scale(0.92, 1.10)'
               : 'translateY(0px) scale(1, 1)',
-            transition: isPulling
+            transition: isSpinning
+              ? 'transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1)'
+              : isPulling
               ? 'transform 0.12s cubic-bezier(0.2, 0, 0.4, 1)'
               : 'transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)',
-            animation: isPulling ? 'none' : 'balloonBuoyancy 4s ease-in-out infinite'
+            animation: isPulling || isSpinning ? 'none' : 'balloonBuoyancy 4s ease-in-out infinite'
           }}
         >
-          {/* A. 3D Volumetric Glowing Latex Balloon Body */}
+          {/* 1. Balloon Bulb (White in Dark Mode, Black in Light Mode) */}
           <div
-            className={`relative w-7 h-9 sm:w-8 sm:h-10 rounded-[50%_50%_50%_50%_/_38%_38%_62%_62%] flex items-center justify-center p-1 transition-all duration-300 transform-gpu group-hover:scale-105 active:scale-95 ${
+            className={`relative w-6 h-8 sm:w-7 sm:h-9 rounded-[50%_50%_50%_50%_/_38%_38%_62%_62%] transition-all duration-300 transform-gpu ${
               isDark
-                ? 'border border-amber-300/40'
-                : 'border border-amber-400/50'
+                ? 'bg-white border border-white/80'
+                : 'bg-[#0a0a0d] border border-black/90'
             }`}
             style={{
-              background: isDark
-                ? 'radial-gradient(circle at 32% 26%, #ff8d4d 0%, #fc6b2f 32%, #b92010 68%, #4a0703 100%)'
-                : 'radial-gradient(circle at 32% 26%, #ffffff 0%, #fef08a 32%, #f59e0b 68%, #92400e 100%)',
+              // Glowing effect whenever cursor is near or hovering
               boxShadow: isDark
-                ? '0 0 16px rgba(252, 107, 47, 0.75), 0 0 32px rgba(252, 107, 47, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.7), inset 0 -4px 6px rgba(0, 0, 0, 0.65)'
-                : '0 0 16px rgba(245, 158, 11, 0.7), 0 0 28px rgba(251, 191, 36, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.9), inset 0 -3px 5px rgba(0, 0, 0, 0.25)'
+                ? isNear
+                  ? '0 0 20px rgba(255, 255, 255, 0.95), 0 0 35px rgba(252, 107, 47, 0.85), 0 0 50px rgba(252, 107, 47, 0.45)'
+                  : '0 0 12px rgba(255, 255, 255, 0.6), 0 0 20px rgba(252, 107, 47, 0.35)'
+                : isNear
+                ? '0 0 18px rgba(245, 158, 11, 0.85), 0 0 32px rgba(217, 119, 6, 0.6), inset 0 2px 4px rgba(255,255,255,0.2)'
+                : '0 0 10px rgba(0, 0, 0, 0.35), 0 0 18px rgba(245, 158, 11, 0.25)'
             }}
           >
-            {/* Primary Specular Softbox Highlight (Simulates glossy curved latex reflection) */}
+            {/* Subtle natural highlight glint */}
             <div
-              className="absolute top-1 left-1.5 w-2.5 h-3.5 rounded-[50%] bg-gradient-to-br from-white/95 via-white/45 to-transparent rotate-[-28deg] pointer-events-none"
-              style={{ filter: 'blur(0.3px)' }}
-              aria-hidden="true"
-            />
-
-            {/* Pin-point Specular Glint */}
-            <div
-              className="absolute top-1.5 left-2.5 w-1 h-1 rounded-full bg-white pointer-events-none shadow-[0_0_2px_#ffffff]"
-              aria-hidden="true"
-            />
-
-            {/* Secondary Rim Reflection (Adds spherical 3D volume) */}
-            <div
-              className="absolute bottom-1.5 right-1.5 w-1.5 h-2 rounded-full bg-white/25 pointer-events-none"
-              style={{ filter: 'blur(0.5px)' }}
+              className={`absolute top-1.5 left-1.5 w-1.5 h-2.5 rounded-[50%] rotate-[-28deg] pointer-events-none transition-opacity duration-300 ${
+                isDark ? 'bg-white/80' : 'bg-white/20'
+              }`}
               aria-hidden="true"
             />
           </div>
 
-          {/* B. Realistic Latex Knot at the Bottom of Balloon */}
-          <div className="relative -mt-0.5 flex flex-col items-center z-10" aria-hidden="true">
-            {/* Rolled Knot Ring */}
-            <div
-              className={`w-2.5 h-1 rounded-full ${
-                isDark ? 'bg-[#b92010] shadow-[0_0_4px_#fc6b2f]' : 'bg-[#b45309]'
-              }`}
-            />
-            {/* Flared Nozzle Lip */}
-            <div
-              className={`w-3 h-1.5 rounded-b-sm ${
-                isDark ? 'bg-[#7a0d04]' : 'bg-[#92400e]'
-              }`}
-              style={{
-                clipPath: 'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)'
-              }}
-            />
-          </div>
-
-          {/* C. Hanging Balloon Rope (High-contrast, clearly visible in BOTH Dark and Light modes!) */}
+          {/* 2. Balloon Knot (Small triangle directly below bulb matching picture) */}
           <div
-            className="relative flex flex-col items-center overflow-visible transition-all duration-200"
+            className={`w-2 h-1.5 -mt-0.5 transition-colors duration-300 ${
+              isDark ? 'bg-white' : 'bg-[#0a0a0d]'
+            }`}
             style={{
-              animation: isPulling ? 'none' : 'ropeSway 4s ease-in-out infinite',
-              transformOrigin: 'top center'
+              clipPath: 'polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%)'
             }}
             aria-hidden="true"
-          >
-            {/* Rope Cord Line */}
-            <div
-              className={`w-[2px] transition-all duration-200 ${
-                isDark
-                  ? 'bg-gradient-to-b from-amber-300 via-amber-400 to-amber-500 shadow-[0_0_4px_#fc6b2f,0_0_2px_#fbbf24]'
-                  : 'bg-gradient-to-b from-zinc-800 via-zinc-900 to-slate-950 shadow-[0_1px_2px_rgba(0,0,0,0.4)]'
-              }`}
-              style={{
-                height: isPulling ? '26px' : '18px'
-              }}
-            />
+          />
 
-            {/* D. Precision Metallic Pull-Bead at Bottom of Cord */}
-            <div
-              className={`w-2.5 h-2.5 rounded-full -mt-0.5 transition-transform duration-200 group-hover:scale-125 ${
-                isDark
-                  ? 'bg-gradient-to-br from-amber-200 via-amber-400 to-amber-600 shadow-[0_0_8px_#fc6b2f] border border-amber-200/50'
-                  : 'bg-gradient-to-br from-slate-600 via-slate-800 to-zinc-950 shadow-[0_1px_3px_rgba(0,0,0,0.5)] border border-slate-700/50'
-              }`}
-            />
-          </div>
+          {/* 3. Straight Vertical String extending straight down matching picture */}
+          <div
+            className={`w-[1.5px] transition-all duration-200 ${
+              isDark
+                ? 'bg-white shadow-[0_0_6px_rgba(255,255,255,0.8),0_0_2px_#fc6b2f]'
+                : 'bg-zinc-900 shadow-[0_1px_2px_rgba(0,0,0,0.4)]'
+            }`}
+            style={{
+              height: isPulling ? '26px' : '20px'
+            }}
+            aria-hidden="true"
+          />
         </div>
 
-        {/* E. Floating Minimalist Micro-Tooltip on Hover */}
+        {/* Minimalist Tooltip on Hover */}
         <span
-          className={`absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap px-2 py-0.5 rounded-full text-[9px] font-mono tracking-wider uppercase pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-50 shadow-md ${
+          className={`absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap px-2 py-0.5 rounded-full text-[9px] font-mono tracking-wider uppercase pointer-events-none transition-opacity duration-200 z-50 shadow-md ${
+            isNear ? 'opacity-100' : 'opacity-0'
+          } ${
             isDark
               ? 'bg-[#18181e] text-amber-300 border border-amber-400/30'
               : 'bg-white text-zinc-800 border border-zinc-200'
@@ -157,7 +140,7 @@ export const BalloonThemeToggle: React.FC<BalloonThemeToggleProps> = ({
         </span>
       </button>
 
-      {/* Embedded 120 FPS Hardware-Accelerated CSS Keyframes */}
+      {/* Physics-driven CSS Keyframes */}
       <style>{`
         @keyframes balloonBuoyancy {
           0%, 100% {
@@ -168,18 +151,6 @@ export const BalloonThemeToggle: React.FC<BalloonThemeToggleProps> = ({
           }
           70% {
             transform: translateY(-1px) rotate(-1deg);
-          }
-        }
-
-        @keyframes ropeSway {
-          0%, 100% {
-            transform: rotate(0deg);
-          }
-          35% {
-            transform: rotate(1.5deg);
-          }
-          70% {
-            transform: rotate(-1.5deg);
           }
         }
       `}</style>

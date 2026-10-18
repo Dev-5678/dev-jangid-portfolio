@@ -224,11 +224,11 @@ export const TextPressure: React.FC<TextPressureProps> = ({
           const dy = cy - mousePos.current.y
           const d = Math.sqrt(dx * dx + dy * dy)
 
-          // Calibrated variable font axes (151 max width standard prevents text blow-out):
-          const wdth = width ? Math.floor(distMap(d, maxDist, isMobile ? 35 : 25, isMobile ? 135 : 151)) : 100
-          const wght = weight ? Math.floor(distMap(d, maxDist, 100, 900)) : 400
+          // Bold, punchy kinetic variable typography (clearly visible at rest & dynamically expands on hover!)
+          const wdth = width ? Math.floor(distMap(d, maxDist, isMobile ? 85 : 92, isMobile ? 130 : 144)) : 100
+          const wght = weight ? Math.floor(distMap(d, maxDist, 550, 900)) : 700
           const ital = italic ? distMap(d, maxDist, 0, 1).toFixed(2) : '0'
-          const alphaVal = alpha ? distMap(d, maxDist, 0, 1).toFixed(2) : '1'
+          const alphaVal = alpha ? distMap(d, maxDist, 0.4, 1).toFixed(2) : '1'
 
           const fontVar = `'wght' ${wght}, 'wdth' ${wdth}, 'ital' ${ital}`
 
