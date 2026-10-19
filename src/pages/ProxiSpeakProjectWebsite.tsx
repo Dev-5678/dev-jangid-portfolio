@@ -49,7 +49,7 @@ export const ProxiSpeakProjectWebsite: React.FC<ProjectPageProps> = ({ onBack })
           </button>
 
           <a
-            href="https://github.com/dhruvsaini09/ProxiSpeak"
+            href="https://github.com/Dev-5678/ProxiSpeak"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-ember/20 hover:bg-ember/30 border border-ember/40 text-xs font-mono font-bold text-white transition-all shadow-[0_0_15px_rgba(160,42,34,0.3)] hover:scale-105 active:scale-95"
