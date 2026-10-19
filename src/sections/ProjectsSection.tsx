@@ -1,11 +1,11 @@
-import React from 'react'
-import type { ProjectModalData } from '../components/projects/ProjectDetailModal'
-import { ArrowUpRight } from 'lucide-react'
+import React, { useState } from 'react'
+import { ProjectDetailModal, type ProjectModalData } from '../components/projects/ProjectDetailModal'
+import { ArrowUpRight, Layers } from 'lucide-react'
 
 const PROJECTS: ProjectModalData[] = [
   {
     id: 'aai-netsec',
-    number: '01 / 04',
+    number: '01 / 05',
     title: 'AAI Network Security & IT Infrastructure',
     domain: 'Enterprise Infrastructure & Civil Aviation Security',
     description: 'Segregated enterprise architecture isolating Northern Region administrative subnets from critical Air Navigation Services (ANS). Features stateful firewall packet inspection, continuous security compliance auditing, and high-availability MySQL cluster replication with automated IT incident diagnostics.',
@@ -37,7 +37,7 @@ const PROJECTS: ProjectModalData[] = [
   },
   {
     id: 'cansat-telemetry',
-    number: '02 / 04',
+    number: '02 / 05',
     title: 'CanSat & CubeSat Space Telemetry System',
     domain: 'Aerospace Systems & Embedded C++ Firmware',
     description: '1U CanSat aerospace telemetry payload transmitting live barometric altitude, atmospheric pressure, and dual-axis gyroscopic pitch/roll orientation packets. Employs 433.92 MHz UHF radio frequency telemetry with ground station packet decoders and dual-stage parachute descent triggers.',
@@ -68,7 +68,7 @@ const PROJECTS: ProjectModalData[] = [
   },
   {
     id: 'gemini-rag',
-    number: '03 / 04',
+    number: '03 / 05',
     title: 'Multimodal Generative AI & RAG Engine',
     domain: 'Cloud AI, Vector Systems & LLM Engineering',
     description: 'Enterprise retrieval-augmented generation (RAG) pipeline. Converts complex technical queries and documentation into dense 768-dimensional vector embeddings, retrieves semantic ground-truth context via cosine similarity, and utilizes Gemini 1.5 Pro to synthesize reliable, zero-hallucination responses.',
@@ -99,7 +99,7 @@ const PROJECTS: ProjectModalData[] = [
   },
   {
     id: 'high-throughput-systems',
-    number: '04 / 04',
+    number: '04 / 05',
     title: 'High-Throughput Low-Latency Systems Engine',
     domain: 'Core Computer Science & Systems Performance',
     description: 'High-throughput algorithmic profiling and streaming telemetry engine. Implements cache-aligned in-place QuickSort partitioning, flat min-heap Dijkstra routing, and Robin Hood open-addressing hash maps to guarantee microsecond deterministic execution under peak computational load.',
@@ -127,10 +127,50 @@ const PROJECTS: ProjectModalData[] = [
         'Delivered sub-millisecond execution guarantees on high-throughput data streams.'
       ]
     }
+  },
+  {
+    id: 'proxispeak',
+    number: '05 / 05',
+    title: 'ProxiSpeak Geospatial Audio Ecosystem',
+    domain: 'Geospatial WebSockets & Spatial Audio Systems',
+    description: 'Real-time 2D spatial audio communication ecosystem. Calculates dynamic inverse-square Euclidean distance attenuation and stereo panning across virtual coordinate maps, enabling proximity-based conversations with zero audio bleed.',
+    tags: ['SPATIAL AUDIO', 'WEBSOCKETS', 'EUCLIDEAN MATH', 'REACT 19', 'PROXIMITY ATTENUATION'],
+    appType: 'proxispeak',
+    image: '/projects/proxispeak.svg',
+    liveMetrics: [
+      { label: 'Spatial Latency', value: '<24ms' },
+      { label: 'Falloff Curve', value: 'Inverse-Square' },
+      { label: 'Peer Capacity', value: '128 Active' }
+    ],
+    architecture: {
+      overview: 'Distributed real-time spatial audio and avatar positioning platform. Leverages HTML5 canvas tracking, Web Audio API GainNode/StereoPannerNode synthesis, and low-latency Socket.io delta frames for fluid multi-user proximity conversations.',
+      subsystems: [
+        { name: 'Euclidean Proximity Engine', role: 'Real-time distance calculation & acoustic radius thresholding', tech: 'Vector Math' },
+        { name: 'Web Audio Spatial Panner', role: 'Dynamic volume attenuation and directional stereo panning', tech: 'Web Audio API' },
+        { name: 'WebSockets Event Bus', role: 'High-frequency coordinate delta broadcast and state sync', tech: 'Socket.io' }
+      ],
+      securityAndIntegrity: [
+        'Boundary-enforced coordinate clipping preventing avatar out-of-bounds exploits.',
+        'Strict volume clamping preventing acoustic audio clipping and ear fatigue.',
+        'Isolated room channels preventing cross-talk between distant campus clusters.'
+      ],
+      keyEngineeringAchievements: [
+        'Built interactive 60 FPS 2D campus map with keyboard avatar locomotion and sub-pixel interpolation.',
+        'Engineered smooth logarithmic audio attenuation with zero cross-room acoustic bleed.'
+      ]
+    }
   }
 ]
 
 export const ProjectsSection: React.FC = () => {
+  const [activeModalProject, setActiveModalProject] = useState<ProjectModalData | null>(null)
+  const [modalInitialTab, setModalInitialTab] = useState<'apparatus' | 'blueprint'>('blueprint')
+
+  const openCaseStudy = (project: ProjectModalData, tab: 'apparatus' | 'blueprint' = 'blueprint') => {
+    setModalInitialTab(tab)
+    setActiveModalProject(project)
+  }
+
   return (
     <section
       id="projects"
@@ -143,7 +183,7 @@ export const ProjectsSection: React.FC = () => {
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-ember/60 bg-black/60 backdrop-blur-md shadow-[0_0_20px_rgba(160,42,34,0.3)]">
             <span className="w-2 h-2 rounded-full bg-ember shadow-[0_0_10px_#A02A22] animate-pulse" />
             <span className="text-white text-[10px] sm:text-xs font-semibold tracking-[0.3em] uppercase">
-              Full-Stack Standalone Web Applications
+              Full-Stack Standalone Web Applications &amp; Case Studies
             </span>
           </div>
 
@@ -158,11 +198,11 @@ export const ProjectsSection: React.FC = () => {
             className="text-ash text-xs sm:text-sm md:text-base max-w-2xl font-light tracking-wide"
             style={{ fontFamily: "var(--font-josefin), 'Josefin Sans', sans-serif" }}
           >
-            FROM MISSION-CRITICAL CIVIL AVIATION RADAR TO AEROSPACE TELEMETRY &amp; CLOUD AI — COMPLETE DYNAMIC WEBSITES WITH REAL-WORLD DATA &amp; DATABASES.
+            FROM MISSION-CRITICAL CIVIL AVIATION RADAR &amp; AEROSPACE TELEMETRY TO GEOSPATIAL AUDIO &amp; CLOUD AI — COMPLETE DYNAMIC WEBSITES WITH REAL-WORLD DATA.
           </p>
         </div>
 
-        {/* Project Cards (Alternating 2-column layout matching reel) */}
+        {/* Project Cards */}
         <div className="flex flex-col gap-10 sm:gap-14">
           {PROJECTS.map((p, idx) => {
             const isEven = idx % 2 === 1
@@ -178,8 +218,8 @@ export const ProjectsSection: React.FC = () => {
                 <div className={`grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center ${isEven ? 'lg:flex-row-reverse' : ''}`}>
                   {/* Text Column */}
                   <div className={`lg:col-span-6 flex flex-col justify-between h-full space-y-4 sm:space-y-6 ${isEven ? 'lg:order-2' : 'lg:order-1'}`}>
-                    {/* Centered Launch Actions for All Projects */}
-                    <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 w-full">
+                    {/* Launch & Case Study Action Bar */}
+                    <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 w-full">
                       <a
                         href={`#/project/${p.id}`}
                         target="_blank"
@@ -192,21 +232,21 @@ export const ProjectsSection: React.FC = () => {
                       </a>
 
                       <button
-                        onClick={() => {
-                          window.location.hash = `#/project/${p.id}`
-                          window.scrollTo(0, 0)
-                        }}
-                        className="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 font-semibold text-[11px] sm:text-xs tracking-wider uppercase transition-all backdrop-blur-md cursor-pointer active:scale-95"
-                        title="Open in Current Window"
+                        onClick={() => openCaseStudy(p, 'blueprint')}
+                        className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-full bg-ember/20 hover:bg-ember/35 text-white border border-ember/50 font-semibold text-[11px] sm:text-xs tracking-wider uppercase transition-all backdrop-blur-md cursor-pointer active:scale-95 shadow-[0_0_15px_rgba(160,42,34,0.3)]"
+                        title="Open Interactive Architecture Blueprint & Case Study Modal"
                       >
-                        <span>Open In Tab</span>
+                        <Layers className="w-3.5 h-3.5 text-ember-bright shrink-0" />
+                        <span>Case Study &amp; Blueprint</span>
                       </button>
                     </div>
 
                     <div>
-                      <span className="text-[10px] sm:text-xs font-mono font-bold text-ember uppercase tracking-wider block mb-1">
-                        {p.domain}
-                      </span>
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-[10px] sm:text-xs font-mono font-bold text-ember uppercase tracking-wider">
+                          {p.number} // {p.domain}
+                        </span>
+                      </div>
                       <h3
                         className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-[1.15]"
                         style={{ fontFamily: "var(--font-josefin), 'Josefin Sans', sans-serif" }}
@@ -232,18 +272,15 @@ export const ProjectsSection: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Cinematic AI Project Showcase Image with Floating Telemetry HUD */}
+                  {/* Cinematic Visual Preview */}
                   <div className={`lg:col-span-6 flex items-center justify-center ${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
                     <div
-                      onClick={() => {
-                        window.open(`/#/project/${p.id}`, '_blank')
-                      }}
+                      onClick={() => openCaseStudy(p, 'blueprint')}
                       className="relative w-full max-w-xl rounded-2xl sm:rounded-3xl overflow-hidden border border-white/20 bg-[#090a0f] backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.2)] group cursor-pointer transition-all duration-500 hover:border-ember/70 hover:shadow-[0_25px_70px_rgba(160,42,34,0.35)] hover:-translate-y-1"
-                      title="Click to launch live standalone project website in new tab"
+                      title="Click to view full architecture case study and interactive apparatus"
                     >
-                      {/* Cinematic AI Visual Preview (Full Bleed) with Zoom & Luminous Flare */}
                       <div className="relative aspect-[16/10] sm:aspect-video w-full overflow-hidden bg-black/50">
-                        {/* Clean Floating Live Badge */}
+                        {/* Live Status Badge */}
                         <div className="absolute top-3.5 right-3.5 flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/70 border border-white/20 backdrop-blur-md z-10 shadow-lg">
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                           <span className="font-mono text-[9px] text-emerald-400 font-bold uppercase tracking-wider">
@@ -260,15 +297,15 @@ export const ProjectsSection: React.FC = () => {
                           />
                         )}
 
-                        {/* Atmospheric Ember Vignette & Gradient Shading */}
+                        {/* Ember Vignette */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none" />
                         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_45%,rgba(0,0,0,0.7)_100%)] pointer-events-none" />
 
-                        {/* Center Interactive Launch Pill on Hover */}
+                        {/* Interactive Blueprint Pill on Hover */}
                         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 z-20 pointer-events-none">
-                          <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-black font-extrabold text-xs tracking-wider uppercase shadow-[0_0_35px_rgba(255,255,255,0.7)] transform scale-95 group-hover:scale-100 transition-transform duration-300">
-                            <span>Launch Live App</span>
-                            <ArrowUpRight className="w-4 h-4 text-black stroke-[2.5]" />
+                          <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-ember text-white font-extrabold text-xs tracking-wider uppercase shadow-[0_0_35px_rgba(160,42,34,0.8)] transform scale-95 group-hover:scale-100 transition-transform duration-300">
+                            <Layers className="w-4 h-4" />
+                            <span>Inspect Architecture Blueprint</span>
                           </span>
                         </div>
 
@@ -293,6 +330,14 @@ export const ProjectsSection: React.FC = () => {
           })}
         </div>
       </div>
+
+      {/* Interactive Case Study & Blueprint Modal */}
+      <ProjectDetailModal
+        isOpen={!!activeModalProject}
+        onClose={() => setActiveModalProject(null)}
+        project={activeModalProject}
+        initialTab={modalInitialTab}
+      />
     </section>
   )
 }

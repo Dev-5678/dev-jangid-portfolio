@@ -2,6 +2,7 @@ import React from 'react'
 import { skillCategories } from '../data/portfolio'
 import { Code, Cpu, Sparkles, Layers, Radio, ShieldCheck } from 'lucide-react'
 import { InteractiveSkillsKeyboard } from '../components/InteractiveSkillsKeyboard'
+import { GitHubStatsCard } from '../components/github/GitHubStatsCard'
 
 const ICONS = [Code, Cpu, Sparkles, Layers, Radio, ShieldCheck]
 
@@ -88,6 +89,9 @@ export const SkillsSection: React.FC = () => {
             )
           })}
         </div>
+
+        {/* Live Dynamic GitHub Telemetry Card */}
+        <GitHubStatsCard />
 
         {/* 3D Interactive Mechanical Skills Keyboard */}
         <InteractiveSkillsKeyboard />

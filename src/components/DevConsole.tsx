@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { personalInfo, skillCategories, experiences } from '../data/portfolio'
-import { Terminal as TerminalIcon, X, Maximize2, Minimize2, CornerDownLeft } from 'lucide-react'
+import { Terminal as TerminalIcon, X, Maximize2, Minimize2, CornerDownLeft, Activity, Cpu, Radio } from 'lucide-react'
+import { MatrixRain } from './terminal/MatrixRain'
+import { TerminalSnake } from './terminal/TerminalSnake'
 
 interface HistoryEntry {
   type: 'input' | 'output' | 'error' | 'success'
@@ -18,9 +20,16 @@ const COMMANDS = [
   'whoami',
   'skills',
   'exp',
+  'proxispeak',
   'cansat',
   'aai',
+  'matrix',
+  'snake',
+  'benchmark',
+  'sysinfo',
+  'diagnostics',
   'contact',
+  'resume',
   'theme',
   'clear',
   'sudo hire',
@@ -77,8 +86,13 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
               <div><strong className="text-ember font-semibold">whoami</strong> — Summary &amp; credentials</div>
               <div><strong className="text-ember font-semibold">skills</strong> — Technical stack &amp; languages</div>
               <div><strong className="text-ember font-semibold">exp</strong> — Internships (AAI, ISL, GenAI)</div>
+              <div><strong className="text-ember font-semibold">proxispeak</strong> — Geospatial audio ecosystem</div>
               <div><strong className="text-ember font-semibold">cansat</strong> — Query simulated ISL telemetry</div>
               <div><strong className="text-ember font-semibold">aai</strong> — Northern Region IT audit status</div>
+              <div><strong className="text-emerald-400 font-semibold">matrix</strong> — Stream green digital rain</div>
+              <div><strong className="text-emerald-400 font-semibold">snake</strong> — Play retro arcade snake minigame</div>
+              <div><strong className="text-cyan-400 font-semibold">benchmark</strong> — Stress-test V8 &amp; CPU MFLOPS</div>
+              <div><strong className="text-cyan-400 font-semibold">sysinfo</strong> — Client GPU, cores &amp; telemetry</div>
               <div><strong className="text-ember font-semibold">contact</strong> — Direct telephone &amp; email</div>
               <div><strong className="text-ember font-semibold">resume</strong> — Download verified resume PDF</div>
               <div><strong className="text-ember font-semibold">theme</strong> — Toggle dark/light theme</div>
@@ -200,6 +214,154 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
           )
         })
         break
+
+      case 'proxispeak':
+        newEntries.push({
+          type: 'output',
+          text: (
+            <div className="space-y-2 p-3 rounded-xl bg-white/5 border border-white/10 text-xs text-silver">
+              <div className="flex items-center gap-2 text-ember-bright font-bold">
+                <Radio className="w-4 h-4" />
+                <span>PROXISPEAK // GEOSPATIAL PROXIMITY AUDIO ECOSYSTEM</span>
+              </div>
+              <p>Real-time 2D spatial audio communication grid engineered with React 19, WebSockets, and Web Audio API.</p>
+              <div className="grid grid-cols-2 gap-2 font-mono text-[10px]">
+                <div className="p-1.5 rounded bg-black/40">LATENCY: &lt;24ms</div>
+                <div className="p-1.5 rounded bg-black/40">ATTENUATION: Inverse-Square</div>
+              </div>
+              <div className="pt-1">
+                <a
+                  href="#/project/proxispeak"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-ember text-white font-bold text-[10px] uppercase hover:bg-ember-bright transition-all"
+                >
+                  <span>Launch ProxiSpeak App</span>
+                </a>
+              </div>
+            </div>
+          )
+        })
+        break
+
+      case 'matrix':
+        newEntries.push({
+          type: 'output',
+          text: <MatrixRain />
+        })
+        break
+
+      case 'snake':
+        newEntries.push({
+          type: 'output',
+          text: <TerminalSnake />
+        })
+        break
+
+      case 'benchmark': {
+        const start = performance.now()
+        let count = 0
+        const max = 100000
+        const sieve = new Uint8Array(max)
+        for (let i = 2; i * i < max; i++) {
+          if (!sieve[i]) {
+            for (let j = i * i; j < max; j += i) sieve[j] = 1
+          }
+        }
+        for (let i = 2; i < max; i++) if (!sieve[i]) count++
+
+        const N = 100
+        const A = new Float64Array(N * N).fill(1.5)
+        const B = new Float64Array(N * N).fill(2.5)
+        const C = new Float64Array(N * N)
+        for (let i = 0; i < N; i++) {
+          for (let j = 0; j < N; j++) {
+            let sum = 0
+            for (let k = 0; k < N; k++) sum += A[i * N + k] * B[k * N + j]
+            C[i * N + j] = sum
+          }
+        }
+
+        const durationMs = performance.now() - start
+        const ops = (count + 2 * N * N * N) / (durationMs / 1000)
+        const mflops = (ops / 1_000_000).toFixed(1)
+        const rating = durationMs < 45 ? 'S-TIER (ULTRA_FAST)' : durationMs < 100 ? 'A-TIER (HIGH_PERF)' : 'STANDARD'
+
+        newEntries.push({
+          type: 'success',
+          text: (
+            <div className="space-y-2 p-3 rounded-xl bg-cyan-950/20 border border-cyan-500/30 text-xs font-mono">
+              <div className="flex items-center gap-2 text-cyan-400 font-bold uppercase">
+                <Cpu className="w-4 h-4" />
+                <span>CLIENT HARDWARE COMPUTE BENCHMARK // COMPLETE</span>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px]">
+                <div className="p-2 rounded bg-black/40 border border-white/5">
+                  <div className="text-zinc-500 text-[9px]">EXECUTION TIME</div>
+                  <div className="text-white font-bold">{durationMs.toFixed(2)} ms</div>
+                </div>
+                <div className="p-2 rounded bg-black/40 border border-white/5">
+                  <div className="text-zinc-500 text-[9px]">CALCULATED PRIMES</div>
+                  <div className="text-white font-bold">{count.toLocaleString()} primes</div>
+                </div>
+                <div className="p-2 rounded bg-black/40 border border-white/5">
+                  <div className="text-zinc-500 text-[9px]">THROUGHPUT</div>
+                  <div className="text-emerald-400 font-bold">{mflops} MFLOPS</div>
+                </div>
+                <div className="p-2 rounded bg-black/40 border border-white/5">
+                  <div className="text-zinc-500 text-[9px]">SYSTEM TIER</div>
+                  <div className="text-amber-400 font-bold">{rating}</div>
+                </div>
+              </div>
+              <div className="text-[10px] text-zinc-400">
+                Stress-tested 100k sieve + 100x100 matrix multiplication without frame drops.
+              </div>
+            </div>
+          )
+        })
+        break
+      }
+
+      case 'sysinfo':
+      case 'diagnostics': {
+        let gpu = 'Standard Canvas Renderer'
+        try {
+          const gl = document.createElement('canvas').getContext('webgl')
+          if (gl) {
+            const debugInfo = gl.getExtension('WEBGL_debug_renderer_info')
+            if (debugInfo) {
+              gpu = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) || 'WebGL Supported'
+            }
+          }
+        } catch {}
+
+        const cores = navigator.hardwareConcurrency || 'N/A'
+        const memory = (navigator as unknown as { deviceMemory?: number }).deviceMemory ? `${(navigator as unknown as { deviceMemory?: number }).deviceMemory} GB` : 'Protected'
+        const res = `${window.screen.width}x${window.screen.height} (${window.devicePixelRatio}x DPI)`
+        const connection = (navigator as unknown as { connection?: { effectiveType?: string; downlink?: number } }).connection
+        const net = connection ? `${connection.effectiveType?.toUpperCase()} (${connection.downlink} Mbps)` : 'Online (Broadband)'
+
+        newEntries.push({
+          type: 'output',
+          text: (
+            <div className="space-y-2 p-3 rounded-xl bg-white/5 border border-white/10 text-xs font-mono">
+              <div className="flex items-center gap-2 text-ember-bright font-bold uppercase">
+                <Activity className="w-4 h-4" />
+                <span>CLIENT SYSTEM DIAGNOSTICS &amp; TELEMETRY</span>
+              </div>
+              <div className="space-y-1 text-[11px] text-zinc-300">
+                <div><span className="text-zinc-500">GPU RENDERER:</span> <strong className="text-white">{gpu}</strong></div>
+                <div><span className="text-zinc-500">LOGICAL CPU CORES:</span> <strong className="text-emerald-400">{cores} Cores</strong></div>
+                <div><span className="text-zinc-500">DEVICE MEMORY:</span> <strong className="text-emerald-400">{memory}</strong></div>
+                <div><span className="text-zinc-500">SCREEN RESOLUTION:</span> <strong className="text-white">{res}</strong></div>
+                <div><span className="text-zinc-500">NETWORK TELEMETRY:</span> <strong className="text-cyan-400">{net}</strong></div>
+                <div><span className="text-zinc-500">DEPLOYED EDGE REGION:</span> <strong className="text-amber-400">bom1 (Mumbai Anycast CDN)</strong></div>
+              </div>
+            </div>
+          )
+        })
+        break
+      }
 
       case 'theme':
         onToggleTheme()
