@@ -245,7 +245,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
             <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border border-white/30 flex items-center justify-center transition-transform duration-500 group-hover:rotate-45 shrink-0">
               <ArrowUpRight className="w-3.5 h-3.5 text-white stroke-[2.5]" />
             </span>
-            <span className="whitespace-nowrap">Explore Work →</span>
+            <span className="whitespace-nowrap">Explore Work â†’</span>
           </span>
         </a>
 
@@ -255,7 +255,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
           title="Direct Contact Transmission"
         >
           <span className="relative z-10 flex items-center justify-center gap-2">
-            <span className="whitespace-nowrap">Let's Talk →</span>
+            <span className="whitespace-nowrap">Let's Talk â†’</span>
           </span>
         </a>
       </div>
@@ -282,7 +282,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
           <div className="w-1.5 h-2.5 rounded-full bg-ember shadow-[0_0_10px_#fc6b2f] animate-scroll-glide" />
         </div>
         <div className="flex flex-col items-center -space-y-1 text-ember font-bold text-[10px] animate-bounce">
-          <span>↓</span>
+          <span>â†“</span>
         </div>
       </a>
     </section>
@@ -290,3 +290,5 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
 }
 
 export default HeroSection
+
+// Badges: S-Tier Systems Trifecta Operational
