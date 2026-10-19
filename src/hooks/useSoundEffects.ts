@@ -64,11 +64,17 @@ export function useSoundEffects() {
     setTimeout(() => playSynthSound(783.99, 'triangle', 0.15), 120)
   }, [playSynthSound])
 
+  const playKeystroke = useCallback(() => {
+    // Tactile mechanical switch: high click followed by bottom-out thud
+    playSynthSound(1200, 'triangle', 0.025, 240)
+  }, [playSynthSound])
+
   return {
     isMuted,
     toggleMute,
     playClick,
     playBeep,
-    playSuccess
+    playSuccess,
+    playKeystroke
   }
 }
