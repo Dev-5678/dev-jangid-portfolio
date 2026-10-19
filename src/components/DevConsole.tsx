@@ -30,6 +30,8 @@ const COMMANDS = [
   'benchmark',
   'sysinfo',
   'diagnostics',
+  'ping',
+  'top',
   'github',
   'quote',
   'contact',
@@ -98,6 +100,8 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
               <div><strong className="text-emerald-400 font-semibold">snake</strong> — Play retro arcade snake minigame</div>
               <div><strong className="text-cyan-400 font-semibold">benchmark</strong> — Stress-test V8 &amp; CPU MFLOPS</div>
               <div><strong className="text-cyan-400 font-semibold">sysinfo</strong> — Client GPU, cores &amp; telemetry</div>
+              <div><strong className="text-sky-400 font-semibold">ping</strong> — ICMP round-trip latency to edge nodes</div>
+              <div><strong className="text-purple-400 font-semibold">top</strong> — Portfolio background processes &amp; resource usage</div>
               <div><strong className="text-emerald-400 font-semibold">github</strong> — Live repositories &amp; streak</div>
               <div><strong className="text-amber-400 font-semibold">quote</strong> — Computer science &amp; engineering axioms</div>
               <div><strong className="text-ember font-semibold">contact</strong> — Direct telephone &amp; email</div>
@@ -363,6 +367,83 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
                 <div><span className="text-zinc-500">SCREEN RESOLUTION:</span> <strong className="text-white">{res}</strong></div>
                 <div><span className="text-zinc-500">NETWORK TELEMETRY:</span> <strong className="text-cyan-400">{net}</strong></div>
                 <div><span className="text-zinc-500">DEPLOYED EDGE REGION:</span> <strong className="text-amber-400">bom1 (Mumbai Anycast CDN)</strong></div>
+              </div>
+            </div>
+          )
+        })
+        break
+      }
+
+      case 'ping': {
+        const samples = [
+          { host: 'api.github.com', ip: '140.82.112.4', timeMs: '19.4', ttl: 56 },
+          { host: 'dev-jangid-portfolio.vercel.app', ip: '76.76.21.21', timeMs: '14.2', ttl: 58 },
+          { host: 'cloudflare-dns.com', ip: '1.1.1.1', timeMs: '9.8', ttl: 60 }
+        ]
+        newEntries.push({
+          type: 'success',
+          text: (
+            <div className="space-y-2 p-3 rounded-xl bg-sky-950/20 border border-sky-500/30 text-xs font-mono">
+              <div className="flex items-center gap-2 text-sky-400 font-bold uppercase">
+                <Activity className="w-4 h-4" />
+                <span>ICMP ECHO / NETWORK ROUND-TRIP LATENCY TELEMETRY</span>
+              </div>
+              <div className="space-y-1 text-[11px]">
+                {samples.map((s) => (
+                  <div key={s.host} className="flex flex-wrap items-center justify-between p-1.5 rounded bg-black/40 border border-white/5">
+                    <div className="text-zinc-300">
+                      64 bytes from <span className="text-white font-bold">{s.ip}</span> ({s.host}): icmp_seq=1 ttl={s.ttl}
+                    </div>
+                    <div className="text-emerald-400 font-bold">time={s.timeMs} ms</div>
+                  </div>
+                ))}
+              </div>
+              <div className="text-[10px] text-zinc-400 flex items-center justify-between">
+                <span>Packet loss: 0.0% • Jitter: ±1.2ms</span>
+                <span className="text-emerald-400 font-bold">CONNECTION_OPTIMAL</span>
+              </div>
+            </div>
+          )
+        })
+        break
+      }
+
+      case 'top':
+      case 'htop': {
+        const processes = [
+          { pid: 1042, user: 'dev', cpu: '2.4%', mem: '18.2 MB', state: 'S', proc: 'vite:hmr-worker' },
+          { pid: 1089, user: 'dev', cpu: '1.8%', mem: '14.5 MB', state: 'R', proc: 'webaudio:spatial-engine' },
+          { pid: 1104, user: 'dev', cpu: '0.9%', mem: '8.4 MB', state: 'S', proc: 'github:telemetry-poller' },
+          { pid: 1120, user: 'dev', cpu: '0.2%', mem: '4.1 MB', state: 'S', proc: 'sw:offline-cache-v1' },
+          { pid: 1156, user: 'dev', cpu: '0.1%', mem: '2.8 MB', state: 'S', proc: 'devconsole:cli-daemon' }
+        ]
+        newEntries.push({
+          type: 'output',
+          text: (
+            <div className="space-y-2 p-3 rounded-xl bg-purple-950/20 border border-purple-500/30 text-xs font-mono">
+              <div className="flex items-center justify-between text-purple-300 font-bold uppercase text-[10px]">
+                <span>TOP - SYSTEM PROCESSES &amp; SUBSYSTEM USAGE</span>
+                <span className="text-emerald-400">LOAD AVG: 0.12, 0.08, 0.05</span>
+              </div>
+              <div className="overflow-x-auto text-[11px]">
+                <div className="grid grid-cols-6 gap-2 text-zinc-500 text-[10px] border-b border-white/10 pb-1">
+                  <span>PID</span>
+                  <span>USER</span>
+                  <span>%CPU</span>
+                  <span>MEM</span>
+                  <span>STATE</span>
+                  <span>COMMAND</span>
+                </div>
+                {processes.map((p) => (
+                  <div key={p.pid} className="grid grid-cols-6 gap-2 py-1 text-zinc-300 border-b border-white/5 font-mono">
+                    <span className="text-amber-400">{p.pid}</span>
+                    <span>{p.user}</span>
+                    <span className="text-emerald-400 font-bold">{p.cpu}</span>
+                    <span>{p.mem}</span>
+                    <span>{p.state}</span>
+                    <span className="text-white font-bold">{p.proc}</span>
+                  </div>
+                ))}
               </div>
             </div>
           )
