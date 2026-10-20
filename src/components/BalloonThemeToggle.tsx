@@ -111,18 +111,51 @@ export const BalloonThemeToggle: React.FC<BalloonThemeToggleProps> = ({
             aria-hidden="true"
           />
 
-          {/* 3. Straight Vertical String extending straight down matching picture */}
+          {/* 3. Dynamic Organic Thread with Interactive Hover Physics & Glow */}
           <div
-            className={`w-[1.5px] transition-all duration-200 ${
-              isDark
-                ? 'bg-white shadow-[0_0_6px_rgba(255,255,255,0.8),0_0_2px_#fc6b2f]'
-                : 'bg-zinc-900 shadow-[0_1px_2px_rgba(0,0,0,0.4)]'
-            }`}
+            className="relative flex flex-col items-center origin-top pointer-events-auto"
             style={{
-              height: isPulling ? '26px' : '20px'
+              animation: isNear && !isPulling ? 'threadSway 1.2s ease-in-out infinite' : 'none',
+              transformOrigin: 'top center'
             }}
-            aria-hidden="true"
-          />
+          >
+            <svg
+              width="16"
+              height={isPulling ? 28 : isNear ? 24 : 20}
+              viewBox={isPulling ? "0 0 16 28" : isNear ? "0 0 16 24" : "0 0 16 20"}
+              className={`transition-all duration-300 overflow-visible ${
+                isDark
+                  ? isNear
+                    ? 'text-white drop-shadow-[0_0_8px_rgba(252,107,47,0.95)] drop-shadow-[0_0_14px_rgba(255,255,255,0.8)]'
+                    : 'text-white/80 drop-shadow-[0_0_3px_rgba(255,255,255,0.6)]'
+                  : isNear
+                  ? 'text-amber-600 drop-shadow-[0_0_6px_rgba(245,158,11,0.9)]'
+                  : 'text-zinc-900'
+              }`}
+            >
+              <path
+                d={
+                  isPulling
+                    ? "M 8 0 L 8 28"
+                    : isNear
+                    ? "M 8 0 Q 12 7, 8 14 T 8 24"
+                    : "M 8 0 L 8 20"
+                }
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={isNear ? "1.8" : "1.4"}
+                strokeLinecap="round"
+                className="transition-all duration-300"
+              />
+              {/* Tactile bead / knot at bottom of thread */}
+              <circle
+                cx="8"
+                cy={isPulling ? 27 : isNear ? 23 : 19}
+                r={isNear ? 2.2 : 1.4}
+                className={`fill-current transition-all duration-300 ${isNear ? 'animate-pulse' : ''}`}
+              />
+            </svg>
+          </div>
         </div>
 
         {/* Minimalist Tooltip on Hover */}
@@ -151,6 +184,17 @@ export const BalloonThemeToggle: React.FC<BalloonThemeToggleProps> = ({
           }
           70% {
             transform: translateY(-1px) rotate(-1deg);
+          }
+        }
+        @keyframes threadSway {
+          0%, 100% {
+            transform: rotate(0deg);
+          }
+          25% {
+            transform: rotate(8deg);
+          }
+          75% {
+            transform: rotate(-7deg);
           }
         }
       `}</style>
