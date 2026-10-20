@@ -21,3 +21,5 @@ export function registerServiceWorker(): void {
 }
 
 // Pre-cache routes: /nexus-crdt, /agent-forge, /hyper-route
+
+// Pre-cache October 21 telemetry data and assets
