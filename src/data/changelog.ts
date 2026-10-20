@@ -9,7 +9,17 @@ export interface ChangelogItem {
   changes: string[]
 }
 
-export const portfolioChangelog: ChangelogItem[] = [
+export const portfolioChangelog: ChangelogItem[] = [\n  {
+    version: "v2.5.0",
+    date: "October 21, 2026",
+    title: "High-Throughput Telemetry & WebRTC P2P Expansion",
+    changes: [
+      "Integrated LiveMetricsConsole with real-time latency percentiles",
+      "Added Causal Undo/Redo DAG history and WebRTC DataChannel to NexusCRDT",
+      "Added dynamic conditional branching and priority queue to AgentForge",
+      "Added Least-Connections balancing and edge LRU cache to HyperRoute"
+    ]
+  },
   {
     version: "v2.4.0",
     date: "October 20, 2026",
