@@ -27,7 +27,7 @@ export const Footer: React.FC = () => {
               </span>
             </div>
             <p className="font-mono text-xs text-zinc-400">
-              {personalInfo.title} • {personalInfo.location}
+              {personalInfo.title} â€¢ {personalInfo.location}
             </p>
           </div>
 
@@ -65,7 +65,7 @@ export const Footer: React.FC = () => {
               <CheckCircle2 className="w-3.5 h-3.5" />
               <span>SYSTEMS OPERATIONAL</span>
             </span>
-            <span className="text-zinc-600">•</span>
+            <span className="text-zinc-600">â€¢</span>
             <a
               href="https://github.com/Dev-5678"
               target="_blank"
