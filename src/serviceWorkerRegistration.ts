@@ -19,3 +19,5 @@ export function registerServiceWorker(): void {
     })
   }
 }
+
+// Pre-cache routes: /nexus-crdt, /agent-forge, /hyper-route
