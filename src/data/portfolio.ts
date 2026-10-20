@@ -91,7 +91,7 @@ export const experiences: ExperienceItem[] = [
     role: "Network Security & IT Intern",
     organization: "Airports Authority of India (AAI)",
     location: "New Delhi, India",
-    dates: "14 August 2026 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ 25 September 2026",
+    dates: "14 August 2026 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ 25 September 2026",
     type: "Internship",
     responsibilities: [
       "Supported Northern Region HQ IT division with enterprise network monitoring, system diagnostics, and operational troubleshooting.",
@@ -106,7 +106,7 @@ export const experiences: ExperienceItem[] = [
     role: "Space Systems & CanSat Trainee",
     organization: "India Space Lab (ISL)",
     location: "Haryana, India",
-    dates: "15 July 2025 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ 31 July 2025",
+    dates: "15 July 2025 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ 31 July 2025",
     type: "Internship",
     responsibilities: [
       "Gained hands-on experience in 1U CanSat payload design, telemetry tracking, and aerospace communication systems.",
@@ -281,7 +281,7 @@ export const standaloneProjects: ProjectItem[] = [
   },
   {
     id: "proxispeak",
-    title: "ProxiSpeak ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Geospatial Proximity Audio Ecosystem",
+    title: "ProxiSpeak ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Geospatial Proximity Audio Ecosystem",
     description: "Real-time 2D spatial audio communication grid engineered with React, WebSockets, and Web Audio API. Computes dynamic inverse-square Euclidean audio attenuation across virtual coordinate maps with zero audio bleed.",
     tags: ["React 19", "WebSockets / Socket.io", "Web Audio API", "Euclidean Math", "Spatial Audio"],
     githubUrl: "https://github.com/Dev-5678/ProxiSpeak",
@@ -293,7 +293,7 @@ export const standaloneProjects: ProjectItem[] = [
 export const educationHistory: EducationItem[] = [
   {
     id: "degree-bachelor",
-    degree: "BachelorÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢s Degree ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Computer Science and Engineering",
+    degree: "BachelorÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢s Degree ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Computer Science and Engineering",
     institution: "Jagannath University",
     location: "Bahadurgarh, Haryana",
     date: "Expected June 2027",
