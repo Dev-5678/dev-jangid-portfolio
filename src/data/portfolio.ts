@@ -91,7 +91,7 @@ export const experiences: ExperienceItem[] = [
     role: "Network Security & IT Intern",
     organization: "Airports Authority of India (AAI)",
     location: "New Delhi, India",
-    dates: "14 August 2026 â€“ 25 September 2026",
+    dates: "14 August 2026 Ã¢â‚¬â€œ 25 September 2026",
     type: "Internship",
     responsibilities: [
       "Supported Northern Region HQ IT division with enterprise network monitoring, system diagnostics, and operational troubleshooting.",
@@ -106,7 +106,7 @@ export const experiences: ExperienceItem[] = [
     role: "Space Systems & CanSat Trainee",
     organization: "India Space Lab (ISL)",
     location: "Haryana, India",
-    dates: "15 July 2025 â€“ 31 July 2025",
+    dates: "15 July 2025 Ã¢â‚¬â€œ 31 July 2025",
     type: "Internship",
     responsibilities: [
       "Gained hands-on experience in 1U CanSat payload design, telemetry tracking, and aerospace communication systems.",
@@ -261,11 +261,19 @@ export const standaloneProjects: ProjectItem[] = [
     description: "High-throughput real-time whiteboarding engine engineered with state-based Conflict-Free Replicated Data Types (CRDTs), vector clocks, and Lamport logical clocks. Guarantees Strong Eventual Consistency (SEC) across uncoordinated peer topologies with sub-millisecond convergence.",
     tags: ["TypeScript 5", "CRDT (LWW-Element-Set)", "Vector Clocks", "WebSockets", "HTML5 Canvas 2D"],
     githubUrl: "https://github.com/Dev-5678/NexusCRDT",
+  },
+  {
+    id: "agent-forge",
+    title: "AgentForge - Autonomous Multi-Agent DAG Workflow Runtime",
+    description: "Distributed execution runtime for autonomous AI multi-agent workflows. Implements Kahn's topological sort for parallel wave scheduling, sandboxed tool security perimeters, episodic semantic vector memory (Cosine), and OpenTelemetry distributed tracing.",
+    tags: ["TypeScript 5", "DAG Topological Scheduler", "OpenTelemetry", "Vector Embeddings", "SSE Streaming"],
+    githubUrl: "https://github.com/Dev-5678/AgentForge",
+    featured: true
     featured: true
   },
   {
     id: "proxispeak",
-    title: "ProxiSpeak â€” Geospatial Proximity Audio Ecosystem",
+    title: "ProxiSpeak Ã¢â‚¬â€ Geospatial Proximity Audio Ecosystem",
     description: "Real-time 2D spatial audio communication grid engineered with React, WebSockets, and Web Audio API. Computes dynamic inverse-square Euclidean audio attenuation across virtual coordinate maps with zero audio bleed.",
     tags: ["React 19", "WebSockets / Socket.io", "Web Audio API", "Euclidean Math", "Spatial Audio"],
     githubUrl: "https://github.com/Dev-5678/ProxiSpeak",
@@ -277,7 +285,7 @@ export const standaloneProjects: ProjectItem[] = [
 export const educationHistory: EducationItem[] = [
   {
     id: "degree-bachelor",
-    degree: "Bachelorâ€™s Degree â€” Computer Science and Engineering",
+    degree: "BachelorÃ¢â‚¬â„¢s Degree Ã¢â‚¬â€ Computer Science and Engineering",
     institution: "Jagannath University",
     location: "Bahadurgarh, Haryana",
     date: "Expected June 2027",
