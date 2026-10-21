@@ -3,6 +3,7 @@ import { productionBenchmarks } from '../../data/telemetryData';
 
 export const LiveMetricsConsole: React.FC = () => {
   const [selected, setSelected] = useState(0);
+  const [viewMode, setViewMode] = useState<'METRICS' | 'SLA'>('METRICS');
   const current = productionBenchmarks[selected];
 
   return (
