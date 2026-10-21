@@ -15,6 +15,14 @@ export class MechanicalAudioSynth {
     }
   }
 
+  public toggleMute(): boolean {
+    this.isMuted = !this.isMuted;
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('portfolio_muted', this.isMuted ? 'true' : 'false');
+    }
+    return this.isMuted;
+  }
+
   public playClick(pitchHz = 800) {
     if (this.isMuted) return;
     try {
