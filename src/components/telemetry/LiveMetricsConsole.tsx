@@ -36,4 +36,8 @@ export const LiveMetricsConsole: React.FC = () => {
     </div>
   );
 };
+
+export function generateMarkdownReport(): string {
+  return '# System Telemetry Report\n' + productionBenchmarks.map(b => '- ' + b.system + ': p99 ' + b.p99LatencyMs + 'ms').join('\n');
+}
 export default LiveMetricsConsole;
