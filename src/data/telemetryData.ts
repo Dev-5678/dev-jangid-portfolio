@@ -38,3 +38,7 @@ export const productionBenchmarks: SystemMetrics[] = [
     memoryFootprintMb: 6.1,
   },
 ];
+export function calculateSLACompliance(metrics: SystemMetrics[]): number {
+  const compliant = metrics.filter(m => m.p99LatencyMs < 5.0);
+  return Number(((compliant.length / metrics.length) * 100).toFixed(1));
+}
