@@ -1,4 +1,16 @@
+import zlib from 'node:zlib'
 import '@testing-library/jest-dom/vitest'
+
+// Polyfill Node.js zlib Zstandard for undici/vitest compatibility across Node versions
+if (typeof zlib === 'object' && zlib !== null && !(zlib as any).createZstdDecompress) {
+  (zlib as any).createZstdDecompress = () => ({
+    on: () => {},
+    once: () => {},
+    emit: () => {},
+    end: () => {},
+    write: () => {},
+  })
+}
 
 // Mock window.matchMedia for JSDOM
 Object.defineProperty(window, 'matchMedia', {
