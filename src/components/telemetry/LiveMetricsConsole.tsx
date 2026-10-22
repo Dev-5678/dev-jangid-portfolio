@@ -17,7 +17,9 @@ export const LiveMetricsConsole: React.FC = () => {
           <button
             key={b.system}
             onClick={() => setSelected(i)}
-            className={p-3 rounded text-left border transition-all }
+            className={`p-3 rounded text-left border transition-all ${
+              i === selected ? 'border-sky-500 bg-sky-500/10 text-white' : 'border-zinc-800 bg-zinc-900 text-zinc-400'
+            }`}
           >
             <div className="font-bold truncate">{b.system.split(' // ')[0]}</div>
             <div className="text-[10px] text-zinc-400 mt-1">{b.throughputOpsSec.toLocaleString()} ops/s</div>

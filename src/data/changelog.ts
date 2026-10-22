@@ -9,7 +9,8 @@ export interface ChangelogItem {
   changes: string[]
 }
 
-export const portfolioChangelog: ChangelogItem[] = [\n  {
+export const portfolioChangelog: ChangelogItem[] = [
+  {
     version: "v2.5.0",
     date: "October 21, 2026",
     title: "High-Throughput Telemetry & WebRTC P2P Expansion",
