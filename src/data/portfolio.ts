@@ -91,7 +91,7 @@ export const experiences: ExperienceItem[] = [
     role: "Network Security & IT Intern",
     organization: "Airports Authority of India (AAI)",
     location: "New Delhi, India",
-    dates: "14 August 2026 ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ 25 September 2026",
+    dates: "14 August 2026 – 25 September 2026",
     type: "Internship",
     responsibilities: [
       "Supported Northern Region HQ IT division with enterprise network monitoring, system diagnostics, and operational troubleshooting.",
@@ -106,7 +106,7 @@ export const experiences: ExperienceItem[] = [
     role: "Space Systems & CanSat Trainee",
     organization: "India Space Lab (ISL)",
     location: "Haryana, India",
-    dates: "15 July 2025 ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ 31 July 2025",
+    dates: "15 July 2025 – 31 July 2025",
     type: "Internship",
     responsibilities: [
       "Gained hands-on experience in 1U CanSat payload design, telemetry tracking, and aerospace communication systems.",
@@ -279,7 +279,7 @@ export const standaloneProjects: ProjectItem[] = [
   },
   {
     id: "proxispeak",
-    title: "ProxiSpeak ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â Geospatial Proximity Audio Ecosystem",
+    title: "ProxiSpeak – Geospatial Proximity Audio Ecosystem",
     description: "Real-time 2D spatial audio communication grid engineered with React, WebSockets, and Web Audio API. Computes dynamic inverse-square Euclidean audio attenuation across virtual coordinate maps with zero audio bleed.",
     tags: ["React 19", "WebSockets / Socket.io", "Web Audio API", "Euclidean Math", "Spatial Audio"],
     githubUrl: "https://github.com/Dev-5678/ProxiSpeak",
@@ -291,7 +291,7 @@ export const standaloneProjects: ProjectItem[] = [
 export const educationHistory: EducationItem[] = [
   {
     id: "degree-bachelor",
-    degree: "BachelorÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¾ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢s Degree ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â Computer Science and Engineering",
+    degree: "Bachelor’s Degree — Computer Science and Engineering",
     institution: "Jagannath University",
     location: "Bahadurgarh, Haryana",
     date: "Expected June 2027",
