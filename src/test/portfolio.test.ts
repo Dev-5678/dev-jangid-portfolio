@@ -88,7 +88,8 @@ describe('Portfolio Resume Data Truth & Integrity', () => {
     expect(experienceHighlights).toHaveLength(3)
     expect(standaloneProjects.length).toBeGreaterThanOrEqual(1)
     expect(standaloneProjects.some((p) => p.id === 'proxispeak')).toBe(true)
-    expect(standaloneProjects[0].githubUrl).toBe('https://github.com/Dev-5678/ProxiSpeak')
+    const proxi = standaloneProjects.find((p) => p.id === 'proxispeak')
+    expect(proxi?.githubUrl).toBe('https://github.com/Dev-5678/ProxiSpeak')
   })
 
   it('has consistent navigation anchors', () => {
