@@ -275,9 +275,7 @@ export const standaloneProjects: ProjectItem[] = [
     description: "Distributed edge reverse proxy featuring atomic sliding-window counter rate limiting, token-bucket burst smoothing, upstream round-robin load balancing with circuit breakers, and sub-millisecond OpenMetrics Prometheus telemetry.",
     tags: ["Node.js", "Redis Lua Scripts", "Sliding-Window", "Load Balancer", "Prometheus", "Docker"],
     githubUrl: "https://github.com/Dev-5678/HyperRoute",
-    featured: true
-    featured: true
-    featured: true
+    featured: true,
   },
   {
     id: "proxispeak",

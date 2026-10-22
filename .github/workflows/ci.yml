@@ -20,20 +20,19 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js 24.x
+      - name: Setup Node.js 20.x
         uses: actions/setup-node@v4
         with:
-          node-version: 24
-          cache: 'npm'
+          node-version: 20
 
       - name: Install Node Dependencies
-        run: npm ci
+        run: npm install
 
       - name: Run TypeScript Strict Typecheck
         run: npx tsc --noEmit
 
       - name: Run Vitest Automated Test Suite
-        run: npx vitest run --pool=threads
+        run: npx vitest run
 
       - name: Run Vite Production Build
         run: npm run build
