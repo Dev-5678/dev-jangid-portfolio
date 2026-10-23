@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { personalInfo, skillCategories, experiences } from '../data/portfolio'
-import { Terminal as TerminalIcon, X, Maximize2, Minimize2, CornerDownLeft, Activity, Cpu, Radio, Quote } from 'lucide-react'
+import { Terminal as TerminalIcon, X, Maximize2, Minimize2, CornerDownLeft, Activity, Cpu, Radio, Quote, Layers } from 'lucide-react'
 import { MatrixRain } from './terminal/MatrixRain'
 import { TerminalSnake } from './terminal/TerminalSnake'
 import { DSAComplexityWidget } from './dsa/DSAComplexityWidget'
@@ -22,6 +22,10 @@ const COMMANDS = [
   'skills',
   'exp',
   'proxispeak',
+  'hyperroute',
+  'agentforge',
+  'nexuscrdt',
+  'repos',
   'cansat',
   'aai',
   'dsa',
@@ -93,6 +97,10 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
               <div><strong className="text-ember font-semibold">skills</strong> — Technical stack &amp; languages</div>
               <div><strong className="text-ember font-semibold">exp</strong> — Internships (AAI, ISL, GenAI)</div>
               <div><strong className="text-ember font-semibold">proxispeak</strong> — Geospatial audio ecosystem</div>
+              <div><strong className="text-emerald-400 font-semibold">hyperroute</strong> — Edge API gateway &amp; rate limiter</div>
+              <div><strong className="text-purple-400 font-semibold">agentforge</strong> — Autonomous multi-agent DAG engine</div>
+              <div><strong className="text-sky-400 font-semibold">nexuscrdt</strong> — Collaborative state-based canvas</div>
+              <div><strong className="text-emerald-400 font-semibold">repos</strong> — 5 flagship GitHub repositories</div>
               <div><strong className="text-amber-400 font-semibold">dsa</strong> — Big-O complexity &amp; code matrix</div>
               <div><strong className="text-ember font-semibold">cansat</strong> — Query simulated ISL telemetry</div>
               <div><strong className="text-ember font-semibold">aai</strong> — Northern Region IT audit status</div>
@@ -249,6 +257,178 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
                 >
                   <span>Launch ProxiSpeak App</span>
                 </a>
+              </div>
+            </div>
+          )
+        })
+        break
+
+      case 'hyperroute':
+        newEntries.push({
+          type: 'output',
+          text: (
+            <div className="space-y-2 p-3 rounded-xl bg-emerald-950/20 border border-emerald-500/30 text-xs text-silver font-mono">
+              <div className="flex items-center gap-2 text-emerald-400 font-bold">
+                <Activity className="w-4 h-4" />
+                <span>HYPERROUTE // DISTRIBUTED EDGE GATEWAY &amp; RATE LIMITER</span>
+              </div>
+              <p className="text-zinc-300">High-throughput reverse proxy with sliding-window token bucket rate-limiting and sub-millisecond Prometheus telemetry.</p>
+              <div className="grid grid-cols-2 gap-2 text-[10px]">
+                <div className="p-1.5 rounded bg-black/40">LATENCY p99: &lt;2.8ms</div>
+                <div className="p-1.5 rounded bg-black/40">THROUGHPUT: 120,000 rps</div>
+              </div>
+              <div className="pt-1 flex gap-2">
+                <a
+                  href="#/project/hyperroute"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-600 text-white font-bold text-[10px] uppercase hover:bg-emerald-500 transition-all"
+                >
+                  <span>Launch Deep-Dive</span>
+                </a>
+                <a
+                  href="https://github.com/Dev-5678/HyperRoute"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/10 text-white font-bold text-[10px] uppercase hover:bg-white/20 transition-all"
+                >
+                  <span>GitHub Repo</span>
+                </a>
+              </div>
+            </div>
+          )
+        })
+        break
+
+      case 'agentforge':
+        newEntries.push({
+          type: 'output',
+          text: (
+            <div className="space-y-2 p-3 rounded-xl bg-purple-950/20 border border-purple-500/30 text-xs text-silver font-mono">
+              <div className="flex items-center gap-2 text-purple-400 font-bold">
+                <Layers className="w-4 h-4" />
+                <span>AGENTFORGE // AUTONOMOUS MULTI-AGENT DAG WORKFLOW RUNTIME</span>
+              </div>
+              <p className="text-zinc-300">Deterministic topological wave execution engine with tool perimeter isolation and OpenTelemetry spans.</p>
+              <div className="grid grid-cols-2 gap-2 text-[10px]">
+                <div className="p-1.5 rounded bg-black/40">SCHEDULER: Kahn DAG</div>
+                <div className="p-1.5 rounded bg-black/40">ISOLATION: WASM Sandbox</div>
+              </div>
+              <div className="pt-1 flex gap-2">
+                <a
+                  href="#/project/agentforge"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-purple-600 text-white font-bold text-[10px] uppercase hover:bg-purple-500 transition-all"
+                >
+                  <span>Launch Deep-Dive</span>
+                </a>
+                <a
+                  href="https://github.com/Dev-5678/AgentForge"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/10 text-white font-bold text-[10px] uppercase hover:bg-white/20 transition-all"
+                >
+                  <span>GitHub Repo</span>
+                </a>
+              </div>
+            </div>
+          )
+        })
+        break
+
+      case 'nexuscrdt':
+        newEntries.push({
+          type: 'output',
+          text: (
+            <div className="space-y-2 p-3 rounded-xl bg-sky-950/20 border border-sky-500/30 text-xs text-silver font-mono">
+              <div className="flex items-center gap-2 text-sky-400 font-bold">
+                <Layers className="w-4 h-4" />
+                <span>NEXUSCRDT // DISTRIBUTED COLLABORATIVE CANVAS ENGINE</span>
+              </div>
+              <p className="text-zinc-300">Conflict-free replicated data types ensuring Strong Eventual Consistency (SEC) across uncoordinated multi-client canvases.</p>
+              <div className="grid grid-cols-2 gap-2 text-[10px]">
+                <div className="p-1.5 rounded bg-black/40">CONSISTENCY: LWW Semilattice</div>
+                <div className="p-1.5 rounded bg-black/40">SYNC OVERHEAD: &lt;48 bytes/delta</div>
+              </div>
+              <div className="pt-1 flex gap-2">
+                <a
+                  href="#/project/nexuscrdt"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-sky-600 text-white font-bold text-[10px] uppercase hover:bg-sky-500 transition-all"
+                >
+                  <span>Launch Deep-Dive</span>
+                </a>
+                <a
+                  href="https://github.com/Dev-5678/NexusCRDT"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/10 text-white font-bold text-[10px] uppercase hover:bg-white/20 transition-all"
+                >
+                  <span>GitHub Repo</span>
+                </a>
+              </div>
+            </div>
+          )
+        })
+        break
+
+      case 'repos':
+        newEntries.push({
+          type: 'output',
+          text: (
+            <div className="space-y-2 p-3.5 rounded-xl bg-white/5 border border-white/10 font-mono text-xs">
+              <div className="flex items-center justify-between text-emerald-400 font-bold uppercase text-[11px]">
+                <span>DEV-5678 // 5 FLAGSHIP OPEN-SOURCE REPOSITORIES</span>
+                <span className="text-zinc-400">OCTOBER 2026</span>
+              </div>
+              <div className="space-y-1.5 text-[11px]">
+                <div className="p-2 rounded bg-black/40 border border-white/5 flex items-center justify-between">
+                  <div>
+                    <a href="https://github.com/Dev-5678/HyperRoute" target="_blank" rel="noopener noreferrer" className="text-emerald-400 font-bold hover:underline">
+                      HyperRoute
+                    </a>
+                    <span className="text-zinc-400 ml-2">Distributed Edge Gateway &amp; Rate Limiter</span>
+                  </div>
+                  <span className="text-zinc-500">Go / TypeScript</span>
+                </div>
+                <div className="p-2 rounded bg-black/40 border border-white/5 flex items-center justify-between">
+                  <div>
+                    <a href="https://github.com/Dev-5678/AgentForge" target="_blank" rel="noopener noreferrer" className="text-purple-400 font-bold hover:underline">
+                      AgentForge
+                    </a>
+                    <span className="text-zinc-400 ml-2">Autonomous Multi-Agent DAG Workflow Runtime</span>
+                  </div>
+                  <span className="text-zinc-500">Python / TypeScript</span>
+                </div>
+                <div className="p-2 rounded bg-black/40 border border-white/5 flex items-center justify-between">
+                  <div>
+                    <a href="https://github.com/Dev-5678/NexusCRDT" target="_blank" rel="noopener noreferrer" className="text-sky-400 font-bold hover:underline">
+                      NexusCRDT
+                    </a>
+                    <span className="text-zinc-400 ml-2">Collaborative Canvas Engine with State CRDTs</span>
+                  </div>
+                  <span className="text-zinc-500">TypeScript / WebGL</span>
+                </div>
+                <div className="p-2 rounded bg-black/40 border border-white/5 flex items-center justify-between">
+                  <div>
+                    <a href="https://github.com/Dev-5678/ProxiSpeak" target="_blank" rel="noopener noreferrer" className="text-ember font-bold hover:underline">
+                      ProxiSpeak
+                    </a>
+                    <span className="text-zinc-400 ml-2">Geospatial Audio &amp; Inverse-Square Falloff</span>
+                  </div>
+                  <span className="text-zinc-500">React 19 / Web Audio</span>
+                </div>
+                <div className="p-2 rounded bg-black/40 border border-white/5 flex items-center justify-between">
+                  <div>
+                    <a href="https://github.com/Dev-5678/dev-jangid-portfolio" target="_blank" rel="noopener noreferrer" className="text-amber-400 font-bold hover:underline">
+                      dev-jangid-portfolio
+                    </a>
+                    <span className="text-zinc-400 ml-2">Interactive Engineer Portfolio &amp; Terminal CLI</span>
+                  </div>
+                  <span className="text-zinc-500">TypeScript / Vite</span>
+                </div>
               </div>
             </div>
           )
@@ -494,15 +674,24 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
               </div>
               <div className="space-y-1 text-zinc-300 text-[11px]">
                 <div>STATUS: <strong className="text-emerald-400">Pushed Today 🟢 (Active Streak)</strong></div>
-                <div>PUBLIC REPOSITORIES: <strong className="text-white">2 Repositories</strong></div>
+                <div>PUBLIC REPOSITORIES: <strong className="text-white">5 Flagship Repositories</strong></div>
                 <div>PROFILE URL: <a href="https://github.com/Dev-5678" target="_blank" rel="noopener noreferrer" className="text-ember-bright underline">github.com/Dev-5678</a></div>
               </div>
               <div className="pt-1 flex flex-wrap gap-2 text-[10px]">
-                <a href="https://github.com/Dev-5678/dev-jangid-portfolio" target="_blank" rel="noopener noreferrer" className="px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-white font-bold">
-                  dev-jangid-portfolio →
+                <a href="https://github.com/Dev-5678/HyperRoute" target="_blank" rel="noopener noreferrer" className="px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-white font-bold">
+                  HyperRoute →
+                </a>
+                <a href="https://github.com/Dev-5678/AgentForge" target="_blank" rel="noopener noreferrer" className="px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-white font-bold">
+                  AgentForge →
+                </a>
+                <a href="https://github.com/Dev-5678/NexusCRDT" target="_blank" rel="noopener noreferrer" className="px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-white font-bold">
+                  NexusCRDT →
                 </a>
                 <a href="https://github.com/Dev-5678/ProxiSpeak" target="_blank" rel="noopener noreferrer" className="px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-white font-bold">
                   ProxiSpeak →
+                </a>
+                <a href="https://github.com/Dev-5678/dev-jangid-portfolio" target="_blank" rel="noopener noreferrer" className="px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-white font-bold">
+                  dev-jangid-portfolio →
                 </a>
               </div>
             </div>
