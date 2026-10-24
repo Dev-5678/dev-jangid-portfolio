@@ -29,6 +29,9 @@ import { CanSatProjectWebsite } from './pages/CanSatProjectWebsite'
 import { GeminiRAGProjectWebsite } from './pages/GeminiRAGProjectWebsite'
 import { SystemsEngineProjectWebsite } from './pages/SystemsEngineProjectWebsite'
 import { ProxiSpeakProjectWebsite } from './pages/ProxiSpeakProjectWebsite'
+import { HyperRouteProjectWebsite } from './pages/HyperRouteProjectWebsite'
+import { AgentForgeProjectWebsite } from './pages/AgentForgeProjectWebsite'
+import { NexusCRDTProjectWebsite } from './pages/NexusCRDTProjectWebsite'
 import { CustomCursor } from './components/CustomCursor'
 import { GlobalLiveBackground } from './components/GlobalLiveBackground'
 import { Analytics } from '@vercel/analytics/react'
@@ -55,6 +58,9 @@ export function App() {
     if (hash.includes('project/gemini') || hash.includes('project/rag') || path.includes('/project/gemini') || path.includes('/project/rag')) return 'rag'
     if (hash.includes('project/systems') || hash.includes('project/high-throughput') || path.includes('/project/systems')) return 'systems'
     if (hash.includes('project/proxispeak') || path.includes('/project/proxispeak')) return 'proxispeak'
+    if (hash.includes('project/hyperroute') || path.includes('/project/hyperroute')) return 'hyperroute'
+    if (hash.includes('project/agentforge') || path.includes('/project/agentforge')) return 'agentforge'
+    if (hash.includes('project/nexuscrdt') || path.includes('/project/nexuscrdt')) return 'nexuscrdt'
     return null
   }
 
@@ -109,6 +115,12 @@ export function App() {
       document.title = 'Dev Jangid | Gemini Multimodal RAG Enterprise Studio'
     } else if (projectRoute === 'systems') {
       document.title = 'Dev Jangid | C++20 High-Throughput Memory Engine'
+    } else if (projectRoute === 'hyperroute') {
+      document.title = 'Dev Jangid | HyperRoute Distributed Edge Gateway'
+    } else if (projectRoute === 'agentforge') {
+      document.title = 'Dev Jangid | AgentForge Autonomous Multi-Agent DAG Runtime'
+    } else if (projectRoute === 'nexuscrdt') {
+      document.title = 'Dev Jangid | NexusCRDT Distributed Collaborative Canvas'
     } else {
       document.title = 'Dev Jangid | Computer Science Engineer | Portfolio'
     }
@@ -184,6 +196,54 @@ export function App() {
       <>
         <CustomCursor />
         <ProxiSpeakProjectWebsite
+          onBack={() => {
+            window.location.hash = '#projects'
+            setProjectRoute(null)
+          }}
+          theme={theme}
+          onToggleTheme={toggleTheme}
+        />
+      </>
+    )
+  }
+
+  if (projectRoute === 'hyperroute') {
+    return (
+      <>
+        <CustomCursor />
+        <HyperRouteProjectWebsite
+          onBack={() => {
+            window.location.hash = '#projects'
+            setProjectRoute(null)
+          }}
+          theme={theme}
+          onToggleTheme={toggleTheme}
+        />
+      </>
+    )
+  }
+
+  if (projectRoute === 'agentforge') {
+    return (
+      <>
+        <CustomCursor />
+        <AgentForgeProjectWebsite
+          onBack={() => {
+            window.location.hash = '#projects'
+            setProjectRoute(null)
+          }}
+          theme={theme}
+          onToggleTheme={toggleTheme}
+        />
+      </>
+    )
+  }
+
+  if (projectRoute === 'nexuscrdt') {
+    return (
+      <>
+        <CustomCursor />
+        <NexusCRDTProjectWebsite
           onBack={() => {
             window.location.hash = '#projects'
             setProjectRoute(null)

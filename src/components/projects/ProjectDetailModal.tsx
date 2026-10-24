@@ -16,6 +16,7 @@ export interface ProjectModalData {
   appType: 'aai' | 'cansat' | 'rag' | 'systems' | 'proxispeak'
   image?: string
   liveMetrics?: { label: string; value: string }[]
+  githubUrl?: string
   architecture: {
     overview: string
     subsystems: { name: string; role: string; tech: string }[]
