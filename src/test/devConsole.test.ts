@@ -11,6 +11,7 @@ describe('Developer Console CLI Engine & Command Registry', () => {
     'agentforge',
     'nexuscrdt',
     'repos',
+    'man',
     'cansat',
     'aai',
     'dsa',
