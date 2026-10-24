@@ -155,7 +155,7 @@ export async function fetchGitHubTelemetry(username = 'Dev-5678'): Promise<GitHu
     return result
   } catch (error) {
     console.warn('Using fallback GitHub telemetry due to API rate limit or network status:', error)
-    return {
+    const fallbackResult: GitHubTelemetryData = {
       profile: FALLBACK_PROFILE,
       repos: [
         {
@@ -224,6 +224,14 @@ export async function fetchGitHubTelemetry(username = 'Dev-5678'): Promise<GitHu
       latestPushedAt: new Date().toISOString(),
       isLive: false
     }
+
+    try {
+      sessionStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data: fallbackResult }))
+    } catch {
+      // ignore cache save errors
+    }
+
+    return fallbackResult
   }
 }
 
