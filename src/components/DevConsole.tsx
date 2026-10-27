@@ -26,6 +26,7 @@ const COMMANDS = [
   'agentforge',
   'nexuscrdt',
   'repos',
+  'man',
   'cansat',
   'aai',
   'dsa',
@@ -101,6 +102,7 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
               <div><strong className="text-purple-400 font-semibold">agentforge</strong> — Autonomous multi-agent DAG engine</div>
               <div><strong className="text-sky-400 font-semibold">nexuscrdt</strong> — Collaborative state-based canvas</div>
               <div><strong className="text-emerald-400 font-semibold">repos</strong> — 5 flagship GitHub repositories</div>
+              <div><strong className="text-amber-400 font-semibold">man</strong> — Subsystem engineering manuals</div>
               <div><strong className="text-amber-400 font-semibold">dsa</strong> — Big-O complexity &amp; code matrix</div>
               <div><strong className="text-ember font-semibold">cansat</strong> — Query simulated ISL telemetry</div>
               <div><strong className="text-ember font-semibold">aai</strong> — Northern Region IT audit status</div>
@@ -434,6 +436,32 @@ export const DevConsole: React.FC<DevConsoleProps> = ({ isOpen, onClose, onToggl
           )
         })
         break
+
+      case 'man':
+      case 'man hyperroute':
+      case 'man agentforge':
+      case 'man nexuscrdt':
+      case 'man proxispeak': {
+        const topic = cmd.replace(/^man\s*/, '').trim() || 'hyperroute'
+        newEntries.push({
+          type: 'output',
+          text: (
+            <div className="space-y-1.5 p-3 rounded-xl bg-white/5 border border-white/10 font-mono text-xs">
+              <div className="flex items-center justify-between text-amber-400 font-bold uppercase text-[11px]">
+                <span>MANUAL PAGE // {topic.toUpperCase()}(1)</span>
+                <span className="text-zinc-500">DEV-JANGID MANUALS</span>
+              </div>
+              <div className="text-zinc-300 text-[11px] space-y-1">
+                <div><strong className="text-white">NAME:</strong> {topic} - high performance engineering subsystem</div>
+                <div><strong className="text-white">SYNOPSIS:</strong> {topic} [--telemetry] [--benchmark] [--verbose]</div>
+                <div><strong className="text-white">DESCRIPTION:</strong> Formulated by Dev Jangid with zero-overhead memory guarantees, deterministic asymptotic bounds, and live telemetry.</div>
+                <div><strong className="text-white">SEE ALSO:</strong> repos(1), github(1), sysinfo(1)</div>
+              </div>
+            </div>
+          )
+        })
+        break
+      }
 
       case 'matrix':
         newEntries.push({
