@@ -200,7 +200,7 @@ export const ProjectsSection: React.FC = () => {
             className="text-ash text-xs sm:text-sm md:text-base max-w-2xl font-light tracking-wide"
             style={{ fontFamily: "var(--font-josefin), 'Josefin Sans', sans-serif" }}
           >
-            FROM MISSION-CRITICAL CIVIL AVIATION RADAR &amp; AEROSPACE TELEMETRY TO GEOSPATIAL AUDIO &amp; CLOUD AI â€” COMPLETE DYNAMIC WEBSITES WITH REAL-WORLD DATA.
+            FROM MISSION-CRITICAL CIVIL AVIATION RADAR &amp; AEROSPACE TELEMETRY TO GEOSPATIAL AUDIO &amp; CLOUD AI &mdash; COMPLETE DYNAMIC WEBSITES WITH REAL-WORLD DATA.
           </p>
         </div>
 

@@ -32,7 +32,7 @@ jobs:
         run: npx tsc --noEmit
 
       - name: Run Vitest Automated Test Suite
-        run: npx vitest run --pool=forks
+        run: npm test
 
       - name: Run Vite Production Build
         run: npm run build

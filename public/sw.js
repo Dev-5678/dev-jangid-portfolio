@@ -1,8 +1,6 @@
-// Dev Jangid Portfolio Service Worker v1.0.0
-const CACHE_NAME = 'dev-portfolio-cache-v1'
+// Dev Jangid Portfolio Service Worker v1.0.1
+const CACHE_NAME = 'dev-portfolio-cache-v1.0.1'
 const STATIC_ASSETS = [
-  '/',
-  '/index.html',
   '/favicon.svg',
   '/manifest.webmanifest'
 ]
@@ -35,6 +33,21 @@ self.addEventListener('fetch', (event) => {
     return
   }
 
+  // Navigation requests (HTML): Always fetch from network first so new Vite deployments are immediate
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          return networkResponse
+        })
+        .catch(() => {
+          return caches.match('/index.html') || caches.match('/')
+        })
+    )
+    return
+  }
+
+  // Static assets: Cache-First
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
@@ -49,10 +62,6 @@ self.addEventListener('fetch', (event) => {
           cache.put(event.request, responseToCache)
         })
         return networkResponse
-      }).catch(() => {
-        if (event.request.mode === 'navigate') {
-          return caches.match('/')
-        }
       })
     })
   )

@@ -26,7 +26,7 @@ describe('Progressive Web App (PWA) & Offline Manifest Validation', () => {
     expect(fs.existsSync(swPath)).toBe(true)
 
     const swContent = fs.readFileSync(swPath, 'utf-8')
-    expect(swContent).toContain("const CACHE_NAME = 'dev-portfolio-cache-v1'")
+    expect(swContent).toContain("const CACHE_NAME = 'dev-portfolio-cache-v1.0.1'")
     expect(swContent).toContain("addEventListener('install'")
     expect(swContent).toContain("addEventListener('activate'")
     expect(swContent).toContain("addEventListener('fetch'")
