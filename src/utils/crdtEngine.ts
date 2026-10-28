@@ -44,7 +44,7 @@ export class LWWElementSet<T> {
   }
 
   merge(other: LWWElementSet<T>): void {
-    for (const [id, elem] of other.addSet.entries()) {
+    for (const elem of other.addSet.values()) {
       this.add(elem.id, elem.value, elem.timestamp, elem.peerId)
     }
     for (const [id, timestamp] of other.removeSet.entries()) {
