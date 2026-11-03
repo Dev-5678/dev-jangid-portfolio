@@ -232,6 +232,171 @@ export const CanSatTelemetryApp: React.FC = () => {
               </div>
             </div>
 
+            {/* 3D Attitude Indicator, CanSat Spacecraft Model & Flight Profile */}
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-3 p-4 rounded-xl bg-gradient-to-b from-[#0e1017] to-[#07080b] border border-white/10 shadow-inner">
+              {/* 3D CanSat Spacecraft Payload (Col 1-5) */}
+              <div className="md:col-span-5 p-4 rounded-xl bg-black/60 border border-white/10 flex flex-col items-center justify-between min-h-[260px] relative overflow-hidden group">
+                <div className="w-full flex items-center justify-between text-[10px] text-zinc-400 font-bold uppercase mb-2">
+                  <span className="flex items-center gap-1.5 text-ember">
+                    <span className="w-1.5 h-1.5 rounded-full bg-ember animate-ping" />
+                    3D 1U Payload Attitude
+                  </span>
+                  <span className="text-zinc-500 font-mono">PITCH: {pitch}° | ROLL: {roll}°</span>
+                </div>
+
+                {/* Parachute Banner if deployed */}
+                {parachuteTriggered && (
+                  <div className="absolute top-10 flex flex-col items-center z-20 animate-bounce">
+                    <div className="w-16 h-8 rounded-t-full bg-gradient-to-r from-ember via-amber-400 to-ember border-t-2 border-white/80 shadow-[0_0_15px_rgba(252,107,47,0.7)]" />
+                    <div className="w-12 h-4 border-l border-r border-dashed border-white/40" />
+                  </div>
+                )}
+
+                {/* 3D Model Viewport with CSS 3D */}
+                <div
+                  className="relative w-44 h-48 flex items-center justify-center my-auto cursor-grab active:cursor-grabbing select-none"
+                  style={{ perspective: '800px' }}
+                >
+                  <div
+                    className="relative transition-transform duration-300 ease-out flex flex-col items-center"
+                    style={{
+                      transform: `rotateX(${-pitch * 1.6}deg) rotateZ(${roll * 1.4}deg)`,
+                      transformStyle: 'preserve-3d'
+                    }}
+                  >
+                    {/* Monopole Antenna */}
+                    <div className="w-0.5 h-10 bg-gradient-to-t from-zinc-400 to-amber-300 relative shadow-[0_0_8px_#f59e0b]">
+                      <div className="w-2 h-2 rounded-full bg-amber-400 -top-1 -left-[3px] absolute animate-ping opacity-60" />
+                    </div>
+
+                    {/* Top Bulkhead Cap */}
+                    <div className="w-24 h-5 rounded-t-lg bg-gradient-to-r from-zinc-700 via-zinc-400 to-zinc-700 border-t border-white/40 shadow-md flex items-center justify-around px-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" title="TX LED" />
+                      <span className="text-[7px] font-mono text-black font-extrabold tracking-tighter">ISL-1U</span>
+                      <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" title="BMP280" />
+                    </div>
+
+                    {/* Cylindrical Solar Cell Body */}
+                    <div className="w-24 h-24 bg-gradient-to-b from-[#121824] via-[#091522] to-[#121824] border-x-2 border-cyan-500/40 relative shadow-2xl flex flex-col justify-around px-1 overflow-hidden">
+                      {/* Solar Cell Grid Lines */}
+                      <div className="w-full h-[1px] bg-cyan-400/30" />
+                      <div className="w-full h-[1px] bg-cyan-400/30" />
+                      <div className="w-full h-[1px] bg-cyan-400/30" />
+                      {/* Gold PCB Traces */}
+                      <div className="absolute inset-y-0 left-3 w-1 bg-gradient-to-b from-amber-500/20 via-amber-400/50 to-amber-500/20" />
+                      <div className="absolute inset-y-0 right-3 w-1 bg-gradient-to-b from-amber-500/20 via-amber-400/50 to-amber-500/20" />
+                      <div className="text-center font-mono text-[8px] text-cyan-300/80 tracking-widest font-bold">
+                        433.92 MHz
+                      </div>
+                    </div>
+
+                    {/* Bottom Sensor Orifice Bulkhead */}
+                    <div className="w-24 h-4 rounded-b-lg bg-gradient-to-r from-zinc-700 via-zinc-500 to-zinc-700 border-b border-white/20 flex items-center justify-center">
+                      <div className="w-3 h-2 rounded-full bg-zinc-900 border border-white/20" title="Barometric Port" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="w-full text-center text-[9px] text-zinc-500 mt-1">
+                  Autonomous Sensor-Driven 3D Attitude Matrix (MPU6050 6-DoF Fusion)
+                </div>
+              </div>
+
+              {/* Center: Aviation Attitude Indicator (Artificial Horizon) (Col 6-8) */}
+              <div className="md:col-span-3 p-4 rounded-xl bg-black/60 border border-white/10 flex flex-col items-center justify-between min-h-[260px]">
+                <div className="w-full flex items-center justify-between text-[10px] text-zinc-400 font-bold uppercase mb-2">
+                  <span>Attitude Horizon</span>
+                  <span className="text-cyan-400">GYRO FUSION</span>
+                </div>
+
+                {/* Circular Gyro Instrument */}
+                <div className="relative w-36 h-36 rounded-full border-4 border-zinc-800 shadow-[0_0_20px_rgba(0,0,0,0.8),inset_0_0_15px_rgba(0,0,0,0.9)] overflow-hidden flex items-center justify-center bg-black">
+                  {/* Sky & Ground Horizon Disc */}
+                  <div
+                    className="absolute inset-[-40%] transition-transform duration-300 ease-out flex flex-col"
+                    style={{
+                      transform: `rotate(${roll}deg) translateY(${pitch * 1.5}px)`
+                    }}
+                  >
+                    {/* Sky */}
+                    <div className="w-full h-1/2 bg-gradient-to-b from-[#0d2a4a] to-[#1e4d7d] flex flex-col justify-end items-center pb-1">
+                      <div className="w-8 h-[1px] bg-white/70 mb-2" />
+                      <div className="w-14 h-[1px] bg-white/90 mb-2" />
+                      <div className="w-20 h-[1.5px] bg-white" />
+                    </div>
+                    {/* Horizon Line */}
+                    <div className="w-full h-[2px] bg-amber-400 shadow-[0_0_6px_#f59e0b]" />
+                    {/* Ground */}
+                    <div className="w-full h-1/2 bg-gradient-to-b from-[#3a1a14] to-[#1a0a07] flex flex-col items-center pt-1">
+                      <div className="w-20 h-[1.5px] bg-white/90" />
+                      <div className="w-14 h-[1px] bg-white/70 mt-2" />
+                      <div className="w-8 h-[1px] bg-white/50 mt-2" />
+                    </div>
+                  </div>
+
+                  {/* Fixed Reference Reticle (CanSat Crosshairs) */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+                    <div className="w-10 h-0.5 bg-amber-400 shadow-[0_0_6px_#f59e0b]" />
+                    <div className="w-2 h-2 rounded-full border-2 border-amber-400 bg-transparent" />
+                    <div className="w-10 h-0.5 bg-amber-400 shadow-[0_0_6px_#f59e0b]" />
+                  </div>
+
+                  {/* Outer Bezel Ticks */}
+                  <div className="absolute top-1 left-1/2 -translate-x-1/2 w-1.5 h-2 bg-amber-400" />
+                </div>
+
+                <div className="w-full text-center text-[9px] text-zinc-400 font-mono mt-2">
+                  Pitch: <strong className="text-white">{pitch > 0 ? `+${pitch}` : pitch}°</strong> | Roll: <strong className="text-white">{roll > 0 ? `+${roll}` : roll}°</strong>
+                </div>
+              </div>
+
+              {/* Right: Live Flight Descent Trajectory Profile (Col 9-12) */}
+              <div className="md:col-span-4 p-4 rounded-xl bg-black/60 border border-white/10 flex flex-col justify-between min-h-[260px]">
+                <div className="w-full flex items-center justify-between text-[10px] text-zinc-400 font-bold uppercase mb-1">
+                  <span>Descent Profile Graph</span>
+                  <span className="text-emerald-400">1000m &rarr; 0m</span>
+                </div>
+
+                {/* SVG Live Altitude Descent Sparkline */}
+                <div className="w-full h-36 bg-[#090b10] rounded-lg border border-white/5 p-2 relative flex flex-col justify-between overflow-hidden">
+                  <div className="flex justify-between text-[8px] font-mono text-zinc-500">
+                    <span>1000m APOGEE</span>
+                    <span>500m CHUTE</span>
+                    <span>0m IMPACT</span>
+                  </div>
+
+                  {/* Horizontal Threshold Guideline for Parachute Deploy */}
+                  <div className="absolute top-1/2 left-0 right-0 h-[1px] border-b border-dashed border-amber-500/40 pointer-events-none z-0" />
+
+                  {/* Dynamic Altitude Curve */}
+                  <svg className="w-full h-24 overflow-visible" viewBox="0 0 100 50" preserveAspectRatio="none">
+                    <path
+                      d={`M 0,${50 - (Math.min(1000, altitude) / 1000) * 45} Q 50,${phase === 'PARACHUTE_DEPLOYED' ? 30 : 15} 100,${50 - (Math.min(1000, altitude) / 1000) * 45}`}
+                      fill="none"
+                      stroke="#A02A22"
+                      strokeWidth="2.5"
+                    />
+                    <circle
+                      cx="50"
+                      cy={50 - (Math.min(1000, altitude) / 1000) * 45}
+                      r="3.5"
+                      fill="#fc6b2f"
+                      className="animate-pulse"
+                    />
+                  </svg>
+
+                  <div className="flex justify-between items-center text-[9px] font-mono">
+                    <span className="text-zinc-400">Velocity: <strong className="text-white">{phase === 'PARACHUTE_DEPLOYED' ? '3.8 m/s' : phase === 'FREEFALL' ? '14.2 m/s' : '0.0 m/s'}</strong></span>
+                    <span className="text-emerald-400 font-bold">{phase}</span>
+                  </div>
+                </div>
+
+                <div className="text-[9px] text-zinc-500 text-center font-mono mt-1">
+                  Barometric Drop Velocity Telemetry (Pressure Lapse Rate Formula)
+                </div>
+              </div>
+            </div>
+
             {/* Primary Gauges Strip */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {/* Altitude */}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { ProjectDetailModal, type ProjectModalData } from '../components/projects/ProjectDetailModal'
-import { ArrowUpRight, Layers } from 'lucide-react'
+import { ArrowUpRight, Layers, Play } from 'lucide-react'
 
 const PROJECTS: ProjectModalData[] = [
   {
@@ -222,16 +222,14 @@ export const ProjectsSection: React.FC = () => {
                   <div className={`lg:col-span-6 flex flex-col justify-between h-full space-y-4 sm:space-y-6 ${isEven ? 'lg:order-2' : 'lg:order-1'}`}>
                     {/* Launch & Case Study Action Bar */}
                     <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 w-full">
-                      <a
-                        href={`#/project/${p.id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-white text-black font-extrabold text-[11px] sm:text-xs tracking-wider uppercase hover:scale-105 active:scale-95 transition-all shadow-[0_4px_25px_rgba(255,255,255,0.4)] group touch-manipulation cursor-pointer"
-                        title="Launch Dedicated Full-Stack Webpage in New Tab"
+                      <button
+                        onClick={() => openCaseStudy(p, 'apparatus')}
+                        className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-[11px] sm:text-xs tracking-wider uppercase hover:scale-105 active:scale-95 transition-all shadow-[0_0_25px_rgba(16,185,129,0.5)] group touch-manipulation cursor-pointer"
+                        title={`Launch ${p.title} Live Interactive Apparatus Simulator`}
                       >
-                        <span>Launch Live App</span>
-                        <ArrowUpRight className="w-3.5 h-3.5 text-black stroke-[2.5] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
-                      </a>
+                        <Play className="w-3.5 h-3.5 fill-black stroke-black shrink-0" />
+                        <span>Test Live Apparatus</span>
+                      </button>
 
                       <button
                         onClick={() => openCaseStudy(p, 'blueprint')}
@@ -239,8 +237,19 @@ export const ProjectsSection: React.FC = () => {
                         title="Open Interactive Architecture Blueprint & Case Study Modal"
                       >
                         <Layers className="w-3.5 h-3.5 text-ember-bright shrink-0" />
-                        <span>Case Study &amp; Blueprint</span>
+                        <span>Architecture &amp; Blueprint</span>
                       </button>
+
+                      <a
+                        href={`#/project/${p.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 font-semibold text-[11px] sm:text-xs tracking-wider uppercase transition-all backdrop-blur-md cursor-pointer active:scale-95 shadow-[0_0_15px_rgba(255,255,255,0.1)]"
+                        title="Launch Dedicated Full-Stack Webpage in New Tab"
+                      >
+                        <span>Dedicated Page</span>
+                        <ArrowUpRight className="w-3.5 h-3.5 text-zinc-300 stroke-[2] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
+                      </a>
 
                       {p.githubUrl && (
                         <a
@@ -292,9 +301,9 @@ export const ProjectsSection: React.FC = () => {
                   {/* Cinematic Visual Preview */}
                   <div className={`lg:col-span-6 flex items-center justify-center ${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
                     <div
-                      onClick={() => openCaseStudy(p, 'blueprint')}
-                      className="relative w-full max-w-xl rounded-2xl sm:rounded-3xl overflow-hidden border border-white/20 bg-[#090a0f] backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.2)] group cursor-pointer transition-all duration-500 hover:border-ember/70 hover:shadow-[0_25px_70px_rgba(160,42,34,0.35)] hover:-translate-y-1"
-                      title="Click to view full architecture case study and interactive apparatus"
+                      onClick={() => openCaseStudy(p, 'apparatus')}
+                      className="relative w-full max-w-xl rounded-2xl sm:rounded-3xl overflow-hidden border border-white/20 bg-[#090a0f] backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.2)] group cursor-pointer transition-all duration-500 hover:border-emerald-500/70 hover:shadow-[0_25px_70px_rgba(16,185,129,0.25)] hover:-translate-y-1"
+                      title="Click to launch real-time interactive apparatus simulation"
                     >
                       <div className="relative aspect-[16/10] sm:aspect-video w-full overflow-hidden bg-black/50">
                         {/* Live Status Badge */}
@@ -318,11 +327,11 @@ export const ProjectsSection: React.FC = () => {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none" />
                         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_45%,rgba(0,0,0,0.7)_100%)] pointer-events-none" />
 
-                        {/* Interactive Blueprint Pill on Hover */}
+                        {/* Interactive Apparatus Pill on Hover */}
                         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 z-20 pointer-events-none">
-                          <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-ember text-white font-extrabold text-xs tracking-wider uppercase shadow-[0_0_35px_rgba(160,42,34,0.8)] transform scale-95 group-hover:scale-100 transition-transform duration-300">
-                            <Layers className="w-4 h-4" />
-                            <span>Inspect Architecture Blueprint</span>
+                          <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs tracking-wider uppercase shadow-[0_0_35px_rgba(16,185,129,0.8)] transform scale-95 group-hover:scale-100 transition-transform duration-300">
+                            <Play className="w-4 h-4 fill-black stroke-black" />
+                            <span>Launch Live Interactive Apparatus</span>
                           </span>
                         </div>
 

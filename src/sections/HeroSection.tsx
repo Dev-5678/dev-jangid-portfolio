@@ -178,7 +178,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
           className="text-[10px] sm:text-[11px] text-[#B5B5B5] tracking-[0.14em] sm:tracking-[0.2em] uppercase font-semibold truncate"
           style={{ fontFamily: 'var(--font-display)' }}
         >
-          Shipping Ideas Into Reality.
+          MISSION-CRITICAL SYSTEMS // LOW-LATENCY INFRASTRUCTURE
         </span>
       </div>
 
@@ -213,7 +213,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
             className="hero-line text-[11px] sm:text-xs md:text-sm font-extrabold tracking-[0.16em] sm:tracking-[0.24em] uppercase text-ember drop-shadow-[0_0_20px_rgba(252,107,47,0.7)]"
             style={{ fontFamily: 'var(--font-poppins), sans-serif' }}
           >
-            Crafting Interfaces That People Remember.
+            High-Throughput Systems, Aerospace Telemetry &amp; Security.
           </p>
         </div>
       </div>
@@ -227,7 +227,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
           className="text-[12px] sm:text-[13px] md:text-[14px] text-[#C4C4C8] dark:text-[#E2E2E6] leading-[1.6] sm:leading-[1.75] font-normal tracking-wide drop-shadow-sm"
           style={{ fontFamily: 'var(--font-poppins), sans-serif' }}
         >
-          Full-Stack Developer &amp; Computer Science Engineer crafting fast, resilient, and motion-driven digital products.
+          Computer Science Engineer specializing in low-latency systems, 433 MHz aerospace telemetry (India Space Lab), enterprise network isolation (Airports Authority of India), and high-throughput C++ algorithms.
         </p>
       </div>
 
