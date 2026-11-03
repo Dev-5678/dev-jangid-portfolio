@@ -114,6 +114,27 @@ export const AboutSection: React.FC = () => {
               <strong className="text-white text-xs sm:text-sm font-semibold">{personalInfo.location}</strong>
             </div>
           </div>
+
+          {/* Institutional Credentials Badge Bar */}
+          <div className="mt-6 pt-5 border-t border-white/10 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-400" />
+              <span className="text-zinc-300 font-bold uppercase tracking-wider text-[11px]">
+                INSTITUTIONAL CLEARANCES &amp; CERTIFICATIONS:
+              </span>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-bold text-[10px]">
+                <span>✓ Airports Authority of India (Civil Aviation HQ)</span>
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400 font-bold text-[10px]">
+                <span>✓ India Space Lab (1U CanSat Payload)</span>
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-bold text-[10px]">
+                <span>✓ Google Cloud GenAI Academy</span>
+              </span>
+            </div>
+          </div>
         </div>
 
         {/* Technical Competencies Grid */}
