@@ -16,14 +16,14 @@ describe('Master 40-Project Catalog Integrity & Anti-Plagiarism Guarantees', () 
 
   it('ensures each of the 8 technical stacks has exactly 5 high-caliber implementations', () => {
     const stacks: StackKey[] = [
-      'c-systems',
-      'cpp-performance',
-      'python-core',
+      'c',
+      'cpp',
+      'python',
       'python-fullstack',
-      'java-core',
-      'java-enterprise',
-      'web-protocols',
-      'devops-infra'
+      'java',
+      'java-fullstack',
+      'web',
+      'devops'
     ]
 
     for (const stack of stacks) {
@@ -56,12 +56,10 @@ describe('Master 40-Project Catalog Integrity & Anti-Plagiarism Guarantees', () 
   })
 
   it('validates that STACK_CATEGORIES properly tallies 40 projects', () => {
-    const allCat = STACK_CATEGORIES.find((c) => c.key === 'all')
-    expect(allCat?.count).toBe(40)
-
-    const subCats = STACK_CATEGORIES.filter((c) => c.key !== 'all')
-    expect(subCats).toHaveLength(8)
-    for (const cat of subCats) {
+    const totalCount = STACK_CATEGORIES.reduce((acc, cat) => acc + cat.count, 0)
+    expect(totalCount).toBe(40)
+    expect(STACK_CATEGORIES).toHaveLength(8)
+    for (const cat of STACK_CATEGORIES) {
       expect(cat.count).toBe(5)
     }
   })

@@ -1,13 +1,12 @@
 export type StackKey =
-  | 'all'
-  | 'c-systems'
-  | 'cpp-performance'
-  | 'python-core'
+  | 'c'
+  | 'cpp'
+  | 'python'
   | 'python-fullstack'
-  | 'java-core'
-  | 'java-enterprise'
-  | 'web-protocols'
-  | 'devops-infra'
+  | 'java'
+  | 'java-fullstack'
+  | 'web'
+  | 'devops'
 
 export interface Subsystem {
   name: string
@@ -20,7 +19,8 @@ export interface ProjectData {
   number: string
   title: string
   category: string
-  stackKey: 'c-systems' | 'cpp-performance' | 'python-core' | 'python-fullstack' | 'java-core' | 'java-enterprise' | 'web-protocols' | 'devops-infra'
+  stackKey: StackKey
+  language: string
   domain: string
   description: string
   devNotes: string
@@ -40,16 +40,15 @@ export interface ProjectData {
   }
 }
 
-export const STACK_CATEGORIES: { key: StackKey; label: string; count: number; badge: string }[] = [
-  { key: 'all', label: 'All Projects', count: 40, badge: 'COMPLETE CATALOG' },
-  { key: 'c-systems', label: 'C Systems & OS', count: 5, badge: 'LOW-LEVEL KERNEL' },
-  { key: 'cpp-performance', label: 'C++ Low-Latency', count: 5, badge: 'C++20 & SIMD' },
-  { key: 'python-core', label: 'Python Systems', count: 5, badge: 'SOCKETS & B-TREE' },
-  { key: 'python-fullstack', label: 'Python Full-Stack & AI', count: 5, badge: 'RAG & MISSION CONTROL' },
-  { key: 'java-core', label: 'Java Systems & JVM', count: 5, badge: 'LOCK-FREE & JMM' },
-  { key: 'java-enterprise', label: 'Java Enterprise', count: 5, badge: 'SPRING BOOT 3 & SAGA' },
-  { key: 'web-protocols', label: 'TypeScript & Protocols', count: 5, badge: 'CRDT & SPATIAL AUDIO' },
-  { key: 'devops-infra', label: 'DevOps & Networks', count: 5, badge: 'VLAN & EBPF PROBES' }
+export const STACK_CATEGORIES: { key: StackKey | 'all'; label: string; count: number; badge: string; icon: string }[] = [
+  { key: 'c', label: 'C Systems', count: 5, badge: 'C99 / POSIX', icon: 'Terminal' },
+  { key: 'cpp', label: 'C++ Systems', count: 5, badge: 'MODERN C++20', icon: 'Cpu' },
+  { key: 'python', label: 'Python Core', count: 5, badge: 'ASYNCIO / SOCKETS', icon: 'FileCode' },
+  { key: 'python-fullstack', label: 'Python Full Stack', count: 5, badge: 'FASTAPI & AI', icon: 'Layers' },
+  { key: 'java', label: 'Java Core', count: 5, badge: 'JAVA 21 / OOP', icon: 'Coffee' },
+  { key: 'java-fullstack', label: 'Java Full Stack', count: 5, badge: 'SPRING BOOT 3', icon: 'Server' },
+  { key: 'web', label: 'TypeScript & Web', count: 5, badge: 'REACT & PROTOCOLS', icon: 'Globe' },
+  { key: 'devops', label: 'DevOps & Cloud', count: 5, badge: 'LINUX / DOCKER', icon: 'HardDrive' }
 ]
 
 export const ALL_PROJECTS: ProjectData[] = [
@@ -59,1123 +58,1154 @@ export const ALL_PROJECTS: ProjectData[] = [
   {
     id: 'aerortos-1u',
     number: '01 / 40',
-    title: 'AeroRTOS-1U — CanSat Telemetry Microkernel',
+    title: 'AeroRTOS-1U — Embedded CanSat Flight Firmware',
     category: 'C Systems & OS',
-    stackKey: 'c-systems',
-    domain: 'Aerospace Microkernel & Telemetry Firmware',
-    description: 'Deterministic cooperative microkernel engineered for 1U CanSat/CubeSat flight payloads. Schedules barometric, IMU, and RF transmission tasks via non-blocking hardware timer ticks without dynamic heap allocation pauses.',
-    devNotes: 'During live drop tests with India Space Lab, standard Arduino loop handlers suffered from gyro packet drops due to blocking I2C reads. I replaced the entire runtime with this static-memory microkernel, fixing task switch time to 18 µs and isolating bus failures.',
-    tags: ['C99', 'MICROKERNEL', 'TASK SCHEDULER', 'CRC-16-CCITT', 'CANSAT 1U', 'AVR/ARM'],
+    stackKey: 'c',
+    language: 'C',
+    domain: 'Embedded Firmware & Microcontroller Telemetry',
+    description: 'Embedded C flight firmware running on an ESP32/ATmega microcontroller for a 1U CanSat payload. Uses non-blocking hardware timer ticks to poll barometric pressure and accelerometer sensors, encoding telemetry packets with CRC-16 checksums for 433 MHz UHF radio transmission.',
+    devNotes: 'During live field tests with India Space Lab, sensor reading delays were stalling radio packet broadcasts. I redesigned the loop into a non-blocking state machine driven by a 10 ms hardware timer tick, ensuring sensor reads never delay the 433 MHz radio frame.',
+    tags: ['C99', 'ESP32 / AVR', 'TIMER ISR', 'CRC-16 CCITT', 'I2C / SPI', 'EMBEDDED'],
     appType: 'cansat',
     simType: 'kernel',
     image: '/projects/cansat-space.jpg',
     featured: true,
     liveMetrics: [
-      { label: 'Task Switch', value: '18 µs' },
-      { label: 'Heap Overhead', value: '0 Bytes (Static)' },
-      { label: 'CRC Integrity', value: '100% CCITT' }
+      { label: 'Timer Tick', value: '10 ms Periodic' },
+      { label: 'Packet Rate', value: '5 Hz UHF Stream' },
+      { label: 'Integrity', value: 'CRC-16 CCITT Verified' }
     ],
     githubUrl: 'https://github.com/Dev-5678/AeroRTOS-1U',
     architecture: {
-      overview: 'Preemptive/cooperative hybrid scheduler using static Task Control Blocks (TCBs). Fixed 10 ms hardware timer tick drives state machines across BMP280, MPU6050, and 433 MHz UHF radio with CRC-16 integrity verification.',
+      overview: 'Non-blocking embedded state machine. A hardware timer interrupt triggers sensor polling on I2C/SPI buses, formats telemetry data into binary structures with CRC-16 checksums, and dispatches packets over a 433 MHz UHF serial transceiver.',
       subsystems: [
-        { name: 'Static TCB Scheduler', role: 'Round-robin task dispatcher with deterministic deadlines', tech: 'C99 Assembly Timer ISR' },
-        { name: 'Non-Blocking I2C/SPI Driver', role: 'DMA state machine sampling pressure and orientation', tech: 'Hardware Register Manipulation' },
-        { name: 'Telemetry Packetizer', role: 'Binary serialization and CRC-16 frame stamping', tech: 'CRC-16-CCITT Lookup' }
+        { name: 'Hardware Timer Scheduler', role: 'Maintains deterministic 10 ms execution slots without busy-wait loops', tech: 'Hardware Timer ISR' },
+        { name: 'Sensor Polling Drivers', role: 'Reads pressure, temperature, and acceleration via non-blocking registers', tech: 'I2C / SPI Protocols' },
+        { name: 'CRC Frame Packetizer', role: 'Serializes sensor floats and calculates 16-bit polynomial checksum', tech: 'CRC-16-CCITT Lookup' }
       ],
       securityAndIntegrity: [
-        'Zero dynamic memory allocations (all buffers statically sized in BSS section).',
-        'Hardware watchdog timer auto-recovery within 64 ms of brownout or bus lockup.',
-        'Strict frame preamble and parity validation rejecting RF noise.'
+        'Zero dynamic heap allocation (malloc-free static BSS buffers) prevents memory fragmentation in flight.',
+        'Hardware watchdog timer auto-resets the microcontroller within 64 ms in case of bus lockup.',
+        'Corrupted radio frames are detected and dropped on reception via CRC verification.'
       ],
       keyEngineeringAchievements: [
-        'Maintained 100% packet transmission across 9,600 baud UHF radio links during simulated descent.',
-        'Zero stack overflow incidents verified via linker boundary analysis and canary bytes.'
+        'Streamed continuous telemetry during simulated 300m parachute drops with zero dropped frames.',
+        'Kept microcontroller memory footprint under 14 KB of RAM.'
       ]
     }
   },
   {
     id: 'valloc-c',
     number: '02 / 40',
-    title: 'vAlloc — Low-Fragmentation Custom Memory Allocator',
+    title: 'vAlloc — Custom Segregated Free List Memory Allocator',
     category: 'C Systems & OS',
-    stackKey: 'c-systems',
-    domain: 'Operating System Memory Management',
-    description: 'Custom memory allocator replacing standard glibc malloc/free. Features segregated size-class free lists, boundary-tag block coalescing, and POSIX mmap page acquisition to combat external fragmentation.',
-    devNotes: 'I wrote vAlloc to understand why long-running server daemons slowly bleed virtual memory over days. Implementing boundary tags gave me deep respect for pointer math and cache line alignment.',
-    tags: ['C99', 'MEMORY ALLOCATOR', 'MALLOC/FREE', 'BOUNDARY TAGS', 'VALGRIND', 'POSIX MMAP'],
+    stackKey: 'c',
+    language: 'C',
+    domain: 'Operating Systems & Memory Management',
+    description: 'A user-space memory allocator implementation demonstrating dynamic memory management. Implements segregated free lists for power-of-two size classes (16B to 2KB) and boundary-tag coalescing using POSIX mmap() syscalls to reduce external memory fragmentation.',
+    devNotes: 'I wrote vAlloc to truly understand how malloc() and free() work behind the scenes. Implementing boundary-tag headers and footers showed me how pointers can be manipulated to merge adjacent free memory blocks in O(1) time.',
+    tags: ['C99', 'POSIX MMAP', 'POINTER MATH', 'BOUNDARY TAGS', 'VALGRIND', 'MEMORY MANAGEMENT'],
     appType: 'universal',
     simType: 'kernel',
     image: '/projects/systems-engine.jpg',
     liveMetrics: [
-      { label: 'Alloc Speed', value: '<42 ns' },
-      { label: 'Alignment', value: '8-Byte Strict' },
-      { label: 'Fragmentation', value: '<4.1%' }
+      { label: 'Block Coalesce', value: 'O(1) Instant' },
+      { label: 'Alignment', value: '8-Byte Word Aligned' },
+      { label: 'Memory Leak', value: 'Zero (Valgrind Clean)' }
     ],
     githubUrl: 'https://github.com/Dev-5678/vAlloc',
     architecture: {
-      overview: 'Two-tier memory manager utilizing segregated free lists for allocations between 16 and 4096 bytes and direct mmap mapping for large chunks. Employs boundary-tag header/footer structures for O(1) adjacent free block merging.',
+      overview: 'User-space memory allocator. Allocations are grouped into size-class buckets backed by segregated free lists. Free operations inspect neighboring block headers and footers to coalesce contiguous free memory back into the heap pool.',
       subsystems: [
-        { name: 'Segregated Free List Buckets', role: 'Power-of-two size classes for rapid O(1) free block retrieval', tech: 'Intrusive Doubly-Linked Lists' },
-        { name: 'Boundary Tag Coalescer', role: 'Instant forward and backward block merging on free()', tech: 'Header/Footer Tag Math' },
-        { name: 'Virtual Page Arena', role: 'System page allocation and release via mmap/munmap', tech: 'POSIX Kernel Syscalls' }
+        { name: 'Segregated Bucket Engine', role: 'Routes allocation requests to power-of-two free list chains', tech: 'Intrusive Doubly-Linked Lists' },
+        { name: 'Boundary Tag Coalescer', role: 'Merges adjacent free blocks instantaneously upon free()', tech: 'Block Header / Footer Tags' },
+        { name: 'Virtual Memory Arena', role: 'Acquires 64 KB memory pages directly from Linux kernel', tech: 'POSIX mmap() / munmap()' }
       ],
       securityAndIntegrity: [
-        '8-byte boundary alignment enforced on all allocated addresses for CPU bus safety.',
-        'Canary byte verification detecting off-by-one heap buffer overruns upon deallocation.',
-        'Zero double-free vulnerabilities through header bitmask tagging.'
+        '8-byte boundary alignment enforced on all returned memory addresses for CPU architecture safety.',
+        'Magic canary bytes at block boundaries detect heap buffer overflows upon free().',
+        'Double-free detection rejects deallocating already-freed pointers.'
       ],
       keyEngineeringAchievements: [
-        'Achieved sub-45 ns allocation time on microbenchmarks across 500,000 cyclic allocation requests.',
-        'Passed full Valgrind test suites with zero memory leaks.'
+        'Passed comprehensive Valgrind test suites with 0 bytes lost across 100,000 allocation cycles.',
+        'Achieved sub-100ns allocation and deallocation speed on microbenchmarks.'
       ]
     }
   },
   {
     id: 'apex-shell',
     number: '03 / 40',
-    title: 'ApexShell — POSIX Unix Command Shell & Supervisor',
+    title: 'ApexShell — POSIX Unix Command Shell & Process Runner',
     category: 'C Systems & OS',
-    stackKey: 'c-systems',
+    stackKey: 'c',
+    language: 'C',
     domain: 'Systems Programming & Process Control',
-    description: 'Interactive POSIX command shell featuring tokenized pipeline chaining, background job supervision, signal masking, file descriptor I/O redirection, and history expansion without external shell dependencies.',
-    devNotes: 'Building ApexShell taught me how delicate process lifecycles are. Handling SIGCHLD properly with waitpid(WNOHANG) in a signal handler was the only way to avoid zombie process leaks under heavy piping.',
-    tags: ['C99', 'POSIX SIGNALS', 'FORK/EXEC', 'UNIX PIPES', 'JOB CONTROL', 'FILE DESCRIPTORS'],
+    description: 'An interactive command-line Unix shell written from scratch in C99. Implements fork-and-exec process management, multi-stage pipeline chaining (cmd1 | cmd2 | cmd3), file redirection (<, >), and clean background process reaping via waitpid(WNOHANG).',
+    devNotes: 'Building this shell taught me how processes communicate over pipes and how easy it is to leak zombie processes. Handling SIGCHLD properly with waitpid() inside the signal handler was the key to keeping the process table clean.',
+    tags: ['C99', 'FORK / EXECVP', 'POSIX SIGNALS', 'UNIX PIPES', 'DUP2 REDIRECTION', 'CLI'],
     appType: 'universal',
     simType: 'kernel',
     image: '/projects/systems-engine.jpg',
     liveMetrics: [
-      { label: 'Dispatch Latency', value: '0.8 ms' },
-      { label: 'Pipe Chaining', value: 'Unlimited (|)' },
-      { label: 'Zombie Leaks', value: 'Zero (WNOHANG)' }
+      { label: 'Piping Depth', value: 'Multi-Stage (|)' },
+      { label: 'Signals Trapped', value: 'SIGINT, SIGTSTP, SIGCHLD' },
+      { label: 'Zombie Leaks', value: 'Zero (waitpid clean)' }
     ],
     githubUrl: 'https://github.com/Dev-5678/ApexShell',
     architecture: {
-      overview: 'Command-line execution environment utilizing lexical scanner and recursive-descent syntax tree generation. Orchestrates child processes via fork(), execvp(), and pipe() system calls while preserving terminal tty state.',
+      overview: 'Interactive Unix command interpreter. Reads user input via readline, tokenizes commands and flags into syntax trees, sets up inter-process pipe file descriptors via dup2(), and forks child processes to execute binaries.',
       subsystems: [
-        { name: 'Lexical Parser & Ast Builder', role: 'Splits raw command input into arguments, pipes, and redirection tokens', tech: 'POSIX C Lexer' },
-        { name: 'Process Pipeline Chaining', role: 'Manages read/write ends of multiple Unix pipes across child processes', tech: 'pipe() / dup2() Syscalls' },
-        { name: 'Async Signal Supervisor', role: 'Traps SIGINT, SIGTSTP, and cleans zombies via SIGCHLD handlers', tech: 'sigaction / sigprocmask' }
+        { name: 'Command Lexer & Tokenizer', role: 'Splits raw terminal input into arguments, pipe operators, and file paths', tech: 'C String Parsing' },
+        { name: 'Process Pipeline Manager', role: 'Chains stdout of preceding commands to stdin of next commands', tech: 'pipe() / dup2() Syscalls' },
+        { name: 'Signal & Job Supervisor', role: 'Traps Ctrl+C interrupts and reaps exited child processes in background', tech: 'sigaction / waitpid()' }
       ],
       securityAndIntegrity: [
-        'Signal masking prevents race conditions between background job registration and process exit.',
-        'Strict file descriptor sanitization prevents leaked descriptors in spawned child processes.'
+        'Unclosed file descriptors are cleanly closed in child processes to prevent descriptor leakage.',
+        'Path traversal bounds checks prevent buffer overruns on long command strings.'
       ],
       keyEngineeringAchievements: [
-        'Handled complex multi-stage pipelines (e.g., cat file | grep err | cut -d: -f2 | sort -r | uniq) seamlessly.',
-        'Maintained rock-solid stability under continuous terminal resizing and Ctrl+C interrupt signals.'
+        'Successfully chained 5-stage complex command pipelines (e.g. cat | grep | sort | uniq | wc).',
+        'Preserved terminal state cleanly under interactive Ctrl+C and Ctrl+Z signals.'
       ]
     }
   },
   {
     id: 'titannet-raw',
     number: '04 / 40',
-    title: 'TitanNet-Raw — Raw Socket Packet Dissector & ARP Sentinel',
+    title: 'TitanNet-Raw — Raw Socket Network Packet Sniffer & ARP Monitor',
     category: 'C Systems & OS',
-    stackKey: 'c-systems',
-    domain: 'Enterprise Network Security & Deep Packet Inspection',
-    description: 'Kernel-level network packet sniffer capturing raw Ethernet frames via AF_PACKET sockets. Decodes IP, TCP, UDP, ICMP, and ARP headers in real time, detecting ARP spoofing attacks and SYN flood anomalies.',
-    devNotes: 'Directly derived from network monitoring tasks at Airports Authority of India (AAI). I wanted to see raw ethernet frames directly off the NIC rather than trusting high-level libraries.',
-    tags: ['C99', 'RAW SOCKETS', 'AF_PACKET', 'DEEP PACKET INSPECTION', 'ARP SPOOF DETECTION', 'PCAP'],
+    stackKey: 'c',
+    language: 'C',
+    domain: 'Network Security & Packet Inspection',
+    description: 'A Linux network packet sniffer written using AF_PACKET raw sockets. Dissects Ethernet, IPv4, TCP, UDP, and ARP frames directly off the network card in real time, alerting on unsolicited ARP replies to detect local Man-in-the-Middle spoofing.',
+    devNotes: 'Directly motivated by network security compliance work at Airports Authority of India (AAI). Writing a raw socket dissector in pure C showed me the exact byte-by-byte layout of Ethernet, IP, and TCP headers without relying on high-level tools.',
+    tags: ['C99', 'RAW SOCKETS', 'AF_PACKET', 'PACKET DISSECTION', 'ARP DETECTION', 'NETWORKING'],
     appType: 'aai',
     simType: 'network',
     image: '/projects/aai-security.jpg',
     liveMetrics: [
-      { label: 'Capture Rate', value: '120k pkts/s' },
-      { label: 'Overhead', value: '<1.2% CPU' },
-      { label: 'Inspection', value: 'Layer 2/3/4' }
+      { label: 'Layer Support', value: 'Layer 2, 3 & 4' },
+      { label: 'Inspection Rate', value: '~1,500 pkts/sec' },
+      { label: 'Alert Trigger', value: 'ARP Spoofing Flag' }
     ],
     githubUrl: 'https://github.com/Dev-5678/TitanNet-Raw',
     architecture: {
-      overview: 'High-speed promiscuous-mode packet sniffer bound directly to Linux raw network sockets. Parses protocol headers sequentially without payload copying and compares incoming ARP frames against an in-memory IP-to-MAC baseline table.',
+      overview: 'Packet capture engine bound to Linux raw sockets. Puts the interface into promiscuous mode, decodes incoming frame headers without payload copying, and checks ARP table mappings against known subnet gateways.',
       subsystems: [
-        { name: 'Raw Socket Ingress Engine', role: 'Captures raw frames from NIC using AF_PACKET and SOCK_RAW', tech: 'Linux Kernel Socket API' },
-        { name: 'Protocol Header Dissector', role: 'Zero-copy decoding of Ethernet, IPv4, TCP, UDP, and ICMP headers', tech: 'netinet/ip.h C Structs' },
-        { name: 'ARP Integrity Sentinel', role: 'Real-time detection of unsolicited ARP replies and gateway poisoning', tech: 'Dynamic ARP Hash Table' }
+        { name: 'Raw Socket Ingress', role: 'Captures incoming link-layer frames from network interface', tech: 'Linux AF_PACKET / SOCK_RAW' },
+        { name: 'Header Dissection Pipeline', role: 'Decodes Ethernet MACs, IP addresses, TCP/UDP port flags, and payloads', tech: 'netinet/ip.h C Structs' },
+        { name: 'ARP Spoofing Detector', role: 'Maintains in-memory IP-to-MAC baseline to flag gateway conflicts', tech: 'Hash Table Lookup' }
       ],
       securityAndIntegrity: [
-        'Promiscuous mode privilege dropped immediately after socket creation to adhere to least privilege.',
-        'Buffer boundary enforcement prevents memory corruption on truncated or malformed IP packets.'
+        'Root privileges dropped via setuid/setgid immediately after raw socket binding.',
+        'Buffer bounds checks prevent buffer overruns when handling truncated or malformed IP packets.'
       ],
       keyEngineeringAchievements: [
-        'Captured and dissected 120,000 packets per second with zero kernel dropped frames.',
-        'Detected simulated Man-in-the-Middle ARP poisoning attacks within 4 milliseconds.'
+        'Captured and dissected network traffic on 100 Mbps subnets with under 2% CPU usage.',
+        'Successfully flagged simulated ARP poisoning attacks generated via arpspoof.'
       ]
     }
   },
   {
     id: 'bytevm',
     number: '05 / 40',
-    title: 'ByteVM — Stack-Based Bytecode Virtual Machine & JIT Simulator',
+    title: 'ByteVM — Stack-Based Bytecode Interpreter & Virtual Machine',
     category: 'C Systems & OS',
-    stackKey: 'c-systems',
+    stackKey: 'c',
+    language: 'C',
     domain: 'Virtual Machine Architecture & Compiler Runtimes',
-    description: 'Compact stack-based virtual machine executing custom assembly instructions with call-frame stack unwinding, 32 virtual registers, and a mark-and-sweep garbage collection subsystem.',
-    devNotes: 'I built ByteVM to demystify how the JVM and Python CPython runtimes actually interpret bytecode. Writing the computed goto dispatch table made opcode evaluation 35% faster than switch-case.',
-    tags: ['C99', 'BYTECODE RUNTIME', 'STACK VM', 'COMPUTED GOTO', 'GARBAGE COLLECTION', 'OPCODES'],
+    description: 'A compact stack-based virtual machine written in C. Features a program counter, 256-level evaluation stack, 16 custom opcodes (PUSH, POP, ADD, SUB, MULT, DIV, JMP, JEQ, PRINT, HALT), and a fixed memory pool for evaluating compiled bytecode programs.',
+    devNotes: 'I built ByteVM to demystify how the JVM and Python CPython runtimes actually interpret bytecode instructions. Implementing the instruction dispatch loop and operand stack gave me a deep appreciation for compiler target languages.',
+    tags: ['C99', 'STACK VM', 'BYTECODE INTERPRETER', 'OPCODES', 'PROGRAM COUNTER', 'COMPILERS'],
     appType: 'universal',
     simType: 'kernel',
     image: '/projects/systems-engine.jpg',
     liveMetrics: [
-      { label: 'Dispatch Rate', value: '45M opcodes/s' },
-      { label: 'Memory Footprint', value: '<256 KB' },
-      { label: 'GC Pause', value: '<0.4 ms' }
+      { label: 'Instruction Set', value: '16 Custom Opcodes' },
+      { label: 'Call Stack Depth', value: '256 Frames' },
+      { label: 'Memory Footprint', value: '64 KB Static Buffer' }
     ],
     githubUrl: 'https://github.com/Dev-5678/ByteVM',
     architecture: {
-      overview: 'Virtual runtime environment featuring program counter, operand stack, call frames, and 28 instruction opcodes. Employs direct threaded execution with GCC labels-as-values dispatch loop.',
+      overview: 'Virtual runtime environment with an instruction evaluation loop. Decodes binary bytecode sequences, manipulates values on an operand stack, and manages conditional program counter jumps.',
       subsystems: [
-        { name: 'Threaded Dispatch Engine', role: 'Direct instruction pointer jump table minimizing CPU branch misprediction', tech: 'GCC Computed Goto' },
-        { name: 'Call Frame Stack Manager', role: 'Handles function arguments, local variables, and return address unwinding', tech: 'Dynamic Call Frame Array' },
-        { name: 'Mark-and-Sweep GC', role: 'Traverses roots from evaluation stack and collects unreachable heap chunks', tech: 'Two-Phase Garbage Collector' }
+        { name: 'Instruction Dispatch Loop', role: 'Fetches opcode at program counter and executes operations', tech: 'Switch-Case Dispatch C' },
+        { name: 'Operand Stack Manager', role: 'Pushes and pops integer values with underflow/overflow bounds checking', tech: 'Static Array Stack' },
+        { name: 'Bytecode Binary Loader', role: 'Reads compiled instruction sequences and data constants from disk', tech: 'Binary File I/O' }
       ],
       securityAndIntegrity: [
-        'Call stack recursion limits prevent host stack exhaustion from rogue infinite loops.',
-        'Bytecode bytecode verification pass prior to execution validates jump offsets.'
+        'Stack boundary checks prevent operand stack overflow and underflow crashes.',
+        'Jump instruction target bounds verification prevents execution outside allocated code memory.'
       ],
       keyEngineeringAchievements: [
-        'Achieved execution throughput exceeding 45 million opcodes per second on standard benchmarks.',
-        'Cleanly executed recursive Fibonacci and sorting algorithms written in custom bytecode.'
+        'Successfully executed recursive mathematical functions (Fibonacci, Factorial) in custom bytecode.',
+        'Kept entire interpreter engine under 600 lines of clean, portable C code.'
       ]
     }
   },
 
   // ==========================================
-  // STACK 2: Modern C++20 (Low-Latency & SIMD) [6-10]
+  // STACK 2: Modern C++ (Algorithms & High-Perf) [6-10]
   // ==========================================
   {
-    id: 'lmax-apex',
+    id: 'pathrouter-cpp',
     number: '06 / 40',
-    title: 'LMAX-Apex — Ultra-Low-Latency Limit Order Matching Engine',
-    category: 'C++ Low-Latency',
-    stackKey: 'cpp-performance',
-    domain: 'High-Frequency Trading & Systems Architecture',
-    description: 'In-memory price-time priority order book matching engine. Features lock-free SPSC ring buffers, cache-aligned contiguous memory pools, and zero heap allocations on the hot path for sub-microsecond trade execution.',
-    devNotes: 'High-frequency systems live and die by CPU cache lines. By padding price-level structures to 64-byte boundaries with alignas(64), I eliminated false sharing between the order reader and matching threads entirely.',
-    tags: ['MODERN C++20', 'ORDER BOOK', 'LOCK-FREE SPSC', 'CACHE-ALIGNED', 'GOOGLE BENCHMARK', 'ATOMIC'],
+    title: 'PathRouter-CPP — Road Network & Graph Routing Engine',
+    category: 'C++ Systems',
+    stackKey: 'cpp',
+    language: 'C++',
+    domain: 'Graph Algorithms & Spatial Routing',
+    description: 'A high-performance shortest-path routing engine in Modern C++20 for large graph networks. Implements Dijkstra’s algorithm and A* heuristic search using a flat contiguous min-heap, finding optimal routes across 50,000 road network nodes in under 2 milliseconds.',
+    devNotes: 'In standard C++, std::priority_queue can cause multiple small node allocations. By storing the graph adjacency list in contiguous std::vector buffers and using an indexed flat binary heap, I cut route calculation time by more than half.',
+    tags: ['MODERN C++20', 'DIJKSTRA', 'A* SEARCH', 'FLAT MIN-HEAP', 'GRAPH THEORY', 'ALGORITHMS'],
     appType: 'systems',
     simType: 'hft',
     image: '/projects/systems-engine.jpg',
     featured: true,
     liveMetrics: [
-      { label: 'Tick Latency', value: '280 ns' },
-      { label: 'Throughput', value: '3.6M orders/s' },
-      { label: 'Heap Calls', value: '0 on Hot Path' }
+      { label: 'Graph Scale', value: '50,000 Nodes' },
+      { label: 'Route Time', value: '~1.8 ms Average' },
+      { label: 'Memory Layout', value: 'Contiguous std::vector' }
     ],
-    githubUrl: 'https://github.com/Dev-5678/LMAX-Apex',
+    githubUrl: 'https://github.com/Dev-5678/PathRouter-CPP',
     architecture: {
-      overview: 'Lock-free financial matching engine. Inbound orders pass through an atomic SPSC circular buffer into double-ended price ladders. Orders at equal prices are matched FIFO via intrusive doubly linked nodes pre-allocated in continuous buffers.',
+      overview: 'In-memory graph routing engine. Pre-processes coordinate nodes and directed edge weights into flat contiguous memory. Runs A* and Dijkstra searches using an indexed min-heap for O(log V) priority queue updates.',
       subsystems: [
-        { name: 'Lock-Free SPSC Ring Buffer', role: 'Zero-lock order ingress between network reader and matcher thread', tech: 'std::atomic with Acquire-Release' },
-        { name: 'Price-Level Order Ladder', role: 'Double-ended min/max price level indexing with intrusive lists', tech: 'Flat Intrusive Node Array' },
-        { name: 'Pre-Allocated Memory Arena', role: 'Zero-runtime malloc pool keeping all active orders cache-resident', tech: 'alignas(64) Memory Arenas' }
+        { name: 'Contiguous Adjacency Graph', role: 'Stores nodes and edge weights in cache-friendly flat arrays', tech: 'std::vector<Edge>' },
+        { name: 'Indexed Flat Min-Heap', role: 'Supports O(log N) key decrease operations for Dijkstra relaxation', tech: 'Flat Binary Array Heap' },
+        { name: 'A* Euclidean Heuristic', role: 'Accelerates search toward destination coordinates using Euclidean distance', tech: 'Coordinate Math' }
       ],
       securityAndIntegrity: [
-        'Deterministic execution time guarantees immunity to algorithmic complexity attacks.',
-        'Lock-free atomics eliminate deadlock possibilities during high order bursts.'
+        'Input graph validation drops negative edge weights to prevent infinite relaxation loops.',
+        'Memory reserve pre-allocation prevents dynamic vector reallocations during active searches.'
       ],
       keyEngineeringAchievements: [
-        'Benchmarked median tick-to-trade execution latency at 280 nanoseconds under continuous load.',
-        'Zero cache line false sharing validated using Linux perf hardware counters.'
+        'Calculated shortest paths across a 50,000-node simulated road network in an average of 1.8 milliseconds.',
+        'Benchmarked 2.3x faster than standard std::priority_queue Dijkstra implementations.'
       ]
     }
   },
   {
     id: 'robinhood-kv',
     number: '07 / 40',
-    title: 'RobinHood-KV — SIMD-Accelerated Open-Addressing Hash Table',
-    category: 'C++ Low-Latency',
-    stackKey: 'cpp-performance',
-    domain: 'Low-Latency Data Structures & Hardware Acceleration',
-    description: 'High-performance key-value hash table employing Robin Hood open addressing with backward-shift deletion and AVX2 SIMD parallel 16-byte hash probing, dramatically outperforming standard std::unordered_map.',
-    devNotes: 'std::unordered_map causes severe pointer-chasing cache misses. Implementing Robin Hood hashing ensures probe sequence lengths are bounded, allowing 16 slot hashes to be evaluated in a single AVX2 vector instruction.',
-    tags: ['MODERN C++20', 'ROBIN HOOD HASHING', 'AVX2 SIMD', 'CACHE LOCALITY', 'OPEN ADDRESSING'],
+    title: 'RobinHood-KV — Cache-Conscious Open-Addressing Hash Table',
+    category: 'C++ Systems',
+    stackKey: 'cpp',
+    language: 'C++',
+    domain: 'Data Structures & Cache Optimization',
+    description: 'An in-memory key-value hash table in Modern C++ using Robin Hood open addressing. Minimizes probe sequence variance during hash collisions, storing keys and values in flat contiguous arrays to maintain high CPU cache locality.',
+    devNotes: 'Standard std::unordered_map uses linked lists for bucket collisions, causing frequent CPU cache misses. Robin Hood hashing keeps everything in one continuous array and shifts rich elements during insertion, keeping lookup probe lengths under 6 slots.',
+    tags: ['MODERN C++20', 'ROBIN HOOD HASHING', 'CACHE LOCALITY', 'OPEN ADDRESSING', 'DATA STRUCTURES'],
     appType: 'systems',
     simType: 'hft',
     image: '/projects/systems-engine.jpg',
     liveMetrics: [
-      { label: 'L1 Cache Hit', value: '99.4%' },
-      { label: 'Lookup Speed', value: '4.2x std::map' },
-      { label: 'Max Probe Length', value: '<5 Slots' }
+      { label: 'Max Probe', value: '<6 Slots Bounded' },
+      { label: 'Memory Layout', value: 'Flat Contiguous Array' },
+      { label: 'Speedup', value: '2.1x over std::map' }
     ],
     githubUrl: 'https://github.com/Dev-5678/RobinHood-KV',
     architecture: {
-      overview: 'Flat array hash table pairing keys, values, and 1-byte hash fingerprints in contiguous memory. Robin Hood insertion displaces "rich" elements to guarantee minimal variance in probe distance, enabling AVX2 SIMD parallel search.',
+      overview: 'Flat array hash map. Stores keys, values, and 1-byte hash fingerprints in contiguous slots. Upon collisions, elements that traveled farther from their initial slot displace closer elements, maintaining a low and balanced probe sequence length across all keys.',
       subsystems: [
-        { name: 'Robin Hood Hash Table Core', role: 'Key-value storage with probe sequence length minimization', tech: 'Contiguous Slot Buffer' },
-        { name: 'AVX2 SIMD Fingerprint Vectorizer', role: 'Compares 16 hash fingerprints in parallel via _mm256_cmpeq_epi8', tech: 'x86 AVX2 Intrinsics' },
-        { name: 'Backward-Shift Deleter', role: 'Removes keys without tombstone bloat to preserve high load factors', tech: 'O(1) Shift Compaction' }
+        { name: 'Contiguous Slot Buffer', role: 'Houses key-value pairs and probe distances in single allocated buffer', tech: 'std::unique_ptr<Slot[]>' },
+        { name: 'Robin Hood Inserter', role: 'Performs element swapping to minimize maximum probe variance', tech: 'Robin Hood Algorithm' },
+        { name: 'Backward-Shift Deleter', role: 'Removes entries without tombstone markers by shifting adjacent slots back', tech: 'O(Probe) Shift Logic' }
       ],
       securityAndIntegrity: [
-        'FNV-1a / Murmur3 hash seed randomization guards against HashDoS collision attacks.',
-        'Strict load factor management triggers automatic resizing before probe lengths exceed 8.'
+        'FNV-1a hash algorithm with randomized seed prevents deliberate hash collision attacks.',
+        'Automatic 2x table resizing triggers when load factor crosses 0.85.'
       ],
       keyEngineeringAchievements: [
-        'Maintained 99.4% L1 cache hit rate across 5 million key lookups.',
-        'Demonstrated 4.2x faster read throughput than C++ std::unordered_map on random integer keys.'
+        'Maintained bounded probe lengths under 6 slots across 500,000 key insertions.',
+        'Demonstrated 2.1x faster random key lookups compared to std::map on standard benchmarks.'
       ]
     }
   },
   {
     id: 'telemetry-dsp',
     number: '08 / 40',
-    title: 'TelemetryDSP — SDR FSK Telemetry Demodulator & Signal Processor',
-    category: 'C++ Low-Latency',
-    stackKey: 'cpp-performance',
+    title: 'TelemetryDSP — 433 MHz Radio FSK Audio Demodulator & Decoder',
+    category: 'C++ Systems',
+    stackKey: 'cpp',
+    language: 'C++',
     domain: 'Digital Signal Processing & Aerospace Radio Comms',
-    description: 'Software-defined radio baseband processing engine. Demodulates raw 433 MHz Frequency-Shift Keying (FSK) audio streams into binary telemetry packets using IIR Butterworth filtering and the Goertzel tone detection algorithm.',
+    description: 'A digital signal processing tool written in C++20 to demodulate audio recordings from 433 MHz CanSat radio receivers. Employs digital bandpass filtering and the Goertzel tone algorithm to separate 1200 Hz and 2200 Hz audio frequencies and decode ASCII telemetry packets.',
     devNotes: 'During field testing with India Space Lab, radio signal flutter caused corrupted bytes. I wrote this DSP pipeline in C++20 to process raw audio from the SDR ground station, successfully recovering weak signals that hardware decoders missed.',
-    tags: ['MODERN C++20', 'DIGITAL SIGNAL PROCESSING', 'FSK DEMODULATION', 'GOERTZEL ALGORITHM', 'SDR', 'AEROSPACE'],
+    tags: ['MODERN C++20', 'DSP', 'GOERTZEL ALGORITHM', 'FSK DEMODULATION', 'AUDIO PROCESSING', 'CANSAT'],
     appType: 'cansat',
     simType: 'protocol',
     image: '/projects/cansat-space.jpg',
     liveMetrics: [
-      { label: 'Sample Rate', value: '96 kHz Live' },
-      { label: 'BER at -110dBm', value: '<10^-4' },
-      { label: 'Frame Recovery', value: '99.8%' }
+      { label: 'Audio Rate', value: '44.1 kHz PCM Stream' },
+      { label: 'Tone Detection', value: '1200 Hz / 2200 Hz' },
+      { label: 'Frame Recovery', value: '98% Accurate' }
     ],
     githubUrl: 'https://github.com/Dev-5678/TelemetryDSP',
     architecture: {
-      overview: 'Streaming audio signal processing pipeline. Samples 96 kHz baseband audio from SDR receiver, applies digital bandpass filtering, extracts mark/space frequencies (1200 Hz / 2200 Hz) via Goertzel algorithm, and reconstructs framing.',
+      overview: 'Audio stream signal processing tool. Reads raw PCM WAV audio samples, applies an IIR digital bandpass filter to eliminate background noise, uses dual Goertzel tone algorithms to detect mark/space bits, and outputs recovered text strings.',
       subsystems: [
-        { name: 'IIR Butterworth Bandpass Filter', role: 'Attenuates out-of-band radio noise and carrier harmonics', tech: 'Bi-quad Cascaded Filter C++' },
-        { name: 'Dual Goertzel Tone Discriminator', role: 'Extracts binary 1/0 states from mark/space frequency energies', tech: 'SIMD Goertzel Equation' },
-        { name: 'Bit Synchronizer & Framer', role: 'Recovers clock timing and extracts telemetry frames via UART sync word', tech: 'Early-Late Gate Phase Detector' }
+        { name: 'WAV Audio File Reader', role: 'Parses 44.1 kHz 16-bit uncompressed audio samples into memory', tech: 'C++ Binary Stream' },
+        { name: 'Dual Goertzel Tone Discriminator', role: 'Calculates energy at 1200 Hz and 2200 Hz to decide binary bits', tech: 'Goertzel DSP Math' },
+        { name: 'UART Packet Framer', role: 'Detects start/stop bits and formats recovered bytes into text lines', tech: 'State Machine C++' }
       ],
       securityAndIntegrity: [
-        'CRC-16-CCITT frame validation drops noise bursts automatically.',
-        'Floating-point denormal protection prevents CPU slowdowns during silent radio periods.'
+        'Floating-point denormal checks prevent CPU slowdowns during silent audio segments.',
+        'CRC-16 validation verifies that recovered telemetry frames are intact.'
       ],
       keyEngineeringAchievements: [
-        'Recovered CanSat telemetry frames down to -110 dBm signal strength in high-noise RF environments.',
-        'Processed real-time 96 kHz audio streams using under 2.5% CPU load on modern hardware.'
+        'Successfully decoded 98% of recorded telemetry packets from noisy field audio clips.',
+        'Processed a 5-minute descent recording in under 2.5 seconds of CPU time.'
       ]
     }
   },
   {
     id: 'raftcore-cpp',
     number: '09 / 40',
-    title: 'RaftCore-CPP — Distributed Consensus Engine & Replicated Log',
-    category: 'C++ Low-Latency',
-    stackKey: 'cpp-performance',
-    domain: 'Distributed Systems & Fault-Tolerant Infrastructure',
-    description: 'C++20 asynchronous implementation of the Raft consensus protocol. Guarantees linearizable replicated state machine updates across multi-node clusters with randomized election timers and write-ahead log compaction.',
-    devNotes: 'Building Raft from the original paper taught me how subtle distributed state bugs can be. Modeling election timers with C++20 coroutines made the asynchronous RPC flow clear and deadlock-free under simulated network splits.',
-    tags: ['MODERN C++20', 'RAFT CONSENSUS', 'COROUTINES', 'REPLICATED LOG', 'DISTRIBUTED SYSTEMS'],
+    title: 'RaftCore-CPP — Distributed Leader Election & State Replication',
+    category: 'C++ Systems',
+    stackKey: 'cpp',
+    language: 'C++',
+    domain: 'Distributed Systems & State Machine Replication',
+    description: 'An educational C++20 implementation of the core Raft consensus algorithm. Simulates a 3-to-5 node cluster over local TCP sockets, handling randomized election heartbeats, split-vote recovery, and sequential log replication with write-ahead persistence.',
+    devNotes: 'Building Raft from the original Stanford paper gave me a solid grasp of how distributed databases like Etcd and Kafka actually agree on state. Simulating node crashes and watching a new leader get elected within 300 ms was a great milestone.',
+    tags: ['MODERN C++20', 'RAFT CONSENSUS', 'LEADER ELECTION', 'REPLICATED LOG', 'SOCKETS', 'DISTRIBUTED'],
     appType: 'universal',
     simType: 'network',
     image: '/projects/systems-engine.jpg',
     liveMetrics: [
-      { label: 'Commit Latency', value: '1.4 ms' },
-      { label: 'Split-Brain Safety', value: '100% Proved' },
-      { label: 'Throughput', value: '85k ops/s' }
+      { label: 'Cluster Size', value: '3 to 5 Nodes' },
+      { label: 'Election Time', value: '150 - 300 ms Window' },
+      { label: 'Split-Brain', value: 'Prevented (Majority Quorum)' }
     ],
     githubUrl: 'https://github.com/Dev-5678/RaftCore-CPP',
     architecture: {
-      overview: 'Asynchronous consensus coordinator using C++20 coroutines. Handles candidate heartbeats, leader election, append-entries RPCs, and state machine log compaction with disk write-ahead log persistence.',
+      overview: 'Distributed state replication simulator. Each node runs a state machine (Follower, Candidate, Leader). Nodes exchange RequestVote and AppendEntries RPC messages over non-blocking TCP sockets to replicate committed log entries.',
       subsystems: [
-        { name: 'Raft State Machine Coordinator', role: 'Manages Leader/Follower/Candidate role transitions and terms', tech: 'C++20 Coroutine State Machine' },
-        { name: 'Append-Entries Log Engine', role: 'Replicates command entries across peer nodes with commit tracking', tech: 'Zero-Copy Log Ring' },
-        { name: 'Async Network Transport', role: 'Multiplexes non-blocking RPC connections between cluster nodes', tech: 'epoll / TCP Sockets' }
+        { name: 'Raft State Machine', role: 'Manages node roles, terms, and election heartbeat countdowns', tech: 'C++20 State Machine' },
+        { name: 'Append-Entries Replicator', role: 'Broadcasts new log entries from leader to followers', tech: 'Replication Log Array' },
+        { name: 'Local Socket Transport', role: 'Transmits JSON-serialized RPC messages between local node processes', tech: 'POSIX TCP Sockets' }
       ],
       securityAndIntegrity: [
-        'Strict election safety rules guarantee that at most one leader can be elected in a given term.',
-        'Log matching invariant enforces that committed entries are permanently durable across crashes.'
+        'Strict majority quorum (N/2 + 1) requirement prevents split-brain state divergence.',
+        'Log matching invariant ensures uncommitted divergent logs are overwritten by valid leader logs.'
       ],
       keyEngineeringAchievements: [
-        'Successfully passed Jepsen-style simulated network partitions with zero lost or duplicated commits.',
-        'Achieved 85,000 committed state updates per second across a 5-node local test cluster.'
+        'Achieved deterministic leader election within 300 ms during simulated leader process kills.',
+        'Replicated 10,000 test state transitions with zero log divergence across 5 nodes.'
       ]
     }
   },
   {
-    id: 'voxelray-gl',
+    id: 'raytracer-cpp',
     number: '10 / 40',
-    title: 'VoxelRay-GL — Multi-Threaded Volumetric Ray Marching Engine',
-    category: 'C++ Low-Latency',
-    stackKey: 'cpp-performance',
-    domain: 'Computer Graphics & Scientific Spatial Simulation',
-    description: 'High-performance CPU volumetric ray marcher and Signed Distance Field (SDF) evaluator. Features camera frustum culling, dynamic soft shadows, and SIMD vector math to render complex spatial terrains at 60 FPS.',
-    devNotes: 'I created this engine to render 3D atmospheric density layers and CanSat descent corridors without heavy game engine overhead. Tuning bounding volume checks made pure CPU ray marching run smoothly at 60 FPS.',
-    tags: ['MODERN C++20', 'RAY MARCHING', 'SIGNED DISTANCE FIELDS', 'SIMD MATH', 'OPENGL', 'MULTI-THREADED'],
+    title: 'RayTracer-CPP — Multi-Threaded 3D Scene & Terrain Ray Tracer',
+    category: 'C++ Systems',
+    stackKey: 'cpp',
+    language: 'C++',
+    domain: 'Computer Graphics & Multi-Threaded Computing',
+    description: 'A CPU-based ray tracer written in Modern C++ using standard multi-threading (std::jthread). Renders geometric spheres, atmospheric planes, shadows, and reflections, exporting high-resolution PPM images.',
+    devNotes: 'I wrote this ray tracer to explore CPU multi-core parallelism and 3D vector geometry. Dividing the image into tile bands and assigning them to worker threads scaled rendering performance almost linearly across all CPU cores.',
+    tags: ['MODERN C++20', 'RAY TRACING', 'MULTI-THREADING', 'STD::JTHREAD', 'VECTOR MATH', 'GRAPHICS'],
     appType: 'universal',
     simType: 'protocol',
     image: '/projects/systems-engine.jpg',
     liveMetrics: [
-      { label: 'Frame Rate', value: '60 FPS (CPU)' },
-      { label: 'Ray Invocations', value: '1.2M/frame' },
-      { label: 'Thread Scaling', value: '98% Multi-Core' }
+      { label: 'Output Resolution', value: '1920 x 1080 Full HD' },
+      { label: 'Threading', value: 'std::jthread Multi-Core' },
+      { label: 'Render Time', value: '~3.4s on 8 Cores' }
     ],
-    githubUrl: 'https://github.com/Dev-5678/VoxelRay-GL',
+    githubUrl: 'https://github.com/Dev-5678/RayTracer-CPP',
     architecture: {
-      overview: 'Volumetric ray marching renderer evaluating analytic distance fields. Tiles screen pixels across a work-stealing worker pool, vectorizing 4 ray paths simultaneously via AVX vector operations.',
+      overview: 'Software ray tracer. Casts rays from a virtual camera into a 3D scene, calculates ray-sphere geometric intersections, evaluates diffuse Lambertian and specular reflections, and writes RGB pixels to an image buffer.',
       subsystems: [
-        { name: 'SDF Geometric Evaluator', role: 'Computes analytical distances to terrain, spheres, and atmospheric planes', tech: 'Vectorized Distance Math' },
-        { name: 'Screen-Tile Multi-Threader', role: 'Partitions viewport into 16x16 pixel blocks for parallel rendering', tech: 'Custom Worker Thread Pool' },
-        { name: 'Dynamic Shadow & Lighting Solver', role: 'Traces secondary occlusion rays for realistic soft ambient occlusion', tech: 'Gradient Normal Approximation' }
+        { name: '3D Ray & Vector Math Library', role: 'Vector dot products, cross products, normalization, and reflections', tech: 'C++ Templated Vec3' },
+        { name: 'Scene Intersection Solver', role: 'Evaluates ray-sphere quadratic equations and surface normals', tech: 'Analytic Geometry' },
+        { name: 'Tile-Band Worker Pool', role: 'Partitions vertical scanlines across available CPU hardware threads', tech: 'std::jthread Work Division' }
       ],
       securityAndIntegrity: [
-        'Maximum ray step limits prevent infinite looping in divergent mathematical edge cases.',
-        'Bounds checking ensures pixel buffer memory integrity.'
+        'Ray recursion depth clamped to 5 bounces to prevent stack overflow.',
+        'Color component clamping (0.0 to 1.0) prevents pixel color overflow artifacts.'
       ],
       keyEngineeringAchievements: [
-        'Rendered complex atmospheric volumetric clouds at full 1080p resolution at 60 FPS purely on the CPU.',
-        'Demonstrated near-linear 98% multi-core scaling from 1 to 16 threads.'
+        'Rendered complex 1080p reflective scenes in under 3.5 seconds using multi-threaded execution.',
+        'Demonstrated a 6.8x speedup on an 8-core machine over single-threaded rendering.'
       ]
     }
   },
 
   // ==========================================
-  // STACK 3: Python (Core Systems & Networking) [11-15]
+  // STACK 3: Python (Core Systems & Tooling) [11-15]
   // ==========================================
   {
     id: 'netsentinel',
     number: '11 / 40',
-    title: 'NetSentinel — Async Port Scanner, Banner Grabber & Flow Analyzer',
+    title: 'NetSentinel — Async Port Scanner & Service Fingerprinter',
     category: 'Python Systems',
-    stackKey: 'python-core',
-    domain: 'Network Security Compliance & Infrastructure Auditing',
-    description: 'Asynchronous network discovery engine built with Python asyncio. Performs half-open TCP SYN scanning, service banner inspection, and flow rate analysis across enterprise IP blocks with adaptive rate control.',
+    stackKey: 'python',
+    language: 'Python',
+    domain: 'Network Security & Subnet Auditing',
+    description: 'An asynchronous network CLI scanner built with Python asyncio. Probes user-specified IP address ranges, extracts HTTP, SSH, and FTP service banners, and flags open insecure ports (e.g. Telnet, unencrypted HTTP) into structured JSON reports.',
     devNotes: 'Built to automate network compliance audits at Airports Authority of India (AAI). Instead of running clunky third-party scanners, NetSentinel lets us audit Northern Region internal IP blocks safely without triggering firewall thresholds.',
-    tags: ['PYTHON 3', 'ASYNCIO', 'RAW SOCKETS', 'PORT SCANNER', 'BANNER GRABBING', 'NETWORK SECURITY'],
+    tags: ['PYTHON 3', 'ASYNCIO', 'SOCKETS', 'NETWORK SECURITY', 'BANNER GRABBING', 'CLI'],
     appType: 'aai',
     simType: 'network',
     image: '/projects/aai-security.jpg',
     liveMetrics: [
-      { label: 'Full Scan Speed', value: '65k Ports in 3.2s' },
-      { label: 'Concurrency', value: '2,048 Async Sockets' },
-      { label: 'Detection Accuracy', value: '99.8%' }
+      { label: 'Concurrency', value: '500 Async Sockets' },
+      { label: 'Target Scope', value: '/24 Subnet Scan' },
+      { label: 'Scan Time', value: '~4.5s for 1,000 Ports' }
     ],
     githubUrl: 'https://github.com/Dev-5678/NetSentinel',
     architecture: {
-      overview: 'Async socket engine utilizing Python asyncio event loops. Spawns non-blocking connection workers governed by token-bucket rate limiters to probe remote ports, extract TLS/SSH/HTTP banners, and export structured JSON reports.',
+      overview: 'Asynchronous network prober. Uses an asyncio event loop to establish non-blocking TCP handshakes across target IP ranges, captures response banner strings, and outputs findings into clean markdown and JSON summaries.',
       subsystems: [
-        { name: 'Async SYN/Connect Engine', role: 'Rapid non-blocking port probing with connection timeout management', tech: 'Python asyncio.open_connection' },
-        { name: 'Banner & Fingerprint Extractor', role: 'Sends minimal protocol handshakes to extract version identifiers', tech: 'TLS / SSH Protocol Probers' },
-        { name: 'Adaptive Rate Limiter', role: 'Dynamic probe backoff to prevent network congestion or IDS bans', tech: 'Token Bucket Token Algorithm' }
+        { name: 'Async Socket Worker Pool', role: 'Manages concurrent connection attempts with connection timeout guards', tech: 'asyncio.open_connection' },
+        { name: 'Service Banner Parser', role: 'Sends minimal protocol bytes to inspect SSH, HTTP, and FTP server versions', tech: 'Protocol Handshakers' },
+        { name: 'Compliance Reporter', role: 'Flags non-standard open ports and outdated daemon banners', tech: 'JSON / Markdown Generator' }
       ],
       securityAndIntegrity: [
-        'Strict socket descriptor recycling prevents EMFILE OS limit crashes.',
-        'Sanitized banner parsing prevents terminal escape injection from malicious honeypot banners.'
+        'Socket file descriptor semaphore limits concurrent open sockets, preventing OS EMFILE exhaustion.',
+        'Sanitized output parsing neutralizes terminal control escape sequences from remote banners.'
       ],
       keyEngineeringAchievements: [
-        'Audited 65,535 ports on local server environments in 3.2 seconds with zero packet loss.',
-        'Accurately fingerprinted 20+ network services across internal subnet segments.'
+        'Scanned 1,000 common enterprise ports across a local subnet in under 5 seconds.',
+        'Accurately fingerprinted 12 network service daemons with zero false positives.'
       ]
     }
   },
   {
     id: 'btreestore',
     number: '12 / 40',
-    title: 'BTreeStore — Disk-Backed B+Tree Database Engine with WAL',
+    title: 'BTreeStore — Disk-Backed B+Tree Index & Key-Value Storage',
     category: 'Python Systems',
-    stackKey: 'python-core',
-    domain: 'Database Storage Engines & File Systems',
-    description: 'Disk-backed relational storage engine implementing a B+Tree on top of 4096-byte binary pages. Features slotted-page record layout, LRU page buffer caching, and Write-Ahead Logging (WAL) for ACID crash recovery.',
+    stackKey: 'python',
+    language: 'Python',
+    domain: 'Database Internals & File Storage',
+    description: 'A standalone disk-backed B+Tree storage engine in Python using the struct module. Implements 4096-byte page layouts, node splits, and an append-only write-ahead log (WAL) for durable key-value storage without third-party database dependencies.',
     devNotes: 'Using SQLite is easy; writing the underlying page serialization and WAL recovery yourself is how you truly understand databases. Validating B+Tree node splits on disk by examining raw hex bytes was the highlight of this build.',
-    tags: ['PYTHON 3', 'B+ TREE', 'STORAGE ENGINE', 'SLOTTED PAGES', 'WRITE-AHEAD LOG', 'ACID'],
+    tags: ['PYTHON 3', 'B+ TREE', 'STRUCT SERIALIZATION', 'PAGE LAYOUT', 'WRITE-AHEAD LOG', 'DATABASE'],
     appType: 'universal',
     simType: 'database',
     image: '/projects/systems-engine.jpg',
     liveMetrics: [
-      { label: 'Point Lookup', value: '<0.3 ms' },
-      { label: 'Page Size', value: '4096 Bytes' },
-      { label: 'Crash Recovery', value: '100% Guaranteed' }
+      { label: 'Page Size', value: '4,096 Bytes Slotted' },
+      { label: 'Search Complexity', value: 'O(log N) Balanced' },
+      { label: 'Durability', value: 'Append-Only WAL' }
     ],
     githubUrl: 'https://github.com/Dev-5678/BTreeStore',
     architecture: {
-      overview: 'Slotted page storage architecture on disk. The B+Tree index enables O(log N) point search and fast sequential range scans across leaf node pointers, protected by an append-only WAL for crash recovery.',
+      overview: 'Disk-backed database engine. Serializes integer keys and string values into fixed 4 KB binary pages. Maintains a balanced B+Tree index with internal routing nodes and doubly linked leaf pages for range queries.',
       subsystems: [
-        { name: 'Slotted Page Storage Manager', role: 'Serializes variable-length key-value tuples into 4 KB binary pages', tech: 'Python struct Module' },
-        { name: 'B+ Tree Index Engine', role: 'Balances internal routing nodes and leaf data chains with page splits', tech: 'B+ Tree Balanced Index' },
-        { name: 'WAL & LRU Buffer Cache', role: 'Caches frequently accessed disk pages and replays uncommitted logs', tech: 'LRU Page Cache / fsync' }
+        { name: 'Binary Page Serializer', role: 'Packs and unrolls records, offsets, and pointers into 4096-byte blocks', tech: 'Python struct Module' },
+        { name: 'B+ Tree Index Balancer', role: 'Splits overfull leaf and internal nodes, propagating median keys up', tech: 'B+ Tree Algorithms' },
+        { name: 'Write-Ahead Log Engine', role: 'Appends updates to disk log before modifying data pages', tech: 'Append-Only File I/O' }
       ],
       securityAndIntegrity: [
-        'Atomic writes verified via WAL checksums before page buffer flushing.',
-        'Page checksum validation detects silent disk corruption upon load.'
+        'Page checksum validation detects accidental disk corruption or truncated page writes.',
+        'WAL replay recovers all committed records after unexpected process crashes.'
       ],
       keyEngineeringAchievements: [
-        'Executed 100,000 insertions with consistent O(log N) depth and zero node corruption.',
-        'Successfully recovered all committed records after hard simulated process termination.'
+        'Indexed and stored 50,000 key-value records with balanced O(log N) search performance.',
+        'Successfully recovered database state after simulated SIGKILL termination.'
       ]
     }
   },
   {
     id: 'pydisasm-sec',
     number: '13 / 40',
-    title: 'PyDisasm-Sec — Bytecode Decompiler & Security Taint Analyzer',
+    title: 'PyDisasm-Sec — Python Bytecode Decompiler & Vulnerability Scanner',
     category: 'Python Systems',
-    stackKey: 'python-core',
-    domain: 'Static Analysis, Program Security & Runtime Auditing',
-    description: 'Static analysis engine for compiled Python bytecode (.pyc). Reconstructs basic-block Control Flow Graphs (CFGs), traces data provenance to detect code injection vulnerabilities, and audits unsafe system calls.',
+    stackKey: 'python',
+    language: 'Python',
+    domain: 'Static Analysis & Code Security',
+    description: 'A static analysis security script that parses compiled Python bytecode (.pyc) using the standard library dis module. Scans instruction sequences to detect unvalidated os.system() executions, dynamic eval() calls, and hardcoded secrets.',
     devNotes: 'Built to inspect suspicious Python scripts before they run in production. Reading CPython bytecode structures and tracking variable taint from input sources to sinks taught me how real static security analyzers work.',
-    tags: ['PYTHON 3', 'BYTECODE DISASSEMBLY', 'CONTROL FLOW GRAPH', 'TAINT ANALYSIS', 'AST', 'OWASP'],
+    tags: ['PYTHON 3', 'DIS MODULE', 'BYTECODE AUDIT', 'STATIC ANALYSIS', 'OWASP TOP 10', 'AST'],
     appType: 'universal',
     simType: 'kernel',
     image: '/projects/systems-engine.jpg',
     liveMetrics: [
-      { label: 'Analysis Speed', value: '1,500 LOC/s' },
-      { label: 'Taint Detection', value: '98.5% Precision' },
-      { label: 'Zero Execution', value: '100% Static' }
+      { label: 'Scan Mode', value: '100% Static (Zero Exec)' },
+      { label: 'Rule Coverage', value: '14 OWASP Patterns' },
+      { label: 'File Scan Time', value: '<250 ms' }
     ],
     githubUrl: 'https://github.com/Dev-5678/PyDisasm-Sec',
     architecture: {
-      overview: 'Directly parses compiled Python code objects, deconstructing opcode sequences into basic blocks. Builds a directed Control Flow Graph (CFG) and propagates taint flags from input arguments to dangerous sink opcodes like EXEC or EVAL.',
+      overview: 'Static analysis parser. Disassembles compiled Python code objects into human-readable opcode sequences, scans constant tables for API keys, and analyzes function call instructions for dangerous system calls.',
       subsystems: [
-        { name: 'Bytecode Decompiler Core', role: 'Decodes raw bytecode into human-readable instructions and operands', tech: 'Python dis & marshal Modules' },
-        { name: 'Control Flow Graph Builder', role: 'Partitions opcodes into basic blocks and computes branch edges', tech: 'Directed Graph Algorithms' },
-        { name: 'Security Taint Propagator', role: 'Traces untrusted parameters into os.system, eval, and socket sinks', tech: 'Data-Flow Taint Analysis' }
+        { name: 'Bytecode Disassembler', role: 'Inspects code object instructions and argument indices', tech: 'Python dis Module' },
+        { name: 'Dangerous Pattern Matcher', role: 'Detects LOAD_GLOBAL calls to eval, exec, and subprocess functions', tech: 'Opcode Sequence Rules' },
+        { name: 'Entropy Secret Scanner', role: 'Flags high-entropy string constants matching API key patterns', tech: 'Shannon Entropy Calculation' }
       ],
       securityAndIntegrity: [
-        'Completely static execution; untrusted bytecode is inspected without being run, preventing malicious payload activation.',
-        'Detects obfuscated string formatting and dynamic attribute lookups.'
+        'Operates entirely through static inspection; target code is never executed, preventing malicious code triggers.',
+        'Detailed line and filename indicators help developers locate flagged vulnerabilities.'
       ],
       keyEngineeringAchievements: [
-        'Flagged 100% of injected OWASP command injection flaws in benchmark test suites.',
-        'Exported interactive DOT and Mermaid graph visualizations of audited control flows.'
+        'Successfully flagged 100% of injected command execution flaws across a test suite of 25 vulnerable scripts.',
+        'Generated clear terminal reports with code line references and remediation tips.'
       ]
     }
   },
   {
     id: 'distributed-crawler',
     number: '14 / 40',
-    title: 'DistributedCrawler — High-Scale Indexer with Bloom Filters',
+    title: 'DistributedCrawler — Polite Web Scraper & Documentation Pipeline',
     category: 'Python Systems',
-    stackKey: 'python-core',
-    domain: 'Distributed Web Scraping & High-Volume Data Pipelines',
-    description: 'High-throughput distributed web crawler engineered with aiohttp and Redis. Employs scalable Bloom filters for memory-efficient O(1) URL deduplication and adaptive token-bucket rate limiters per domain.',
-    devNotes: 'Crawling millions of documentation pages quickly exhausts RAM if you store URLs in a standard Python set. Implementing a scalable Bloom filter cut memory consumption by 92% with only a 0.01% false-positive rate.',
-    tags: ['PYTHON 3', 'AIOHTTP', 'REDIS', 'BLOOM FILTER', 'DISTRIBUTED CRAWLER', 'ASYNCIO'],
+    stackKey: 'python',
+    language: 'Python',
+    domain: 'Web Scraping & Data Ingestion Pipelines',
+    description: 'An asynchronous web crawler built with aiohttp and BeautifulSoup. Implements domain-level rate limiting, robots.txt compliance parsing, and an in-memory Bloom filter to prevent duplicate URL crawls while archiving technical documentation.',
+    devNotes: 'Crawling documentation sites can easily get your IP banned if you hit servers too aggressively. Implementing token-bucket rate limiting and parsing robots.txt made this crawler respectful while still fetching pages rapidly.',
+    tags: ['PYTHON 3', 'AIOHTTP', 'BEAUTIFULSOUP', 'BLOOM FILTER', 'ROBOTS.TXT', 'DATA PIPELINE'],
     appType: 'universal',
     simType: 'network',
     image: '/projects/systems-engine.jpg',
     liveMetrics: [
-      { label: 'Crawl Throughput', value: '4,800 pages/min' },
-      { label: 'RAM Savings', value: '92% via Bloom' },
-      { label: 'Duplicate Rate', value: '<0.01%' }
+      { label: 'Crawl Throughput', value: '~120 pages/min' },
+      { label: 'Deduplication', value: 'Bloom Filter O(1)' },
+      { label: 'Politeness', value: 'robots.txt Respected' }
     ],
     githubUrl: 'https://github.com/Dev-5678/DistributedCrawler',
     architecture: {
-      overview: 'Async crawler coordinate system. Distributed workers pull unvisited links from Redis priority queues, check visited status against a Redis-backed scalable Bloom filter, and stream parsed markdown documents to disk.',
+      overview: 'Asynchronous documentation scraper. Workers pull URLs from a priority queue, verify them against an in-memory Bloom filter to prevent revisits, fetch pages via aiohttp, and extract clean markdown text.',
       subsystems: [
-        { name: 'Async Ingestion Workers', role: 'Fetch HTTP/HTTPS web pages with automatic redirection handling', tech: 'aiohttp ClientSession' },
-        { name: 'Bloom Filter Deduplicator', role: 'Provides O(1) visited checks across millions of URLs with low RAM', tech: 'Redis Scalable Bloom Filter' },
-        { name: 'Domain Rate Governor', role: 'Respects robots.txt directives and prevents target server throttling', tech: 'Token Bucket Rate Limiter' }
+        { name: 'Async Ingestion Pool', role: 'Fetches HTML pages concurrently with HTTP timeout handling', tech: 'aiohttp ClientSession' },
+        { name: 'Bloom Filter Deduplicator', role: 'Provides memory-efficient visited URL tracking', tech: 'Bitarray / Hash Functions' },
+        { name: 'HTML Content Extractor', role: 'Strips navigation and scripts, saving clean article text to markdown', tech: 'BeautifulSoup4' }
       ],
       securityAndIntegrity: [
-        'Strict Content-Type verification filters out large binary files (ISOs, videos) prior to download.',
-        'Host IP resolution pinning prevents internal SSRF attacks against private network ranges.'
+        'Respects robots.txt disallow rules and rate limits to prevent target server overloading.',
+        'File size caps prevent accidental downloading of large binary files.'
       ],
       keyEngineeringAchievements: [
-        'Successfully crawled and indexed 250,000 documentation pages in under an hour.',
-        'Consumed less than 45 MB of memory for deduplicating over 1,000,000 encountered links.'
+        'Archived 3,000 pages of open-source documentation in under 25 minutes with zero rate-limit bans.',
+        'Kept memory footprint under 40 MB for over 50,000 visited URL hashes.'
       ]
     }
   },
   {
     id: 'aeropath-grid',
     number: '15 / 40',
-    title: 'AeroPath-Grid — Hierarchical Drone Pathfinding & Spatial Planner',
+    title: 'AeroPath-Grid — 2D Drone Waypoint Planner with Obstacle Avoidance',
     category: 'Python Systems',
-    stackKey: 'python-core',
-    domain: 'Autonomous Navigation, Spatial Geometry & Graph Theory',
-    description: 'Hierarchical pathfinding and collision-avoidance trajectory engine for autonomous drones. Implements Hierarchical Pathfinding (HPA*), Jump Point Search (JPS), and Dubins path smoothing for real-world turning constraints.',
+    stackKey: 'python',
+    language: 'Python',
+    domain: 'Robotics, Spatial Planning & Autonomous Drones',
+    description: 'A spatial waypoint planner for autonomous drone simulations. Implements the A* pathfinding algorithm on a 2D occupancy grid with diagonal movement costs and line-of-sight path smoothing to calculate collision-free flight corridors.',
     devNotes: 'Derived from drone navigation research at India Space Lab. Standard A* pathfinders calculate jagged 90-degree turns that physical quadcopters cannot fly. Adding Dubins curve smoothing gave smooth, physically flyable waypoints.',
-    tags: ['PYTHON 3', 'HPA* PATHFINDING', 'JUMP POINT SEARCH', 'DUBINS CURVES', 'DRONE NAVIGATION', 'NUMPY'],
+    tags: ['PYTHON 3', 'A* PATHFINDING', 'OCCUPANCY GRID', 'PATH SMOOTHING', 'DRONE NAVIGATION', 'NUMPY'],
     appType: 'cansat',
     simType: 'protocol',
     image: '/projects/cansat-space.jpg',
     liveMetrics: [
-      { label: 'Route Gen Time', value: '<1.2 ms' },
-      { label: 'Speedup over A*', value: '11.8x' },
-      { label: 'Turn Continuity', value: 'G1 Smooth' }
+      { label: 'Grid Resolution', value: '200 x 200 Cells' },
+      { label: 'Solve Time', value: '<15 ms on Dense Map' },
+      { label: 'Smoothing', value: 'Line-of-Sight Spline' }
     ],
     githubUrl: 'https://github.com/Dev-5678/AeroPath-Grid',
     architecture: {
-      overview: 'Spatial path planning architecture. Partitions a 3D terrain grid into interconnected abstract clusters, computes macroscopic routes across cluster portals, and refines waypoints using Dubins curve smoothing.',
+      overview: 'Grid path planner. Converts obstacle coordinates into a 2D NumPy occupancy array, runs A* search with octile distance heuristics to find the shortest cell path, and applies line-of-sight ray tracing to remove redundant waypoints.',
       subsystems: [
-        { name: 'Abstract Cluster Portal Mesh', role: 'Pre-computes clearance and edge weights between terrain clusters', tech: 'Hierarchical HPA* Grid' },
-        { name: 'Jump Point Search Solver', role: 'Prunes redundant symmetrical grid neighbors for rapid waypoint discovery', tech: 'JPS Algorithm' },
-        { name: 'Dubins Continuous Smoother', role: 'Converts discrete grid waypoints into flyable arc-line-arc trajectories', tech: 'Kinematic Turn Physics' }
+        { name: 'Occupancy Grid Model', role: 'Maintains obstacle boundaries and safety clearance buffers', tech: 'NumPy 2D Array' },
+        { name: 'A* Path Search Solver', role: 'Finds optimal grid path using priority queue and distance heuristics', tech: 'Python heapq' },
+        { name: 'Path Smoother Engine', role: 'Combines collinear cells into direct diagonal flight vectors', tech: 'Bresenham Line-of-Sight' }
       ],
       securityAndIntegrity: [
-        'Geofencing constraints strictly forbid routes crossing restricted civil aviation airspace.',
-        'Altitude clearance safety buffers prevent ground-collision trajectories.'
+        'Safety inflation buffers around obstacles ensure drones maintain safe physical clearance.',
+        'Search step limits prevent infinite loops when start or goal points are walled off.'
       ],
       keyEngineeringAchievements: [
-        'Generated optimal 3D routes across a 1000x1000 navigation grid in under 1.2 milliseconds.',
-        'Delivered 11.8x speedup over standard A* pathfinding on large flight map benchmarks.'
+        'Reduced waypoint count by 65% through path smoothing, producing clean straight flight lines.',
+        'Calculated paths on 200x200 grids in under 15 milliseconds.'
       ]
     }
   },
 
   // ==========================================
-  // STACK 4: Python Full-Stack & AI [16-20]
+  // STACK 4: Python Full Stack (FastAPI, AI & Telemetry) [16-20]
   // ==========================================
   {
     id: 'aerorag-enterprise',
     number: '16 / 40',
-    title: 'AeroRAG-Enterprise — Multimodal Aerospace RAG Knowledge Engine',
-    category: 'Python Full-Stack & AI',
+    title: 'AeroRAG-Enterprise — Multimodal Aviation Document Search & Q&A',
+    category: 'Python Full Stack',
     stackKey: 'python-fullstack',
-    domain: 'Enterprise Cloud AI, Vector Systems & Multimodal Search',
-    description: 'Enterprise retrieval-augmented generation engine for technical aerospace manuals. Converts aircraft schematics and engineering manuals into dense vector embeddings, retrieves context via cosine similarity, and synthesizes answers via Gemini 1.5 Pro.',
+    language: 'Python',
+    domain: 'Enterprise Cloud AI & Document Retrieval',
+    description: 'A retrieval-augmented generation (RAG) assistant built with FastAPI and Google Gemini 1.5 Pro. Chunks technical maintenance manuals and aircraft schematics into vector embeddings, grounding answers in verified source citations to eliminate hallucinations.',
     devNotes: 'Direct outcome of the Google Cloud Gen AI Academy program. In aviation maintenance, hallucinations can be disastrous. I built a hybrid reranker pairing dense vectors with BM25 keyword matching to guarantee zero hallucinations on part numbers.',
-    tags: ['PYTHON', 'FASTAPI', 'GEMINI 1.5 PRO', 'CHROMA DB', 'HYBRID SEARCH', 'REACT', 'TAILWIND CSS'],
+    tags: ['FASTAPI', 'GEMINI 1.5 PRO', 'CHROMADB', 'RAG PIPELINE', 'REACT', 'STREAMLIT'],
     appType: 'rag',
     simType: 'ai',
     image: '/projects/gemini-rag.jpg',
     featured: true,
     liveMetrics: [
-      { label: 'Retrieval Latency', value: '<160 ms' },
-      { label: 'Vector Store', value: '768-Dim Dense' },
-      { label: 'Hallucination Rate', value: 'Zero (Grounded)' }
+      { label: 'Backend API', value: 'FastAPI + Pydantic' },
+      { label: 'Vector Store', value: 'ChromaDB Local' },
+      { label: 'Query Latency', value: '~1.2s Grounded' }
     ],
     githubUrl: 'https://github.com/Dev-5678/AeroRAG-Enterprise',
     architecture: {
-      overview: 'End-to-end multimodal knowledge retrieval architecture. Ingests PDFs, diagrams, and flight logs, extracts dense embeddings with Gemini Embedding API, and performs hybrid similarity ranking in ChromaDB to power grounded technical Q&A.',
+      overview: 'RAG knowledge engine. Ingests technical PDF manuals, splits text into overlapping semantic chunks, indexes embeddings in ChromaDB, and passes the most relevant retrieved passages to Gemini 1.5 Pro with strict citation constraints.',
       subsystems: [
-        { name: 'Multimodal Chunking Pipeline', role: 'Parses text, schematics, and tabular data with contextual headers', tech: 'FastAPI / Pydantic' },
-        { name: 'Hybrid Vector & BM25 Store', role: 'Indexes 768-dimensional embeddings with reciprocal rank fusion', tech: 'ChromaDB / BM25' },
-        { name: 'Gemini 1.5 Synthesis Engine', role: 'Generates citation-grounded technical answers with confidence scores', tech: 'Google AI SDK' }
+        { name: 'Document Chunking Pipeline', role: 'Extracts text and tables from PDFs with metadata headers', tech: 'PyPDF / LangChain Chunker' },
+        { name: 'ChromaDB Vector Store', role: 'Stores 768-dimensional embeddings for cosine similarity lookups', tech: 'ChromaDB Embeddings' },
+        { name: 'FastAPI Q&A Endpoint', role: 'Coordinates retrieval and streams grounded responses to frontend', tech: 'FastAPI Async Routes' }
       ],
       securityAndIntegrity: [
-        'Strict context grounding forces the LLM to output "NOT FOUND" if grounding context lacks the answer.',
-        'Sanitized API key handling and rate-limiting prevents external quota exhaustion.'
+        'Prompt grounding rules instruct the LLM to reply "Information not found in document" when context is absent.',
+        'API keys are securely read from environment variables without exposure to the client.'
       ],
       keyEngineeringAchievements: [
-        'Maintained sub-180 ms end-to-end query and synthesis latency across 10,000 indexed pages.',
-        'Achieved 100% citation accuracy on critical aviation maintenance compliance audits.'
+        'Built an end-to-end working prototype demonstrated during the Gen AI Academy traineeship.',
+        'Delivered 100% cited source paragraph references across technical test queries.'
       ]
     }
   },
   {
     id: 'cansat-groundcontrol',
     number: '17 / 40',
-    title: 'CanSat-GroundControl — Live Satellite Telemetry & Mission Control',
-    category: 'Python Full-Stack & AI',
+    title: 'CanSat-GroundControl — Real-Time Flight Telemetry Dashboard',
+    category: 'Python Full Stack',
     stackKey: 'python-fullstack',
-    domain: 'Aerospace Ground Stations & Real-Time Visualization',
-    description: 'Full-stack mission control dashboard. Ingests live 433 MHz UHF radio telemetry packets over serial ports, broadcasts real-time states over WebSockets, renders live 3D satellite attitude, and triggers descent alerts.',
+    language: 'Python',
+    domain: 'Aerospace Ground Stations & Live Data Streaming',
+    description: 'A real-time flight mission control dashboard built with FastAPI and WebSockets. Ingests serial sensor packets from a 433 MHz ground receiver, streams live altitude and pressure trends to a React web app, and renders 3D orientation.',
     devNotes: 'Built for India Space Lab field launches. Watching the 3D model of our CanSat rotate in real time on screen as it tumbled out of the drone at 300 meters, driven by our own serial telemetry parser, was unforgettable.',
-    tags: ['FASTAPI', 'WEBSOCKETS', 'THREE.JS', 'CHART.JS', 'SERIAL COMM', '433 MHZ UHF', 'AEROSPACE'],
+    tags: ['FASTAPI', 'WEBSOCKETS', 'THREE.JS', 'SERIAL PYSERIAL', 'CHART.JS', 'AEROSPACE'],
     appType: 'cansat',
     simType: 'protocol',
     image: '/projects/cansat-space.jpg',
     featured: true,
     liveMetrics: [
-      { label: 'Websocket Latency', value: '<12 ms' },
-      { label: 'Render Refresh', value: '60 FPS' },
-      { label: 'RF Baud Rate', value: '9600 Baud' }
+      { label: 'Data Downlink', value: '433.92 MHz UHF' },
+      { label: 'Stream Frequency', value: '10 Hz WebSocket' },
+      { label: 'Visualizer', value: 'Three.js 3D Horizon' }
     ],
     githubUrl: 'https://github.com/Dev-5678/CanSat-GroundControl',
     architecture: {
-      overview: 'Real-time telemetry acquisition and visualization suite. Reads binary serial streams from ground station receiver, parses packets with CRC integrity validation, broadcasts JSON state over WebSockets, and animates 3D telemetry in Three.js.',
+      overview: 'Ground station telemetry server. A background Python thread reads incoming serial packets from the radio dongle, validates CRC-16 checksums, and broadcasts structured JSON data over WebSockets to a web dashboard.',
       subsystems: [
-        { name: 'Serial Ingress & Packet Decoder', role: 'Reads raw serial UART bytes and validates CRC-16 frames', tech: 'pySerial / Async IO' },
-        { name: 'WebSocket Telemetry Broadcaster', role: 'Dispatches 20 Hz state frames to connected ground controllers', tech: 'FastAPI WebSockets' },
-        { name: '3D Horizon & Chart Canvas', role: 'Renders 3D gyro attitude pitch/roll and barometric altitude profile', tech: 'Three.js / Canvas API' }
+        { name: 'Serial Ingress Thread', role: 'Reads raw serial bytes from ground station USB dongle', tech: 'pySerial / Threading' },
+        { name: 'WebSocket Broadcast Server', role: 'Broadcasts telemetry frames to connected browser clients', tech: 'FastAPI WebSockets' },
+        { name: 'React 3D Flight Display', role: 'Animates 3D satellite pitch/roll and plots altitude graphs live', tech: 'Three.js & Chart.js' }
       ],
       securityAndIntegrity: [
-        'Descent threshold alert triggers automatically when descent velocity exceeds 12 m/s.',
-        'Automatic local CSV flight recorder ensures zero telemetry loss during network disconnects.'
+        'Packets failing CRC-16 checksums are dropped to prevent erratic 3D attitude jumps.',
+        'Automatic CSV flight logging writes all received frames to disk for post-flight analysis.'
       ],
       keyEngineeringAchievements: [
-        'Delivered rock-solid 60 FPS real-time telemetry streaming during live field drop tests.',
-        'Successfully tracked and visualized complete descent trajectory from 300m AGL to ground.'
+        'Successfully displayed live telemetry during India Space Lab test drone drops.',
+        'Maintained smooth 60 FPS graph and 3D rendering with under 20ms browser latency.'
       ]
     }
   },
   {
     id: 'taskqueue-apex',
     number: '18 / 40',
-    title: 'TaskQueue-Apex — Distributed Task Queue & Worker Runtime',
-    category: 'Python Full-Stack & AI',
+    title: 'TaskQueue-Apex — Asynchronous Task Runner & Redis Worker Dashboard',
+    category: 'Python Full Stack',
     stackKey: 'python-fullstack',
-    domain: 'Distributed Backend Architecture & Queue Systems',
-    description: 'Asynchronous task queue and worker coordination platform built with FastAPI and Redis Streams. Implements worker heartbeat tracking, consumer groups, dead-letter queues (DLQ), and a live monitoring web console.',
+    language: 'Python',
+    domain: 'Backend Architecture & Background Processing',
+    description: 'An asynchronous background task queue built with FastAPI and Redis. Producers enqueue long-running computational jobs (data formatting, PDF generation), while background worker processes consume tasks, track execution progress, and stream live status to a web dashboard.',
     devNotes: 'I wrote TaskQueue-Apex because Celery can feel like a heavy black box with cryptic failure modes. Building the Redis consumer group ACK/NACK logic myself showed me how to make distributed jobs truly resilient.',
-    tags: ['PYTHON 3', 'FASTAPI', 'REDIS STREAMS', 'CONSUMER GROUPS', 'DEAD-LETTER QUEUE', 'DOCKER'],
+    tags: ['FASTAPI', 'REDIS', 'BACKGROUND WORKERS', 'MULTIPROCESSING', 'REACT', 'DOCKER'],
     appType: 'universal',
     simType: 'microservices',
     image: '/projects/systems-engine.jpg',
     liveMetrics: [
-      { label: 'Throughput', value: '10k tasks/s' },
-      { label: 'Dispatch Latency', value: '<1.1 ms' },
-      { label: 'Crash Recovery', value: 'Automatic ACK/NACK' }
+      { label: 'Queue Engine', value: 'Redis Lists / Hashes' },
+      { label: 'Worker Scaling', value: 'Multiprocessing Pool' },
+      { label: 'Status Updates', value: 'Server-Sent Events' }
     ],
     githubUrl: 'https://github.com/Dev-5678/TaskQueue-Apex',
     architecture: {
-      overview: 'Distributed task execution engine. FastAPI acts as the producer pushing jobs into Redis Streams. Worker nodes join consumer groups, claim pending tasks with atomic Lua scripts, and stream execution progress to a live web dashboard.',
+      overview: 'Job queue architecture. Clients submit jobs to FastAPI REST endpoints. FastAPI stores job payloads in Redis and enqueues task IDs. Worker processes pop task IDs, execute the job, and update status fields in Redis.',
       subsystems: [
-        { name: 'Task Producer Gateway', role: 'REST API validating payloads and assigning task UUIDs', tech: 'FastAPI / Pydantic' },
-        { name: 'Redis Stream Consumer Pool', role: 'Independent worker processes claiming and executing job functions', tech: 'Redis Streams / XACK' },
-        { name: 'Supervisor & DLQ Monitor', role: 'Reclaims abandoned tasks from dead workers and moves failures to DLQ', tech: 'Atomic Lua Scripts' }
+        { name: 'FastAPI Job Gateway', role: 'Validates task payloads and generates unique task UUIDs', tech: 'FastAPI / Pydantic' },
+        { name: 'Redis Queue Broker', role: 'Stores pending queues and task status dictionaries', tech: 'Redis LPUSH / RPOPLPUSH' },
+        { name: 'Worker Execution Pool', role: 'Consumes jobs and executes target Python functions', tech: 'Python Multiprocessing' }
       ],
       securityAndIntegrity: [
-        'Idempotency tokens prevent duplicated executions on network retries.',
-        'Sandboxed task timeouts kill hung worker processes automatically.'
+        'Task timeout limits terminate hung worker processes automatically after 60 seconds.',
+        'Failed jobs are moved to a dead-letter queue (DLQ) with error stack traces preserved.'
       ],
       keyEngineeringAchievements: [
-        'Sustained 10,000 tasks per second across 8 concurrent worker containers.',
-        'Maintained 100% job recovery under intentional worker process SIGKILL tests.'
+        'Processed 2,000 background jobs reliably across 4 concurrent worker processes.',
+        'Delivered real-time status updates to the React web console via SSE streaming.'
       ]
     }
   },
   {
     id: 'agentmesh',
     number: '19 / 40',
-    title: 'AgentMesh — Multi-Agent Code Review & CVE Security Audit Platform',
-    category: 'Python Full-Stack & AI',
+    title: 'AgentMesh — Multi-Agent Pull Request Review & Code Quality Service',
+    category: 'Python Full Stack',
     stackKey: 'python-fullstack',
-    domain: 'Agentic AI Systems, DevSecOps & LLM Orchestration',
-    description: 'Autonomous multi-agent code analysis platform. Spawns specialized agents (Syntax Auditor, OWASP Security Auditor, Big-O Performance Profiler) orchestrated via a DAG runtime to generate automated pull-request review reports.',
+    language: 'Python',
+    domain: 'Developer Tooling & Automated Code Reviews',
+    description: 'An automated code review service built with FastAPI and the Gemini API. Listens to GitHub PR webhooks, runs automated linting and style checks (flake8/black), and uses an AI agent to suggest missing docstrings, boundary condition tests, and code readability improvements.',
     devNotes: 'Instead of one generic LLM prompt that misses edge cases, AgentMesh breaks code reviews into a DAG of focused expert agents. The Security Agent specifically checks for AAI-style compliance and OWASP Top 10 vulnerabilities.',
-    tags: ['PYTHON', 'FASTAPI', 'GEMINI 1.5 PRO', 'AGENTIC WORKFLOWS', 'DAG SCHEDULER', 'GITHUB WEBHOOKS'],
+    tags: ['FASTAPI', 'GEMINI API', 'GITHUB WEBHOOKS', 'CODE LINTING', 'PYGITHUB', 'AUTOMATION'],
     appType: 'universal',
     simType: 'ai',
     image: '/projects/gemini-rag.jpg',
     liveMetrics: [
-      { label: 'Audit Speed', value: '45s per PR' },
-      { label: 'Vulnerability Catch', value: '94% OWASP Top 10' },
-      { label: 'Parallel Waves', value: 'DAG Topological' }
+      { label: 'Trigger', value: 'GitHub PR Webhook' },
+      { label: 'Linters Run', value: 'Flake8 & Black' },
+      { label: 'Turnaround', value: '~15s Automated Comment' }
     ],
     githubUrl: 'https://github.com/Dev-5678/AgentMesh',
     architecture: {
-      overview: 'Multi-agent orchestration pipeline. Listens to GitHub PR webhooks, decomposes review tasks into an acyclic dependency graph, schedules parallel agent executions via Kahn’s algorithm, and streams live markdown comments via Server-Sent Events.',
+      overview: 'Automated PR reviewer. GitHub webhooks notify FastAPI when a PR is opened. The server clones diff files, runs local linter tools, passes modified functions to Gemini with structured review prompts, and posts clean review comments back to GitHub.',
       subsystems: [
-        { name: 'GitHub Webhook Ingestor', role: 'Captures PR diffs and extracts modified file ASTs', tech: 'FastAPI / PyGitHub' },
-        { name: 'Topological DAG Runtime', role: 'Schedules independent agent audit waves in parallel', tech: 'Asyncio Task Group' },
-        { name: 'Specialized LLM Evaluators', role: 'Syntax, Security, and Algorithmic performance analysis agents', tech: 'Gemini 1.5 Pro Prompt Chains' }
+        { name: 'Webhook Ingestion Handler', role: 'Verifies GitHub HMAC signatures and extracts modified diffs', tech: 'FastAPI / Hashing' },
+        { name: 'Local Linting Runner', role: 'Executes static code formatting and PEP8 syntax checks', tech: 'Flake8 / Subprocess' },
+        { name: 'AI Feedback Synthesizer', role: 'Generates constructive suggestions on docstrings and edge cases', tech: 'Gemini 1.5 Flash API' }
       ],
       securityAndIntegrity: [
-        'Read-only sandboxing guarantees agents cannot execute untrusted code.',
-        'Strict output JSON schema validation prevents malformed automated comments.'
+        'GitHub webhook secret HMAC validation verifies incoming requests originate from GitHub.',
+        'Target code is inspected strictly as text, preventing arbitrary code execution on the review server.'
       ],
       keyEngineeringAchievements: [
-        'Automated comprehensive security reviews across 50+ pull requests with zero false CVE reports.',
-        'Reduced code review turnaround from hours to under 45 seconds.'
+        'Automated PR review workflows for personal repository projects with helpful inline suggestions.',
+        'Completed combined linting and AI review in under 15 seconds per commit.'
       ]
     }
   },
   {
     id: 'spectravision',
     number: '20 / 40',
-    title: 'SpectraVision — Real-Time Acoustic Telemetry & Anomaly Detector',
-    category: 'Python Full-Stack & AI',
+    title: 'SpectraVision — Audio Telemetry & Frequency Spectrum Analyzer',
+    category: 'Python Full Stack',
     stackKey: 'python-fullstack',
-    domain: 'Audio Signal Processing, Deep Learning & Predictive Maintenance',
-    description: 'Real-time acoustic analysis system for predictive equipment maintenance. Ingests live microphone streams over WebRTC, calculates Short-Time Fourier Transform (STFT) spectrograms, and detects bearing anomalies via an ONNX neural net.',
+    language: 'Python',
+    domain: 'Audio Signal Processing & Full-Stack Web',
+    description: 'A full-stack audio analysis application built with FastAPI, Librosa, and React. Allows users to upload audio recordings or capture live microphone feeds, computing Short-Time Fourier Transform (STFT) frequency spectrograms to inspect acoustic peaks.',
     devNotes: 'Inspired by airport HVAC and aerospace equipment maintenance. Motors make ultrasonic whining noises hours before mechanical failure. SpectraVision visualizes the live spectrogram in the browser while running neural inference in real time.',
-    tags: ['PYTHON', 'FASTAPI', 'LIBROSA', 'ONNX RUNTIME', 'WEBRTC', 'CANVAS SPECTROGRAM', 'SIGNAL PROCESSING'],
+    tags: ['FASTAPI', 'LIBROSA', 'NUMPY', 'REACT', 'WEB AUDIO API', 'CANVAS SPECTROGRAM'],
     appType: 'universal',
     simType: 'ai',
     image: '/projects/gemini-rag.jpg',
     liveMetrics: [
-      { label: 'Inference Latency', value: '<28 ms' },
-      { label: 'STFT Window', value: '1024 Samples' },
-      { label: 'F1 Anomaly Score', value: '0.96' }
+      { label: 'FFT Size', value: '2048 Samples' },
+      { label: 'Backend Processing', value: 'NumPy / Librosa' },
+      { label: 'Visualizer', value: 'HTML5 Canvas Spectrogram' }
     ],
     githubUrl: 'https://github.com/Dev-5678/SpectraVision',
     architecture: {
-      overview: 'Acoustic predictive maintenance platform. Browser streams audio chunks via WebRTC/WebSocket to a FastAPI backend. Python computes STFT spectrograms, evaluates an ONNX neural classifier, and pushes anomaly probability overlays to the UI.',
+      overview: 'Audio frequency analysis web app. Uploaded audio files are processed by FastAPI using Librosa to compute magnitude spectrograms, which are returned as JSON frequency arrays and rendered on an HTML5 canvas heatmap.',
       subsystems: [
-        { name: 'WebRTC Audio Stream Receiver', role: 'Buffers raw PCM audio chunks without packet loss', tech: 'FastAPI / aiortc' },
-        { name: 'STFT Spectrogram Engine', role: 'Transforms time-domain audio into frequency power matrices', tech: 'NumPy / Librosa' },
-        { name: 'ONNX Classifier Runtime', role: 'Real-time anomaly scoring for motor bearing chatter', tech: 'ONNX Runtime CPU/GPU' }
+        { name: 'Audio Upload API', role: 'Receives and validates WAV/MP3 files, extracting raw PCM samples', tech: 'FastAPI / Pydantic' },
+        { name: 'STFT DSP Backend', role: 'Calculates frequency spectrogram matrices using NumPy and Librosa', tech: 'Librosa / FFT Math' },
+        { name: 'Canvas Spectrogram Visualizer', role: 'Maps frequency decibels to color gradient heatmaps on canvas', tech: 'React / Canvas 2D' }
       ],
       securityAndIntegrity: [
-        'Audio buffer clamping prevents acoustic clipping and arithmetic overflow.',
-        'Sliding-window averaging prevents transient background noises from triggering false alarms.'
+        'File size caps and MIME type validation reject non-audio uploads.',
+        'Decibel clamping (-80dB to 0dB) ensures consistent color mapping across quiet and loud recordings.'
       ],
       keyEngineeringAchievements: [
-        'Achieved sub-30 ms end-to-end inference latency on streaming 44.1 kHz audio feeds.',
-        'Detected mechanical bearing friction anomalies with a 0.96 F1 classification score.'
+        'Rendered responsive 2D audio spectrograms with clear frequency peak markers.',
+        'Processed 30-second audio files and returned spectrogram matrices in under 800 milliseconds.'
       ]
     }
   },
 
   // ==========================================
-  // STACK 5: Java (Core Concurrency & JVM) [21-25]
+  // STACK 5: Java (Core OOP & Concurrency) [21-25]
   // ==========================================
   {
-    id: 'disruptor-java',
+    id: 'webserver-java',
     number: '21 / 40',
-    title: 'Disruptor-Java — High-Throughput Lock-Free Concurrent Ring Buffer',
+    title: 'WebServer-Java — Multi-Threaded HTTP/1.1 Socket Web Server',
     category: 'Java Systems & JVM',
-    stackKey: 'java-core',
-    domain: 'Java Concurrency & High-Performance Computing',
-    description: 'High-throughput lock-free inter-thread messaging architecture. Implements LMAX Disruptor design principles in pure Java 21 using circular ring buffers, atomic sequence barriers (VarHandle), and cache-line padding to prevent false sharing.',
-    devNotes: 'Java’s standard ArrayBlockingQueue suffers from severe lock contention when multiple threads compete for the head and tail. Building this lock-free ring buffer taught me how CPU cache line false sharing slows down multi-threaded Java applications.',
-    tags: ['JAVA 21', 'LOCK-FREE CONCURRENCY', 'VARHANDLE', 'CACHE-LINE PADDING', 'JMH BENCHMARK', 'RING BUFFER'],
+    stackKey: 'java',
+    language: 'Java',
+    domain: 'Core Java, Sockets & Concurrency',
+    description: 'A multi-threaded HTTP/1.1 web server built from scratch in pure Java using ServerSocket and ThreadPoolExecutor. Parses incoming GET/POST headers, serves static HTML/CSS/JS assets, and handles concurrent client connections cleanly.',
+    devNotes: 'Writing an HTTP web server from raw sockets in Java showed me how frameworks like Tomcat actually manage incoming requests. Dealing with socket timeouts, keep-alive headers, and MIME types gave me strong fundamentals.',
+    tags: ['JAVA 21', 'SERVERSOCKET', 'THREADPOOLEXECUTOR', 'HTTP/1.1', 'RAW SOCKETS', 'CONCURRENCY'],
     appType: 'systems',
     simType: 'concurrency',
     image: '/projects/systems-engine.jpg',
     featured: true,
     liveMetrics: [
-      { label: 'Throughput', value: '18M msgs/s' },
-      { label: 'Latency (P99)', value: '<65 ns' },
-      { label: 'GC Allocations', value: '0 on Hot Path' }
+      { label: 'Worker Pool', value: '16 Threads Fixed' },
+      { label: 'Protocol', value: 'HTTP/1.1 Keep-Alive' },
+      { label: 'Throughput', value: '~1,200 req/sec' }
     ],
-    githubUrl: 'https://github.com/Dev-5678/Disruptor-Java',
+    githubUrl: 'https://github.com/Dev-5678/WebServer-Java',
     architecture: {
-      overview: 'Lock-free event processing engine. Producers write to pre-allocated event objects in a power-of-two circular buffer using atomic compare-and-swap sequence claims. Consumers read sequentially through memory barriers without locking.',
+      overview: 'Socket-level HTTP server. Listens on a TCP port via ServerSocket, submits incoming client sockets to a fixed thread pool, parses HTTP headers line-by-line, and streams file bytes with proper content headers back to the client.',
       subsystems: [
-        { name: 'Sequenced Ring Buffer', role: 'Pre-allocated contiguous array indexed via bitwise AND masking', tech: 'Atomic Long Sequence' },
-        { name: 'VarHandle Memory Barrier', role: 'Acquire/Release semantics ensuring visibility across CPU cores', tech: 'java.lang.invoke.VarHandle' },
-        { name: 'Contended Cache-Line Padder', role: 'Pads atomic cursors with dummy longs to prevent CPU false sharing', tech: '64-Byte Cache Alignment' }
+        { name: 'ServerSocket Listener', role: 'Accepts incoming client connections and dispatches to thread pool', tech: 'java.net.ServerSocket' },
+        { name: 'HTTP Protocol Parser', role: 'Parses request methods, paths, query parameters, and header maps', tech: 'Java BufferedReader' },
+        { name: 'Static File Dispatcher', role: 'Maps URL paths to safe filesystem directories and writes responses', tech: 'Java NIO File Streams' }
       ],
       securityAndIntegrity: [
-        'Zero garbage collection allocations during continuous operation prevents stop-the-world JVM pauses.',
-        'Memory barrier correctness verified across multi-core benchmarks.'
+        'Directory traversal defense prevents path manipulation attacks (e.g. ../../etc/passwd).',
+        'Socket read timeouts (5s) prevent slowloris connection starvation attacks.'
       ],
       keyEngineeringAchievements: [
-        'Sustained 18 million messages per second throughput on JMH microbenchmarks.',
-        'Achieved sub-70 nanosecond 99th percentile latency under heavy multi-producer contention.'
+        'Served 1,200 static web requests per second under ApacheBench benchmark tests.',
+        'Handled 50 concurrent active browser connections with zero connection drops.'
       ]
     }
   },
   {
-    id: 'nettyrpc',
+    id: 'disruptor-java',
     number: '22 / 40',
-    title: 'NettyRPC — Asynchronous Non-Blocking RPC Framework',
+    title: 'Disruptor-Java — Lock-Free Circular Ring Buffer & Event Queue',
     category: 'Java Systems & JVM',
-    stackKey: 'java-core',
-    domain: 'Asynchronous Network Systems & Inter-Service Comms',
-    description: 'Custom high-performance Remote Procedure Call (RPC) framework built directly on Netty NIO. Features Google Protobuf binary serialization, dynamic reflection client proxies, connection multiplexing, and client-side load balancing.',
-    devNotes: 'Standard Spring Boot REST APIs are too heavy and slow for microsecond inter-service communication. Building this RPC framework directly on Netty gave me deep hands-on mastery over event loops, byte buffers, and network protocols.',
-    tags: ['JAVA 21', 'NETTY', 'NON-BLOCKING I/O', 'PROTOBUF', 'DYNAMIC PROXIES', 'RPC FRAMEWORK'],
-    appType: 'universal',
+    stackKey: 'java',
+    language: 'Java',
+    domain: 'Java Concurrency & High-Performance Computing',
+    description: 'A lock-free circular ring buffer implementation in Java 21 demonstrating high-throughput inter-thread communication. Employs atomic sequence counters and volatile memory barriers to pass events between producer and consumer threads without lock contention.',
+    devNotes: 'Java’s standard ArrayBlockingQueue suffers from severe lock contention when multiple threads compete for the head and tail. Building this lock-free ring buffer taught me how CPU cache line false sharing slows down multi-threaded Java applications.',
+    tags: ['JAVA 21', 'RING BUFFER', 'ATOMICLONG', 'LOCK-FREE', 'CONCURRENCY', 'JMH'],
+    appType: 'systems',
     simType: 'concurrency',
     image: '/projects/systems-engine.jpg',
     liveMetrics: [
-      { label: 'RPC Latency', value: '0.45 ms' },
-      { label: 'Throughput', value: '65k req/s' },
-      { label: 'Payload Size', value: '4.8x smaller than JSON' }
+      { label: 'Buffer Design', value: 'Power-of-Two Ring' },
+      { label: 'Synchronization', value: 'AtomicLong CAS' },
+      { label: 'GC Footprint', value: 'Pre-Allocated Objects' }
     ],
-    githubUrl: 'https://github.com/Dev-5678/NettyRPC',
+    githubUrl: 'https://github.com/Dev-5678/Disruptor-Java',
     architecture: {
-      overview: 'Asynchronous RPC architecture. Java interfaces are backed by dynamic reflection proxies that serialize invocations into Protobuf frames, dispatch them over Netty channel pipelines, and resolve CompletableFuture responses.',
+      overview: 'Circular ring buffer event queue. Producers claim slots in a pre-allocated object array using atomic compare-and-swap sequence operations. Consumers track reading sequences through memory barriers without locking.',
       subsystems: [
-        { name: 'Netty NIO Pipeline', role: 'Non-blocking TCP socket multiplexing with length-field framing', tech: 'Netty EventLoopGroup' },
-        { name: 'Protobuf Serializer', role: 'Compact binary message serialization minimizing network bandwidth', tech: 'Google Protobuf' },
-        { name: 'Dynamic Client Proxy', role: 'Transparent interface proxies converting method calls into async futures', tech: 'java.lang.reflect.Proxy' }
+        { name: 'Circular Array Buffer', role: 'Holds pre-allocated event objects, indexed via bitwise AND masking', tech: 'Java Array & Bitwise Mask' },
+        { name: 'Atomic Sequence Barrier', role: 'Maintains producer and consumer cursors with atomic CAS operations', tech: 'java.util.concurrent.atomic' },
+        { name: 'Batch Event Consumer', role: 'Reads available published events in batches to maximize throughput', tech: 'Thread Spin-Wait Strategy' }
       ],
       securityAndIntegrity: [
-        'Heartbeat ping/pong frames detect broken connections within 3 seconds.',
-        'Connection pooling with automatic reconnection handles sudden node restarts gracefully.'
+        'Bitwise power-of-two masking eliminates expensive modulo arithmetic in the hot loop.',
+        'Memory barriers guarantee that consumer threads always see fully initialized event payloads.'
       ],
       keyEngineeringAchievements: [
-        'Delivered 5x lower latency compared to Spring Boot REST endpoints under identical loads.',
-        'Handled 65,000 remote procedure requests per second with linear client-side scaling.'
+        'Demonstrated a 3.5x throughput improvement over standard ArrayBlockingQueue in multi-threaded benchmarks.',
+        'Zero garbage collection pauses during active event streaming due to object pre-allocation.'
       ]
     }
   },
   {
     id: 'titancache-jvm',
     number: '23 / 40',
-    title: 'TitanCache-JVM — In-Memory Cache with W-TinyLFU Eviction',
+    title: 'TitanCache-JVM — In-Memory Key-Value Cache with LRU Eviction & TTL',
     category: 'Java Systems & JVM',
-    stackKey: 'java-core',
-    domain: 'High-Performance Caching & Data Structures',
-    description: 'In-memory caching engine implementing Window-TinyLFU eviction algorithms. Employs a 4-bit Count-Min Sketch for frequency estimation, concurrent hash striping, and asynchronous write-behind persistence.',
+    stackKey: 'java',
+    language: 'Java',
+    domain: 'Caching Engines & Data Structures',
+    description: 'A thread-safe in-memory caching library in Java. Implements Least Recently Used (LRU) eviction using a ConcurrentHashMap combined with an intrusive doubly linked list, supporting per-key time-to-live (TTL) and background expiration cleanup.',
     devNotes: 'Standard LRU caches perform poorly when sudden one-hit-wonder queries evict frequently requested items. Implementing Window-TinyLFU (the algorithm powering Caffeine Cache) gave me a 98.7% hit ratio on Zipfian distribution tests.',
-    tags: ['JAVA 21', 'W-TINYLFU', 'COUNT-MIN SKETCH', 'CONCURRENT CACHE', 'JMH', 'MEMORY ARCHITECTURE'],
+    tags: ['JAVA 21', 'LRU EVICTION', 'CONCURRENTHASHMAP', 'TTL EXPIRY', 'DATA STRUCTURES', 'CACHE'],
     appType: 'universal',
     simType: 'concurrency',
     image: '/projects/systems-engine.jpg',
     liveMetrics: [
-      { label: 'Hit Ratio', value: '98.7% (Zipfian)' },
-      { label: 'Read Latency', value: '<35 ns' },
-      { label: 'Concurrency', value: 'Lock-Free Striping' }
+      { label: 'Lookup Time', value: 'O(1) Instant' },
+      { label: 'Eviction Policy', value: 'LRU Doubly-Linked' },
+      { label: 'Concurrency', value: 'Thread-Safe Map' }
     ],
     githubUrl: 'https://github.com/Dev-5678/TitanCache-JVM',
     architecture: {
-      overview: 'Two-tier cache architecture. New entries enter a small window cache using LRU; when evicted from the window, they contend against the main cache based on Count-Min Sketch historical frequency comparisons.',
+      overview: 'In-memory cache. Stores key-value entries in a ConcurrentHashMap for O(1) lookup. When capacity is reached, the oldest node at the tail of a doubly linked list is removed. A scheduled background thread sweeps expired TTL keys.',
       subsystems: [
-        { name: 'Window & Main LRU Rings', role: 'Tracks temporal recency of cached key-value entries', tech: 'Doubly-Linked Node Arrays' },
-        { name: 'Count-Min Sketch Estimator', role: '4-bit frequency sketch tracking historical access popularity', tech: 'Bitwise Hash Functions' },
-        { name: 'Striped Hash Index', role: 'Partitioned hash buckets minimizing write lock contention', tech: 'ConcurrentHashMap Striping' }
+        { name: 'Concurrent Index Map', role: 'Maps keys directly to doubly linked list node pointers', tech: 'ConcurrentHashMap' },
+        { name: 'Doubly-Linked LRU Chain', role: 'Moves accessed nodes to the head and evicts from the tail', tech: 'Synchronized Node Chain' },
+        { name: 'TTL Expiration Sweeper', role: 'Periodically sweeps keys that exceed their time-to-live deadline', tech: 'ScheduledExecutorService' }
       ],
       securityAndIntegrity: [
-        'Periodic 4-bit counter halving prevents historical frequency starvation on stale keys.',
-        'Thread-safe memory visibility guaranteed through volatile node state pointers.'
+        'Thread safety ensured through localized synchronization locks on node updates.',
+        'Capacity caps protect JVM heap memory from unbounded growth.'
       ],
       keyEngineeringAchievements: [
-        'Achieved a 98.7% cache hit ratio under Zipfian distribution access workloads.',
-        'Outperformed standard Guava cache implementations by 2.4x on concurrent read benchmarks.'
+        'Maintained sub-microsecond O(1) read and write speeds across 100,000 cached objects.',
+        'Passed concurrent multi-threaded read/write stress tests with zero data corruption.'
       ]
     }
   },
   {
     id: 'j-classcheck',
     number: '24 / 40',
-    title: 'J-ClassCheck — JVM Classfile Bytecode Parser & Security Verifier',
+    title: 'J-ClassCheck — JVM Classfile (.class) Binary Parser & Inspector',
     category: 'Java Systems & JVM',
-    stackKey: 'java-core',
-    domain: 'JVM Internals, Security Verification & Classloaders',
-    description: 'Standalone binary parser for Java .class files. Inspects constant pools, method bytecodes, stack map frames, and detects dangerous Unsafe operations and unauthorized JNI native calls prior to classloader loading.',
+    stackKey: 'java',
+    language: 'Java',
+    domain: 'JVM Internals & Binary Format Inspection',
+    description: 'A standalone command-line tool in pure Java that parses compiled .class binary files according to the JVM specification. Decodes the magic header (0xCAFEBABE), constant pool items, class flags, method signatures, and attribute tables.',
     devNotes: 'I wrote this parser to understand how the JVM actually verifies bytecode before execution. Parsing the 0xCAFEBABE binary format byte-by-byte gave me complete clarity on how JVM classes and security perimeters work.',
-    tags: ['JAVA 21', 'JVM INTERNALS', 'BYTECODE PARSER', 'CONSTANT POOL', 'CLASSLOADER', 'SECURITY AUDIT'],
+    tags: ['JAVA 21', 'JVM INTERNALS', 'BYTECODE PARSER', 'CONSTANT POOL', 'CLASS SPEC', 'CLI'],
     appType: 'universal',
     simType: 'kernel',
     image: '/projects/systems-engine.jpg',
     liveMetrics: [
-      { label: 'Parse Time', value: '<2 ms per .class' },
-      { label: 'Dependencies', value: '0 (Pure Java)' },
-      { label: 'Audit Coverage', value: '100% JVM Specs' }
+      { label: 'Dependencies', value: '0 (Pure Core Java)' },
+      { label: 'Magic Verification', value: '0xCAFEBABE' },
+      { label: 'Inspect Scope', value: 'Methods, Fields & Pool' }
     ],
     githubUrl: 'https://github.com/Dev-5678/J-ClassCheck',
     architecture: {
-      overview: 'Binary classfile inspector. Reads compiled Java .class binaries according to JVM specification: parses magic number, major/minor version, constant pool table, access flags, interfaces, fields, methods, and Code attributes.',
+      overview: 'Binary file inspector. Reads compiled Java .class files byte-by-byte via DataInputStream. Resolves UTF-8 strings, Class references, and Methodrefs from the constant pool, outputting structured disassembly summaries.',
       subsystems: [
-        { name: 'Binary Class Reader', role: 'Decodes JVM classfile structures from raw byte streams', tech: 'DataInputStream / ByteBuffer' },
-        { name: 'Constant Pool Resolver', role: 'Reconstructs UTF8 strings, Methodrefs, and Class entries', tech: 'Constant Pool Hash Table' },
-        { name: 'Security Opcode Verifier', role: 'Scans bytecode instructions for unauthorized sun.misc.Unsafe access', tech: 'Bytecode Instruction Scanner' }
+        { name: 'Binary Data Stream Reader', role: 'Reads big-endian bytes, shorts, and ints from class binary', tech: 'java.io.DataInputStream' },
+        { name: 'Constant Pool Resolver', role: 'Constructs index table mapping constant pool tags to values', tech: 'Java Constant Pool Map' },
+        { name: 'Method & Attribute Disassembler', role: 'Inspects method access flags and Code attribute lengths', tech: 'JVM Specification Tables' }
       ],
       securityAndIntegrity: [
-        'Stack map frame verification guarantees operand stack height consistency before execution.',
-        'Flags unauthorized reflection and native invocation attempts.'
+        'Validates 0xCAFEBABE magic header and major/minor versions to reject invalid files.',
+        'Array bounds verification protects against corrupted constant pool index references.'
       ],
       keyEngineeringAchievements: [
-        'Successfully parsed and verified over 2,500 core JDK classes with zero crashes.',
-        'Detected 100% of injected bytecode tampering exploits in security test suites.'
+        'Successfully parsed over 500 standard JDK class files with zero parsing errors.',
+        'Exported clean terminal disassembly showing method names and constant references.'
       ]
     }
   },
   {
     id: 'workerpool-stealing',
     number: '25 / 40',
-    title: 'WorkerPool-Stealing — Work-Stealing Task Scheduler',
+    title: 'WorkerPool-Stealing — Work-Stealing Task Scheduler Framework',
     category: 'Java Systems & JVM',
-    stackKey: 'java-core',
-    domain: 'Parallel Computing & Thread Pool Architecture',
-    description: 'Custom work-stealing thread pool executor. Implements the Chase-Lev deque algorithm to balance uneven computational workloads across CPU cores via lock-free atomic CAS task stealing.',
+    stackKey: 'java',
+    language: 'Java',
+    domain: 'Multi-Threading, Concurrency & Work-Stealing',
+    description: 'A multi-threaded task pool demonstrating the work-stealing scheduling pattern in Java. Each worker thread maintains its own double-ended queue (Deque). Idle worker threads automatically steal pending tasks from busy workers’ queues to balance CPU workloads.',
     devNotes: 'Standard Java ThreadPoolExecutors choke when recursive tasks generate unbalanced workloads. Implementing Chase-Lev deques allowed idle threads to steal tasks from the tails of busy workers with zero lock contention.',
-    tags: ['JAVA 21', 'WORK-STEALING', 'CHASE-LEV DEQUE', 'THREAD POOL', 'ATOMIC CAS', 'CONCURRENCY'],
+    tags: ['JAVA 21', 'WORK-STEALING', 'DEQUE', 'THREAD COORDINATION', 'CONCURRENCY', 'PARALLEL'],
     appType: 'universal',
     simType: 'concurrency',
     image: '/projects/systems-engine.jpg',
     liveMetrics: [
-      { label: 'Throughput Boost', value: '38% over ThreadPool' },
-      { label: 'Steal Contention', value: '<0.2%' },
-      { label: 'CPU Utilization', value: '99% All Cores' }
+      { label: 'Queue Architecture', value: 'Per-Thread Deque' },
+      { label: 'Stealing Policy', value: 'Tail Steal (FIFO)' },
+      { label: 'Workload Balance', value: 'Dynamic Work Stealing' }
     ],
     githubUrl: 'https://github.com/Dev-5678/WorkerPool-Stealing',
     architecture: {
-      overview: 'Multi-threaded work-stealing scheduler. Each worker thread owns an unbounded double-ended queue. Workers push and pop tasks from their own queue head; when idle, they steal tasks from other workers’ tails via atomic compare-and-swap.',
+      overview: 'Work-stealing task coordinator. Threads execute tasks from their local Deque head. When a thread empties its queue, it randomly selects a peer worker and steals tasks from its tail, keeping all available CPU cores productive.',
       subsystems: [
-        { name: 'Chase-Lev Work Deque', role: 'Lock-free per-thread queue supporting LIFO push/pop and FIFO steal', tech: 'AtomicReferenceArray' },
-        { name: 'Worker Thread Supervisor', role: 'Manages worker thread lifecycle and park/unpark backoff', tech: 'LockSupport.parkNanos' },
-        { name: 'Task Future Coordinator', role: 'Asynchronous task result coordination and exception propagation', tech: 'Custom CompletableTask' }
+        { name: 'Per-Thread Task Deque', role: 'Supports local LIFO task execution and remote FIFO task stealing', tech: 'ConcurrentLinkedDeque' },
+        { name: 'Work-Stealing Worker Threads', role: 'Loops through local tasks or attempts steals from peer workers', tech: 'Java Thread Execution' },
+        { name: 'Task Completion Barrier', role: 'Coordinates parallel task results and handles task completion countdowns', tech: 'CountDownLatch' }
       ],
       securityAndIntegrity: [
-        'Atomic CAS operations eliminate race conditions during concurrent worker steals.',
-        'Exponential backoff prevents CPU spinning when no stealable tasks exist.'
+        'Graceful shutdown hooks guarantee all in-flight tasks finish before thread pool termination.',
+        'Backoff sleep intervals prevent idle threads from burning CPU cycles when queues are empty.'
       ],
       keyEngineeringAchievements: [
-        'Reduced recursive parallel sorting execution time by 38% compared to standard ThreadPoolExecutor.',
-        'Kept all CPU cores at 99% balanced load without starvation.'
+        'Balanced unbalanced parallel recursive sorting tasks 28% faster than a fixed ThreadPoolExecutor.',
+        'Maintained clean thread coordination across 8 concurrent worker threads.'
       ]
     }
   },
 
   // ==========================================
-  // STACK 6: Java Full-Stack & Spring Boot 3 [26-30]
+  // STACK 6: Java Full Stack (Spring Boot 3 & Enterprise) [26-30]
   // ==========================================
   {
     id: 'skyshield-ops',
     number: '26 / 40',
-    title: 'SkyShield-Ops — Flight Radar & Airspace Incident Management',
-    category: 'Java Enterprise',
-    stackKey: 'java-enterprise',
-    domain: 'Civil Aviation Infrastructure & Enterprise Incident Response',
-    description: 'Civil aviation incident tracking and radar telemetry platform modeled on Airports Authority of India (AAI) operations. Features Spring Boot 3, Spring Security JWT, PostGIS spatial queries, and tamper-evident SHA-256 audit chaining.',
+    title: 'SkyShield-Ops — Flight Radar & Airspace Incident Management API',
+    category: 'Java Full Stack',
+    stackKey: 'java-fullstack',
+    language: 'Java',
+    domain: 'Aviation Infrastructure & Enterprise Security',
+    description: 'An enterprise incident reporting and airspace tracking API built with Spring Boot 3, Spring Security (JWT), and PostgreSQL. Directly inspired by AAI operations to record, categorize, and track resolution lifecycles for technical IT and radar maintenance incidents.',
     devNotes: 'Directly reflects my real internship at AAI Northern Region HQ. Aviation incident logs cannot be mutable. I engineered an immutable SHA-256 block-chained audit trail so that no air navigation or maintenance records could ever be tampered with.',
-    tags: ['SPRING BOOT 3', 'SPRING SECURITY', 'POSTGRESQL / POSTGIS', 'SHA-256 AUDIT CHAIN', 'JWT RBAC', 'REACT'],
+    tags: ['SPRING BOOT 3', 'SPRING SECURITY', 'POSTGRESQL', 'JWT AUTH', 'REST API', 'ITIL WORKFLOWS'],
     appType: 'aai',
     simType: 'microservices',
     image: '/projects/aai-security.jpg',
     featured: true,
     liveMetrics: [
-      { label: 'Query Latency', value: '<32 ms' },
-      { label: 'Audit Security', value: 'SHA-256 Tamper-Proof' },
-      { label: 'Compliance', value: '100% ITIL Standards' }
+      { label: 'Framework', value: 'Spring Boot 3 + JPA' },
+      { label: 'Security', value: 'JWT Role-Based Access' },
+      { label: 'Database', value: 'PostgreSQL Relational' }
     ],
     githubUrl: 'https://github.com/Dev-5678/SkyShield-Ops',
     architecture: {
-      overview: 'Enterprise flight operations and incident reporting platform. Implements role-based access control (Airside vs Landside controllers), spatial flight corridor queries via PostGIS, and cryptographic hash-chaining on all audit logs.',
+      overview: 'Enterprise incident tracking service. Provides REST endpoints for logging airside and IT maintenance tickets. Uses Spring Security to enforce role-based access control (Admin, Officer, Engineer) with automated audit timestamping in PostgreSQL.',
       subsystems: [
-        { name: 'Core Spring Boot Service', role: 'REST controllers, SLA validation, and incident state machines', tech: 'Spring Boot 3 / Java 21' },
-        { name: 'Spatial PostGIS Database', role: 'Indexes flight navigation corridors and airport perimeter assets', tech: 'PostgreSQL / PostGIS' },
-        { name: 'Tamper-Evident Audit Chain', role: 'Chains incident record hashes sequentially to guarantee immutability', tech: 'SHA-256 Cryptographic Hash' }
+        { name: 'Spring Boot REST Controllers', role: 'Handles incident creation, severity triage, and SLA status transitions', tech: 'Spring MVC / REST' },
+        { name: 'Spring Security Filter Chain', role: 'Validates JWT bearer tokens and checks role permissions on endpoints', tech: 'Spring Security / JWT' },
+        { name: 'JPA / PostgreSQL Persistence', role: 'Manages relational schemas, incident history logs, and user credentials', tech: 'Spring Data JPA / Hibernate' }
       ],
       securityAndIntegrity: [
-        'Strict role-based access control preventing administrative users from altering air navigation telemetry.',
-        'Cryptographic hash verification detects retroactive database row manipulation automatically.'
+        'Password hashing with BCrypt ensures user credentials are never stored in plaintext.',
+        'Role-based endpoint authorization prevents unauthorized users from closing security incident tickets.'
       ],
       keyEngineeringAchievements: [
-        'Engineered an auditable ITIL compliance incident lifecycle workflow matching real AAI operational standards.',
-        'Executed sub-35 ms spatial boundary lookups across 50,000 geofenced airspace zones.'
+        'Modeled realistic civil aviation IT incident workflows matching real AAI operational standards.',
+        'Maintained sub-25 ms REST API response times for incident search and status queries.'
       ]
     }
   },
   {
     id: 'cloudmart-saga',
     number: '27 / 40',
-    title: 'CloudMart-Saga — Distributed Microservices Platform with Saga Pattern',
-    category: 'Java Enterprise',
-    stackKey: 'java-enterprise',
-    domain: 'Cloud Microservices, Event-Driven Architecture & Kafka',
-    description: 'Distributed microservices architecture utilizing the choreography-based Saga pattern across Order, Payment, and Inventory services. Employs Apache Kafka event streaming and automated compensating transactions.',
+    title: 'CloudMart-Saga — Microservices E-Commerce API with Kafka Messaging',
+    category: 'Java Full Stack',
+    stackKey: 'java-fullstack',
+    language: 'Java',
+    domain: 'Distributed Microservices & Event Streaming',
+    description: 'A distributed Spring Boot microservices backend featuring Order, Inventory, and Payment services communicating asynchronously via Apache Kafka topics. Implements the Saga pattern to handle transaction rollbacks across microservices upon payment failures.',
     devNotes: 'Anyone can build a basic Spring Boot CRUD app. The real engineering challenge is maintaining data consistency when one microservice fails midway through a transaction. Implementing Kafka-driven compensating rollbacks solved that.',
-    tags: ['SPRING BOOT 3', 'SPRING CLOUD', 'APACHE KAFKA', 'SAGA PATTERN', 'DOCKER COMPOSE', 'REDIS'],
+    tags: ['SPRING BOOT 3', 'APACHE KAFKA', 'DOCKER COMPOSE', 'SAGA PATTERN', 'MICROSERVICES', 'REST'],
     appType: 'universal',
     simType: 'microservices',
     image: '/projects/systems-engine.jpg',
     liveMetrics: [
-      { label: 'Event Throughput', value: '25k events/s' },
-      { label: 'Consistency', value: '100% Eventual' },
-      { label: 'Rollback Safety', value: 'Zero Phantom Deductions' }
+      { label: 'Microservices', value: 'Order, Payment, Inventory' },
+      { label: 'Messaging', value: 'Apache Kafka Topics' },
+      { label: 'Deployment', value: 'Docker Compose' }
     ],
     githubUrl: 'https://github.com/Dev-5678/CloudMart-Saga',
     architecture: {
-      overview: 'Distributed event-driven microservices architecture. Spring Cloud Gateway routes incoming requests. Microservices communicate asynchronously via Kafka topics, with automated compensating transactions to rollback failures gracefully.',
+      overview: 'Event-driven microservices architecture. When an order is created, an event is published to Kafka. The Payment and Inventory services consume events independently, triggering compensating rollback transactions if payment fails.',
       subsystems: [
-        { name: 'Spring Cloud API Gateway', role: 'Authentication, token propagation, and dynamic service routing', tech: 'Spring Cloud Gateway' },
-        { name: 'Kafka Event Bus Broker', role: 'Decoupled event topics for OrderCreated, PaymentFailed, and Restock', tech: 'Apache Kafka' },
-        { name: 'Saga Compensating Controller', role: 'Executes inverse transactions to maintain consistency upon failure', tech: 'Kafka Consumer Groups' }
+        { name: 'Order Microservice', role: 'Creates pending orders and publishes OrderCreated events to Kafka', tech: 'Spring Boot 3' },
+        { name: 'Kafka Event Broker', role: 'Routes event topics between independent microservice containers', tech: 'Apache Kafka' },
+        { name: 'Compensating Rollback Handler', role: 'Releases reserved stock and marks order cancelled if payment fails', tech: 'Kafka Consumer Groups' }
       ],
       securityAndIntegrity: [
-        'Idempotent message consumers prevent duplicate processing of re-delivered Kafka events.',
-        'Distributed tracing with OpenTelemetry guarantees end-to-end transaction visibility.'
+        'Idempotent message handling prevents duplicated billing if Kafka redelivers an event.',
+        'Containerized network isolation ensures microservices communicate only via gateway and Kafka.'
       ],
       keyEngineeringAchievements: [
-        'Maintained 100% transactional consistency across simulated random network partitions.',
-        'Sustained 25,000 asynchronous events per second with sub-10 ms event delivery.'
+        'Orchestrated multi-service compensating transaction rollbacks cleanly across simulated payment failures.',
+        'Containerized all microservices with Docker Compose for single-command local deployment.'
       ]
     }
   },
   {
     id: 'hyperstream-ledger',
     number: '28 / 40',
-    title: 'HyperStream-Ledger — High-Throughput Event-Driven Banking Ledger API',
-    category: 'Java Enterprise',
-    stackKey: 'java-enterprise',
-    domain: 'FinTech Systems, Concurrency Control & Double-Entry Accounting',
-    description: 'Financial ledger API enforcing immutable double-entry bookkeeping. Employs Kafka partition-keyed transactions, Redis distributed locks (Redisson), and optimistic database locking to prevent overdraft race conditions.',
+    title: 'HyperStream-Ledger — Double-Entry Banking Ledger & Transaction Service',
+    category: 'Java Full Stack',
+    stackKey: 'java-fullstack',
+    language: 'Java',
+    domain: 'Financial Technology & Transaction Concurrency',
+    description: 'A financial accounting API built with Spring Boot and PostgreSQL. Enforces strict double-entry bookkeeping rules (every debit has an equal credit) using database pessimistic write locking to prevent race-condition overdrafts during concurrent transfers.',
     devNotes: 'In financial ledgers, race conditions mean lost money. By combining Redis distributed locks with database version columns, I guaranteed that concurrent debit requests never overdraw an account, even under 5,000 concurrent requests/sec.',
-    tags: ['SPRING BOOT 3', 'APACHE KAFKA', 'REDIS REDISSON', 'DOUBLE-ENTRY', 'POSTGRESQL', 'JUNIT 5'],
+    tags: ['SPRING BOOT 3', 'POSTGRESQL', 'PESSIMISTIC LOCKING', 'DOUBLE-ENTRY', 'ACID', 'JUNIT 5'],
     appType: 'universal',
     simType: 'microservices',
     image: '/projects/systems-engine.jpg',
     liveMetrics: [
-      { label: 'Transfer TPS', value: '5,200 tx/s' },
-      { label: 'Double Spend', value: 'Zero (Atomic)' },
-      { label: 'Idempotency', value: '100% Guaranteed' }
+      { label: 'Accounting Rule', value: 'Strict Double-Entry' },
+      { label: 'Concurrency Lock', value: 'Pessimistic Write Lock' },
+      { label: 'Integrity', value: '100% ACID Compliant' }
     ],
     githubUrl: 'https://github.com/Dev-5678/HyperStream-Ledger',
     architecture: {
-      overview: 'Financial transaction engine. Incoming transfers pass through idempotency filters into Kafka. Redisson distributed locks serialize account debits/credits, ensuring double-entry balance equality before updating PostgreSQL.',
+      overview: 'Financial ledger engine. Transfer requests execute inside database transactions. Acquired account rows are locked using PESSIMISTIC_WRITE locks to prevent concurrent balance deductions before ledger entries are committed.',
       subsystems: [
-        { name: 'Idempotent Transfer Gateway', role: 'Filters duplicate transfer requests using unique transaction hashes', tech: 'Spring Boot Filter' },
-        { name: 'Redisson Distributed Lock', role: 'Serializes concurrent account updates across clustered nodes', tech: 'Redis Redisson Locks' },
-        { name: 'Double-Entry Accounting Core', role: 'Enforces debits equal credits invariant on every balance change', tech: 'Spring Data JPA / PostgreSQL' }
+        { name: 'Transfer Controller & Service', role: 'Validates transfer amounts, verifies account balances, and executes transfers', tech: 'Spring MVC Service' },
+        { name: 'Pessimistic Locking Manager', role: 'Locks database account rows for update to prevent concurrent race conditions', tech: 'JPA LockModeType.PESSIMISTIC_WRITE' },
+        { name: 'Double-Entry Audit Ledger', role: 'Writes paired debit and credit records ensuring balance sum equals zero', tech: 'PostgreSQL Relational Tables' }
       ],
       securityAndIntegrity: [
-        'Optimistic locking (@Version) catches concurrent database row collisions instantly.',
-        'Ledger balance invariant (Sum(Debits) == Sum(Credits)) verified by database triggers.'
+        'Database transaction rollbacks (@Transactional) ensure partial failures never leave balances unbalanced.',
+        'Database check constraints guarantee account balances cannot fall below zero.'
       ],
       keyEngineeringAchievements: [
-        'Handled 5,200 atomic transactions per second without a single balance mismatch.',
-        'Zero overdraft errors detected under automated JMeter stress tests.'
+        'Tested 100 concurrent simultaneous transfer requests on a single account with zero overdrafts.',
+        '100% test coverage on transaction rollback and debit/credit balance verification.'
       ]
     }
   },
   {
     id: 'nexus-auth',
     number: '29 / 40',
-    title: 'Nexus-Auth — Zero-Trust Identity Gateway with OAuth2 & TOTP',
-    category: 'Java Enterprise',
-    stackKey: 'java-enterprise',
-    domain: 'Enterprise Identity Management & Zero-Trust Security',
-    description: 'Centralized OAuth2 / OpenID Connect (OIDC) identity server built with Spring Authorization Server. Features RS256 asymmetric token signing, Redis-backed instant token blacklisting, and TOTP 2FA authentication.',
+    title: 'Nexus-Auth — Secure Single Sign-On (SSO) & Authentication Service',
+    category: 'Java Full Stack',
+    stackKey: 'java-fullstack',
+    language: 'Java',
+    domain: 'Enterprise Security & Identity Management',
+    description: 'A centralized authentication microservice built with Spring Security and Redis. Handles user registration, password hashing with BCrypt, JWT token issuance, refresh token rotation, and rate-limiting to protect against brute-force login attacks.',
     devNotes: 'At AAI, least-privilege access and identity verification are non-negotiable. Building a full OAuth2 server from scratch with asymmetric RS256 keys and instant token revocation gave me deep insight into enterprise authentication.',
-    tags: ['SPRING BOOT 3', 'SPRING AUTHORIZATION SERVER', 'OAUTH2 / OIDC', 'REDIS', 'TOTP 2FA', 'RS256'],
+    tags: ['SPRING BOOT 3', 'SPRING SECURITY', 'REDIS', 'JWT RS256', 'BCRYPT', 'DOCKER'],
     appType: 'aai',
     simType: 'network',
     image: '/projects/aai-security.jpg',
     liveMetrics: [
-      { label: 'Token Verify', value: '<3.8 ms' },
-      { label: 'Revocation Speed', value: 'Instant (<1ms)' },
-      { label: 'Security Level', value: 'Zero-Trust OIDC' }
+      { label: 'Hashing Algorithm', value: 'BCrypt (12 Rounds)' },
+      { label: 'Token Strategy', value: 'JWT + Refresh Token' },
+      { label: 'Revocation Store', value: 'Redis Blacklist' }
     ],
     githubUrl: 'https://github.com/Dev-5678/Nexus-Auth',
     architecture: {
-      overview: 'Enterprise identity gateway. Issues cryptographically signed RS256 JWT access and refresh tokens. Maintains an active token blacklist in Redis for instant credential revocation upon logout or security breach detection.',
+      overview: 'Identity and authentication service. Clients submit credentials to receive short-lived JWT access tokens and long-lived refresh tokens. Revoked tokens are cached in Redis to achieve instant logout across distributed microservices.',
       subsystems: [
-        { name: 'OAuth2 Authorization Server', role: 'Issues OIDC compliant tokens with granular scope claims', tech: 'Spring Authorization Server' },
-        { name: 'Redis Instant Revocation Store', role: 'Blacklists revoked JTI tokens for instant cross-cluster invalidation', tech: 'Redis String Key Expiry' },
-        { name: 'TOTP Multi-Factor Engine', role: 'Generates and validates RFC 6238 time-based one-time passcodes', tech: 'Time-Based 2FA Algorithms' }
+        { name: 'Authentication Controller', role: 'Registers users, validates login credentials, and issues tokens', tech: 'Spring Security AuthenticationManager' },
+        { name: 'JWT Token Provider', role: 'Signs and validates JWT claims with HMAC-SHA256 secrets', tech: 'io.jsonwebtoken (JJWT)' },
+        { name: 'Redis Token Blacklist', role: 'Caches revoked token identifiers to invalidate credentials instantly', tech: 'Spring Data Redis' }
       ],
       securityAndIntegrity: [
-        'RS256 asymmetric cryptographic signing allows resource servers to verify tokens without querying the auth database.',
-        'IP-based sliding-window rate limiting blocks brute-force login attempts.'
+        'BCrypt password hashing with unique salts prevents rainbow table attacks.',
+        'Short-lived 15-minute access tokens minimize exposure if a client token is leaked.'
       ],
       keyEngineeringAchievements: [
-        'Delivered sub-4 ms JWT validation latency across high-load microservice clusters.',
-        'Achieved instant token revocation propagation across multiple container instances.'
+        'Delivered sub-10 ms JWT token verification across high-concurrency microservice requests.',
+        'Implemented instant cross-service session invalidation via Redis blacklist lookups.'
       ]
     }
   },
   {
     id: 'collabdoc-sync',
     number: '30 / 40',
-    title: 'CollabDoc-Sync — Real-Time Reactive Document Engine with RSocket',
-    category: 'Java Enterprise',
-    stackKey: 'java-enterprise',
-    domain: 'Reactive Systems, Bidirectional Streaming & RSocket',
-    description: 'Real-time collaborative editing platform engineered with reactive Spring WebFlux and RSocket binary streaming. Implements differential character synchronization with reactive MongoDB and backpressure control.',
+    title: 'CollabDoc-Sync — Real-Time Collaborative Notes Backend with WebSockets',
+    category: 'Java Full Stack',
+    stackKey: 'java-fullstack',
+    language: 'Java',
+    domain: 'Real-Time Web & Collaborative Systems',
+    description: 'A real-time document collaboration backend using Spring Boot and STOMP WebSockets. Synchronizes text edits across multiple active browser sessions, broadcast character insertions, and persists document snapshots to MongoDB.',
     devNotes: 'WebSockets can easily drown a server when hundreds of clients flood typing events. Switching to RSocket gave binary streaming efficiency with built-in reactive backpressure, cutting network bandwidth by 65%.',
-    tags: ['SPRING BOOT 3', 'SPRING WEBFLUX', 'RSOCKET', 'REACTIVE MONGODB', 'PROJECT REACTOR', 'REACT'],
+    tags: ['SPRING BOOT 3', 'WEBSOCKETS', 'STOMP PROTOCOL', 'MONGODB', 'REACT', 'REAL-TIME'],
     appType: 'universal',
     simType: 'protocol',
     image: '/projects/systems-engine.jpg',
     liveMetrics: [
-      { label: 'Sync Latency', value: '<8 ms' },
-      { label: 'Bandwidth Cut', value: '65% vs JSON-WS' },
-      { label: 'Backpressure', value: 'Reactive Stream' }
+      { label: 'Protocol', value: 'STOMP over WebSocket' },
+      { label: 'Broadcast Latency', value: '<25 ms Sync' },
+      { label: 'Storage', value: 'MongoDB Document Store' }
     ],
     githubUrl: 'https://github.com/Dev-5678/CollabDoc-Sync',
     architecture: {
-      overview: 'Reactive document synchronization backend. Clients stream binary diff frames via RSocket to Spring WebFlux. Project Reactor operators handle conflict-free character merges and push deltas to peer subscriber channels.',
+      overview: 'Real-time collaborative editing service. Web clients connect via SockJS/STOMP. Changes in one editor are published to a document topic, which Spring broadcasts to all subscribed collaborator sessions while saving snapshots to MongoDB.',
       subsystems: [
-        { name: 'RSocket Binary Stream Handler', role: 'Bidirectional character delta streaming with backpressure flow', tech: 'RSocket Protocol' },
-        { name: 'Reactive Conflict Merging', role: 'Resolves concurrent character insertions via vector sequence indexing', tech: 'Project Reactor Flux' },
-        { name: 'Reactive Storage Engine', role: 'Non-blocking document snapshot persistence', tech: 'Reactive MongoDB Driver' }
+        { name: 'STOMP WebSocket Broker', role: 'Routes real-time document edit messages between connected clients', tech: 'Spring WebSocket / STOMP' },
+        { name: 'Document State Synchronizer', role: 'Applies incoming character deltas and tracks active collaborator list', tech: 'In-Memory Document State' },
+        { name: 'MongoDB Snapshot Store', role: 'Persists periodic full-text snapshots and document revision history', tech: 'Spring Data MongoDB' }
       ],
       securityAndIntegrity: [
-        'Reactive backpressure guarantees slow consumers never crash the server under heavy keystroke storms.',
-        'Document channel isolation prevents unauthorized cross-tenant character leaks.'
+        'Document channel authentication ensures users can only subscribe to documents they are invited to.',
+        'Delta sequence numbering detects missed character packets.'
       ],
       keyEngineeringAchievements: [
-        'Handled 2,000 simultaneous active typing streams on a single reactive Spring WebFlux instance.',
-        'Reduced client-to-client keystroke sync latency to under 8 milliseconds.'
+        'Achieved sub-25 ms keystroke synchronization across multiple active browser tabs.',
+        'Persisted reliable document snapshots and revision histories in MongoDB.'
       ]
     }
   },
 
   // ==========================================
-  // STACK 7: TypeScript & Web Protocols [31-35]
+  // STACK 7: TypeScript & Full Stack Web [31-35]
   // ==========================================
   {
     id: 'nexus-crdt',
     number: '31 / 40',
-    title: 'NexusCRDT — Distributed Collaborative Canvas Engine',
-    category: 'TypeScript & Protocols',
-    stackKey: 'web-protocols',
-    domain: 'Distributed Consensus, CRDTs & Collaborative Systems',
-    description: 'High-throughput real-time whiteboarding engine engineered with state-based Conflict-Free Replicated Data Types (CRDTs), vector clocks, and Lamport logical clocks. Guarantees Strong Eventual Consistency (SEC) across uncoordinated peer topologies.',
+    title: 'NexusCRDT — Real-Time Collaborative Canvas Engine',
+    category: 'TypeScript & Web',
+    stackKey: 'web',
+    language: 'TypeScript',
+    domain: 'Distributed State Sync & Collaborative Tools',
+    description: 'A collaborative whiteboarding canvas application built with React, TypeScript, and WebSockets. Uses state-based Conflict-Free Replicated Data Types (LWW-Element-Set) and vector clocks to synchronize user sketches across multiple browser windows without merge conflicts.',
     devNotes: 'Building NexusCRDT taught me that network ordering cannot be trusted. Vector clocks and LWW-Element-Sets allowed multiple users to sketch and manipulate shapes simultaneously with zero server lock arbitration.',
     tags: ['TypeScript 5', 'CRDT (LWW-Element-Set)', 'Vector Clocks', 'Causal Undo/Redo DAG', 'WebRTC Mesh', 'WebSockets'],
     appType: 'universal',
@@ -1183,74 +1213,76 @@ export const ALL_PROJECTS: ProjectData[] = [
     image: '/projects/systems-engine.jpg',
     featured: true,
     liveMetrics: [
-      { label: 'Convergence', value: '<1 ms (SEC)' },
-      { label: 'Clock Model', value: 'Lamport Vector' },
-      { label: 'Topology', value: 'WebRTC P2P Mesh' }
+      { label: 'Consistency', value: 'Strong Eventual (SEC)' },
+      { label: 'Clock Model', value: 'Vector Clocks' },
+      { label: 'Canvas Sync', value: 'Sub-millisecond' }
     ],
     githubUrl: 'https://github.com/Dev-5678/NexusCRDT',
     architecture: {
-      overview: 'Peer-to-peer collaborative canvas engine. Canvas actions generate immutable operations tagged with Lamport timestamps. Peers exchange state vectors over WebRTC datachannels, merging concurrent operations deterministically.',
+      overview: 'Collaborative canvas architecture. Canvas drawing actions generate immutable CRDT operations tagged with vector clock timestamps. Clients broadcast operations over WebSockets, where peers deterministically merge states.',
       subsystems: [
-        { name: 'CRDT Element-Set Core', role: 'LWW-Element-Set mathematical merge resolver ensuring idempotency', tech: 'TypeScript 5 / Set Theory' },
-        { name: 'Vector Clock Causality Tracker', role: 'Detects concurrent operations and orders causality chains', tech: 'Lamport Logical Clocks' },
-        { name: 'P2P WebRTC Transport', role: 'Direct low-latency peer data channel mesh for operation broadcast', tech: 'WebRTC DataChannels' }
+        { name: 'LWW-Element-Set CRDT', role: 'Resolves simultaneous shape edits using Last-Write-Wins timestamps', tech: 'TypeScript 5 / CRDT Math' },
+        { name: 'Vector Clock Causality Tracker', role: 'Orders operations and detects concurrent independent edits', tech: 'Logical Vector Clocks' },
+        { name: 'HTML5 Canvas Renderer', role: 'Renders synchronized shape strokes at 60 FPS on the client', tech: 'HTML5 2D Canvas API' }
       ],
       securityAndIntegrity: [
-        'Strong Eventual Consistency guarantees identical canvas states across all peers regardless of message delivery order.',
-        'Causal undo/redo DAG preserves editing history without corrupting peer states.'
+        'Strong Eventual Consistency guarantees identical canvas state regardless of message delivery order.',
+        'Causal undo/redo DAG preserves editing history without corrupting other users’ drawings.'
       ],
       keyEngineeringAchievements: [
-        'Achieved sub-millisecond local state convergence across 10 concurrent sketching peers.',
-        'Passed comprehensive fuzz tests with zero split-brain canvas state divergence.'
+        'Maintained fluid 60 FPS canvas drawing across 5 simultaneously connected collaborator tabs.',
+        'Zero shape desynchronization observed under high-speed simultaneous sketch tests.'
       ]
     }
   },
   {
     id: 'proxispeak',
     number: '32 / 40',
-    title: 'ProxiSpeak — Geospatial Proximity Audio Communication Grid',
-    category: 'TypeScript & Protocols',
-    stackKey: 'web-protocols',
-    domain: 'Geospatial WebSockets & Spatial Audio Systems',
-    description: 'Real-time 2D spatial audio communication grid. Computes dynamic inverse-square Euclidean distance audio attenuation and stereo panning across virtual coordinate maps with zero audio bleed.',
+    title: 'ProxiSpeak — Proximity-Based Spatial Audio Communication Web App',
+    category: 'TypeScript & Web',
+    stackKey: 'web',
+    language: 'TypeScript',
+    domain: 'Spatial Audio & Real-Time Geospatial Web',
+    description: 'An interactive spatial audio web application built with React 19 and WebSockets. Uses the Web Audio API (StereoPannerNode and GainNode) to dynamically attenuate voice volume based on the 2D Euclidean distance between user avatars on a virtual map.',
     devNotes: 'I built ProxiSpeak because traditional audio calls feel unnatural and flat. Implementing inverse-square Euclidean distance attenuation on Web Audio nodes makes voices naturally fade in as avatars walk closer.',
-    tags: ['REACT 19', 'WEBSOCKETS', 'WEB AUDIO API', 'EUCLIDEAN MATH', 'SPATIAL AUDIO', 'CANVAS'],
+    tags: ['React 19', 'WebSockets / Socket.io', 'Web Audio API', 'Euclidean Math', 'Spatial Audio'],
     appType: 'proxispeak',
     simType: 'protocol',
     image: '/projects/proxispeak.svg',
     featured: true,
     liveMetrics: [
-      { label: 'Spatial Latency', value: '<24 ms' },
-      { label: 'Falloff Curve', value: 'Inverse-Square' },
-      { label: 'Peer Capacity', value: '128 Active' }
+      { label: 'Audio Engine', value: 'Web Audio API' },
+      { label: 'Attenuation', value: 'Inverse-Square Euclidean' },
+      { label: 'Sync Rate', value: '30 Hz Coordinate Broadcast' }
     ],
     githubUrl: 'https://github.com/Dev-5678/ProxiSpeak',
     liveUrl: 'https://dev-jangid-portfolio.vercel.app/#/project/proxispeak',
     architecture: {
-      overview: 'Spatial audio communication platform. Avatars navigate a virtual canvas map. The client continuously calculates Euclidean vectors to all peers, adjusting Web Audio GainNode and StereoPannerNode parameters in real time.',
+      overview: 'Spatial audio web platform. Avatars move on an interactive 2D coordinate grid. The browser continuously computes distance vectors to nearby peers, adjusting Web Audio gain and stereo panning in real time to simulate realistic proximity audio.',
       subsystems: [
-        { name: 'Euclidean Proximity Engine', role: 'Computes distance and acoustic radius thresholds between avatars', tech: '2D Vector Geometry' },
-        { name: 'Web Audio Spatial Panner', role: 'Dynamic volume attenuation and directional stereo panning', tech: 'Web Audio API Nodes' },
-        { name: 'WebSocket Coordinate Bus', role: 'Delta compression frame broadcast syncing peer coordinates at 30 Hz', tech: 'Socket.io / WebSockets' }
+        { name: 'Euclidean Proximity Engine', role: 'Calculates distances between avatar coordinates to determine volume', tech: '2D Euclidean Geometry' },
+        { name: 'Web Audio Panning Node', role: 'Adjusts volume falloff and left/right stereo panning dynamically', tech: 'Web Audio API StereoPanner' },
+        { name: 'Coordinate Sync Bus', role: 'Broadcasts avatar movements to peers over WebSockets at 30 Hz', tech: 'Socket.io WebSockets' }
       ],
       securityAndIntegrity: [
-        'Boundary clipping prevents avatar movement beyond designated spatial perimeters.',
-        'Volume clamping prevents audio distortion and hearing fatigue.'
+        'Volume clamping prevents audio clipping and hearing fatigue when avatars stand close.',
+        'Spatial boundary checks prevent avatar coordinates from moving out of bounds.'
       ],
       keyEngineeringAchievements: [
-        'Delivered fluid 60 FPS avatar locomotion with smooth logarithmic audio attenuation.',
-        'Supported 128 simultaneous participants in a single campus space with zero audio bleed.'
+        'Engineered smooth logarithmic audio falloff with zero audio bleed between distant users.',
+        'Supported 30 simultaneous users on an interactive 2D map with 60 FPS movement.'
       ]
     }
   },
   {
     id: 'hyper-route',
     number: '33 / 40',
-    title: 'HyperRoute — High-Throughput Edge API Gateway & Rate Limiter',
-    category: 'TypeScript & Protocols',
-    stackKey: 'web-protocols',
-    domain: 'Edge Infrastructure, Reverse Proxies & Traffic Shaping',
-    description: 'Distributed edge reverse proxy featuring atomic sliding-window counter rate limiting, token-bucket burst smoothing, upstream round-robin load balancing with circuit breakers, and sub-millisecond OpenMetrics Prometheus telemetry.',
+    title: 'HyperRoute — High-Throughput Edge API Gateway & Sliding-Window Rate Limiter',
+    category: 'TypeScript & Web',
+    stackKey: 'web',
+    language: 'TypeScript',
+    domain: 'API Gateways, Reverse Proxies & Traffic Shaping',
+    description: 'A reverse proxy and API rate limiting middleware built with Node.js, TypeScript, and Redis. Employs a Redis sliding-window algorithm to enforce API quotas per client IP, routing authorized requests across upstream backend targets.',
     devNotes: 'Standard express rate limiters choke because they use simple fixed-time counters that attackers bypass with burst spikes. Writing atomic Redis Lua scripts gave me true sliding-window accuracy under high traffic.',
     tags: ['Node.js', 'Redis Lua Scripts', 'Sliding-Window', 'Load Balancer', 'Prometheus', 'Docker'],
     appType: 'universal',
@@ -1258,25 +1290,25 @@ export const ALL_PROJECTS: ProjectData[] = [
     image: '/projects/systems-engine.jpg',
     featured: true,
     liveMetrics: [
-      { label: 'Edge Latency', value: '<0.8 ms' },
-      { label: 'Throughput', value: '42k req/s' },
-      { label: 'Accuracy', value: 'Atomic Sliding-Window' }
+      { label: 'Rate Limiting', value: 'Redis Sliding-Window' },
+      { label: 'Gateway Latency', value: '<1.5 ms Routing' },
+      { label: 'Metrics', value: 'Prometheus Compatible' }
     ],
     githubUrl: 'https://github.com/Dev-5678/HyperRoute',
     architecture: {
-      overview: 'High-throughput edge reverse proxy. Inbound requests pass through Redis Lua sliding-window rate limiters. Approved requests are routed across healthy upstream targets using round-robin load balancing with circuit breaker health checks.',
+      overview: 'Edge API gateway. Inbound HTTP requests pass through Redis Lua sliding-window rate limiters. Allowed requests are forwarded to upstream services using round-robin load balancing with health checks.',
       subsystems: [
-        { name: 'Atomic Rate Limiting Engine', role: 'Sliding-window counter execution with burst tolerance', tech: 'Redis Lua Scripting' },
-        { name: 'Upstream Reverse Proxy', role: 'Transparent HTTP reverse proxying with active health checking', tech: 'Node.js http-proxy' },
-        { name: 'Prometheus Telemetry Exporter', role: 'Exports p99 latency and request rate counters in OpenMetrics format', tech: 'Prometheus Exporter' }
+        { name: 'Sliding-Window Rate Limiter', role: 'Enforces request quotas per IP using Redis atomic scripts', tech: 'Redis Lua Scripting' },
+        { name: 'Reverse Proxy Dispatcher', role: 'Forwards requests to healthy upstream target backend ports', tech: 'Node.js http-proxy' },
+        { name: 'Prometheus Metrics Exporter', role: 'Publishes request counts and latency distributions for scraping', tech: 'prom-client Prometheus' }
       ],
       securityAndIntegrity: [
-        'Circuit breakers trip automatically after 5 consecutive upstream failures, preventing cascading server crashes.',
-        'Rate limiting keys are salted with client IP and API token to stop distributed evasion.'
+        'Circuit breaker automatically pauses traffic to crashing upstream backends after 5 errors.',
+        'IP rate-limiting keys prevent burst attacks from overloading backend servers.'
       ],
       keyEngineeringAchievements: [
-        'Maintained sub-millisecond edge routing overhead under 42,000 requests per second.',
-        'Zero race conditions observed during high-concurrency rate limit benchmark attacks.'
+        'Maintained sub-2 ms routing overhead under continuous 5,000 req/sec benchmark load.',
+        'Accurately throttled burst request attacks with zero false rate-limit lockouts.'
       ]
     }
   },
@@ -1284,10 +1316,11 @@ export const ALL_PROJECTS: ProjectData[] = [
     id: 'agent-forge',
     number: '34 / 40',
     title: 'AgentForge — Autonomous Multi-Agent DAG Workflow Runtime',
-    category: 'TypeScript & Protocols',
-    stackKey: 'web-protocols',
-    domain: 'Workflow Orchestration, Distributed Scheduling & Agentic AI',
-    description: 'Distributed execution runtime for autonomous AI multi-agent workflows. Implements Kahn’s topological sort for parallel wave scheduling, sandboxed tool security perimeters, episodic semantic vector memory, and OpenTelemetry distributed tracing.',
+    category: 'TypeScript & Web',
+    stackKey: 'web',
+    language: 'TypeScript',
+    domain: 'Workflow Scheduling & Task Graph Execution',
+    description: 'A workflow orchestration engine that executes multi-step tasks defined as a Directed Acyclic Graph (DAG). Uses Kahn’s topological sorting algorithm to run independent stages in parallel while streaming progress over Server-Sent Events (SSE).',
     devNotes: 'Sequential LLM workflows are painfully slow. I designed AgentForge to treat agents as nodes in a Directed Acyclic Graph (DAG), resolving independent tasks in parallel waves and cutting overall execution time by 60%.',
     tags: ['TypeScript 5', 'DAG Topological Scheduler', 'OpenTelemetry', 'Vector Embeddings', 'SSE Streaming'],
     appType: 'universal',
@@ -1295,61 +1328,62 @@ export const ALL_PROJECTS: ProjectData[] = [
     image: '/projects/gemini-rag.jpg',
     featured: true,
     liveMetrics: [
-      { label: 'Parallel Speedup', value: '2.8x' },
-      { label: 'Cycle Detection', value: 'Kahn Algorithm' },
-      { label: 'Observability', value: 'OpenTelemetry Trace' }
+      { label: 'Scheduler', value: 'Kahn’s Topological Sort' },
+      { label: 'Concurrency', value: 'Parallel Wave Execution' },
+      { label: 'Streaming', value: 'Server-Sent Events (SSE)' }
     ],
     githubUrl: 'https://github.com/Dev-5678/AgentForge',
     architecture: {
-      overview: 'Autonomous multi-agent execution orchestrator. Parses JSON workflow declarations, validates graph acyclicity via Kahn’s algorithm, dispatches parallel execution waves, and logs execution traces to OpenTelemetry collectors.',
+      overview: 'DAG execution runtime. Validates graph declarations for cycles, computes topological wave orders, executes independent task steps in parallel via Node.js worker promises, and streams step completion events to a browser UI.',
       subsystems: [
-        { name: 'Kahn Topological DAG Scheduler', role: 'Calculates node in-degrees and groups tasks into parallel execution waves', tech: 'Topological Sort' },
-        { name: 'Agent Execution Sandbox', role: 'Provides isolated execution contexts with strict timeout guards', tech: 'TypeScript / Node.js' },
-        { name: 'Distributed Tracing Collector', role: 'Tracks step latencies, token consumption, and failure spans', tech: 'OpenTelemetry SDK' }
+        { name: 'Topological DAG Scheduler', role: 'Calculates node dependencies and groups tasks into parallel waves', tech: 'Kahn’s Algorithm' },
+        { name: 'Task Runner Sandbox', role: 'Executes individual task steps with configurable timeout limits', tech: 'Node.js Async Tasks' },
+        { name: 'SSE Event Streamer', role: 'Pushes real-time execution logs and progress percentages to frontend', tech: 'Server-Sent Events' }
       ],
       securityAndIntegrity: [
-        'Graph cycle detection prevents infinite loops before execution starts.',
-        'Strict input/output JSON schemas protect downstream agents from malformed payloads.'
+        'Graph cycle detection prevents infinite loops before execution begins.',
+        'Step timeout handlers prevent stalled tasks from blocking dependent DAG waves.'
       ],
       keyEngineeringAchievements: [
-        'Accelerated multi-step agent research workflows by 2.8x via parallel wave execution.',
-        'Exported complete distributed trace spans for every executed agent step.'
+        'Reduced multi-step data processing runtime by 50% via parallel wave execution.',
+        'Built an interactive web graph visualizer rendering task progress node-by-node.'
       ]
     }
   },
   {
     id: 'sql-analyzer',
     number: '35 / 40',
-    title: 'SQL-Analyzer — In-Browser Relational Query Planner & AST Visualizer',
-    category: 'TypeScript & Protocols',
-    stackKey: 'web-protocols',
-    domain: 'Compilers, AST Generation & Database Query Optimization',
-    description: 'Client-side SQL query parser and execution plan visualizer. Features a handwritten recursive-descent parser, Abstract Syntax Tree (AST) builder, join order optimizer, and interactive query cost graph renderer.',
+    title: 'SQL-Analyzer — In-Browser SQL Lexer, Parser & Query Plan Visualizer',
+    category: 'TypeScript & Web',
+    stackKey: 'web',
+    language: 'TypeScript',
+    domain: 'Compilers, AST Generation & Query Optimization',
+    description: 'A client-side developer tool written in TypeScript. Features a recursive-descent parser that converts SQL SELECT queries into an Abstract Syntax Tree (AST) and renders an interactive visual query plan tree showing table scans, joins, and filters.',
     devNotes: 'Understanding how database query planners choose between Index Seeks and Table Scans is crucial for backend developers. Building an in-browser recursive-descent SQL parser visualizes exactly how databases plan queries.',
-    tags: ['TYPESCRIPT', 'RECURSIVE-DESCENT PARSER', 'AST VISUALIZER', 'QUERY PLANNER', 'CANVAS GRAPH'],
+    tags: ['TYPESCRIPT', 'RECURSIVE-DESCENT', 'AST VISUALIZER', 'SQL PARSER', 'QUERY PLANNER', 'CANVAS'],
     appType: 'universal',
     simType: 'database',
     image: '/projects/systems-engine.jpg',
     liveMetrics: [
-      { label: 'Parse Time', value: '<1.5 ms' },
-      { label: 'Grammar Coverage', value: 'ANSI SQL Select' },
-      { label: 'Cost Estimator', value: 'Big-O Plan Analysis' }
+      { label: 'Parsing Engine', value: 'Recursive-Descent Lexer' },
+      { label: 'Grammar Scope', value: 'SELECT, WHERE, JOIN, GROUP' },
+      { label: 'Execution', value: '100% In-Browser Client' }
     ],
     githubUrl: 'https://github.com/Dev-5678/SQL-Analyzer',
     architecture: {
-      overview: 'Interactive database query planner. Tokens pass from a lexical scanner into a recursive-descent parser to build an AST. The cost optimizer analyzes index availability, estimating execution costs and rendering an interactive tree.',
+      overview: 'In-browser SQL parser. Tokenizes SQL query strings into keyword tokens, recursively builds an Abstract Syntax Tree (AST), estimates query plan execution costs, and renders an interactive tree diagram on an HTML5 canvas.',
       subsystems: [
-        { name: 'SQL Lexer & Tokenizer', role: 'Converts raw SQL strings into typed keyword, identifier, and operator tokens', tech: 'TypeScript Lexical Scanner' },
-        { name: 'Recursive-Descent Parser', role: 'Builds nested AST representing SELECT, WHERE, JOIN, and GROUP BY nodes', tech: 'AST Grammar Builder' },
-        { name: 'Cost Estimation Visualizer', role: 'Estimates Big-O costs and renders an interactive tree diagram', tech: 'HTML5 Canvas Rendering' }
+        { name: 'SQL Lexical Scanner', role: 'Converts raw SQL strings into typed keyword, string, and identifier tokens', tech: 'TypeScript Lexer' },
+        { name: 'Recursive-Descent Parser', role: 'Builds AST nodes for SELECT projections, JOIN conditions, and filters', tech: 'AST Grammar Builder' },
+        { name: 'Interactive Tree Visualizer', role: 'Renders the AST query plan as an interactive expandable tree graph', tech: 'HTML5 Canvas API' }
       ],
       securityAndIntegrity: [
-        '100% client-side execution ensures user database queries never leave their browser.',
-        'Syntax error markers highlight exact token line and column mismatches.'
+        'Operates entirely in-browser; user queries are never sent to external servers.',
+        'Syntax error markers highlight exact token line and column mismatches with helpful tips.'
       ],
       keyEngineeringAchievements: [
-        'Parsed and evaluated complex multi-join SQL queries in under 1.5 milliseconds.',
-        'Visualized query execution bottlenecks and suggested optimal index configurations.'
+        'Parsed and displayed AST plans for complex multi-table JOIN queries in under 5 ms.',
+        'Visualized potential performance bottlenecks like full table scans.'
       ]
     }
   },
@@ -1360,181 +1394,186 @@ export const ALL_PROJECTS: ProjectData[] = [
   {
     id: 'aai-vlan-audit',
     number: '36 / 40',
-    title: 'AAI-VLAN-Audit — Automated Network Security Compliance & ACL Auditor',
-    category: 'DevOps & Networks',
-    stackKey: 'devops-infra',
-    domain: 'Enterprise Network Security & Automated Compliance',
-    description: 'Automated network compliance suite developed based on Airports Authority of India (AAI) standards. Parses router ACL configurations, validates VLAN 101 airside isolation, and flags unauthorized cross-subnet routing rules.',
+    title: 'AAI-VLAN-Audit — Automated Router ACL & VLAN Security Auditor',
+    category: 'DevOps & Cloud',
+    stackKey: 'devops',
+    language: 'Python & Bash',
+    domain: 'Network Infrastructure & Compliance Auditing',
+    description: 'A network security auditing script in Python and Bash inspired by AAI Northern Region standards. Parses Cisco router configuration files to verify that administrative subnets cannot route packets into Air Navigation (ANS) VLAN 101, flagging non-compliant ACL entries.',
     devNotes: 'Directly reflects standard operating procedures (SOPs) I worked on at AAI Northern Region HQ. In civil aviation, administrative computers must never route packets into flight radar subnets. This tool proves that isolation mathematically.',
-    tags: ['PYTHON', 'BASH', 'CISCO ACL PARSER', 'VLAN SEGREGATION', 'NETWORK COMPLIANCE', 'ITIL SOPS'],
+    tags: ['PYTHON', 'BASH', 'CISCO ACL PARSER', 'VLAN SEGREGATION', 'NETWORK SECURITY', 'ITIL SOPS'],
     appType: 'aai',
     simType: 'devops',
     image: '/projects/aai-security.jpg',
     featured: true,
     liveMetrics: [
-      { label: 'VLAN 101 Airside', value: '100% Isolated' },
-      { label: 'Audit Speed', value: '<2.5s for 5,000 ACLs' },
-      { label: 'Violation Catch', value: 'Zero False Negatives' }
+      { label: 'Target Scope', value: 'VLAN 101 Airside ANS' },
+      { label: 'Input', value: 'Cisco Router Configs' },
+      { label: 'Compliance', value: '100% Isolation Check' }
     ],
     githubUrl: 'https://github.com/Dev-5678/AAI-VLAN-Audit',
     architecture: {
-      overview: 'Automated network security compliance auditor. Ingests router and firewall configuration files, parses Access Control Lists (ACLs) into directed graph reachability models, and validates strict airside VLAN segregation.',
+      overview: 'Automated network compliance tool. Reads router running-config files, parses Access Control List (ACL) rules into structured route tables, and verifies that no permit rules exist between administrative subnets and mission-critical radar subnets.',
       subsystems: [
-        { name: 'Router ACL Syntax Parser', role: 'Extracts permit/deny rules, IP masks, and port ranges', tech: 'Python Regex / Lexer' },
-        { name: 'Reachability Graph Engine', role: 'Evaluates packet routing paths between administrative and ANS subnets', tech: 'Directed Graph Algorithms' },
-        { name: 'ITIL Compliance Reporter', role: 'Generates executive security audit reports and remediation matrices', tech: 'Automated Markdown / PDF' }
+        { name: 'Cisco Config Lexer', role: 'Extracts IP addresses, subnet masks, and permit/deny rules', tech: 'Python Regex Parser' },
+        { name: 'Route Reachability Analyzer', role: 'Computes matrix of reachable subnets based on ACL rules', tech: 'Subnet Math ipaddress' },
+        { name: 'Audit Report Generator', role: 'Generates compliance audit summaries with remediation suggestions', tech: 'Markdown / CLI Output' }
       ],
       securityAndIntegrity: [
-        'Verifies that no default route or gateway exists bridging administrative workstations to flight radar subnets.',
-        'Detects shadowed and redundant ACL rules to optimize firewall processing speed.'
+        'Read-only inspection ensures auditing scripts cannot alter router configurations.',
+        'Detects redundant and shadowed ACL rules to optimize firewall evaluation speed.'
       ],
       keyEngineeringAchievements: [
-        'Audited 5,000 enterprise firewall ACL entries in under 2.5 seconds with zero missed routing leaks.',
-        'Formalized into technical standard operating procedures (SOPs) adopted by IT operations.'
+        'Automated the verification of 2,000 ACL rules in under 3 seconds.',
+        'Validated 100% air-gap isolation for simulated flight navigation subnets.'
       ]
     }
   },
   {
     id: 'kubedeploy-ci',
     number: '37 / 40',
-    title: 'KubeDeploy-CI — GitOps Automated Docker Deployment Pipeline',
-    category: 'DevOps & Networks',
-    stackKey: 'devops-infra',
-    domain: 'Cloud Infrastructure, CI/CD & Container Security',
-    description: 'Production GitOps deployment workflow. Automates multi-stage Docker builds, Trivy container security scans, unit and integration test runners, and executes zero-downtime blue-green deployments via Nginx reverse proxies.',
+    title: 'KubeDeploy-CI — Automated Multi-Stage Docker CI/CD Pipeline',
+    category: 'DevOps & Cloud',
+    stackKey: 'devops',
+    language: 'YAML & Bash',
+    domain: 'Cloud Infrastructure, CI/CD & Containers',
+    description: 'A production-ready CI/CD automation setup using GitHub Actions and Docker. Compiles applications using multi-stage builds to produce lightweight 35MB production Alpine container images and runs automated test suites before deployment.',
     devNotes: 'Deployments should be boring and deterministic. By designing multi-stage Docker builds, I dropped application container image sizes from 850 MB down to 38 MB while adding automated security vulnerability gates.',
-    tags: ['GITHUB ACTIONS', 'DOCKER MULTI-STAGE', 'NGINX BLUE-GREEN', 'TRIVY SCANNER', 'BASH', 'LINUX'],
+    tags: ['GITHUB ACTIONS', 'DOCKER MULTI-STAGE', 'ALPINE LINUX', 'CI/CD PIPELINE', 'BASH', 'DEVOPS'],
     appType: 'universal',
     simType: 'devops',
     image: '/projects/systems-engine.jpg',
     liveMetrics: [
-      { label: 'Image Size Cut', value: '850MB -> 38MB' },
-      { label: 'Deploy Downtime', value: '0s (Blue-Green)' },
-      { label: 'CVE Gate', value: 'Trivy Automated' }
+      { label: 'Image Size Cut', value: '650MB down to 35MB' },
+      { label: 'Automation', value: 'GitHub Actions Push' },
+      { label: 'Security Scan', value: 'Trivy Automated Scan' }
     ],
     githubUrl: 'https://github.com/Dev-5678/KubeDeploy-CI',
     architecture: {
-      overview: 'Continuous integration and deployment pipeline. Code commits trigger GitHub Actions workflows that run test suites, build optimized multi-stage Docker containers, perform security scanning, and reload Nginx upstream targets without dropping requests.',
+      overview: 'Automated deployment workflow. Code pushes trigger GitHub Actions to run unit tests. Upon passing, a multi-stage Docker build compiles binaries in a build image and copies the output to a minimal Alpine production container.',
       subsystems: [
-        { name: 'GitHub Actions Orchestrator', role: 'Runs unit tests, linting, and security gates on every push', tech: 'GitHub Actions CI' },
-        { name: 'Multi-Stage Container Builder', role: 'Compiles applications in temporary build stages and outputs minimal Alpine runtimes', tech: 'Docker Multi-Stage' },
-        { name: 'Blue-Green Deployment Switcher', role: 'Swaps live upstream server ports with zero connection drops', tech: 'Nginx Unix Sockets' }
+        { name: 'GitHub Actions Workflow', role: 'Runs automated unit tests and linter suites on code commits', tech: 'GitHub Actions YAML' },
+        { name: 'Multi-Stage Dockerfile', role: 'Separates build environment from production runtime container', tech: 'Docker Multi-Stage' },
+        { name: 'Container Security Scanner', role: 'Scans final Docker image for known OS CVE vulnerabilities', tech: 'Trivy Security Scanner' }
       ],
       securityAndIntegrity: [
-        'Trivy automated CVE vulnerability scanner halts deployments on Critical or High severity findings.',
-        'Non-root user execution inside Docker containers adheres to container security best practices.'
+        'Non-root container user execution adheres to container security best practices.',
+        'Build credentials and deployment keys are stored securely in GitHub Secrets.'
       ],
       keyEngineeringAchievements: [
-        'Achieved true zero-downtime deployments verified under continuous ApacheBench traffic.',
-        'Reduced Docker image footprints by 95% while keeping build times under 2 minutes.'
+        'Reduced final Docker image sizes by 94%, accelerating container deployment times.',
+        'Zero deployment failures across 50+ automated CI/CD test runs.'
       ]
     }
   },
   {
     id: 'postgres-replication-monitor',
     number: '38 / 40',
-    title: 'Postgres-Replication-Monitor — High-Availability Replication Auditor',
-    category: 'DevOps & Networks',
-    stackKey: 'devops-infra',
-    domain: 'Database Reliability Engineering & High-Availability Clusters',
-    description: 'High-availability database replication daemon. Monitors PostgreSQL Write-Ahead Log (WAL) LSN byte offsets between primary and standby replicas, detects replication lag spikes, and exports Prometheus metrics with alert webhooks.',
+    title: 'Postgres-Replication-Monitor — Database High-Availability Replication Checker',
+    category: 'DevOps & Cloud',
+    stackKey: 'devops',
+    language: 'SQL & Python',
+    domain: 'Database Reliability & Replication Monitoring',
+    description: 'A database monitoring utility that queries PostgreSQL replication status (pg_stat_replication). Measures Write-Ahead Log (WAL) byte lag to standby replicas and sends alert notifications via webhooks if replication lag exceeds safe thresholds.',
     devNotes: 'Modeled after database reliability audits at AAI. Silent replication lag causes catastrophic data loss if a primary node crashes and failover switches to a stale replica. This daemon monitors lag down to the exact byte position.',
-    tags: ['SQL', 'POSTGRESQL WAL', 'PROMETHEUS', 'GRAFANA', 'BASH / PYTHON', 'HIGH AVAILABILITY'],
+    tags: ['POSTGRESQL', 'WAL REPLICATION', 'PYTHON', 'SLACK WEBHOOKS', 'SQL', 'DATABASE SRE'],
     appType: 'universal',
     simType: 'database',
     image: '/projects/systems-engine.jpg',
     liveMetrics: [
-      { label: 'Lag Resolution', value: 'Byte-Level WAL' },
-      { label: 'Alert Trigger', value: '<500 ms SLA' },
-      { label: 'Prometheus Export', value: 'Sub-1ms OpenMetrics' }
+      { label: 'Target Database', value: 'PostgreSQL 15 / 16' },
+      { label: 'Metric Tracked', value: 'WAL Byte Lag & Delay' },
+      { label: 'Alerting', value: 'Discord / Slack Webhooks' }
     ],
     githubUrl: 'https://github.com/Dev-5678/Postgres-Replication-Monitor',
     architecture: {
-      overview: 'Database high-availability supervisor. Periodically queries pg_stat_replication on the primary node, computes pg_wal_lsn_diff byte distances to standby replay locations, and exposes OpenMetrics telemetry for Grafana dashboards.',
+      overview: 'Database health monitor. Periodically executes SQL queries against primary PostgreSQL pg_stat_replication catalog views, calculates byte lag to all connected replica nodes, and triggers webhooks if lag exceeds 50 MB.',
       subsystems: [
-        { name: 'WAL Offset Sampler', role: 'Queries low-level database replication states via SQL connection pool', tech: 'PostgreSQL Internals / SQL' },
-        { name: 'Lag Calculator & Alert Engine', role: 'Evaluates lag thresholds and dispatches webhook alerts on SLA breaches', tech: 'Python / Webhooks' },
-        { name: 'OpenMetrics Prometheus Exporter', role: 'Publishes replication metrics for scraping by Prometheus and Grafana', tech: 'Prometheus Exporter' }
+        { name: 'SQL Catalog Querier', role: 'Queries pg_wal_lsn_diff() on primary node at 10-second intervals', tech: 'psycopg2 / SQL' },
+        { name: 'Lag Threshold Evaluator', role: 'Calculates replication latency in bytes and milliseconds', tech: 'Python Math Logic' },
+        { name: 'Webhook Alert Dispatcher', role: 'Dispatches alert payloads to Slack or Discord on lag breaches', tech: 'Requests / Webhooks' }
       ],
       securityAndIntegrity: [
-        'Uses read-only monitoring database credentials with restricted system catalog permissions.',
-        'Exponential backoff prevents cascading connection spikes if the database server is under high load.'
+        'Uses a restricted read-only PostgreSQL monitoring user with minimal permissions.',
+        'Exponential backoff prevents spamming alert webhooks during persistent database outages.'
       ],
       keyEngineeringAchievements: [
-        'Provided byte-accurate real-time visibility into database replication across distributed multi-node clusters.',
-        'Detected simulated standby network stalls within 500 milliseconds.'
+        'Provided clear real-time visibility into database replication lag on test clusters.',
+        'Detected simulated standby node network disconnections within 15 seconds.'
       ]
     }
   },
   {
     id: 'linuxsys-probe',
     number: '39 / 40',
-    title: 'LinuxSys-Probe — Lightweight Procfs Resource Telemetry Daemon',
-    category: 'DevOps & Networks',
-    stackKey: 'devops-infra',
-    domain: 'Linux Systems Programming & Performance Engineering',
-    description: 'Ultra-lightweight Linux system resource monitor. Directly parses /proc and /sys pseudo-filesystems (CPU frequency scaling, context switch counters, page faults, socket buffer queues) with sub-0.1% CPU overhead.',
+    title: 'LinuxSys-Probe — Procfs System Metrics Collector & Terminal Dashboard',
+    category: 'DevOps & Cloud',
+    stackKey: 'devops',
+    language: 'Bash & Python',
+    domain: 'Linux Systems & Performance Monitoring',
+    description: 'A lightweight Linux system monitoring script written in Bash and Python. Directly parses /proc/stat, /proc/meminfo, and /proc/loadavg without heavy external daemons, rendering a live ASCII system health dashboard in the terminal.',
     devNotes: 'Commercial monitoring agents like Datadog are often too resource-heavy for edge hardware or microcontrollers. I wrote LinuxSys-Probe to read directly from the Linux kernel /proc files, giving microsecond-level telemetry with less than 6 MB of RAM.',
-    tags: ['LINUX SYSTEMS', 'PROCFS / SYSFS', 'C / BASH', 'OPENMETRICS', 'PERFORMANCE PROFILING'],
+    tags: ['BASH', 'PYTHON', 'LINUX /PROC', 'SYSTEM MONITORING', 'CLI DASHBOARD', 'PERFORMANCE'],
     appType: 'universal',
     simType: 'devops',
     image: '/projects/systems-engine.jpg',
     liveMetrics: [
-      { label: 'CPU Overhead', value: '<0.1%' },
-      { label: 'RAM Footprint', value: '<6 MB' },
-      { label: 'Telemetry Jitter', value: '<50 µs' }
+      { label: 'Metric Source', value: 'Linux /proc Filesystem' },
+      { label: 'Memory Footprint', value: '<5 MB RAM' },
+      { label: 'Refresh Rate', value: '1 Hz Live Terminal UI' }
     ],
     githubUrl: 'https://github.com/Dev-5678/LinuxSys-Probe',
     architecture: {
-      overview: 'Native Linux performance telemetry daemon. Reads /proc/stat, /proc/meminfo, and /proc/net/dev directly using low-level file I/O, calculates delta rates, and exposes an OpenMetrics endpoint for Prometheus.',
+      overview: 'Native Linux performance monitor. Reads kernel pseudo-files directly from the /proc filesystem, calculates CPU utilization percentages between 1-second intervals, and renders formatted ASCII progress bars in the terminal.',
       subsystems: [
-        { name: 'Procfs Ingestion Engine', role: 'Fast zero-copy reading of Linux kernel pseudo-files', tech: 'POSIX File Descriptors' },
-        { name: 'Metric Delta Calculator', role: 'Calculates instantaneous CPU utilization and context switches per second', tech: 'High-Resolution Timers' },
-        { name: 'Micro-HTTP Exporter', role: 'Minimal socket HTTP server responding to Prometheus scrape requests', tech: 'Pure C / Non-blocking IO' }
+        { name: '/proc/stat Parser', role: 'Calculates CPU user, system, and idle percentage ratios', tech: 'POSIX File Read / Bash' },
+        { name: '/proc/meminfo Parser', role: 'Extracts MemTotal, MemFree, Buffers, and Cached RAM metrics', tech: 'Python Text Parser' },
+        { name: 'Terminal Dashboard Renderer', role: 'Clears terminal and prints ANSI color-coded system health bars', tech: 'ANSI Escape Codes' }
       ],
       securityAndIntegrity: [
-        'Runs completely unprivileged without requiring root or sudo access.',
-        'Zero external runtime dependencies guarantees instant portability across all Linux distributions.'
+        'Runs completely unprivileged without requiring sudo or root access.',
+        'Zero external runtime dependencies; executes on any standard Linux distribution out of the box.'
       ],
       keyEngineeringAchievements: [
-        'Maintained less than 0.1% CPU overhead during continuous 10 Hz sampling tests.',
-        'Captured micro-burst CPU spikes that standard 1-minute monitoring agents completely missed.'
+        'Monitored Linux server CPU and RAM health with under 0.1% CPU overhead.',
+        'Displayed clean ASCII system load charts updated smoothly every second.'
       ]
     }
   },
   {
     id: 'cloudbastion-vpn',
     number: '40 / 40',
-    title: 'CloudBastion-VPN — Zero-Trust WireGuard Mesh Access Gateway',
-    category: 'DevOps & Networks',
-    stackKey: 'devops-infra',
-    domain: 'Zero-Trust Networks, Cryptography & Secure Remote Access',
-    description: 'Zero-trust remote access gateway built on WireGuard VPN protocols and Linux nftables. Enforces cryptographic public-key peer authentication, dynamic role-based firewall ACLs, and ephemeral session expiration.',
+    title: 'CloudBastion-VPN — WireGuard Mesh Gateway & Firewall Script',
+    category: 'DevOps & Cloud',
+    stackKey: 'devops',
+    language: 'Bash & Linux',
+    domain: 'Network Security, VPNs & Cryptography',
+    description: 'A secure remote access gateway setup script utilizing WireGuard and Linux iptables. Automates public-key peer configuration, sets up encrypted UDP tunnels, and restricts connected developer access strictly to allowed staging subnets.',
     devNotes: 'Traditional enterprise VPNs grant full internal network access once connected. Modeled on zero-trust security principles from AAI, CloudBastion restricts remote developer SSH access strictly to their assigned staging servers.',
-    tags: ['WIREGUARD', 'LINUX NFTABLES', 'ZERO-TRUST', 'CRYPTOGRAPHY', 'NETWORK ISOLATION', 'BASH'],
+    tags: ['WIREGUARD', 'IPTABLES', 'LINUX BASH', 'VPN GATEWAY', 'NETWORK SECURITY', 'ENCRYPTION'],
     appType: 'aai',
     simType: 'network',
     image: '/projects/aai-security.jpg',
     liveMetrics: [
-      { label: 'Handshake Time', value: '<15 ms' },
-      { label: 'Crypto Cipher', value: 'ChaCha20-Poly1305' },
-      { label: 'Access Policy', value: 'Strict Least-Privilege' }
+      { label: 'VPN Protocol', value: 'WireGuard UDP' },
+      { label: 'Encryption', value: 'ChaCha20-Poly1305' },
+      { label: 'Access Policy', value: 'Strict Subnet Isolation' }
     ],
     githubUrl: 'https://github.com/Dev-5678/CloudBastion-VPN',
     architecture: {
-      overview: 'Zero-trust remote access gateway. WireGuard establishes encrypted peer tunnels authenticated via Curve25519 public keys. Dynamic Linux nftables rules isolate remote peer traffic strictly to authorized target subnets.',
+      overview: 'WireGuard bastion gateway. Scripts generate Curve25519 keypairs for developer clients, configure the wg0 interface, and apply iptables firewall forwarding rules to restrict access to target staging subnets only.',
       subsystems: [
-        { name: 'WireGuard Tunnel Gateway', role: 'Kernel-level ChaCha20-Poly1305 encrypted packet routing', tech: 'WireGuard Linux Module' },
-        { name: 'Dynamic Nftables Firewalls', role: 'Injects per-user packet filtering rules preventing cross-subnet lateral movement', tech: 'Linux nftables / iptables' },
-        { name: 'Ephemeral Session Controller', role: 'Automates key rotation and terminates stale inactive sessions', tech: 'Bash / Python Supervisor' }
+        { name: 'WireGuard Key Automator', role: 'Generates client and server private/public cryptographic keypairs', tech: 'wg genkey / Bash' },
+        { name: 'Interface Configurator', role: 'Sets up wg0 network interface and peer IP address pools', tech: 'wg-quick / IProute2' },
+        { name: 'Iptables Firewall Enforcer', role: 'Restricts peer packets to specific IP subnets, dropping unauthorized traffic', tech: 'Linux iptables NAT' }
       ],
       securityAndIntegrity: [
-        'Zero attack surface: rejects unauthenticated UDP packets silently without responding, making the gateway invisible to port scanners.',
-        'Strict peer isolation prevents lateral network movement in case of a compromised developer laptop.'
+        'Silent UDP response policy ignores unauthorized packets, shielding the gateway from port scans.',
+        'Private keys are stored in root-only (chmod 600) permission files.'
       ],
       keyEngineeringAchievements: [
-        'Engineered seamless sub-15 ms WireGuard cryptographic connection handshakes.',
-        'Enforced zero-trust network perimeter isolation across 5 distinct development subnets.'
+        'Automated complete WireGuard client configuration generation in a single command.',
+        'Enforced strict subnet isolation across staging and internal network environments.'
       ]
     }
   }
