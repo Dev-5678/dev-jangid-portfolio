@@ -1,22 +1,26 @@
 import React, { useEffect } from 'react'
-import { X, Layers, Activity } from 'lucide-react'
+import { X, Layers, Activity, ShieldCheck } from 'lucide-react'
 import { AAINetworkSecurityApp } from './AAINetworkSecurityApp'
 import { CanSatTelemetryApp } from './CanSatTelemetryApp'
 import { GeminiRAGStudioApp } from './GeminiRAGStudioApp'
 import { HighThroughputSystemsApp } from './HighThroughputSystemsApp'
 import { ProxiSpeakApp } from './ProxiSpeakApp'
+import { UniversalProjectSimulator } from './UniversalProjectSimulator'
+import { type ProjectData } from '../../data/allProjectsData'
 
-export interface ProjectModalData {
+export interface ProjectModalData extends Partial<ProjectData> {
   id: string
   number?: string
   title: string
   domain: string
   description: string
   tags: string[]
-  appType: 'aai' | 'cansat' | 'rag' | 'systems' | 'proxispeak'
+  appType: any
   image?: string
+  devNotes?: string
   liveMetrics?: { label: string; value: string }[]
   githubUrl?: string
+  liveUrl?: string
   architecture: {
     overview: string
     subsystems: { name: string; role: string; tech: string }[]
@@ -60,6 +64,8 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
 
   if (!isOpen || !project) return null
 
+  const isBespokeApp = ['aai', 'cansat', 'rag', 'systems', 'proxispeak'].includes(project.appType)
+
   return (
     <div
       role="dialog"
@@ -85,13 +91,13 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
           </div>
 
           <div className="flex items-center gap-2 ml-auto">
-            {project.id === 'proxispeak' && (
+            {project.githubUrl && (
               <a
-                href="https://github.com/Dev-5678/ProxiSpeak"
+                href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-all cursor-pointer"
-                title="View Open-Source ProxiSpeak Repository on GitHub"
+                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-all cursor-pointer"
+                title={`View ${project.title} on GitHub`}
               >
                 <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
                   <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
@@ -146,9 +152,25 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
               {project.appType === 'rag' && <GeminiRAGStudioApp />}
               {project.appType === 'systems' && <HighThroughputSystemsApp />}
               {project.appType === 'proxispeak' && <ProxiSpeakApp />}
+              {!isBespokeApp && <UniversalProjectSimulator project={project as any} />}
             </div>
           ) : (
             <div className="space-y-6">
+              {/* Dev's Authentic Engineering Rationale */}
+              {project.devNotes && (
+                <div className="p-5 rounded-2xl bg-ember/[0.08] border border-ember/35 space-y-2.5">
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-ember-bright" />
+                    <h3 className="font-mono text-xs font-bold uppercase tracking-wider text-ember-bright">
+                      Dev&apos;s Engineering Rationale &amp; Trade-Offs (Anti-Plagiarism)
+                    </h3>
+                  </div>
+                  <p className="text-xs sm:text-sm text-zinc-200 leading-relaxed font-normal">
+                    {project.devNotes}
+                  </p>
+                </div>
+              )}
+
               {/* Architecture Overview */}
               <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10 space-y-3">
                 <div className="flex items-center gap-2">

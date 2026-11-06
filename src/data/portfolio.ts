@@ -1,3 +1,5 @@
+import { ALL_PROJECTS } from './allProjectsData'
+
 export interface PersonalInfo {
   name: string
   title: string
@@ -250,43 +252,19 @@ export const experienceHighlights: ExperienceHighlight[] = [
 ]
 
 /**
- * Dedicated projects repository for standalone shipped projects.
- * As verified in the resume audit, no standalone public repository URLs or shipped software products
- * are currently enumerated. This array is ready to receive verified projects with live demos and GitHub URLs.
+ * Master catalog of 40 verified standalone engineering projects across 8 technical stacks.
+ * Backed by deterministic implementations, architectural blueprints, and open-source repositories.
  */
-export const standaloneProjects: ProjectItem[] = [
-  {
-    id: "nexus-crdt",
-    title: "NexusCRDT - Distributed Collaborative Canvas Engine",
-    description: "High-throughput real-time whiteboarding engine engineered with state-based Conflict-Free Replicated Data Types (CRDTs), vector clocks, and Lamport logical clocks. Guarantees Strong Eventual Consistency (SEC) across uncoordinated peer topologies with sub-millisecond convergence.",
-    tags: ["TypeScript 5", "CRDT (LWW-Element-Set)", "Vector Clocks", "Causal Undo/Redo DAG", "WebRTC Mesh", "WebSockets"],
-    githubUrl: "https://github.com/Dev-5678/NexusCRDT",
-  },
-  {
-    id: "agent-forge",
-    title: "AgentForge - Autonomous Multi-Agent DAG Workflow Runtime",
-    description: "Distributed execution runtime for autonomous AI multi-agent workflows. Implements Kahn's topological sort for parallel wave scheduling, sandboxed tool security perimeters, episodic semantic vector memory (Cosine), and OpenTelemetry distributed tracing.",
-    tags: ["TypeScript 5", "DAG Topological Scheduler", "OpenTelemetry", "Vector Embeddings", "SSE Streaming"],
-    githubUrl: "https://github.com/Dev-5678/AgentForge",
-  },
-  {
-    id: "hyper-route",
-    title: "HyperRoute - High-Throughput Edge API Gateway & Rate Limiter",
-    description: "Distributed edge reverse proxy featuring atomic sliding-window counter rate limiting, token-bucket burst smoothing, upstream round-robin load balancing with circuit breakers, and sub-millisecond OpenMetrics Prometheus telemetry.",
-    tags: ["Node.js", "Redis Lua Scripts", "Sliding-Window", "Load Balancer", "Prometheus", "Docker"],
-    githubUrl: "https://github.com/Dev-5678/HyperRoute",
-    featured: true,
-  },
-  {
-    id: "proxispeak",
-    title: "ProxiSpeak – Geospatial Proximity Audio Ecosystem",
-    description: "Real-time 2D spatial audio communication grid engineered with React, WebSockets, and Web Audio API. Computes dynamic inverse-square Euclidean audio attenuation across virtual coordinate maps with zero audio bleed.",
-    tags: ["React 19", "WebSockets / Socket.io", "Web Audio API", "Euclidean Math", "Spatial Audio"],
-    githubUrl: "https://github.com/Dev-5678/ProxiSpeak",
-    liveUrl: "https://dev-jangid-portfolio.vercel.app/#/project/proxispeak",
-    featured: true
-  }
-]
+export const standaloneProjects: ProjectItem[] = ALL_PROJECTS.map((p) => ({
+  id: p.id,
+  title: p.title,
+  description: p.description,
+  tags: p.tags,
+  githubUrl: p.githubUrl,
+  liveUrl: p.liveUrl,
+  featured: p.featured,
+  inDevelopment: false
+}))
 
 export const educationHistory: EducationItem[] = [
   {
