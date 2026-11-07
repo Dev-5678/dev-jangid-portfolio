@@ -5,6 +5,10 @@ import { CanSatTelemetryApp } from './CanSatTelemetryApp'
 import { GeminiRAGStudioApp } from './GeminiRAGStudioApp'
 import { HighThroughputSystemsApp } from './HighThroughputSystemsApp'
 import { ProxiSpeakApp } from './ProxiSpeakApp'
+import { VAllocMemoryApp } from './VAllocMemoryApp'
+import { ApexShellApp } from './ApexShellApp'
+import { TitanNetPacketApp } from './TitanNetPacketApp'
+import { ByteVMApp } from './ByteVMApp'
 import { UniversalProjectSimulator } from './UniversalProjectSimulator'
 import { type ProjectData } from '../../data/allProjectsData'
 
@@ -64,7 +68,9 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
 
   if (!isOpen || !project) return null
 
-  const isBespokeApp = ['aai', 'cansat', 'rag', 'systems', 'proxispeak'].includes(project.appType)
+  const isBespokeApp =
+    ['aai', 'cansat', 'rag', 'systems', 'proxispeak'].includes(project.appType) ||
+    ['valloc-c', 'apex-shell', 'titannet-raw', 'bytevm', 'aerortos-1u'].includes(project.id)
 
   return (
     <div
@@ -147,8 +153,12 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
         <div className="p-4 sm:p-6 md:p-8 max-h-[82vh] overflow-y-auto space-y-6">
           {activeTab === 'apparatus' ? (
             <div className="space-y-4">
-              {project.appType === 'aai' && <AAINetworkSecurityApp />}
-              {project.appType === 'cansat' && <CanSatTelemetryApp />}
+              {project.id === 'valloc-c' && <VAllocMemoryApp />}
+              {project.id === 'apex-shell' && <ApexShellApp />}
+              {project.id === 'titannet-raw' && <TitanNetPacketApp />}
+              {project.id === 'bytevm' && <ByteVMApp />}
+              {(project.id === 'aerortos-1u' || (project.appType === 'cansat' && project.id !== 'valloc-c' && project.id !== 'apex-shell' && project.id !== 'titannet-raw' && project.id !== 'bytevm')) && <CanSatTelemetryApp />}
+              {project.appType === 'aai' && project.id !== 'titannet-raw' && <AAINetworkSecurityApp />}
               {project.appType === 'rag' && <GeminiRAGStudioApp />}
               {project.appType === 'systems' && <HighThroughputSystemsApp />}
               {project.appType === 'proxispeak' && <ProxiSpeakApp />}

@@ -403,3 +403,268 @@ export const ProxiSpeakLivePreview: React.FC = () => {
     </div>
   )
 }
+
+// 6. vAlloc Segregated Memory Allocator Live Dynamic Preview
+export const VAllocLivePreview: React.FC = () => {
+  const [allocSpeed, setAllocSpeed] = useState(38)
+  const [activeBlocks, setActiveBlocks] = useState([
+    { size: '64B', tag: '0x1000', alloc: true },
+    { size: '128B', tag: '0x1040', alloc: true },
+    { size: '64B', tag: '0x10C0', alloc: false },
+    { size: '256B', tag: '0x1100', alloc: true },
+    { size: '128B', tag: '0x1200', alloc: false },
+    { size: '512B', tag: '0x1280', alloc: true }
+  ])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setAllocSpeed(34 + Math.floor(Math.random() * 8))
+      setActiveBlocks((prev) => {
+        const next = [...prev]
+        const idx = Math.floor(Math.random() * next.length)
+        next[idx] = { ...next[idx], alloc: !next[idx].alloc }
+        return next
+      })
+    }, 1200)
+
+    return () => clearInterval(interval)
+  }, [])
+
+  return (
+    <div className="w-full bg-black/85 backdrop-blur-md rounded-xl p-3 border border-white/10 font-mono text-[10px] text-zinc-300 space-y-2">
+      <div className="flex items-center justify-between border-b border-white/10 pb-1.5">
+        <div className="flex items-center gap-1.5 text-emerald-400 font-bold">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span>vAlloc SEGREGATED HEAP ARENA</span>
+        </div>
+        <div className="text-[9px] text-zinc-400">
+          ALLOC SPEED: <span className="text-white font-bold">{allocSpeed} ns</span>
+        </div>
+      </div>
+
+      {/* Visual Memory Blocks Layout */}
+      <div className="space-y-1">
+        <div className="text-[8.5px] text-zinc-400 flex items-center justify-between">
+          <span>HEAP BLOCKS &amp; BOUNDARY TAGS:</span>
+          <span className="text-emerald-400 font-bold">O(1) COALESCING ACTIVE</span>
+        </div>
+        <div className="grid grid-cols-6 gap-1 p-1 bg-black/70 rounded border border-white/10 text-center">
+          {activeBlocks.map((b, i) => (
+            <div
+              key={i}
+              className={`p-1 rounded text-[8.5px] font-bold transition-all ${
+                b.alloc
+                  ? 'bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 shadow-[0_0_6px_rgba(16,185,129,0.2)]'
+                  : 'bg-zinc-800 text-zinc-500 border border-white/5'
+              }`}
+            >
+              <div>{b.size}</div>
+              <div className="text-[7px] text-zinc-400">{b.alloc ? 'ALLOC' : 'FREE'}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-3 gap-1 pt-1 border-t border-white/10 text-[8.5px]">
+        <div className="bg-white/5 p-1 rounded text-center">
+          <span className="text-zinc-400 block text-[7.5px]">FRAGMENTATION</span>
+          <span className="text-emerald-400 font-bold">&lt; 3.2%</span>
+        </div>
+        <div className="bg-white/5 p-1 rounded text-center">
+          <span className="text-zinc-400 block text-[7.5px]">ALIGNMENT</span>
+          <span className="text-white font-bold">8-Byte Word</span>
+        </div>
+        <div className="bg-white/5 p-1 rounded text-center">
+          <span className="text-zinc-400 block text-[7.5px]">VALGRIND</span>
+          <span className="text-emerald-400 font-bold">0 Leaks</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// 7. ApexShell POSIX Command Shell Live Dynamic Preview
+export const ApexShellLivePreview: React.FC = () => {
+  const [cmdIndex, setCmdIndex] = useState(0)
+  const commands = [
+    { cmd: 'cat telemetry.log | grep ERR | wc -l', out: '0 errors found across 4,200 frames' },
+    { cmd: 'ps aux | grep sensor_daemon', out: 'dev  4092  0.0  0.1  ./sensor_daemon &' },
+    { cmd: 'uname -srm', out: 'Linux 6.8.0-40-generic x86_64' }
+  ]
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCmdIndex((prev) => (prev + 1) % commands.length)
+    }, 2200)
+
+    return () => clearInterval(interval)
+  }, [commands.length])
+
+  const curr = commands[cmdIndex]
+
+  return (
+    <div className="w-full bg-black/85 backdrop-blur-md rounded-xl p-3 border border-white/10 font-mono text-[10px] text-zinc-300 space-y-2">
+      <div className="flex items-center justify-between border-b border-white/10 pb-1.5">
+        <div className="flex items-center gap-1.5 text-cyan-400 font-bold">
+          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+          <span>ApexShell POSIX PIPELINE</span>
+        </div>
+        <div className="text-[9px] text-zinc-400">
+          PID REAP: <span className="text-emerald-400 font-bold">waitpid() CLEAN</span>
+        </div>
+      </div>
+
+      <div className="p-2 rounded bg-black/90 border border-white/10 space-y-1">
+        <div className="flex items-center gap-1.5 text-[9px] text-zinc-400">
+          <span className="text-emerald-400 font-bold">dev@apex:~$</span>
+          <span className="text-white font-bold">{curr.cmd}</span>
+        </div>
+        <div className="text-[8.5px] text-zinc-300 pl-3 border-l-2 border-emerald-500/40">
+          {curr.out}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-3 gap-1 pt-1 border-t border-white/10 text-[8.5px]">
+        <div className="bg-white/5 p-1 rounded text-center">
+          <span className="text-zinc-400 block text-[7.5px]">PIPING</span>
+          <span className="text-white font-bold">Multi-Stage (|)</span>
+        </div>
+        <div className="bg-white/5 p-1 rounded text-center">
+          <span className="text-zinc-400 block text-[7.5px]">SIGNALS</span>
+          <span className="text-cyan-400 font-bold">SIGINT Trapped</span>
+        </div>
+        <div className="bg-white/5 p-1 rounded text-center">
+          <span className="text-zinc-400 block text-[7.5px]">ZOMBIES</span>
+          <span className="text-emerald-400 font-bold">0 Leaks</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// 8. TitanNet Raw Packet Sniffer Live Dynamic Preview
+export const TitanNetLivePreview: React.FC = () => {
+  const [packets, setPackets] = useState<string[]>([
+    'TCP 192.168.101.42:443 -> 10.0.4.12 [ACK Seq=1 Win=64k]',
+    'ARP Who has 10.0.4.12? Tell 10.0.4.1 (ANS Gateway)',
+    'UDP 10.0.2.15:53210 -> 10.0.0.2:53 [DNS Query]'
+  ])
+
+  useEffect(() => {
+    const list = [
+      'TCP 10.0.4.12 -> 192.168.101.42:443 [SYN-ACK]',
+      'ARP 10.0.4.12 is at 00:0c:29:4f:8e:33 [VALID]',
+      'ICMP Echo Reply from 10.0.4.1: seq=4 ttl=64 time=0.4ms',
+      'TCP 192.168.101.88 -> 10.0.4.15:8080 [PUSH, ACK]'
+    ]
+
+    const interval = setInterval(() => {
+      const p = list[Math.floor(Math.random() * list.length)]
+      setPackets((prev) => [p, prev[0], prev[1]])
+    }, 1500)
+
+    return () => clearInterval(interval)
+  }, [])
+
+  return (
+    <div className="w-full bg-black/85 backdrop-blur-md rounded-xl p-3 border border-white/10 font-mono text-[10px] text-zinc-300 space-y-2">
+      <div className="flex items-center justify-between border-b border-white/10 pb-1.5">
+        <div className="flex items-center gap-1.5 text-ember font-bold">
+          <span className="w-1.5 h-1.5 rounded-full bg-ember animate-pulse" />
+          <span>AF_PACKET RAW SNIFFER</span>
+        </div>
+        <div className="text-[9px] text-emerald-400 font-bold">
+          ARP SPOOFING: <span className="text-white">ZERO DETECTED</span>
+        </div>
+      </div>
+
+      <div className="space-y-1">
+        {packets.map((pkt, i) => (
+          <div
+            key={i}
+            className="px-2 py-0.5 rounded bg-black/70 border border-white/5 text-[8.5px] truncate text-zinc-300 flex items-center justify-between"
+          >
+            <span>{pkt}</span>
+            <span className="text-[7.5px] text-emerald-400 font-bold">L2-L4 DISSECTED</span>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-3 gap-1 pt-1 border-t border-white/10 text-[8.5px]">
+        <div className="bg-white/5 p-1 rounded text-center">
+          <span className="text-zinc-400 block text-[7.5px]">INTERFACE</span>
+          <span className="text-white font-bold">Promiscuous eth0</span>
+        </div>
+        <div className="bg-white/5 p-1 rounded text-center">
+          <span className="text-zinc-400 block text-[7.5px]">THROUGHPUT</span>
+          <span className="text-ember font-bold">1,500 pkts/s</span>
+        </div>
+        <div className="bg-white/5 p-1 rounded text-center">
+          <span className="text-zinc-400 block text-[7.5px]">CPU LOAD</span>
+          <span className="text-emerald-400 font-bold">&lt; 2.0%</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// 9. ByteVM Stack-Based Virtual Machine Live Dynamic Preview
+export const ByteVMLivePreview: React.FC = () => {
+  const [step, setStep] = useState(0)
+  const steps = [
+    { pc: '0x00', op: 'OP_PUSH 42', stack: '[ 42 ]', note: 'Push constant onto stack' },
+    { pc: '0x02', op: 'OP_PUSH 18', stack: '[ 42, 18 ]', note: 'Push second operand' },
+    { pc: '0x04', op: 'OP_ADD', stack: '[ 60 ]', note: 'Pop 2 operands, push sum' },
+    { pc: '0x05', op: 'OP_PRINT', stack: '[ ]', note: 'STDOUT: 60' }
+  ]
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setStep((prev) => (prev + 1) % steps.length)
+    }, 1300)
+
+    return () => clearInterval(interval)
+  }, [steps.length])
+
+  const s = steps[step]
+
+  return (
+    <div className="w-full bg-black/85 backdrop-blur-md rounded-xl p-3 border border-white/10 font-mono text-[10px] text-zinc-300 space-y-2">
+      <div className="flex items-center justify-between border-b border-white/10 pb-1.5">
+        <div className="flex items-center gap-1.5 text-amber-400 font-bold">
+          <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+          <span>ByteVM INSTRUCTION PIPELINE</span>
+        </div>
+        <div className="text-[9px] text-zinc-400">
+          PC: <span className="text-white font-bold">{s.pc}</span>
+        </div>
+      </div>
+
+      <div className="p-2 rounded bg-black/90 border border-white/10 space-y-1">
+        <div className="flex items-center justify-between text-[9px]">
+          <span className="text-amber-300 font-bold">{s.op}</span>
+          <span className="text-zinc-400">{s.note}</span>
+        </div>
+        <div className="flex items-center justify-between text-[8.5px] pt-1 border-t border-white/5">
+          <span className="text-zinc-400">OPERAND STACK:</span>
+          <span className="text-emerald-400 font-bold">{s.stack}</span>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-3 gap-1 pt-1 border-t border-white/10 text-[8.5px]">
+        <div className="bg-white/5 p-1 rounded text-center">
+          <span className="text-zinc-400 block text-[7.5px]">OPCODES</span>
+          <span className="text-white font-bold">16 Custom</span>
+        </div>
+        <div className="bg-white/5 p-1 rounded text-center">
+          <span className="text-zinc-400 block text-[7.5px]">STACK DEPTH</span>
+          <span className="text-amber-400 font-bold">256 Frames</span>
+        </div>
+        <div className="bg-white/5 p-1 rounded text-center">
+          <span className="text-zinc-400 block text-[7.5px]">MEMORY POOL</span>
+          <span className="text-white font-bold">64 KB Static</span>
+        </div>
+      </div>
+    </div>
+  )
+}
