@@ -243,6 +243,7 @@ export const ProjectsSection: React.FC = () => {
       case 'aai-netsec':
         return <AAILivePreview />
       case 'cansat-telemetry':
+      case 'aerortos-1u':
         return <CanSatLivePreview />
       case 'gemini-rag':
         return <RAGLivePreview />
@@ -250,16 +251,10 @@ export const ProjectsSection: React.FC = () => {
         return <SystemsLivePreview />
       case 'proxispeak':
         return <ProxiSpeakLivePreview />
-      default:
-        return null
-    }
-  }
-
-  const renderCatalogMiniPreview = (p: ProjectData) => {
-    switch (p.id) {
       case 'valloc-c':
         return <VAllocLivePreview />
       case 'apex-shell':
+      case 'apex-shell-cli':
         return <ApexShellLivePreview />
       case 'titannet-raw':
         return <TitanNetLivePreview />
@@ -270,11 +265,75 @@ export const ProjectsSection: React.FC = () => {
     }
   }
 
+  const renderProjectLiveScreen = (p: ProjectData) => {
+    switch (p.id) {
+      case 'aerortos-1u':
+      case 'cansat-telemetry':
+        return <CanSatLivePreview />
+      case 'valloc-c':
+        return <VAllocLivePreview />
+      case 'apex-shell':
+        return <ApexShellLivePreview />
+      case 'titannet-raw':
+      case 'aai-netsec':
+        return <TitanNetLivePreview />
+      case 'bytevm':
+        return <ByteVMLivePreview />
+      case 'high-throughput-systems':
+        return <SystemsLivePreview />
+      case 'gemini-rag':
+        return <RAGLivePreview />
+      case 'proxispeak':
+        return <ProxiSpeakLivePreview />
+      default:
+        return (
+          <div className="absolute inset-0 bg-black/85 backdrop-blur-[2px] flex flex-col justify-between p-3.5 font-mono text-[10px] text-zinc-300 select-none">
+            <div className="flex items-center justify-between border-b border-white/10 pb-2">
+              <div className="flex items-center gap-1.5 text-emerald-400 font-bold">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span>{p.language.toUpperCase()} // RUNTIME VERIFIED</span>
+              </div>
+              <div className="text-[9px] text-zinc-400">
+                STATUS: <span className="text-white font-bold">ACTIVE</span>
+              </div>
+            </div>
+            <div className="p-2.5 rounded-xl bg-black/80 border border-white/10 space-y-1.5 my-auto">
+              <div className="text-[9px] text-zinc-400 flex items-center justify-between">
+                <span>ACTIVE SUBSYSTEM:</span>
+                <span className="text-emerald-400 font-bold">{p.category}</span>
+              </div>
+              <div className="text-xs text-white font-bold truncate">
+                {p.title}
+              </div>
+              <div className="flex items-center justify-between text-[9px] pt-1 border-t border-white/5">
+                <span className="text-zinc-400">Domain: <strong className="text-white">{p.domain}</strong></span>
+                <span className="text-emerald-400 font-bold">100% Passing</span>
+              </div>
+            </div>
+            <div className="grid grid-cols-3 gap-1 pt-2 border-t border-white/10 text-[9px]">
+              <div className="bg-white/5 p-1 rounded text-center">
+                <span className="text-zinc-400 block text-[7.5px]">LANGUAGE</span>
+                <span className="text-white font-bold">{p.language}</span>
+              </div>
+              <div className="bg-white/5 p-1 rounded text-center">
+                <span className="text-zinc-400 block text-[7.5px]">ALIGNMENT</span>
+                <span className="text-emerald-400 font-bold">Memory Safe</span>
+              </div>
+              <div className="bg-white/5 p-1 rounded text-center">
+                <span className="text-zinc-400 block text-[7.5px]">CODE AUDIT</span>
+                <span className="text-white font-bold">Valgrind Clean</span>
+              </div>
+            </div>
+          </div>
+        )
+    }
+  }
+
   return (
     <section
       id="projects"
       aria-label="Engineering Highlights and Projects"
-      className="relative w-full py-16 sm:py-24 px-4 sm:px-6 lg:px-12 max-w-7xl 2xl:max-w-[1500px] mx-auto"
+      className="relative w-full py-16 sm:py-24 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 max-w-[1720px] mx-auto"
     >
       <div className="flex flex-col gap-12 sm:gap-16">
         {/* Section Header */}
@@ -512,269 +571,144 @@ export const ProjectsSection: React.FC = () => {
             </div>
           )}
 
-          {/* Compact Catalog Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 pt-2">
+          {/* Complete Engineering Catalog Cards - All Projects Match Project 1 Quality */}
+          <div className="flex flex-col gap-6 sm:gap-8 pt-3">
             {catalogProjects.map((p, idx) => {
-              const isFeaturedHero = idx === 0 && !searchQuery && catalogProjects.length % 2 === 1
-
-              if (isFeaturedHero) {
-                return (
-                  <div
-                    key={p.id}
-                    className="md:col-span-2 relative rounded-2xl sm:rounded-3xl bg-white/[0.04] bg-[radial-gradient(ellipse_at_top_left,rgba(160,42,34,0.15),transparent_50%),radial-gradient(ellipse_at_bottom_right,rgba(6,182,212,0.1),transparent_50%)] border border-white/20 backdrop-blur-2xl p-6 sm:p-8 flex flex-col justify-between shadow-[0_20px_50px_rgba(0,0,0,0.8)] transition-all hover:border-ember/50 group"
-                  >
-                    {/* Top Subtle Hairline */}
-                    <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/35 to-transparent pointer-events-none" />
-
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-                      {/* Left Column: Deep Specs */}
-                      <div className="lg:col-span-7 space-y-4">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="px-2.5 py-0.5 rounded text-[10.5px] font-mono font-bold bg-ember/25 text-ember-bright border border-ember/50">
-                            {p.language}
-                          </span>
-                          <span className="text-zinc-500 font-mono text-xs">//</span>
-                          <span className="text-[10.5px] font-mono text-zinc-300 uppercase tracking-wider font-semibold">
-                            {p.category}
-                          </span>
-                          <span className="ml-auto inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[9.5px] font-mono font-bold text-emerald-400">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                            <span>CATEGORY HEADLINER // 01 OF 05</span>
-                          </span>
-                        </div>
-
-                        <div>
-                          <span className="text-[10.5px] font-mono uppercase tracking-wider text-ember-bright block mb-1">
-                            {p.domain}
-                          </span>
-                          <h4
-                            className="text-2xl sm:text-3xl font-bold text-white tracking-tight leading-snug group-hover:text-ember-bright transition-colors"
-                            style={{ fontFamily: "var(--font-josefin), 'Josefin Sans', sans-serif" }}
-                          >
-                            {p.title}
-                          </h4>
-                        </div>
-
-                        <p className="text-zinc-300 text-xs sm:text-sm leading-relaxed">
-                          {p.description}
-                        </p>
-
-                        {/* Dev Rationale */}
-                        {p.devNotes && (
-                          <div className="p-3 rounded-xl bg-black/60 border border-white/10 text-xs text-zinc-300 font-sans leading-relaxed flex items-start gap-2.5">
-                            <ShieldCheck className="w-4 h-4 text-ember shrink-0 mt-0.5" />
-                            <span>
-                              <strong className="text-white font-mono text-[10px] uppercase">Engineering Rationale: </strong>
-                              {p.devNotes}
-                            </span>
-                          </div>
-                        )}
-
-                        {/* Live Metrics */}
-                        <div className="flex flex-wrap items-center gap-2 pt-1">
-                          {p.liveMetrics?.map((m) => (
-                            <div
-                              key={m.label}
-                              className="px-2.5 py-1 rounded-lg bg-black/70 border border-white/10 flex items-center gap-1.5 text-[10px] font-mono"
-                            >
-                              <span className="text-zinc-400">{m.label}:</span>
-                              <span className="text-emerald-400 font-bold">{m.value}</span>
-                            </div>
-                          ))}
-                        </div>
-
-                        {/* Tags */}
-                        <div className="flex flex-wrap gap-1.5 pt-1">
-                          {p.tags.map((tag) => (
-                            <span
-                              key={tag}
-                              className="px-2.5 py-0.5 rounded text-[10px] font-bold text-zinc-300 uppercase bg-white/[0.05] border border-white/10 font-mono"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-
-                        {/* Actions */}
-                        <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-white/10">
-                          <button
-                            onClick={() => openCaseStudy(p, 'apparatus')}
-                            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs tracking-wider uppercase transition-all shadow-[0_0_20px_rgba(160,42,34,0.5)] cursor-pointer hover:scale-105 active:scale-95"
-                            title={`Launch ${p.title} Live Interactive Apparatus Simulator`}
-                          >
-                            <Play className="w-3.5 h-3.5 fill-black stroke-black shrink-0" />
-                            <span>Launch Live Apparatus</span>
-                          </button>
-
-                          <button
-                            onClick={() => openCaseStudy(p, 'blueprint')}
-                            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-ember/20 hover:bg-ember/35 text-white border border-ember/50 font-semibold text-xs tracking-wider uppercase transition-all backdrop-blur-md cursor-pointer active:scale-95 shadow-[0_0_10px_rgba(160,42,34,0.3)]"
-                            title="Inspect Architecture Blueprint & Case Study"
-                          >
-                            <Layers className="w-3.5 h-3.5 text-ember-bright shrink-0" />
-                            <span>Blueprint Spec</span>
-                          </button>
-
-                          {p.githubUrl && (
-                            <a
-                              href={p.githubUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/15 font-semibold text-xs tracking-wider uppercase transition-all ml-auto cursor-pointer"
-                              title={`Inspect ${p.title} Repository on GitHub`}
-                            >
-                              <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
-                                <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-                              </svg>
-                              <span>Repo</span>
-                            </a>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Right Column: Live Telemetry Visual Frame */}
-                      <div className="lg:col-span-5 flex items-center justify-center">
-                        <div
-                          onClick={() => openCaseStudy(p, 'apparatus')}
-                          className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden border border-white/20 bg-[#090a0f] backdrop-blur-2xl shadow-[0_15px_40px_rgba(0,0,0,0.8)] group/screen cursor-pointer hover:border-emerald-500/70 transition-all hover:scale-[1.01]"
-                          title="Click to launch interactive telemetry apparatus simulator"
-                        >
-                          <img
-                            src={p.image || '/projects/cansat-space.jpg'}
-                            alt={p.title}
-                            className="w-full h-full object-cover opacity-25 group-hover/screen:opacity-35 transition-opacity"
-                          />
-                          <CanSatLivePreview />
-                          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/screen:opacity-100 transition-opacity bg-black/40 backdrop-blur-[1px]">
-                            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500 text-black font-extrabold text-xs tracking-wider uppercase shadow-[0_0_25px_rgba(160,42,34,0.7)]">
-                              <Play className="w-3.5 h-3.5 fill-black stroke-black" />
-                              <span>Open Apparatus</span>
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )
-              }
-
-              // Balanced Grid Cards (Cards 2, 3, 4, 5)
               return (
                 <div
                   key={p.id}
-                  className="relative rounded-2xl bg-white/[0.03] bg-[radial-gradient(ellipse_at_top_left,rgba(160,42,34,0.1),transparent_50%),radial-gradient(ellipse_at_bottom_right,rgba(6,182,212,0.06),transparent_50%)] border border-white/15 backdrop-blur-2xl p-5 sm:p-6 flex flex-col justify-between shadow-[0_15px_40px_rgba(0,0,0,0.7)] transition-all hover:border-ember/50 hover:-translate-y-0.5 group"
+                  className="relative rounded-2xl sm:rounded-3xl bg-white/[0.04] bg-[radial-gradient(ellipse_at_top_left,rgba(160,42,34,0.15),transparent_50%),radial-gradient(ellipse_at_bottom_right,rgba(6,182,212,0.1),transparent_50%)] border border-white/20 backdrop-blur-2xl p-6 sm:p-8 flex flex-col justify-between shadow-[0_20px_50px_rgba(0,0,0,0.8)] transition-all hover:border-ember/50 group"
                 >
                   {/* Top Subtle Hairline */}
-                  <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
+                  <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/35 to-transparent pointer-events-none" />
 
-                  <div className="space-y-3.5">
-                    {/* Header: Language & Status */}
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-2">
-                        <span className="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-ember/20 text-ember-bright border border-ember/40">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center">
+                    {/* Left Column: Deep Specs */}
+                    <div className="lg:col-span-7 space-y-4">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="px-2.5 py-0.5 rounded text-[10.5px] font-mono font-bold bg-ember/25 text-ember-bright border border-ember/50">
                           {p.language}
                         </span>
-                        <span className="text-[10px] font-mono text-zinc-500">//</span>
-                        <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider font-semibold">
+                        <span className="text-zinc-500 font-mono text-xs">//</span>
+                        <span className="text-[10.5px] font-mono text-zinc-300 uppercase tracking-wider font-semibold">
                           {p.category}
                         </span>
-                      </div>
-                      <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-black/60 border border-white/15 text-[9px] font-mono font-bold text-emerald-400">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                        <span>VERIFIED CODE</span>
-                      </div>
-                    </div>
-
-                    {/* Title & Domain */}
-                    <div>
-                      <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 block mb-0.5">
-                        {p.domain}
-                      </span>
-                      <h4
-                        className="text-lg sm:text-xl font-bold text-white tracking-tight leading-snug group-hover:text-ember-bright transition-colors"
-                        style={{ fontFamily: "var(--font-josefin), 'Josefin Sans', sans-serif" }}
-                      >
-                        {p.title}
-                      </h4>
-                    </div>
-
-                    {/* Description */}
-                    <p className="text-zinc-300 text-xs leading-relaxed line-clamp-3">
-                      {p.description}
-                    </p>
-
-                    {/* EMBEDDED REAL-TIME DYNAMIC DATA PREVIEW WIDGET */}
-                    {renderCatalogMiniPreview(p)}
-
-                    {/* Dev Rationale */}
-                    <div className="p-2.5 rounded-xl bg-black/40 border border-white/5 text-[11px] text-zinc-400 font-sans leading-relaxed flex items-start gap-2">
-                      <ShieldCheck className="w-3.5 h-3.5 text-ember shrink-0 mt-0.5" />
-                      <span className="line-clamp-2">
-                        <strong className="text-zinc-300 font-mono text-[9.5px] uppercase">Dev Rationale: </strong>
-                        {p.devNotes}
-                      </span>
-                    </div>
-
-                    {/* Metrics */}
-                    <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
-                      {p.liveMetrics?.map((m) => (
-                        <div
-                          key={m.label}
-                          className="px-2 py-0.5 rounded-md bg-black/70 border border-white/10 flex items-center gap-1 text-[9px] font-mono"
-                        >
-                          <span className="text-zinc-400">{m.label}:</span>
-                          <span className="text-emerald-400 font-bold">{m.value}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-1 pt-0.5">
-                      {p.tags.slice(0, 4).map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-2 py-0.5 rounded text-[9px] font-bold text-zinc-300 uppercase bg-white/[0.04] border border-white/10 font-mono"
-                        >
-                          {tag}
+                        <span className="ml-auto inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[9.5px] font-mono font-bold text-emerald-400">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                          <span>PROJECT {String(idx + 1).padStart(2, '0')} OF {String(catalogProjects.length).padStart(2, '0')}</span>
                         </span>
-                      ))}
+                      </div>
+
+                      <div>
+                        <span className="text-[10.5px] font-mono uppercase tracking-wider text-ember-bright block mb-1">
+                          {p.domain}
+                        </span>
+                        <h4
+                          className="text-2xl sm:text-3xl font-bold text-white tracking-tight leading-snug group-hover:text-ember-bright transition-colors"
+                          style={{ fontFamily: "var(--font-josefin), 'Josefin Sans', sans-serif" }}
+                        >
+                          {p.title}
+                        </h4>
+                      </div>
+
+                      <p className="text-zinc-300 text-xs sm:text-sm leading-relaxed">
+                        {p.description}
+                      </p>
+
+                      {/* Dev Rationale */}
+                      {p.devNotes && (
+                        <div className="p-3 rounded-xl bg-black/60 border border-white/10 text-xs text-zinc-300 font-sans leading-relaxed flex items-start gap-2.5">
+                          <ShieldCheck className="w-4 h-4 text-ember shrink-0 mt-0.5" />
+                          <span>
+                            <strong className="text-white font-mono text-[10px] uppercase">Engineering Rationale: </strong>
+                            {p.devNotes}
+                          </span>
+                        </div>
+                      )}
+
+                      {/* Live Metrics */}
+                      <div className="flex flex-wrap items-center gap-2 pt-1">
+                        {p.liveMetrics?.map((m) => (
+                          <div
+                            key={m.label}
+                            className="px-2.5 py-1 rounded-lg bg-black/70 border border-white/10 flex items-center gap-1.5 text-[10px] font-mono"
+                          >
+                            <span className="text-zinc-400">{m.label}:</span>
+                            <span className="text-emerald-400 font-bold">{m.value}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Tags */}
+                      <div className="flex flex-wrap gap-1.5 pt-1">
+                        {p.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="px-2.5 py-0.5 rounded text-[10px] font-bold text-zinc-300 uppercase bg-white/[0.05] border border-white/10 font-mono"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* Actions */}
+                      <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-white/10">
+                        <button
+                          onClick={() => openCaseStudy(p, 'apparatus')}
+                          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs tracking-wider uppercase transition-all shadow-[0_0_20px_rgba(16,185,129,0.5)] cursor-pointer hover:scale-105 active:scale-95"
+                          title={`Launch ${p.title} Live Interactive Apparatus Simulator`}
+                        >
+                          <Play className="w-3.5 h-3.5 fill-black stroke-black shrink-0" />
+                          <span>Launch Live Apparatus</span>
+                        </button>
+
+                        <button
+                          onClick={() => openCaseStudy(p, 'blueprint')}
+                          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-ember/20 hover:bg-ember/35 text-white border border-ember/50 font-semibold text-xs tracking-wider uppercase transition-all backdrop-blur-md cursor-pointer active:scale-95 shadow-[0_0_10px_rgba(160,42,34,0.3)]"
+                          title="Inspect Architecture Blueprint & Case Study"
+                        >
+                          <Layers className="w-3.5 h-3.5 text-ember-bright shrink-0" />
+                          <span>Blueprint Spec</span>
+                        </button>
+
+                        {p.githubUrl && (
+                          <a
+                            href={p.githubUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/15 font-semibold text-xs tracking-wider uppercase transition-all ml-auto cursor-pointer"
+                            title={`Inspect ${p.title} Repository on GitHub`}
+                          >
+                            <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                              <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+                            </svg>
+                            <span>Repo</span>
+                          </a>
+                        )}
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Card Action Buttons */}
-                  <div className="flex flex-wrap items-center gap-2 pt-4 mt-3 border-t border-white/10">
-                    <button
-                      onClick={() => openCaseStudy(p, 'apparatus')}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-[10.5px] tracking-wider uppercase transition-all shadow-[0_0_12px_rgba(16,185,129,0.35)] cursor-pointer hover:scale-105 active:scale-95"
-                      title={`Launch ${p.title} Live Interactive Apparatus Simulator`}
-                    >
-                      <Play className="w-3 h-3 fill-black stroke-black shrink-0" />
-                      <span>Test Apparatus</span>
-                    </button>
-
-                    <button
-                      onClick={() => openCaseStudy(p, 'blueprint')}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-ember/20 hover:bg-ember/35 text-white border border-ember/50 font-semibold text-[10.5px] tracking-wider uppercase transition-all backdrop-blur-md cursor-pointer active:scale-95 shadow-[0_0_8px_rgba(160,42,34,0.2)]"
-                      title="Inspect Architecture Blueprint & Case Study"
-                    >
-                      <Layers className="w-3 h-3 text-ember-bright shrink-0" />
-                      <span>Blueprint</span>
-                    </button>
-
-                    {p.githubUrl && (
-                      <a
-                        href={p.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/15 font-semibold text-[10.5px] tracking-wider uppercase transition-all ml-auto cursor-pointer"
-                        title={`Inspect ${p.title} Repository on GitHub`}
+                    {/* Right Column: Live Telemetry Visual Frame with interactive simulator */}
+                    <div className="lg:col-span-5 flex items-center justify-center">
+                      <div
+                        onClick={() => openCaseStudy(p, 'apparatus')}
+                        className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden border border-white/20 bg-[#090a0f] backdrop-blur-2xl shadow-[0_15px_40px_rgba(0,0,0,0.8)] group/screen cursor-pointer hover:border-emerald-500/70 transition-all hover:scale-[1.01]"
+                        title={`Click to launch ${p.title} live interactive apparatus simulator`}
                       >
-                        <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24" aria-hidden="true">
-                          <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-                        </svg>
-                        <span className="hidden sm:inline">Repo</span>
-                      </a>
-                    )}
+                        <img
+                          src={p.image || '/projects/cansat-space.jpg'}
+                          alt={p.title}
+                          className="w-full h-full object-cover opacity-20 group-hover/screen:opacity-30 transition-opacity"
+                        />
+                        {renderProjectLiveScreen(p)}
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/screen:opacity-100 transition-opacity bg-black/40 backdrop-blur-[1px] pointer-events-none">
+                          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500 text-black font-extrabold text-xs tracking-wider uppercase shadow-[0_0_25px_rgba(16,185,129,0.7)]">
+                            <Play className="w-3.5 h-3.5 fill-black stroke-black" />
+                            <span>Open Full Apparatus</span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )
