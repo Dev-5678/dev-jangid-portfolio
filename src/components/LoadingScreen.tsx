@@ -5,36 +5,20 @@ interface LoadingScreenProps {
 }
 
 export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onLoaded }) => {
-  // Check if user has already visited in this session or device
-  const alreadyVisited =
-    typeof window !== 'undefined' &&
-    (sessionStorage.getItem('dj_visited') === '1' || localStorage.getItem('dj_visited') === '1')
-
-  const [progress, setProgress] = useState(alreadyVisited ? 100 : 0)
+  const [progress, setProgress] = useState(0)
   const [isFading, setIsFading] = useState(false)
-  const [isDone, setIsDone] = useState(alreadyVisited)
+  const [isDone, setIsDone] = useState(false)
 
   const dismiss = useCallback(() => {
     setIsFading(true)
-    try {
-      sessionStorage.setItem('dj_visited', '1')
-      localStorage.setItem('dj_visited', '1')
-    } catch {
-      // Ignore storage restrictions
-    }
     setTimeout(() => {
       setIsDone(true)
       onLoaded?.()
-    }, 120)
+    }, 200)
   }, [onLoaded])
 
   useEffect(() => {
-    if (alreadyVisited) {
-      onLoaded?.()
-      return
-    }
-
-    // High-speed smooth progress counter (completes smoothly in ~120ms on all devices)
+    // High-speed smooth progress counter matching reel (~320ms total duration)
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
@@ -42,7 +26,7 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onLoaded }) => {
           dismiss()
           return 100
         }
-        const jump = Math.floor(Math.random() * 20) + 25
+        const jump = Math.floor(Math.random() * 12) + 8
         const next = Math.min(100, prev + jump)
         if (next >= 100) {
           clearInterval(interval)
@@ -50,10 +34,10 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onLoaded }) => {
         }
         return next
       })
-    }, 16)
+    }, 22)
 
     return () => clearInterval(interval)
-  }, [alreadyVisited, dismiss, onLoaded])
+  }, [dismiss])
 
   if (isDone) return null
 

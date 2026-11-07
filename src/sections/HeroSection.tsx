@@ -153,17 +153,19 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
       </div>
 
       {/* 3. Ambient Radiant Ember Glow Orb behind Title */}
-      <div
-        ref={glowRef}
-        className="absolute left-1/2 top-[34%] sm:top-[38%] -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] sm:w-[600px] sm:h-[600px] md:w-[800px] md:h-[800px] pointer-events-none opacity-0 z-[6] transform-gpu"
-        style={{
-          background: theme === 'dark'
-            ? 'radial-gradient(circle, rgba(252,107,47,0.18) 0%, rgba(252,107,47,0.05) 40%, transparent 70%)'
-            : 'radial-gradient(circle, rgba(160,42,34,0.12) 0%, transparent 68%)',
-          filter: 'blur(35px)'
-        }}
-        aria-hidden="true"
-      />
+      <div className="absolute left-1/2 top-[34%] sm:top-[38%] -translate-x-1/2 -translate-y-1/2 pointer-events-none z-[6] flex items-center justify-center">
+        <div
+          ref={glowRef}
+          className="w-[340px] h-[340px] sm:w-[600px] sm:h-[600px] md:w-[800px] md:h-[800px] opacity-0 transform-gpu"
+          style={{
+            background: theme === 'dark'
+              ? 'radial-gradient(circle, rgba(252,107,47,0.18) 0%, rgba(252,107,47,0.05) 40%, transparent 70%)'
+              : 'radial-gradient(circle, rgba(160,42,34,0.12) 0%, transparent 68%)',
+            filter: 'blur(35px)'
+          }}
+          aria-hidden="true"
+        />
+      </div>
 
       {/* 4. Top Status Pill Badge (Centered on mobile, left-anchored under DJ. on desktop) */}
       <div
@@ -184,37 +186,38 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume: _onOpenR
 
       {/* 5. Center Kinetic Bold Variable Typography matching Instagram Reel */}
       <div
-        ref={titleContainerRef}
-        className="absolute top-[32%] sm:top-[38%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-[15] select-none w-full flex flex-col items-center justify-center px-4"
+        className="absolute top-[32%] sm:top-[38%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-[15] select-none w-full flex flex-col items-center justify-center px-4 pointer-events-none"
         aria-hidden="true"
       >
-        <div className="w-full max-w-[340px] sm:max-w-[580px] md:max-w-[660px] h-[52px] sm:h-[66px] md:h-[92px] relative flex items-center justify-center transform-gpu drop-shadow-[0_0_35px_rgba(252,107,47,0.4)]">
-          <div style={{ position: 'relative', width: '100%', height: '100%', background: 'transparent' }} className="cursor-default pointer-events-auto">
-            <TextPressure
-              text="DEV JANGID"
-              fontFamily="Roboto Flex"
-              flex={true}
-              scale={false}
-              width={true}
-              weight={true}
-              italic={true}
-              alpha={false}
-              stroke={false}
-              textColor={theme === 'dark' ? '#FFFFFF' : '#111116'}
-              minFontSize={14}
-              className="text-pressure-title"
-            />
+        <div ref={titleContainerRef} className="w-full flex flex-col items-center justify-center pointer-events-auto">
+          <div className="w-full max-w-[340px] sm:max-w-[580px] md:max-w-[660px] h-[52px] sm:h-[66px] md:h-[92px] relative flex items-center justify-center transform-gpu drop-shadow-[0_0_35px_rgba(252,107,47,0.4)]">
+            <div style={{ position: 'relative', width: '100%', height: '100%', background: 'transparent' }} className="cursor-default pointer-events-auto">
+              <TextPressure
+                text="DEV JANGID"
+                fontFamily="Roboto Flex"
+                flex={true}
+                scale={false}
+                width={true}
+                weight={true}
+                italic={true}
+                alpha={false}
+                stroke={false}
+                textColor={theme === 'dark' ? '#FFFFFF' : '#111116'}
+                minFontSize={14}
+                className="text-pressure-title"
+              />
+            </div>
           </div>
-        </div>
 
-        {/* Cinematic Sub-headline */}
-        <div className="mt-3 sm:mt-7 md:mt-10 lg:mt-12 text-center z-[20] px-2">
-          <p
-            className="hero-line text-[11px] sm:text-xs md:text-sm font-extrabold tracking-[0.16em] sm:tracking-[0.24em] uppercase text-ember drop-shadow-[0_0_20px_rgba(252,107,47,0.7)]"
-            style={{ fontFamily: 'var(--font-poppins), sans-serif' }}
-          >
-            High-Throughput Systems, Aerospace Telemetry &amp; Security.
-          </p>
+          {/* Cinematic Sub-headline */}
+          <div className="mt-3 sm:mt-7 md:mt-10 lg:mt-12 text-center z-[20] px-2">
+            <p
+              className="hero-line text-[11px] sm:text-xs md:text-sm font-extrabold tracking-[0.16em] sm:tracking-[0.24em] uppercase text-ember drop-shadow-[0_0_20px_rgba(252,107,47,0.7)]"
+              style={{ fontFamily: 'var(--font-poppins), sans-serif' }}
+            >
+              High-Throughput Systems, Aerospace Telemetry &amp; Security.
+            </p>
+          </div>
         </div>
       </div>
 
